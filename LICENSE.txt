@@ -1,0 +1,9 @@
+Copyright (c) 2025 FnPricing Inc.
+
+All rights reserved.
+
+This software and its associated documentation are the confidential and proprietary information of FnPricing Inc. ("Company"). 
+Unauthorized copying, use, distribution, or modification of this software, in whole or in part, is strictly prohibited.
+
+This software is licensed for internal use only by authorized personnel within Company and its approved affiliates. 
+No express or implied rights are granted to any third party without prior written consent of the Company.
