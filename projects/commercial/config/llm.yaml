@@ -1,0 +1,27 @@
+# Per-role LLM mapping for the commercial asset.
+# Env vars LLM_PLANNER / LLM_RETRIEVER / LLM_CRITIC / LLM_TAGGER override these.
+
+planner:
+  provider: anthropic
+  model: claude-opus-4-7
+  temperature: 0.1
+
+retriever:
+  provider: openai
+  model: gpt-4o-mini
+  temperature: 0.0
+
+critic:
+  provider: anthropic
+  model: claude-sonnet-4-6
+  temperature: 0.0
+
+tagger:
+  provider: openai
+  model: gpt-4o-mini
+  temperature: 0.0
+
+synthesizer:
+  provider: anthropic
+  model: claude-sonnet-4-6
+  temperature: 0.2

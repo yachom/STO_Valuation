@@ -1,0 +1,23 @@
+# Naver-News search queries grouped by ontology axis.
+# Each query is fanned out to the news pipeline once per run.
+
+market:
+  - 상업용 부동산 거래
+  - 오피스 공실률
+  - 상가 임대료
+policy:
+  - 부동산 정책
+  - 도시계획 변경
+  - 상업지역 용도 변경
+tenant:
+  - 자영업 업황
+  - 프랜차이즈 폐업
+  - 임차인 매출
+macro:
+  - 기준금리 인상
+  - 기준금리 인하
+  - 부동산 경기
+local:
+  - 재개발 호재
+  - 지하철 개통
+  - 상권 침체

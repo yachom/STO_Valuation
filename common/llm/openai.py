@@ -1,0 +1,23 @@
+"""OpenAI GPT adapter."""
+
+from __future__ import annotations
+
+from typing import Any
+
+from common.llm.base import BaseLLM
+from common.ports.llm import Capability, LLMMessage, LLMResponse
+
+
+class OpenAILLM(BaseLLM):
+    name = "openai"
+    capabilities = {Capability.TOOL_CALLING, Capability.JSON_MODE, Capability.STREAMING}
+
+    def _call_provider(
+        self,
+        messages: list[LLMMessage],
+        *,
+        json_schema: dict[str, Any] | None,
+        temperature: float,
+        max_tokens: int | None,
+    ) -> LLMResponse:
+        raise NotImplementedError
