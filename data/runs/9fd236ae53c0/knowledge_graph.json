@@ -1,0 +1,1683 @@
+{
+  "directed": true,
+  "multigraph": true,
+  "graph": {},
+  "nodes": [
+    {
+      "type": "Asset",
+      "name": "강남파이낸스센터",
+      "asset_name": "강남파이낸스센터",
+      "road": "서울특별시 강남구 테헤란로 152 (역삼동)",
+      "jibun": "서울특별시 강남구 역삼동 737 강남파이낸스센터",
+      "sigungu": "강남구",
+      "bjdong": "역삼동",
+      "pnu": "1168010100107370000",
+      "location": "서울특별시 강남구 역삼동",
+      "road_address": "테헤란로 152",
+      "address": "테헤란로 152",
+      "setup_year": 2021,
+      "scale": "연면적 7만2252㎡",
+      "jibun_address": "역삼동 737",
+      "asset_type": "상업·업무용 부동산",
+      "district": "강남구",
+      "dong": "역삼동",
+      "address_road": "서울특별시 강남구 테헤란로 152 (역삼동)",
+      "address_jibun": "서울특별시 강남구 역삼동 737",
+      "id": "dde9902c03595953"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "이혜원 스타로드자산운용 대표 - 오래 남는 자산의 조건",
+      "link": "https://www.forbeskorea.co.kr/news/articleView.html?idxno=401832",
+      "pubDate": "Wed, 29 Apr 2026 09:32:00 +0900",
+      "query": "강남파이낸스센터 매각",
+      "id": "98f131316c3c7db6"
+    },
+    {
+      "type": "Asset",
+      "name": "서울파이낸스센터(SFC)",
+      "location": "서울",
+      "id": "467d7bf9a025c678"
+    },
+    {
+      "type": "Person",
+      "name": "이혜원",
+      "title": "스타로드자산운용 대표",
+      "id": "afb8df21270a7269"
+    },
+    {
+      "type": "Organization",
+      "name": "세빌스코리아",
+      "id": "174fb1fc9f6d870e"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "한은, 본관 이어 강남본부도 재건축",
+      "link": "https://n.news.naver.com/mnews/article/029/0002958023?sid=101",
+      "pubDate": "Wed, 28 May 2025 17:43:00 +0900",
+      "query": "강남파이낸스센터 리모델링",
+      "id": "9aa988c64e801bc1"
+    },
+    {
+      "type": "Asset",
+      "name": "한국은행 강남본부",
+      "location": "역삼역 사거리",
+      "planned_floors": 17,
+      "status": "재건축 예정",
+      "project_type": "신축공사",
+      "planned_height": "17층",
+      "id": "c194e0c00c11725a"
+    },
+    {
+      "type": "Organization",
+      "name": "한국은행",
+      "id": "25b8b46a81e8c401"
+    },
+    {
+      "type": "Event",
+      "name": "강남본부 재건축",
+      "status": "계획 단계",
+      "id": "7a6dabc6ca9cc59e"
+    },
+    {
+      "type": "Axis",
+      "name": "VITALITY",
+      "id": "6fb8838c8da80e09"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "한은 강남본부 최고 17층으로 재탄생",
+      "link": "https://n.news.naver.com/mnews/article/016/0002477519?sid=101",
+      "pubDate": "Wed, 28 May 2025 11:20:00 +0900",
+      "query": "강남파이낸스센터 리모델링",
+      "id": "b944783bd9c53b2e"
+    },
+    {
+      "type": "Location",
+      "name": "강남 금융권역",
+      "characteristic": "금싸라기 땅",
+      "id": "bd1e8a5480cbb12b"
+    },
+    {
+      "type": "Event",
+      "name": "한은 강남본부 신축공사",
+      "year_started": 2023,
+      "activity": "리모델링 타당성 분석, 설계 입찰",
+      "id": "ce78bb6fe526e79f"
+    },
+    {
+      "type": "Axis",
+      "name": "AWARENESS",
+      "id": "7239324297247f13"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[더벨][thebell League Table]마스턴투자운용 '강남파이낸스플라자', 독보...",
+      "link": "https://www.thebell.co.kr/free/content/ArticleView.asp?key=202508211403361480101558",
+      "pubDate": "Wed, 27 Aug 2025 14:18:00 +0900",
+      "query": "강남파이낸스센터 리모델링",
+      "id": "420212da437dbe69"
+    },
+    {
+      "type": "Organization",
+      "name": "마스턴투자운용",
+      "id": "fd2b8c5f3ad57586"
+    },
+    {
+      "type": "Organization",
+      "name": "그래비티자산운용",
+      "id": "e3753d640fa3041f"
+    },
+    {
+      "type": "Event",
+      "name": "강남파이낸스센터 매각",
+      "id": "5d72b74fe673b4be"
+    },
+    {
+      "type": "Event",
+      "name": "시설 리모델링",
+      "scope": "수변전 설비, 로비, 엘리베이터, 화장실",
+      "period": "최근 10년",
+      "id": "dc775ee5c7ecdf52"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "광화문 파이낸스센터 새 주인 못찾아… 兆단위 오피스 빌딩 매각 줄줄이...",
+      "link": "https://n.news.naver.com/mnews/article/023/0003930896?sid=101",
+      "pubDate": "Wed, 24 Sep 2025 00:38:00 +0900",
+      "query": "강남파이낸스센터 리모델링",
+      "id": "fb010c059d04b0f7"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[더벨][WM 풍향계] 하나증권 'THE H1 W', 인력 충원으로 체급 키운다",
+      "link": "https://www.thebell.co.kr/free/content/ArticleView.asp?key=202604201008068120105041",
+      "pubDate": "Wed, 22 Apr 2026 10:48:00 +0900",
+      "query": "강남파이낸스센터",
+      "id": "4dc11c0aeae90764"
+    },
+    {
+      "type": "Asset",
+      "name": "THE센터필드W",
+      "status": "2025년 12월 통합 완료",
+      "id": "8eefd057ff4b805e"
+    },
+    {
+      "type": "Asset",
+      "name": "삼성동금융센터",
+      "id": "cf7fb965bea00b70"
+    },
+    {
+      "type": "Asset",
+      "name": "역삼지점",
+      "id": "abfe3dc5e20c8c87"
+    },
+    {
+      "type": "Organization",
+      "name": "하나증권",
+      "id": "fd188010475eb735"
+    },
+    {
+      "type": "Event",
+      "name": "인력 충원 및 조직 통합",
+      "timing": "2025년 12월",
+      "id": "11cb27155c60cf4b"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[더벨][PB인사이드] 하나증권 김대열 부장, 31년 관록의 '자산관리 기법...",
+      "link": "https://www.thebell.co.kr/free/content/ArticleView.asp?key=202604152331265920103324",
+      "pubDate": "Wed, 22 Apr 2026 08:42:00 +0900",
+      "query": "강남파이낸스센터",
+      "id": "aef9b2fefc42796f"
+    },
+    {
+      "type": "Person",
+      "name": "김대열",
+      "position": "부장",
+      "experience_years": 31,
+      "role": "PB (Private Banker)",
+      "id": "479d491ef08575a8"
+    },
+    {
+      "type": "Event",
+      "name": "2036년 어워즈 수상",
+      "target_year": 2036,
+      "id": "cd6154915621803a"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[부동산 트렌드] 서울 프라임 오피스 공실률 3.4%…경기침체에도 선방",
+      "link": "http://www.sisacast.kr/news/articleView.html?idxno=74270",
+      "pubDate": "Wed, 21 May 2025 10:04:00 +0900",
+      "query": "강남파이낸스센터 리모델링",
+      "id": "75a1a55ef3819284"
+    },
+    {
+      "type": "Organization",
+      "name": "HDC자산운용",
+      "role": "매수자",
+      "id": "4ce484ee722c03f0"
+    },
+    {
+      "type": "Event",
+      "name": "리모델링 및 업무시설 증축",
+      "purpose": "경쟁력 제고",
+      "id": "6ee6a00000c3435d"
+    },
+    {
+      "type": "Location",
+      "name": "서울 프라임 오피스 시장",
+      "region": "서울",
+      "market_segment": "프라임 오피스",
+      "id": "c67065ecb70aa3f1"
+    },
+    {
+      "type": "Metric",
+      "name": "공실률",
+      "value": "3.4%",
+      "market": "서울 프라임 오피스",
+      "id": "7e1db1baaf13be53"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "‘청라하늘대교·7호선 연장’ 호재…초광역 교통 허브로 도약하는 ‘청...",
+      "link": "http://www.lawissue.co.kr/view.php?ud=20260318170154189067191f6c6e_12",
+      "pubDate": "Wed, 18 Mar 2026 17:04:00 +0900",
+      "query": "강남구 강남파이낸스센터",
+      "id": "5c3d8e1c0f7f7e8c"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "청라하늘대교, 7호선 연장 호재…청라, 초광역 교통 허브로 도약",
+      "link": "https://n.news.naver.com/mnews/article/015/0005263875?sid=101",
+      "pubDate": "Wed, 18 Mar 2026 16:41:00 +0900",
+      "query": "강남구 강남파이낸스센터",
+      "id": "c3e9adb02c1adda8"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "청라하늘대교·7호선 연장…초광역 교통 허브 도약 청라국제도시",
+      "link": "https://n.news.naver.com/mnews/article/366/0001149429?sid=101",
+      "pubDate": "Wed, 18 Mar 2026 12:50:00 +0900",
+      "query": "강남구 강남파이낸스센터",
+      "id": "9e46e7d93626d7b2"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "청라하늘대교·7호선 연장…초광역 교통 허브로 도약하는 청라",
+      "link": "https://n.news.naver.com/mnews/article/009/0005651968?sid=101",
+      "pubDate": "Wed, 18 Mar 2026 11:02:00 +0900",
+      "query": "강남구 강남파이낸스센터",
+      "id": "2df3133141dbbe37"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "연이은 호재...광역 교통 허브로 도약하는 청라국제도시",
+      "link": "https://www.rcast.co.kr/news/articleView.html?idxno=30313",
+      "pubDate": "Wed, 18 Mar 2026 10:56:00 +0900",
+      "query": "강남구 강남파이낸스센터",
+      "id": "f2310fbda8d3b865"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "앤트로픽, 한국 지사 사령탑 선임 언제쯤?",
+      "link": "https://www.digitaltoday.co.kr/news/articleView.html?idxno=642057",
+      "pubDate": "Wed, 18 Mar 2026 07:00:00 +0900",
+      "query": "강남구 강남파이낸스센터",
+      "id": "1bcd672609e1a485"
+    },
+    {
+      "type": "Organization",
+      "name": "앤트로픽",
+      "capital": "5억원",
+      "registered_director": "스콧 알렉산더 부스",
+      "id": "460042a58cb4a0d2"
+    },
+    {
+      "type": "Organization",
+      "name": "공유오피스",
+      "location": "강남파이낸스센터",
+      "id": "46fdb8631a70f611"
+    },
+    {
+      "type": "Event",
+      "name": "앤트로픽 한국 지사 설립",
+      "date": "2026년 3월 이전",
+      "status": "진행 중",
+      "id": "4c559b8fa69988d8"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "한은 강남본부 재건축, 삼성물산 vs 포스코이앤씨 ‘2파전’… 누가 깃...",
+      "link": "https://n.news.naver.com/mnews/article/029/0002962308?sid=101",
+      "pubDate": "Wed, 18 Jun 2025 17:05:00 +0900",
+      "query": "강남파이낸스센터 리모델링",
+      "id": "f9ff47c007531980"
+    },
+    {
+      "type": "Asset",
+      "name": "한은 강남본부",
+      "location": "서울특별시 강남구",
+      "status": "재건축 계획 중",
+      "id": "e6f50da8635ca4d3"
+    },
+    {
+      "type": "Organization",
+      "name": "삼성물산",
+      "role": "재건축 입찰 참여사",
+      "id": "36c85131f1f796f0"
+    },
+    {
+      "type": "Organization",
+      "name": "포스코이앤씨",
+      "role": "재건축 입찰 참여사",
+      "id": "fe9361dc8a43d459"
+    },
+    {
+      "type": "Event",
+      "name": "한은 강남본부 재건축",
+      "status": "2023년 리모델링 타당성 검토",
+      "id": "4775cc6291931c94"
+    },
+    {
+      "type": "Location",
+      "name": "강남 금싸라기 땅",
+      "description": "강남 내 고가 부동산 지역",
+      "id": "69f88026b3ad9e8b"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "‘공사비 1조4000억’ 상도15구역서 현대건설·대우건설 맞대결 성사되...",
+      "link": "https://www.g-enews.com/view.php?ud=202604151327171179514e0091f6_1",
+      "pubDate": "Wed, 15 Apr 2026 13:50:00 +0900",
+      "query": "강남구 강남파이낸스센터",
+      "id": "712896df9b5f8ba8"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[오늘의 주요 사회 일정] 사회(4월15일 수요일)",
+      "link": "http://www.econonews.co.kr/news/articleView.html?idxno=435648",
+      "pubDate": "Wed, 15 Apr 2026 10:50:00 +0900",
+      "query": "강남파이낸스센터",
+      "id": "a0089bf1d8eb3b0b"
+    },
+    {
+      "type": "Organization",
+      "name": "구글 코리아",
+      "id": "89781a4112a4b553"
+    },
+    {
+      "type": "Event",
+      "name": "구글 코리아 규탄 집회",
+      "date": "2026-04-15",
+      "time": "오전 9시",
+      "location": "강남파이낸스센터 앞 인도",
+      "id": "b4d7cd161e199121"
+    },
+    {
+      "type": "Issue",
+      "name": "공작 채널 방치",
+      "id": "a9f47b612f39c920"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[오늘의 주요일정]사회(4월15일 수요일)",
+      "link": "https://n.news.naver.com/mnews/article/003/0013887736?sid=102",
+      "pubDate": "Wed, 15 Apr 2026 06:00:00 +0900",
+      "query": "강남파이낸스센터",
+      "id": "99a5abdebdf8ac77"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "알스퀘어 \"3월 서울 상업용 빌딩 거래 183건\"…전월比 25% 증가, 평균 거...",
+      "link": "http://www.lawissue.co.kr/view.php?ud=202605131745058767204ead0791_12",
+      "pubDate": "Wed, 13 May 2026 17:48:00 +0900",
+      "query": "강남구 역삼동 부동산",
+      "id": "69534ed908c9d792"
+    },
+    {
+      "type": "Asset",
+      "name": "여삼빌딩",
+      "location": "강남구 역삼동",
+      "transaction_price": "1,850억 원",
+      "transaction_date": "2026년 3월",
+      "asset_type": "중소형 상업용 빌딩",
+      "gross_area_sqm": 14256,
+      "transaction_type": "acquisition",
+      "id": "893d463d79494fe9"
+    },
+    {
+      "type": "Organization",
+      "name": "알스퀘어",
+      "role": "부동산 시장 분석 기관",
+      "id": "b87bcbbe95f04e29"
+    },
+    {
+      "type": "Event",
+      "name": "2026년 3월 서울 상업용 빌딩 거래",
+      "transaction_count": "183건",
+      "month_on_month_change": "25% 증가",
+      "id": "32bad3a72539f62a"
+    },
+    {
+      "type": "Location",
+      "name": "강남구 역삼동",
+      "sigungu": "강남구",
+      "bjdong": "역삼동",
+      "region": "서울특별시 강남구",
+      "id": "c89a10ed76fd2a63"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "서울 상업용 부동산 거래 늘었지만… 시장 움직인 건 ‘꼬마빌딩’이었...",
+      "link": "https://www.venturesquare.net/1082122/",
+      "pubDate": "Wed, 13 May 2026 17:32:00 +0900",
+      "query": "강남구 역삼동 부동산",
+      "id": "d876cfcab731ce3c"
+    },
+    {
+      "type": "Event",
+      "name": "서울 상업용 부동산 거래 증가",
+      "category": "중소형 자산(꼬마빌딩) 거래 활성화",
+      "id": "d8a058cba9c898c1"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "3월 서울 상업용 부동산 거래...\"꼬마빌딩 인기 높아\"",
+      "link": "http://www.beyondpost.co.kr/view.php?ud=202605131036209747205868f676_30",
+      "pubDate": "Wed, 13 May 2026 10:46:00 +0900",
+      "query": "강남구 역삼동 부동산",
+      "id": "db85e09ed42a4c61"
+    },
+    {
+      "type": "Event",
+      "name": "3월 서울 상업용 부동산 거래",
+      "period": "2026년 3월",
+      "market_segment": "상업·업무용 부동산",
+      "id": "ed51a1cbc7e6d35c"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "대형 ‘잠잠’, 꼬마빌딩은 ‘활발’…3월 서울 상업용 거래 183건 손바...",
+      "link": "https://n.news.naver.com/mnews/article/018/0006279647?sid=101",
+      "pubDate": "Wed, 13 May 2026 09:01:00 +0900",
+      "query": "강남구 역삼동 부동산",
+      "id": "8574cc6111ab5cc8"
+    },
+    {
+      "type": "Event",
+      "name": "서울 상업용 빌딩 거래",
+      "period": "3월",
+      "year": "2026",
+      "transaction_count": "183건",
+      "id": "e0aebd6d1a47540b"
+    },
+    {
+      "type": "Issue",
+      "name": "중소형 상업용 부동산 비중 증가",
+      "market_segment": "꼬마빌딩",
+      "id": "013cb4147bb99ecc"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "알레르망, 본업 정체 타파 전략 '대규모 투자'",
+      "link": "https://news.dealsitetv.com/articles/169736",
+      "pubDate": "Wed, 13 May 2026 07:02:00 +0900",
+      "query": "강남구 역삼동 부동산",
+      "id": "23da5b026647b969"
+    },
+    {
+      "type": "Organization",
+      "name": "알레르망",
+      "industry": "침구업",
+      "strategy": "부동산 투자 및 주식 투자",
+      "id": "b465c8e8b6fbeb9d"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "코리니, 미국 주요 거점 도시 부동산 및 한·미 세무 전략 세미나 개최",
+      "link": "https://magazine.hankyung.com/job-joy/article/202602118667d",
+      "pubDate": "Wed, 11 Feb 2026 10:42:00 +0900",
+      "query": "강남파이낸스센터 임대",
+      "id": "07c1a694a76ae0ef"
+    },
+    {
+      "type": "Organization",
+      "name": "코리니",
+      "business": "미국 부동산 플랫폼",
+      "services": "주거 및 상업용 부동산 임대, 매매 컨설팅, 자산관리, 기업 미국 진출 지원",
+      "headquarters": "뉴욕",
+      "coverage": "미국 16개 주요 도시",
+      "business_type": "미국 부동산 플랫폼",
+      "service_scope": "16개 주요 도시",
+      "service": "부동산 임대/매매 컨설팅, 자산관리, 미국 진출 서비스",
+      "id": "86917456d685199a"
+    },
+    {
+      "type": "Event",
+      "name": "미국 주요 거점 도시 부동산 및 한·미 세무 전략 세미나",
+      "date": "2026-02-11",
+      "organizer": "코리니",
+      "id": "e8d4cea0122130db"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "﻿코리니(Koriny), 미국 5대 거점 도시 부동산 및 한·미 세무 전략 세미...",
+      "link": "https://www.fntoday.co.kr/news/articleView.html?idxno=377212",
+      "pubDate": "Wed, 11 Feb 2026 10:28:00 +0900",
+      "query": "강남파이낸스센터 임대",
+      "id": "bd4bee6e02e00056"
+    },
+    {
+      "type": "Organization",
+      "name": "코리니(Koriny)",
+      "headquarters": "뉴욕",
+      "service_scope": "미국 16개 주요 도시",
+      "business": "미국 부동산 플랫폼",
+      "id": "44aea80347f34875"
+    },
+    {
+      "type": "Event",
+      "name": "미국 5대 거점 도시 부동산 및 한·미 세무 전략 세미나",
+      "date": "2026-02-11",
+      "location": "강남파이낸스센터",
+      "id": "da2863ed1ca32891"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "코리니, 미국 5대 도시 부동산 시장과 한미 세무 전략 다루는 세미나 개...",
+      "link": "http://www.beyondpost.co.kr/view.php?ud=2026021109530826399aeda69934_30",
+      "pubDate": "Wed, 11 Feb 2026 10:24:00 +0900",
+      "query": "강남파이낸스센터 임대",
+      "id": "6d08aac508ba356a"
+    },
+    {
+      "type": "Event",
+      "name": "미국 5대 도시 부동산 시장과 한미 세무 전략 세미나",
+      "date": "2026-02-11",
+      "location": "강남파이낸스센터",
+      "id": "37d3f70289d714ae"
+    },
+    {
+      "type": "Issue",
+      "name": "한미 세무 전략",
+      "category": "국제 세무 컨설팅",
+      "id": "0cfa302da2cbb471"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "미국 부동산 플랫폼 코리니, 미국 주요 5대 도시 부동산·한미 세무 전략...",
+      "link": "http://www.globalepic.co.kr/view.php?ud=2026021109492935929aeda69934_29",
+      "pubDate": "Wed, 11 Feb 2026 10:20:00 +0900",
+      "query": "강남파이낸스센터 임대",
+      "id": "232b539b067fb68c"
+    },
+    {
+      "type": "Event",
+      "name": "코리니 강남 지사 설립",
+      "id": "1b25710983b14268"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "코리니, 미국 5대 거점 도시 부동산 전망 및 한미 세무 전략 세미나 연...",
+      "link": "http://www.thebigdata.co.kr/view.php?ud=202602110953528709aeda69934_23",
+      "pubDate": "Wed, 11 Feb 2026 10:12:00 +0900",
+      "query": "강남파이낸스센터 임대",
+      "id": "7a6ae7edc1b97c17"
+    },
+    {
+      "type": "Organization",
+      "name": "미국 부동산 플랫폼",
+      "headquarters": "뉴욕",
+      "service_scope": "16개 주요 도시",
+      "services": [
+        "주거 부동산 컨설팅",
+        "상업용 부동산 컨설팅",
+        "자산관리",
+        "미국 진출 관련 서비스"
+      ],
+      "id": "abbcb76a88754847"
+    },
+    {
+      "type": "Event",
+      "name": "미국 5대 거점 도시 부동산 전망 및 한미 세무 전략 세미나",
+      "date": "2026-02-11",
+      "location": "강남파이낸스센터",
+      "id": "047c4e789920413a"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "코리니, 미국 5대 거점 도시 부동산 및 한미 세무 전략 세미나 진행",
+      "link": "https://www.thepowernews.co.kr/view.php?ud=2026021109445780009aeda69934_7",
+      "pubDate": "Wed, 11 Feb 2026 10:06:00 +0900",
+      "query": "강남파이낸스센터 임대",
+      "id": "582b2c3c7de5977d"
+    },
+    {
+      "type": "Event",
+      "name": "미국 5대 거점 도시 부동산 및 한미 세무 전략 세미나",
+      "date": "2026년 2월 11일 이후",
+      "location": "강남파이낸스센터",
+      "id": "d37aba2838ad3420"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "﻿코리니(Koriny), 미국 5대 거점 도시 부동산 및 한·미 세무 전략 세미...",
+      "link": "https://www.itbiznews.com/news/articleView.html?idxno=203982",
+      "pubDate": "Wed, 11 Feb 2026 09:38:00 +0900",
+      "query": "강남파이낸스센터 임대",
+      "id": "23b00849547448e1"
+    },
+    {
+      "type": "Event",
+      "name": "한·미 세무 전략 세미나",
+      "focus": "미국 5대 거점 도시 부동산 및 한·미 세무 전략",
+      "id": "cb6eb29f07062f3f"
+    }
+  ],
+  "links": [
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국은행 강남본부의 재건축 계획 기사에서 강남파이낸스센터가 인접 자산으로 언급됨. 강남본부 서쪽에 위치한 것으로 기술되어 있으나, 강남파이낸스센터 자체의 직접적인 개발 계획이나 변화는 포함되지 않음.",
+      "source": "dde9902c03595953",
+      "target": "9aa988c64e801bc1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서쪽으로는 강남 파이낸스센터와",
+      "source": "dde9902c03595953",
+      "target": "7a6dabc6ca9cc59e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "polarity": "positive",
+      "strength": 2,
+      "note": "부동산 관련 비즈니스 활동 및 세미나 개최로 건물의 활용도 증대",
+      "article": "23b00849547448e1",
+      "source": "dde9902c03595953",
+      "target": "6fb8838c8da80e09",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국은행 강남본부 신축 프로젝트 관련 기사로, 강남파이낸스센터와 인접한 위치에서 진행 중인 개발 사업이 언급됨. 강남 지역의 부동산 가치와 개발 동향을 반영.",
+      "source": "dde9902c03595953",
+      "target": "b944783bd9c53b2e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "강남 파이낸스센터와 마주 보고 있어 강남에서도 '금싸라기 땅'",
+      "source": "dde9902c03595953",
+      "target": "bd1e8a5480cbb12b",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "polarity": "positive",
+      "strength": 3,
+      "note": "국제 부동산 플랫폼의 지사 입주 및 세미나 개최로 자산의 국제적 위상 강화",
+      "article": "23b00849547448e1",
+      "source": "dde9902c03595953",
+      "target": "7239324297247f13",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "마스턴투자운용이 강남파이낸스센터를 그래비티자산운용에 매각했으며, 최근 10년간 수변전 설비, 로비, 엘리베이터, 화장실 등 주요 시설을 리모델링했다.",
+      "source": "dde9902c03595953",
+      "target": "420212da437dbe69",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OWNED_BY",
+      "evidence": "마스턴투자운용이 그래비티자산운용에 매각",
+      "source": "dde9902c03595953",
+      "target": "e3753d640fa3041f",
+      "key": "OWNED_BY"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "마스턴투자운용이 그래비티자산운용에 매각한 '강남파이낸스센터'",
+      "source": "dde9902c03595953",
+      "target": "5d72b74fe673b4be",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "최근 10년 간 수변전 설비 교체, 로비 내·외부 리모델링, 엘리베이터 전면 교체, 화장실 리모델링",
+      "source": "dde9902c03595953",
+      "target": "dc775ee5c7ecdf52",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "하나증권이 강남파이낸스센터를 포함한 삼성동금융센터, 역삼지점을 통합하여 'THE센터필드W'로 재편성하고 외부 PB 인력을 충원하여 조직 체급을 확대하고 있다.",
+      "source": "dde9902c03595953",
+      "target": "4dc11c0aeae90764",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "강남파이낸스센터...하나증권",
+      "source": "dde9902c03595953",
+      "target": "fd188010475eb735",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "강남파이낸스센터...통합된 THE센터필드W...외부 PB를 영입",
+      "source": "dde9902c03595953",
+      "target": "11cb27155c60cf4b",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "하나증권 김대열 부장이 2021년 강남파이낸스센터 세팅을 준비하며 일선 PB로 복귀했으며, 패밀리오피스 스타일의 자산관리를 추진 중이다.",
+      "source": "dde9902c03595953",
+      "target": "aef9b2fefc42796f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터는 서울 프라임 오피스 시장에서 거래되는 주요 자산으로, HDC자산운용이 매수하여 리모델링과 업무시설 증축을 통한 경쟁력 강화를 계획 중이다.",
+      "source": "dde9902c03595953",
+      "target": "75a1a55ef3819284",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OWNED_BY",
+      "evidence": "매수자인 HDC자산운용은 리모델링을 통한 업무시설 증축",
+      "source": "dde9902c03595953",
+      "target": "4ce484ee722c03f0",
+      "key": "OWNED_BY"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "리모델링을 통한 업무시설 증축 등의 경쟁력 제고를 계획",
+      "source": "dde9902c03595953",
+      "target": "6ee6a00000c3435d",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 프라임 오피스 자산으로",
+      "source": "dde9902c03595953",
+      "target": "c67065ecb70aa3f1",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "앤트로픽이 강남파이낸스센터에 위치한 공유오피스를 한국 지사의 소재지로 사용 중이며, 5억원 자본금으로 법인을 설립했다.",
+      "source": "dde9902c03595953",
+      "target": "1bcd672609e1a485",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터는 한은 강남본부 재건축 부지와 마주보는 강남 내 주요 랜드마크로 언급되었으며, 해당 지역이 '금싸라기 땅'으로 불릴 정도로 부동산 가치가 높은 지역임을 시사한다.",
+      "source": "dde9902c03595953",
+      "target": "f9ff47c007531980",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "강남 파이낸스센터와 마주보고 있어, 강남 내 '금싸라기 땅'으로 불린다",
+      "source": "dde9902c03595953",
+      "target": "69f88026b3ad9e8b",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터 앞 인도에서 구글 코리아를 규탄하는 집회가 예정되어 있다. 자산 자체의 운영·소유 정보는 없으나 공공 집회 장소로 언급되었다.",
+      "source": "dde9902c03595953",
+      "target": "a0089bf1d8eb3b0b",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터 앞 인도에서 구글 코리아를 규탄하는 집회가 예정되어 있다. 자산 위치가 집회 장소로 언급되었으나, 자산 자체의 운영·소유·임차 정보와는 무관한 외부 이벤트다.",
+      "source": "dde9902c03595953",
+      "target": "99a5abdebdf8ac77",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "2026년 3월 서울 상업용 빌딩 거래 현황 분석에서 강남구 역삼동 여삼빌딩이 1,850억 원으로 거래되었으며, 강남구 지역의 부동산 시장 활동을 보여주는 통계 자료.",
+      "source": "dde9902c03595953",
+      "target": "69534ed908c9d792",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "강남구 역삼동",
+      "source": "dde9902c03595953",
+      "target": "c89a10ed76fd2a63",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 부동산 시장에서 중소형 자산 거래가 증가하고 있으며, 강남구 역삼동의 여삼빌딩이 약 1850억 원에 거래된 사례가 언급되었다.",
+      "source": "dde9902c03595953",
+      "target": "d876cfcab731ce3c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 부동산 시장에서 중소형 빌딩 거래가 활발한 가운데, 강남구 역삼동의 여삼빌딩이 약 1850억 원에 매매되었다. 대형 빌딩 투자는 관망세를 보이는 반면 실사용 목적의 중소형 자산 거래가 인기를 끌고 있다.",
+      "source": "dde9902c03595953",
+      "target": "db85e09ed42a4c61",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 빌딩 거래 시장에서 중소형 상업용 부동산의 비중이 증가하고 있으며, 강남구 역삼동의 여삼빌딩이 1,850억 원에 거래된 사례가 언급되었다.",
+      "source": "dde9902c03595953",
+      "target": "8574cc6111ab5cc8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "강남구 역삼동의 상업용 빌딩 거래 시장",
+      "source": "dde9902c03595953",
+      "target": "e0aebd6d1a47540b",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "코리니(미국 부동산 플랫폼)가 강남파이낸스센터에 지사를 두고 있으며, 미국 주요 도시 부동산 및 한·미 세무 전략 세미나를 개최했다.",
+      "source": "dde9902c03595953",
+      "target": "07c1a694a76ae0ef",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼 코리니가 미국 5대 거점 도시 부동산 및 한·미 세무 전략 세미나를 개최한다. 코리니는 미국 16개 주요 도시에서 부동산 임대, 매매 컨설팅, 자산관리 서비스를 제공 중이다.",
+      "source": "dde9902c03595953",
+      "target": "bd4bee6e02e00056",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼 코리니가 미국 5대 도시 부동산 시장과 한미 세무 전략 세미나를 개최한다. 동사는 미국 16개 주요 도시에서 부동산 임대·매매 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "dde9902c03595953",
+      "target": "6d08aac508ba356a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "미국 부동산 플랫폼 코리니가 강남파이낸스센터에 지사를 두고 미국 부동산 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "dde9902c03595953",
+      "target": "232b539b067fb68c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼이 미국 5대 거점 도시 부동산 전망 및 한미 세무 전략 세미나를 개최한다. 현재 뉴욕 기반으로 16개 주요 도시에서 부동산 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "dde9902c03595953",
+      "target": "7a6ae7edc1b97c17",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼 코리니가 미국 5대 거점 도시 부동산 및 한미 세무 전략 세미나를 진행하고 있으며, 미국 내 16개 주요 도시에서 부동산 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "dde9902c03595953",
+      "target": "582b2c3c7de5977d",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "코리니(Koriny)라는 미국 부동산 플랫폼이 강남파이낸스센터에 지사를 두고 있으며, 한·미 부동산 및 세무 전략 세미나를 개최하는 것으로 보도됨.",
+      "source": "dde9902c03595953",
+      "target": "23b00849547448e1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "기사는 서초구 반포동의 옛 쉐라톤 팔레스 호텔 부지를 중심으로 다루며, 강남파이낸스센터는 저자의 경력 사항에서 서울파이낸스센터(SFC) 아케이드 입점 유치 경험으로만 언급됨.",
+      "source": "467d7bf9a025c678",
+      "target": "98f131316c3c7db6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "기사는 서초구 반포동의 옛 쉐라톤 팔레스 호텔 부지를 중심으로 다루며, 강남파이낸스센터는 저자의 경력 사항에서 서울파이낸스센터(SFC) 아케이드 입점 유치 경험으로만 언급됨.",
+      "source": "afb8df21270a7269",
+      "target": "98f131316c3c7db6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "부동산서비스기업 세빌스코리아에서 약 5년간 일하면서",
+      "source": "afb8df21270a7269",
+      "target": "174fb1fc9f6d870e",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울파이낸스센터(SFC) 아케이드 입점 유치",
+      "source": "afb8df21270a7269",
+      "target": "467d7bf9a025c678",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "기사는 서초구 반포동의 옛 쉐라톤 팔레스 호텔 부지를 중심으로 다루며, 강남파이낸스센터는 저자의 경력 사항에서 서울파이낸스센터(SFC) 아케이드 입점 유치 경험으로만 언급됨.",
+      "source": "174fb1fc9f6d870e",
+      "target": "98f131316c3c7db6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국은행 강남본부의 재건축 계획 기사에서 강남파이낸스센터가 인접 자산으로 언급됨. 강남본부 서쪽에 위치한 것으로 기술되어 있으나, 강남파이낸스센터 자체의 직접적인 개발 계획이나 변화는 포함되지 않음.",
+      "source": "c194e0c00c11725a",
+      "target": "9aa988c64e801bc1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "한국은행이 서울 중구 남대문로 본관과 부산본부 리모델링에 이어",
+      "source": "c194e0c00c11725a",
+      "target": "25b8b46a81e8c401",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "강남본부 17층 건물로 재건축 예정",
+      "source": "c194e0c00c11725a",
+      "target": "7a6dabc6ca9cc59e",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국은행 강남본부 신축 프로젝트 관련 기사로, 강남파이낸스센터와 인접한 위치에서 진행 중인 개발 사업이 언급됨. 강남 지역의 부동산 가치와 개발 동향을 반영.",
+      "source": "c194e0c00c11725a",
+      "target": "b944783bd9c53b2e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서쪽으로는 강남 파이낸스센터와 마주 보고 있어",
+      "source": "c194e0c00c11725a",
+      "target": "bd1e8a5480cbb12b",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "강남본부 행사 신축공사를 추진했다",
+      "source": "c194e0c00c11725a",
+      "target": "ce78bb6fe526e79f",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국은행 강남본부의 재건축 계획 기사에서 강남파이낸스센터가 인접 자산으로 언급됨. 강남본부 서쪽에 위치한 것으로 기술되어 있으나, 강남파이낸스센터 자체의 직접적인 개발 계획이나 변화는 포함되지 않음.",
+      "source": "25b8b46a81e8c401",
+      "target": "9aa988c64e801bc1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국은행 강남본부의 재건축 계획 기사에서 강남파이낸스센터가 인접 자산으로 언급됨. 강남본부 서쪽에 위치한 것으로 기술되어 있으나, 강남파이낸스센터 자체의 직접적인 개발 계획이나 변화는 포함되지 않음.",
+      "source": "7a6dabc6ca9cc59e",
+      "target": "9aa988c64e801bc1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국은행 강남본부 신축 프로젝트 관련 기사로, 강남파이낸스센터와 인접한 위치에서 진행 중인 개발 사업이 언급됨. 강남 지역의 부동산 가치와 개발 동향을 반영.",
+      "source": "bd1e8a5480cbb12b",
+      "target": "b944783bd9c53b2e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국은행 강남본부 신축 프로젝트 관련 기사로, 강남파이낸스센터와 인접한 위치에서 진행 중인 개발 사업이 언급됨. 강남 지역의 부동산 가치와 개발 동향을 반영.",
+      "source": "ce78bb6fe526e79f",
+      "target": "b944783bd9c53b2e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "마스턴투자운용이 강남파이낸스센터를 그래비티자산운용에 매각했으며, 최근 10년간 수변전 설비, 로비, 엘리베이터, 화장실 등 주요 시설을 리모델링했다.",
+      "source": "fd2b8c5f3ad57586",
+      "target": "420212da437dbe69",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "마스턴투자운용이 강남파이낸스센터를 그래비티자산운용에 매각했으며, 최근 10년간 수변전 설비, 로비, 엘리베이터, 화장실 등 주요 시설을 리모델링했다.",
+      "source": "e3753d640fa3041f",
+      "target": "420212da437dbe69",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "마스턴투자운용이 강남파이낸스센터를 그래비티자산운용에 매각했으며, 최근 10년간 수변전 설비, 로비, 엘리베이터, 화장실 등 주요 시설을 리모델링했다.",
+      "source": "5d72b74fe673b4be",
+      "target": "420212da437dbe69",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "마스턴투자운용이 강남파이낸스센터를 그래비티자산운용에 매각했으며, 최근 10년간 수변전 설비, 로비, 엘리베이터, 화장실 등 주요 시설을 리모델링했다.",
+      "source": "dc775ee5c7ecdf52",
+      "target": "420212da437dbe69",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "하나증권이 강남파이낸스센터를 포함한 삼성동금융센터, 역삼지점을 통합하여 'THE센터필드W'로 재편성하고 외부 PB 인력을 충원하여 조직 체급을 확대하고 있다.",
+      "source": "8eefd057ff4b805e",
+      "target": "4dc11c0aeae90764",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "THE센터필드W...하나증권",
+      "source": "8eefd057ff4b805e",
+      "target": "fd188010475eb735",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "하나증권이 강남파이낸스센터를 포함한 삼성동금융센터, 역삼지점을 통합하여 'THE센터필드W'로 재편성하고 외부 PB 인력을 충원하여 조직 체급을 확대하고 있다.",
+      "source": "cf7fb965bea00b70",
+      "target": "4dc11c0aeae90764",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "삼성동금융센터...통합",
+      "source": "cf7fb965bea00b70",
+      "target": "11cb27155c60cf4b",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "하나증권이 강남파이낸스센터를 포함한 삼성동금융센터, 역삼지점을 통합하여 'THE센터필드W'로 재편성하고 외부 PB 인력을 충원하여 조직 체급을 확대하고 있다.",
+      "source": "abfe3dc5e20c8c87",
+      "target": "4dc11c0aeae90764",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "역삼지점...통합",
+      "source": "abfe3dc5e20c8c87",
+      "target": "11cb27155c60cf4b",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "하나증권이 강남파이낸스센터를 포함한 삼성동금융센터, 역삼지점을 통합하여 'THE센터필드W'로 재편성하고 외부 PB 인력을 충원하여 조직 체급을 확대하고 있다.",
+      "source": "fd188010475eb735",
+      "target": "4dc11c0aeae90764",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "하나증권 김대열 부장이 2021년 강남파이낸스센터 세팅을 준비하며 일선 PB로 복귀했으며, 패밀리오피스 스타일의 자산관리를 추진 중이다.",
+      "source": "fd188010475eb735",
+      "target": "aef9b2fefc42796f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "강남파이낸스센터 세팅을 준비하면서",
+      "source": "fd188010475eb735",
+      "target": "dde9902c03595953",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "하나증권이 강남파이낸스센터를 포함한 삼성동금융센터, 역삼지점을 통합하여 'THE센터필드W'로 재편성하고 외부 PB 인력을 충원하여 조직 체급을 확대하고 있다.",
+      "source": "11cb27155c60cf4b",
+      "target": "4dc11c0aeae90764",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "하나증권 김대열 부장이 2021년 강남파이낸스센터 세팅을 준비하며 일선 PB로 복귀했으며, 패밀리오피스 스타일의 자산관리를 추진 중이다.",
+      "source": "479d491ef08575a8",
+      "target": "aef9b2fefc42796f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "TENANT_OF",
+      "evidence": "2021년 강남파이낸스센터 세팅을 준비하면서 다시 일선 PB로 복귀",
+      "source": "479d491ef08575a8",
+      "target": "dde9902c03595953",
+      "key": "TENANT_OF"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "2036년 어워즈 수상 목표",
+      "source": "479d491ef08575a8",
+      "target": "cd6154915621803a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "하나증권 김대열 부장이 2021년 강남파이낸스센터 세팅을 준비하며 일선 PB로 복귀했으며, 패밀리오피스 스타일의 자산관리를 추진 중이다.",
+      "source": "cd6154915621803a",
+      "target": "aef9b2fefc42796f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터는 서울 프라임 오피스 시장에서 거래되는 주요 자산으로, HDC자산운용이 매수하여 리모델링과 업무시설 증축을 통한 경쟁력 강화를 계획 중이다.",
+      "source": "4ce484ee722c03f0",
+      "target": "75a1a55ef3819284",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터는 서울 프라임 오피스 시장에서 거래되는 주요 자산으로, HDC자산운용이 매수하여 리모델링과 업무시설 증축을 통한 경쟁력 강화를 계획 중이다.",
+      "source": "6ee6a00000c3435d",
+      "target": "75a1a55ef3819284",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터는 서울 프라임 오피스 시장에서 거래되는 주요 자산으로, HDC자산운용이 매수하여 리모델링과 업무시설 증축을 통한 경쟁력 강화를 계획 중이다.",
+      "source": "c67065ecb70aa3f1",
+      "target": "75a1a55ef3819284",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "서울 프라임 오피스 공실률 3.4%",
+      "source": "c67065ecb70aa3f1",
+      "target": "7e1db1baaf13be53",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터는 서울 프라임 오피스 시장에서 거래되는 주요 자산으로, HDC자산운용이 매수하여 리모델링과 업무시설 증축을 통한 경쟁력 강화를 계획 중이다.",
+      "source": "7e1db1baaf13be53",
+      "target": "75a1a55ef3819284",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "앤트로픽이 강남파이낸스센터에 위치한 공유오피스를 한국 지사의 소재지로 사용 중이며, 5억원 자본금으로 법인을 설립했다.",
+      "source": "460042a58cb4a0d2",
+      "target": "1bcd672609e1a485",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "주소는 강남파이낸스센터가 위치한 서울 강남구 테헤란로로, 한 외국계 공유오피스를 소재지로 사용",
+      "source": "460042a58cb4a0d2",
+      "target": "dde9902c03595953",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "앤트로픽 한국 지사 사령탑 선임",
+      "source": "460042a58cb4a0d2",
+      "target": "4c559b8fa69988d8",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "앤트로픽이 강남파이낸스센터에 위치한 공유오피스를 한국 지사의 소재지로 사용 중이며, 5억원 자본금으로 법인을 설립했다.",
+      "source": "46fdb8631a70f611",
+      "target": "1bcd672609e1a485",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "강남파이낸스센터가 위치한 서울 강남구 테헤란로로, 한 외국계 공유오피스",
+      "source": "46fdb8631a70f611",
+      "target": "dde9902c03595953",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "앤트로픽이 강남파이낸스센터에 위치한 공유오피스를 한국 지사의 소재지로 사용 중이며, 5억원 자본금으로 법인을 설립했다.",
+      "source": "4c559b8fa69988d8",
+      "target": "1bcd672609e1a485",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터는 한은 강남본부 재건축 부지와 마주보는 강남 내 주요 랜드마크로 언급되었으며, 해당 지역이 '금싸라기 땅'으로 불릴 정도로 부동산 가치가 높은 지역임을 시사한다.",
+      "source": "e6f50da8635ca4d3",
+      "target": "f9ff47c007531980",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "강남 파이낸스센터와 마주보고 있어, 강남 내 '금싸라기 땅'으로 불린다",
+      "source": "e6f50da8635ca4d3",
+      "target": "69f88026b3ad9e8b",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터는 한은 강남본부 재건축 부지와 마주보는 강남 내 주요 랜드마크로 언급되었으며, 해당 지역이 '금싸라기 땅'으로 불릴 정도로 부동산 가치가 높은 지역임을 시사한다.",
+      "source": "36c85131f1f796f0",
+      "target": "f9ff47c007531980",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터는 한은 강남본부 재건축 부지와 마주보는 강남 내 주요 랜드마크로 언급되었으며, 해당 지역이 '금싸라기 땅'으로 불릴 정도로 부동산 가치가 높은 지역임을 시사한다.",
+      "source": "fe9361dc8a43d459",
+      "target": "f9ff47c007531980",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터는 한은 강남본부 재건축 부지와 마주보는 강남 내 주요 랜드마크로 언급되었으며, 해당 지역이 '금싸라기 땅'으로 불릴 정도로 부동산 가치가 높은 지역임을 시사한다.",
+      "source": "4775cc6291931c94",
+      "target": "f9ff47c007531980",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서쪽으로는 강남 파이낸스센터와 마주보고 있어",
+      "source": "4775cc6291931c94",
+      "target": "dde9902c03595953",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터는 한은 강남본부 재건축 부지와 마주보는 강남 내 주요 랜드마크로 언급되었으며, 해당 지역이 '금싸라기 땅'으로 불릴 정도로 부동산 가치가 높은 지역임을 시사한다.",
+      "source": "69f88026b3ad9e8b",
+      "target": "f9ff47c007531980",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터 앞 인도에서 구글 코리아를 규탄하는 집회가 예정되어 있다. 자산 자체의 운영·소유 정보는 없으나 공공 집회 장소로 언급되었다.",
+      "source": "89781a4112a4b553",
+      "target": "a0089bf1d8eb3b0b",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터 앞 인도에서 구글 코리아를 규탄하는 집회가 예정되어 있다. 자산 위치가 집회 장소로 언급되었으나, 자산 자체의 운영·소유·임차 정보와는 무관한 외부 이벤트다.",
+      "source": "89781a4112a4b553",
+      "target": "99a5abdebdf8ac77",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터 앞 인도에서 구글 코리아를 규탄하는 집회가 예정되어 있다. 자산 자체의 운영·소유 정보는 없으나 공공 집회 장소로 언급되었다.",
+      "source": "b4d7cd161e199121",
+      "target": "a0089bf1d8eb3b0b",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "역삼동 강남파이낸스센터 앞 인도",
+      "source": "b4d7cd161e199121",
+      "target": "dde9902c03595953",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "구글 코리아 규탄",
+      "source": "b4d7cd161e199121",
+      "target": "89781a4112a4b553",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "공작 채널 방치",
+      "source": "b4d7cd161e199121",
+      "target": "a9f47b612f39c920",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터 앞 인도에서 구글 코리아를 규탄하는 집회가 예정되어 있다. 자산 위치가 집회 장소로 언급되었으나, 자산 자체의 운영·소유·임차 정보와는 무관한 외부 이벤트다.",
+      "source": "b4d7cd161e199121",
+      "target": "99a5abdebdf8ac77",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터 앞 인도에서 구글 코리아를 규탄하는 집회가 예정되어 있다. 자산 자체의 운영·소유 정보는 없으나 공공 집회 장소로 언급되었다.",
+      "source": "a9f47b612f39c920",
+      "target": "a0089bf1d8eb3b0b",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터 앞 인도에서 구글 코리아를 규탄하는 집회가 예정되어 있다. 자산 위치가 집회 장소로 언급되었으나, 자산 자체의 운영·소유·임차 정보와는 무관한 외부 이벤트다.",
+      "source": "a9f47b612f39c920",
+      "target": "99a5abdebdf8ac77",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "2026년 3월 서울 상업용 빌딩 거래 현황 분석에서 강남구 역삼동 여삼빌딩이 1,850억 원으로 거래되었으며, 강남구 지역의 부동산 시장 활동을 보여주는 통계 자료.",
+      "source": "893d463d79494fe9",
+      "target": "69534ed908c9d792",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 강남구 역삼동 소재 여삼빌딩",
+      "source": "893d463d79494fe9",
+      "target": "c89a10ed76fd2a63",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "3월 최대 거래는 송파구 신천동 FN타워 잠실(2079억 원)이었으며 강남구 역삼동 여삼빌딩(1850억 원)",
+      "source": "893d463d79494fe9",
+      "target": "32bad3a72539f62a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 부동산 시장에서 중소형 자산 거래가 증가하고 있으며, 강남구 역삼동의 여삼빌딩이 약 1850억 원에 거래된 사례가 언급되었다.",
+      "source": "893d463d79494fe9",
+      "target": "d876cfcab731ce3c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "여삼빌딩(약 1850억 원) 거래 사례",
+      "source": "893d463d79494fe9",
+      "target": "d8a058cba9c898c1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 부동산 시장에서 중소형 빌딩 거래가 활발한 가운데, 강남구 역삼동의 여삼빌딩이 약 1850억 원에 매매되었다. 대형 빌딩 투자는 관망세를 보이는 반면 실사용 목적의 중소형 자산 거래가 인기를 끌고 있다.",
+      "source": "893d463d79494fe9",
+      "target": "db85e09ed42a4c61",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남구 역삼동 여삼빌딩은 약 1850억 원에 매매됐다",
+      "source": "893d463d79494fe9",
+      "target": "ed51a1cbc7e6d35c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 빌딩 거래 시장에서 중소형 상업용 부동산의 비중이 증가하고 있으며, 강남구 역삼동의 여삼빌딩이 1,850억 원에 거래된 사례가 언급되었다.",
+      "source": "893d463d79494fe9",
+      "target": "8574cc6111ab5cc8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남구 역삼동의 여삼빌딩(1,850억 원) 거래",
+      "source": "893d463d79494fe9",
+      "target": "e0aebd6d1a47540b",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "알레르망이 서울 강남구 역삼동의 여삼빌딩을 매입했으며, 이는 회사의 부동산 투자 전략의 일환으로 보임. 대상 자산(강남파이낸스센터)과 동일 지역 내 경쟁 자산의 거래 사례.",
+      "source": "893d463d79494fe9",
+      "target": "23da5b026647b969",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "2026년 3월 서울 상업용 빌딩 거래 현황 분석에서 강남구 역삼동 여삼빌딩이 1,850억 원으로 거래되었으며, 강남구 지역의 부동산 시장 활동을 보여주는 통계 자료.",
+      "source": "b87bcbbe95f04e29",
+      "target": "69534ed908c9d792",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "2026년 3월 서울 상업용 빌딩 거래 현황 분석에서 강남구 역삼동 여삼빌딩이 1,850억 원으로 거래되었으며, 강남구 지역의 부동산 시장 활동을 보여주는 통계 자료.",
+      "source": "32bad3a72539f62a",
+      "target": "69534ed908c9d792",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "알스퀘어 RA가 국토교통부 실거래가 자료를 분석",
+      "source": "32bad3a72539f62a",
+      "target": "b87bcbbe95f04e29",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "2026년 3월 서울 상업용 빌딩 거래 현황 분석에서 강남구 역삼동 여삼빌딩이 1,850억 원으로 거래되었으며, 강남구 지역의 부동산 시장 활동을 보여주는 통계 자료.",
+      "source": "c89a10ed76fd2a63",
+      "target": "69534ed908c9d792",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 부동산 시장에서 중소형 자산 거래가 증가하고 있으며, 강남구 역삼동의 여삼빌딩이 약 1850억 원에 거래된 사례가 언급되었다.",
+      "source": "c89a10ed76fd2a63",
+      "target": "d876cfcab731ce3c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 부동산 시장에서 중소형 빌딩 거래가 활발한 가운데, 강남구 역삼동의 여삼빌딩이 약 1850억 원에 매매되었다. 대형 빌딩 투자는 관망세를 보이는 반면 실사용 목적의 중소형 자산 거래가 인기를 끌고 있다.",
+      "source": "c89a10ed76fd2a63",
+      "target": "db85e09ed42a4c61",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "알레르망이 서울 강남구 역삼동의 여삼빌딩을 매입했으며, 이는 회사의 부동산 투자 전략의 일환으로 보임. 대상 자산(강남파이낸스센터)과 동일 지역 내 경쟁 자산의 거래 사례.",
+      "source": "c89a10ed76fd2a63",
+      "target": "23da5b026647b969",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 부동산 시장에서 중소형 자산 거래가 증가하고 있으며, 강남구 역삼동의 여삼빌딩이 약 1850억 원에 거래된 사례가 언급되었다.",
+      "source": "d8a058cba9c898c1",
+      "target": "d876cfcab731ce3c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 부동산 시장에서 중소형 빌딩 거래가 활발한 가운데, 강남구 역삼동의 여삼빌딩이 약 1850억 원에 매매되었다. 대형 빌딩 투자는 관망세를 보이는 반면 실사용 목적의 중소형 자산 거래가 인기를 끌고 있다.",
+      "source": "ed51a1cbc7e6d35c",
+      "target": "db85e09ed42a4c61",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 빌딩 거래 시장에서 중소형 상업용 부동산의 비중이 증가하고 있으며, 강남구 역삼동의 여삼빌딩이 1,850억 원에 거래된 사례가 언급되었다.",
+      "source": "e0aebd6d1a47540b",
+      "target": "8574cc6111ab5cc8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 상업용 빌딩 거래 시장에서 중소형 상업용 부동산의 비중이 증가하고 있으며, 강남구 역삼동의 여삼빌딩이 1,850억 원에 거래된 사례가 언급되었다.",
+      "source": "013cb4147bb99ecc",
+      "target": "8574cc6111ab5cc8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "꼬마빌딩의 비중이 높아지고 있다",
+      "source": "013cb4147bb99ecc",
+      "target": "e0aebd6d1a47540b",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "알레르망이 서울 강남구 역삼동의 여삼빌딩을 매입했으며, 이는 회사의 부동산 투자 전략의 일환으로 보임. 대상 자산(강남파이낸스센터)과 동일 지역 내 경쟁 자산의 거래 사례.",
+      "source": "b465c8e8b6fbeb9d",
+      "target": "23da5b026647b969",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OWNED_BY",
+      "evidence": "알레르망은 서울 강남구 역삼동 소재 여삼빌딩을 매입했다",
+      "source": "b465c8e8b6fbeb9d",
+      "target": "893d463d79494fe9",
+      "key": "OWNED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "코리니(미국 부동산 플랫폼)가 강남파이낸스센터에 지사를 두고 있으며, 미국 주요 도시 부동산 및 한·미 세무 전략 세미나를 개최했다.",
+      "source": "86917456d685199a",
+      "target": "07c1a694a76ae0ef",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "서울 강남 파이낸스 센터에 지사를 둔 미국 부동산 플랫폼",
+      "source": "86917456d685199a",
+      "target": "dde9902c03595953",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 강남 파이낸스 센터에 지사를 둔",
+      "source": "86917456d685199a",
+      "target": "dde9902c03595953",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼 코리니가 미국 5대 도시 부동산 시장과 한미 세무 전략 세미나를 개최한다. 동사는 미국 16개 주요 도시에서 부동산 임대·매매 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "86917456d685199a",
+      "target": "6d08aac508ba356a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "미국 부동산 플랫폼 코리니가 강남파이낸스센터에 지사를 두고 미국 부동산 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "86917456d685199a",
+      "target": "232b539b067fb68c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼 코리니가 미국 5대 거점 도시 부동산 및 한미 세무 전략 세미나를 진행하고 있으며, 미국 내 16개 주요 도시에서 부동산 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "86917456d685199a",
+      "target": "582b2c3c7de5977d",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "코리니(미국 부동산 플랫폼)가 강남파이낸스센터에 지사를 두고 있으며, 미국 주요 도시 부동산 및 한·미 세무 전략 세미나를 개최했다.",
+      "source": "e8d4cea0122130db",
+      "target": "07c1a694a76ae0ef",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "강남 파이낸스 센터에서 세미나 개최",
+      "source": "e8d4cea0122130db",
+      "target": "dde9902c03595953",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼 코리니가 미국 5대 거점 도시 부동산 및 한·미 세무 전략 세미나를 개최한다. 코리니는 미국 16개 주요 도시에서 부동산 임대, 매매 컨설팅, 자산관리 서비스를 제공 중이다.",
+      "source": "44aea80347f34875",
+      "target": "bd4bee6e02e00056",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "강남 파이낸스 센터에 지사를 두고 있는",
+      "source": "44aea80347f34875",
+      "target": "dde9902c03595953",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "코리니(Koriny)라는 미국 부동산 플랫폼이 강남파이낸스센터에 지사를 두고 있으며, 한·미 부동산 및 세무 전략 세미나를 개최하는 것으로 보도됨.",
+      "source": "44aea80347f34875",
+      "target": "23b00849547448e1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼 코리니가 미국 5대 거점 도시 부동산 및 한·미 세무 전략 세미나를 개최한다. 코리니는 미국 16개 주요 도시에서 부동산 임대, 매매 컨설팅, 자산관리 서비스를 제공 중이다.",
+      "source": "da2863ed1ca32891",
+      "target": "bd4bee6e02e00056",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "서울 강남 파이낸스 센터에서 세미나 개최",
+      "source": "da2863ed1ca32891",
+      "target": "dde9902c03595953",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼 코리니가 미국 5대 도시 부동산 시장과 한미 세무 전략 세미나를 개최한다. 동사는 미국 16개 주요 도시에서 부동산 임대·매매 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "37d3f70289d714ae",
+      "target": "6d08aac508ba356a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "강남 파이낸스 센터에서 세미나 개최",
+      "source": "37d3f70289d714ae",
+      "target": "dde9902c03595953",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한미 세무 전략 다루는 세미나",
+      "source": "37d3f70289d714ae",
+      "target": "0cfa302da2cbb471",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼 코리니가 미국 5대 도시 부동산 시장과 한미 세무 전략 세미나를 개최한다. 동사는 미국 16개 주요 도시에서 부동산 임대·매매 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "0cfa302da2cbb471",
+      "target": "6d08aac508ba356a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "미국 부동산 플랫폼 코리니가 강남파이낸스센터에 지사를 두고 미국 부동산 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "1b25710983b14268",
+      "target": "232b539b067fb68c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남 파이낸스 센터에 지사를 둔 미국 부동산 플랫폼",
+      "source": "1b25710983b14268",
+      "target": "dde9902c03595953",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼이 미국 5대 거점 도시 부동산 전망 및 한미 세무 전략 세미나를 개최한다. 현재 뉴욕 기반으로 16개 주요 도시에서 부동산 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "abbcb76a88754847",
+      "target": "7a6ae7edc1b97c17",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 강남 파이낸스 센터에 지사를 둔",
+      "source": "abbcb76a88754847",
+      "target": "dde9902c03595953",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼이 미국 5대 거점 도시 부동산 전망 및 한미 세무 전략 세미나를 개최한다. 현재 뉴욕 기반으로 16개 주요 도시에서 부동산 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "047c4e789920413a",
+      "target": "7a6ae7edc1b97c17",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "강남 파이낸스 센터에서 세미나 개최",
+      "source": "047c4e789920413a",
+      "target": "dde9902c03595953",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "미국 부동산 플랫폼이 주최하는 세미나",
+      "source": "047c4e789920413a",
+      "target": "abbcb76a88754847",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남파이낸스센터에 지사를 둔 미국 부동산 플랫폼 코리니가 미국 5대 거점 도시 부동산 및 한미 세무 전략 세미나를 진행하고 있으며, 미국 내 16개 주요 도시에서 부동산 컨설팅 및 자산관리 서비스를 제공 중이다.",
+      "source": "d37aba2838ad3420",
+      "target": "582b2c3c7de5977d",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "강남 파이낸스 센터에서 세미나 진행",
+      "source": "d37aba2838ad3420",
+      "target": "dde9902c03595953",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "코리니(Koriny)라는 미국 부동산 플랫폼이 강남파이낸스센터에 지사를 두고 있으며, 한·미 부동산 및 세무 전략 세미나를 개최하는 것으로 보도됨.",
+      "source": "cb6eb29f07062f3f",
+      "target": "23b00849547448e1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "강남 파이낸스 센터에서 세미나 개최",
+      "source": "cb6eb29f07062f3f",
+      "target": "dde9902c03595953",
+      "key": "MENTIONED_IN"
+    }
+  ]
+}

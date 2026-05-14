@@ -1,0 +1,3679 @@
+{
+  "address": "서울특별시 강남구 테헤란로 152",
+  "metadata": {
+    "input_address": "서울특별시 강남구 테헤란로 152",
+    "address": {
+      "road": "서울특별시 강남구 테헤란로 152 (역삼동)",
+      "jibun": "서울특별시 강남구 역삼동 737 강남파이낸스센터",
+      "sido": "서울특별시",
+      "sigungu": "강남구",
+      "bjdong_name": "역삼동",
+      "building_management_no": "1168010100107370000023659",
+      "building_name": "강남파이낸스센터"
+    },
+    "identifiers": {
+      "pnu": "1168010100107370000",
+      "bjdong_code": "1168010100",
+      "sigungu_cd": "11680",
+      "bjdong_cd": "10100",
+      "land_type_code": "1",
+      "bun": "0737",
+      "ji": "0000"
+    },
+    "coord": {
+      "x": "127.036508620542",
+      "y": "37.5000242405515",
+      "raw": {
+        "address": {
+          "address_name": "서울 강남구 역삼동 737",
+          "b_code": "1168010100",
+          "h_code": "1168064000",
+          "main_address_no": "737",
+          "mountain_yn": "N",
+          "region_1depth_name": "서울",
+          "region_2depth_name": "강남구",
+          "region_3depth_h_name": "역삼1동",
+          "region_3depth_name": "역삼동",
+          "sub_address_no": "",
+          "x": "127.036508620542",
+          "y": "37.5000242405515"
+        },
+        "address_name": "서울 강남구 테헤란로 152",
+        "address_type": "ROAD_ADDR",
+        "road_address": {
+          "address_name": "서울 강남구 테헤란로 152",
+          "building_name": "강남파이낸스센터",
+          "main_building_no": "152",
+          "region_1depth_name": "서울",
+          "region_2depth_name": "강남구",
+          "region_3depth_name": "역삼동",
+          "road_name": "테헤란로",
+          "sub_building_no": "",
+          "underground_yn": "N",
+          "x": "127.036508620542",
+          "y": "37.5000242405515",
+          "zone_no": "06236"
+        },
+        "x": "127.036508620542",
+        "y": "37.5000242405515"
+      }
+    },
+    "land": {
+      "land_forest_ledger": {
+        "ladfrlVOList": {
+          "pageNo": "1",
+          "ladfrlVOList": [
+            {
+              "lndpclAr": "13156.7",
+              "lndcgrCodeNm": "대",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "ldCode": "1168010100",
+              "ladFrtlScNm": "수치",
+              "posesnSeCode": "06",
+              "mnnmSlno": "737",
+              "lndcgrCode": "08",
+              "cnrsPsnCo": "0",
+              "ladFrtlSc": "00",
+              "pnu": "1168010100107370000",
+              "posesnSeCodeNm": "법인",
+              "lastUpdtDt": "2026-04-04",
+              "regstrSeCodeNm": "토지대장",
+              "regstrSeCode": "1"
+            }
+          ],
+          "totalCount": "1",
+          "error": "",
+          "message": "",
+          "numOfRows": "10"
+        }
+      },
+      "land_characteristics": {
+        "landCharacteristicss": {
+          "field": [
+            {
+              "tpgrphHgCodeNm": "평지",
+              "stdrYear": "2013",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대소각",
+              "pblntfPclnd": "33700000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "02",
+              "prposArea1Nm": "일반상업지역",
+              "ladUseSittnNm": "업무용",
+              "ladSn": "3271",
+              "ladUseSittn": "220",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-03",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "13156.7",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "prposArea1": "22",
+              "prposArea2": "00",
+              "mnnmSlno": "737",
+              "lndcgrCode": "08",
+              "pnu": "1168010100107370000",
+              "stdrMt": "01",
+              "roadSideCode": "02"
+            },
+            {
+              "tpgrphHgCodeNm": "평지",
+              "stdrYear": "2014",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대소각",
+              "pblntfPclnd": "36350000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "02",
+              "prposArea1Nm": "일반상업지역",
+              "ladUseSittnNm": "업무용",
+              "ladSn": "3271",
+              "ladUseSittn": "220",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-03",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "13156.7",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "prposArea1": "22",
+              "prposArea2": "00",
+              "mnnmSlno": "737",
+              "lndcgrCode": "08",
+              "pnu": "1168010100107370000",
+              "stdrMt": "01",
+              "roadSideCode": "02"
+            },
+            {
+              "tpgrphHgCodeNm": "평지",
+              "stdrYear": "2015",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대소각",
+              "pblntfPclnd": "37830000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "02",
+              "prposArea1Nm": "일반상업지역",
+              "ladUseSittnNm": "업무용",
+              "ladSn": "3271",
+              "ladUseSittn": "220",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-04",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "13156.7",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "prposArea1": "22",
+              "prposArea2": "00",
+              "mnnmSlno": "737",
+              "lndcgrCode": "08",
+              "pnu": "1168010100107370000",
+              "stdrMt": "01",
+              "roadSideCode": "02"
+            },
+            {
+              "tpgrphHgCodeNm": "평지",
+              "stdrYear": "2016",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대소각",
+              "pblntfPclnd": "39380000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "02",
+              "prposArea1Nm": "일반상업지역",
+              "ladUseSittnNm": "업무용",
+              "ladSn": "3275",
+              "ladUseSittn": "220",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-04",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "13156.7",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "prposArea1": "22",
+              "prposArea2": "00",
+              "mnnmSlno": "737",
+              "lndcgrCode": "08",
+              "pnu": "1168010100107370000",
+              "stdrMt": "01",
+              "roadSideCode": "02"
+            },
+            {
+              "tpgrphHgCodeNm": "평지",
+              "stdrYear": "2017",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대소각",
+              "pblntfPclnd": "41900000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "02",
+              "prposArea1Nm": "일반상업지역",
+              "ladUseSittnNm": "업무용",
+              "ladSn": "3256",
+              "ladUseSittn": "220",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-04",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "13156.7",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "prposArea1": "22",
+              "prposArea2": "00",
+              "mnnmSlno": "737",
+              "lndcgrCode": "08",
+              "pnu": "1168010100107370000",
+              "stdrMt": "01",
+              "roadSideCode": "02"
+            },
+            {
+              "tpgrphHgCodeNm": "평지",
+              "stdrYear": "2018",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대소각",
+              "pblntfPclnd": "44860000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "02",
+              "prposArea1Nm": "일반상업지역",
+              "ladUseSittnNm": "업무용",
+              "ladSn": "3258",
+              "ladUseSittn": "220",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-04",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "13156.7",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "prposArea1": "22",
+              "prposArea2": "00",
+              "mnnmSlno": "737",
+              "lndcgrCode": "08",
+              "pnu": "1168010100107370000",
+              "stdrMt": "01",
+              "roadSideCode": "02"
+            },
+            {
+              "tpgrphHgCodeNm": "평지",
+              "stdrYear": "2019",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대소각",
+              "pblntfPclnd": "50920000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "02",
+              "prposArea1Nm": "일반상업지역",
+              "ladUseSittnNm": "업무용",
+              "ladSn": "3248",
+              "ladUseSittn": "220",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-05",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "13156.7",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "prposArea1": "22",
+              "prposArea2": "00",
+              "mnnmSlno": "737",
+              "lndcgrCode": "08",
+              "pnu": "1168010100107370000",
+              "stdrMt": "01",
+              "roadSideCode": "02"
+            },
+            {
+              "tpgrphHgCodeNm": "평지",
+              "stdrYear": "2020",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대소각",
+              "pblntfPclnd": "54510000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "02",
+              "prposArea1Nm": "일반상업지역",
+              "ladUseSittnNm": "업무용",
+              "ladSn": "3245",
+              "ladUseSittn": "220",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-05",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "13156.7",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "prposArea1": "22",
+              "prposArea2": "00",
+              "mnnmSlno": "737",
+              "lndcgrCode": "08",
+              "pnu": "1168010100107370000",
+              "stdrMt": "01",
+              "roadSideCode": "02"
+            },
+            {
+              "tpgrphHgCodeNm": "평지",
+              "stdrYear": "2021",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대소각",
+              "pblntfPclnd": "57320000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "02",
+              "prposArea1Nm": "일반상업지역",
+              "ladUseSittnNm": "업무용",
+              "ladSn": "3236",
+              "ladUseSittn": "220",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-05",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "13156.7",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "prposArea1": "22",
+              "prposArea2": "00",
+              "mnnmSlno": "737",
+              "lndcgrCode": "08",
+              "pnu": "1168010100107370000",
+              "stdrMt": "01",
+              "roadSideCode": "02"
+            },
+            {
+              "tpgrphHgCodeNm": "평지",
+              "stdrYear": "2022",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대소각",
+              "pblntfPclnd": "66440000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "02",
+              "prposArea1Nm": "일반상업지역",
+              "ladUseSittnNm": "업무용",
+              "ladSn": "3230",
+              "ladUseSittn": "220",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-06",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "13156.7",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "prposArea1": "22",
+              "prposArea2": "00",
+              "mnnmSlno": "737",
+              "lndcgrCode": "08",
+              "pnu": "1168010100107370000",
+              "stdrMt": "01",
+              "roadSideCode": "02"
+            }
+          ],
+          "pageNo": "1",
+          "resultCode": "",
+          "totalCount": "16",
+          "numOfRows": "10",
+          "resultMsg": ""
+        }
+      },
+      "land_use": {
+        "landUses": {
+          "field": [
+            {
+              "cnflcAt": "1",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "mnnmSlno": "737",
+              "prposAreaDstrcCodeNm": "대공방어협조구역",
+              "cnflcAtNm": "포함",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2014-01-02",
+              "prposAreaDstrcCode": "UNE200",
+              "regstrSeCode": "1",
+              "manageNo": "12900001168020040001UNE2000001002"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "mnnmSlno": "737",
+              "prposAreaDstrcCodeNm": "도시지역",
+              "cnflcAtNm": "포함",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2014-01-02",
+              "prposAreaDstrcCode": "UQA01X",
+              "regstrSeCode": "1",
+              "manageNo": "15000001168020000000UQA01X0000002"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "mnnmSlno": "737",
+              "prposAreaDstrcCodeNm": "일반상업지역",
+              "cnflcAtNm": "포함",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2014-01-02",
+              "prposAreaDstrcCode": "UQA220",
+              "regstrSeCode": "1",
+              "manageNo": "15000001168020000000UQA2200000038"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "mnnmSlno": "737",
+              "prposAreaDstrcCodeNm": "지구단위계획구역",
+              "cnflcAtNm": "포함",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2014-01-02",
+              "prposAreaDstrcCode": "UQQ300",
+              "regstrSeCode": "1",
+              "manageNo": "15000001168020000000UQQ3000222023"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "mnnmSlno": "737",
+              "prposAreaDstrcCodeNm": "과밀억제권역",
+              "cnflcAtNm": "포함",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2014-01-02",
+              "prposAreaDstrcCode": "UBA100",
+              "regstrSeCode": "1",
+              "manageNo": "15000001168020090048UBA1000001001"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "mnnmSlno": "737",
+              "prposAreaDstrcCodeNm": "토지거래계약에관한허가구역",
+              "cnflcAtNm": "포함",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2025-08-25",
+              "prposAreaDstrcCode": "UQQ600",
+              "regstrSeCode": "1",
+              "manageNo": "16130001168020251058UQQ6000008032"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "mnnmSlno": "737",
+              "prposAreaDstrcCodeNm": "토지거래계약에관한허가구역",
+              "cnflcAtNm": "포함",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2025-10-20",
+              "prposAreaDstrcCode": "UQQ600",
+              "regstrSeCode": "1",
+              "manageNo": "16130001168020251219UQQ6000010015"
+            },
+            {
+              "cnflcAt": "2",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "mnnmSlno": "737",
+              "prposAreaDstrcCodeNm": "건축선",
+              "cnflcAtNm": "저촉",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2019-11-15",
+              "prposAreaDstrcCode": "ZA0013",
+              "regstrSeCode": "1",
+              "manageNo": "32200001168020190042ZA00130001012"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "mnnmSlno": "737",
+              "prposAreaDstrcCodeNm": "리모델링지구",
+              "cnflcAtNm": "포함",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2026-04-01",
+              "prposAreaDstrcCode": "UQP130",
+              "regstrSeCode": "1",
+              "manageNo": "32200001168020260059UQP1300003027"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "mnnmSlno": "737",
+              "prposAreaDstrcCodeNm": "가로구역별 최고높이 제한지역",
+              "cnflcAtNm": "포함",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2026-02-13",
+              "prposAreaDstrcCode": "UDX200",
+              "regstrSeCode": "1",
+              "manageNo": "61100001168020220252UDX2000006009"
+            }
+          ],
+          "pageNo": "1",
+          "resultCode": "",
+          "totalCount": "13",
+          "numOfRows": "10",
+          "resultMsg": ""
+        }
+      },
+      "official_land_price": {
+        "indvdLandPrices": {
+          "field": [
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1990-08-30",
+              "stdLandAt": "N",
+              "stdrYear": "1990",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "10000000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1991-06-29",
+              "stdLandAt": "N",
+              "stdrYear": "1991",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "16800000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1992-06-01",
+              "stdLandAt": "N",
+              "stdrYear": "1992",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "14700000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1993-05-22",
+              "stdLandAt": "N",
+              "stdrYear": "1993",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "14100000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1994-06-30",
+              "stdLandAt": "N",
+              "stdrYear": "1994",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "14100000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1995-06-30",
+              "stdLandAt": "N",
+              "stdrYear": "1995",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "13600000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1996-06-29",
+              "stdLandAt": "N",
+              "stdrYear": "1996",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "13600000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1997-06-30",
+              "stdLandAt": "N",
+              "stdrYear": "1997",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "14000000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1998-06-30",
+              "stdLandAt": "N",
+              "stdrYear": "1998",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "14000000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1999-06-30",
+              "stdLandAt": "N",
+              "stdrYear": "1999",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "12000000",
+              "regstrSeCode": "1"
+            }
+          ],
+          "pageNo": "1",
+          "resultCode": "",
+          "totalCount": "39",
+          "numOfRows": "10",
+          "resultMsg": ""
+        }
+      }
+    },
+    "building": {
+      "basis": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": [
+                {
+                  "rnum": 1,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "mgmUpBldrgstPk": 0,
+                  "bldgId": "2120041240002283",
+                  "regstrGbCd": "1",
+                  "regstrGbCdNm": "일반",
+                  "regstrKindCd": "2",
+                  "regstrKindCdNm": "일반건축물",
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "bylotCnt": 0,
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "jiyukCd": "1120",
+                  "jiguCd": "101",
+                  "guyukCd": "300",
+                  "jiyukCdNm": "일반상업지역",
+                  "jiguCdNm": "중심지미관지구",
+                  "guyukCdNm": "지구단위계획구역",
+                  "crtnDay": "20260102"
+                }
+              ]
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "1"
+          }
+        }
+      },
+      "title": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": [
+                {
+                  "rnum": 1,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "regstrGbCd": "1",
+                  "regstrGbCdNm": "일반",
+                  "regstrKindCd": "2",
+                  "regstrKindCdNm": "일반건축물",
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "bylotCnt": 0,
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "platArea": 13156.7,
+                  "archArea": 5600.51,
+                  "bcRat": 42.5677,
+                  "totArea": 212615.29,
+                  "vlRatEstmTotArea": 130933.99,
+                  "vlRat": 995.1887,
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14000",
+                  "mainPurpsCdNm": "업무시설",
+                  "etcPurps": "업무시설,근린생활시설,운동시설",
+                  "roofCd": "10",
+                  "roofCdNm": "(철근)콘크리트",
+                  "etcRoof": "(철근)콘크리트(평지붕)",
+                  "hhldCnt": 0,
+                  "fmlyCnt": 0,
+                  "heit": 202.65,
+                  "grndFlrCnt": 45,
+                  "ugrndFlrCnt": 8,
+                  "rideUseElvtCnt": 29,
+                  "emgenUseElvtCnt": 2,
+                  "atchBldCnt": 0,
+                  "atchBldArea": 0,
+                  "totDongTotArea": 212615.29,
+                  "indrMechUtcnt": 0,
+                  "indrMechArea": 0,
+                  "oudrMechUtcnt": 0,
+                  "oudrMechArea": 0,
+                  "indrAutoUtcnt": 1300,
+                  "indrAutoArea": 52282.69,
+                  "oudrAutoUtcnt": 12,
+                  "oudrAutoArea": 0,
+                  "pmsDay": "19950504",
+                  "stcnsDay": "19950513",
+                  "useAprDay": "20010731",
+                  "pmsnoYear": " ",
+                  "pmsnoKikCd": " ",
+                  "pmsnoKikCdNm": " ",
+                  "pmsnoGbCd": " ",
+                  "pmsnoGbCdNm": " ",
+                  "hoCnt": 0,
+                  "engrGrade": " ",
+                  "engrRat": 0,
+                  "engrEpi": 0,
+                  "gnBldGrade": " ",
+                  "gnBldCert": 0,
+                  "itgBldGrade": " ",
+                  "itgBldCert": 0,
+                  "crtnDay": "20260102",
+                  "rserthqkDsgnApplyYn": " ",
+                  "rserthqkAblty": " "
+                }
+              ]
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "1"
+          }
+        }
+      },
+      "recap_title": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": []
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "0"
+          }
+        }
+      },
+      "floor": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": [
+                {
+                  "rnum": 1,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 3,
+                  "flrNoNm": "3층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "03005",
+                  "mainPurpsCdNm": "의원",
+                  "etcPurps": "제1종근린생활시설(의원)",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 178.49,
+                  "areaExctYn": "0",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 2,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 1,
+                  "flrNoNm": "1층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "13011",
+                  "mainPurpsCdNm": "골프연습장",
+                  "etcPurps": "운동시설(골프연습장)",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 491.753,
+                  "areaExctYn": "0",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 3,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 1,
+                  "flrNoNm": "1층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "04001",
+                  "mainPurpsCdNm": "일반음식점",
+                  "etcPurps": "제2종근린생활시설(일반음식점)",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 455.97,
+                  "areaExctYn": "0",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 4,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 1,
+                  "flrNoNm": "1층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "03999",
+                  "mainPurpsCdNm": "기타제1종근린생활시설",
+                  "etcPurps": "근린생활시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 1351.524,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 5,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 1,
+                  "flrNoNm": "1층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "로비",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 1372.953,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 6,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 2,
+                  "flrNoNm": "2층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "03999",
+                  "mainPurpsCdNm": "기타제1종근린생활시설",
+                  "etcPurps": "근린생활시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 1842.569,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 7,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 2,
+                  "flrNoNm": "2층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "로비",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 273.591,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 8,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 3,
+                  "flrNoNm": "3층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "업무시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 1929.383,
+                  "areaExctYn": "0",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 9,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 3,
+                  "flrNoNm": "3층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "로비",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 301.457,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 10,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 4,
+                  "flrNoNm": "4층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "업무시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 3014.76,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 11,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 5,
+                  "flrNoNm": "5층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "04402",
+                  "mainPurpsCdNm": "사무소",
+                  "etcPurps": "사무소",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 314.96,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 12,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 5,
+                  "flrNoNm": "5층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "기타일반업무시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 2857.54,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 13,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 6,
+                  "flrNoNm": "6층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "업무시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 3172.5,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 14,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 7,
+                  "flrNoNm": "7층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "업무시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 3172.5,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 15,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 8,
+                  "flrNoNm": "8층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "업무시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 3172.5,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 16,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 9,
+                  "flrNoNm": "9층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "업무시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 3172.5,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 17,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 10,
+                  "flrNoNm": "10층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "업무시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 3172.5,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 18,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 11,
+                  "flrNoNm": "11층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "업무시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 3172.5,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 19,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 12,
+                  "flrNoNm": "12층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "업무시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 3172.5,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 20,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "bldNm": "강남파이낸스센터",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": " ",
+                  "naBjdongCd": " ",
+                  "naUgrndCd": "0",
+                  "naMainBun": "0",
+                  "naSubBun": "0",
+                  "dongNm": "주건축물제1동",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 13,
+                  "flrNoNm": "13층",
+                  "strctCd": "42",
+                  "strctCdNm": "철골철근콘크리트구조",
+                  "etcStrct": "철골철근콘크리트조",
+                  "mainPurpsCd": "14299",
+                  "mainPurpsCdNm": "기타일반업무시설",
+                  "etcPurps": "업무시설",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 3172.5,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                }
+              ]
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "79"
+          }
+        }
+      },
+      "zone": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": [
+                {
+                  "rnum": 1,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "jijiguGbCd": "1",
+                  "jijiguGbCdNm": "용도지역코드",
+                  "jijiguCd": "1120",
+                  "jijiguCdNm": "일반상업지역",
+                  "reprYn": "1",
+                  "etcJijigu": "일반상업지역",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 2,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "jijiguGbCd": "2",
+                  "jijiguGbCdNm": "용도지구코드",
+                  "jijiguCd": "101",
+                  "jijiguCdNm": "중심지미관지구",
+                  "reprYn": "1",
+                  "etcJijigu": "중심지미관지구",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 3,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "jijiguGbCd": "2",
+                  "jijiguGbCdNm": "용도지구코드",
+                  "jijiguCd": "102",
+                  "jijiguCdNm": "역사문화미관지구",
+                  "reprYn": "0",
+                  "etcJijigu": "역사문화미관지구",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 4,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "jijiguGbCd": "2",
+                  "jijiguGbCdNm": "용도지구코드",
+                  "jijiguCd": "103",
+                  "jijiguCdNm": "일반미관지구",
+                  "reprYn": "0",
+                  "etcJijigu": "일반미관지구",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 5,
+                  "platPlc": "서울특별시 강남구 역삼동 737번지",
+                  "sigunguCd": "11680",
+                  "bjdongCd": "10100",
+                  "platGbCd": "0",
+                  "bun": "0737",
+                  "ji": "0000",
+                  "mgmBldrgstPk": 1024112777,
+                  "newPlatPlc": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "jijiguGbCd": "3",
+                  "jijiguGbCdNm": "용도구역코드",
+                  "jijiguCd": "300",
+                  "jijiguCdNm": "지구단위계획구역",
+                  "reprYn": "1",
+                  "etcJijigu": "지구단위계획구역",
+                  "crtnDay": "20220813"
+                }
+              ]
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "5"
+          }
+        }
+      },
+      "exclusive_section": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": []
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "0"
+          }
+        }
+      }
+    }
+  },
+  "esg": {
+    "axis": "ESG",
+    "evidence": {
+      "gseed": {
+        "status": "not_found",
+        "matches": [],
+        "representative": null
+      },
+      "building_age_years": 25,
+      "building_summary": {
+        "available": true,
+        "main_purpose": "업무시설",
+        "structure": "철골철근콘크리트구조",
+        "floors_above": 45,
+        "floors_below": 8,
+        "total_floor_area_m2": 212615.29,
+        "use_approval_day": "20010731",
+        "violation_yn": null,
+        "elevator_passenger": 29,
+        "elevator_emergency": 2
+      },
+      "land_summary": {}
+    },
+    "score": 52,
+    "grade": "B",
+    "strengths": [
+      "철골철근콘크리트(SRC) 구조로 내구성 및 구조 안전성이 높음",
+      "연면적 약 21만 m² 규모의 대형 업무시설로 공공 인프라(교통·상업) 접근성 측면에서 사회적 활용도가 높을 가능성",
+      "위반건축물 여부가 null로 확인되지 않아 현재 시점에서 위반 확정 리스크는 없음",
+      "지하 8층·지상 45층 규모의 복합 업무시설로 도심 고밀 개발 효율성 측면에서 토지 이용 효율이 높음"
+    ],
+    "weaknesses": [
+      "G-SEED(녹색건축인증) 데이터 미확인(not_found)으로 친환경 인증 실적 없음",
+      "준공 후 약 25년 경과(2001년 준공)로 에너지 효율 기준이 현행 대비 낮을 가능성 높음",
+      "용도지역 등 토지 관련 데이터(land_summary) 전무하여 입지 환경성 및 공익적 입지 평가 불가",
+      "G(거버넌스) 항목은 제공 데이터로 평가 불가 — N/A 영역"
+    ],
+    "risks": [
+      "G-SEED 미인증 상태에서 향후 녹색건축 의무화 규제 강화 시 리모델링·인증 취득 비용 발생 가능",
+      "준공 25년 경과로 노후 설비(냉난방·전기·배관) 교체 수요 증가 및 유지관리 비용 상승 리스크",
+      "위반건축물 여부(violation_yn: null) 미확인으로 향후 실사 시 위반 사항 발견 가능성 잠재",
+      "토지 용도지역 정보 부재로 환경 규제 지역 해당 여부 판단 불가"
+    ],
+    "rationale": "본 건물은 2001년 준공된 지상 45층·지하 8층, 연면적 약 21만 m²의 대형 업무시설로, SRC 구조 기반의 높은 구조적 내구성을 보유하고 있다. 그러나 준공 후 25년이 경과하여 현행 에너지 절약 설계 기준(2010년 이후 강화) 대비 에너지 성능이 열위에 있을 가능성이 높다. G-SEED 인증 이력이 확인되지 않아 친환경 인증 가점을 부여할 근거가 없으며, 이는 ESG 투자자 관점에서 명백한 약점이다. 사회(S) 측면에서는 업무시설이라는 주용도가 공공기여도 측면에서 중립적이며, 위반건축물 여부가 null로 확인되지 않아 추가 실사가 필요하다. 용도지역 등 토지 데이터가 전무하여 입지의 환경성 및 공익적 가치를 정량적으로 평가할 수 없다. 거버넌스(G) 항목은 제공된 데이터만으로는 평가가 불가능한 N/A 영역으로 분류한다. 종합적으로 강한 감점 요인(G-SEED 미인증, 노후도)과 데이터 결측에 따른 불확실성이 공존하여 기본 점수 50에서 소폭 상향한 52점(B등급)으로 평가한다."
+  },
+  "awareness": {
+    "axis": "AWARENESS",
+    "evidence": {
+      "queries": [
+        "강남파이낸스센터",
+        "강남구 강남파이낸스센터",
+        "서울특별시 강남구 테헤란로 152 (역삼동)",
+        "서울특별시 강남구 역삼동 737 강남파이낸스센터"
+      ],
+      "naver_search_by_query": {
+        "강남파이낸스센터": {
+          "query": "강남파이낸스센터",
+          "channels": {
+            "blog": {
+              "total": 14964,
+              "preview": [
+                {
+                  "title": "역삼동사무실임대 200평 강남파이낸스센터 정보",
+                  "link": "https://blog.naver.com/monster7402/224243056397",
+                  "description": "도면에서 확인이 가능하듯이 센터 코어 구조이며 코어를 기준으로 ㅁ자 면적을 사용할 수 있습니다.... <b>강남파이낸스센터</b> 매물 번호◀ M60540 ▶ 소재지 서울시 강남구 역삼동 전용면적 / 계약면적 229.17평(757.59... "
+                },
+                {
+                  "title": "역삼역 사무실 임대 강남파이낸스센터 GFC 프라임 오피스",
+                  "link": "https://blog.naver.com/greensou/224231644625",
+                  "description": "이번 글에서는 역삼역 사무실 임대 <b>강남파이낸스센터</b>를 중심으로, 전반적인 건물 구성과 특징을... 임대 정보 주소 서울특별시 강남구 테헤란로 152 건축물 용도 업무시설 연면적 64,316.00py (212,615.00... "
+                },
+                {
+                  "title": "역삼역 사무실 임대 강남파이낸스센터 프라임빌딩",
+                  "link": "https://blog.naver.com/parispo/224188505513",
+                  "description": "인근으로 GS타워, 센터필드 등 프라임 빌딩부터 많은 기업이 즐비하게 늘어서 있기에 타 업체와의... <b>강남파이낸스센터</b> 빌딩 매물 번호 [ M 64868 ] 소재지 서울시 강남구 역삼동 전용면적 / 계약면적 299.54평... "
+                }
+              ],
+              "error": null
+            },
+            "news": {
+              "total": 11408,
+              "preview": [
+                {
+                  "title": "금감원, 거점점포 검사 올해 4곳 예정…대형 증권사로 확대",
+                  "link": "https://www.asiatoday.co.kr/kn/view.php?key=20260512010003038",
+                  "description": "기존 VIP 점포인 WM<b>강남파이낸스센터</b>와 WM센터원도 각각 '더 세이지 <b>강남파이낸스센터</b>'와 '더 세이지 센터원'으로 명칭을 바꾸며 고액자산가 대상 영업을 강화했다.이번 거점점포 검사 대상으로 해당 영업점 모두 포함될... "
+                },
+                {
+                  "title": "앤트로픽, 미뤄졌던 韓 지사 설립 구체화…상반기 내 개소 추진",
+                  "link": "https://www.ajunews.com/view/20260512140633344",
+                  "description": "법인 주소는 서울 강남구 테헤란로 <b>강남파이낸스센터</b>(GFC)로 등록됐으며 외국계 공유오피스 소재지를 사용 중인 것으로 전해진다. 현재 앤트로픽 채용 페이지에는 서울 근무 기준 재무·전략, 세일즈, 응용 AI 엔지니어... "
+                },
+                {
+                  "title": "[단독]권고사직 거부 직원들 공유오피스로 격리한 더블유게임즈, 노동청...",
+                  "link": "https://news.mtn.co.kr/news-detail/2026051116030391070",
+                  "description": "더블유게임즈는 서울 <b>강남 파이낸스 센터</b> 16층에 입지해 있다.이에 앞서 더블유게임즈는 40명 가량의 직원들에게 권고사직을 제안한 바 있다. 이중 30명 가량이 이를 수용해 퇴직보상금을 받고 회사를 떠났다. 5년 이상... "
+                }
+              ],
+              "error": null
+            },
+            "webkr": {
+              "total": 3073248,
+              "preview": [
+                {
+                  "title": "GFC 강남파이낸스센터",
+                  "link": "http://www.gfckorea.co.kr/",
+                  "description": "역삼동 소재, 스타타워 아케이드, 인텔리전트 빌딩, 비즈니스 환경, 임차 및 시설 안내."
+                },
+                {
+                  "title": "GFC | 강남파이낸스센터 소개",
+                  "link": "http://www.gfckorea.co.kr/intro/intro2018.asp",
+                  "description": "GFC는 현대적 설계와 친환경 기술을 결합하여 기업의 성장을 위한 최적의 업무 환경을 제공함으로써 국내외 유수 기업들의 큰 신뢰를 받고 있습니다. <b>강남</b> 테헤란로의 중심에 위치하여 우수한 교통 접근성을 갖춘 GFC는 지하철 2호선 역삼역과 직접 연결되어 있습니다. 국내 최대 규모의 지하 주차장과 다양하게 구성된 GFC몰은 입주 기업들의 비즈니스 "
+                },
+                {
+                  "title": "강남파이낸스센터 - 나무위키",
+                  "link": "https://namu.wiki/w/%EA%B0%95%EB%82%A8%ED%8C%8C%EC%9D%B4%EB%82%B8%EC%8A%A4%EC%84%BC%ED%84%B0",
+                  "description": "통칭 GFC. 서울특별시<b>강남</b>구역삼동에 있는 마천루. 건축면적이 엄청나게 크기 때문에 평범한 마천루에 비해서 건물 폭이 매우 넓고 웅장하다."
+                }
+              ],
+              "error": null
+            },
+            "image": {
+              "total": 70367,
+              "preview": [
+                {
+                  "title": "강남파이낸스 센터 화재 ‘국가적 책임 크다’ -제 1편-",
+                  "link": "http://imgnews.naver.net/image/5070/2009/11/10/2009111006295225.jpg",
+                  "description": ""
+                },
+                {
+                  "title": "[건축과 도시]외환위기의 역사를 기억하는 ‘강남파이낸스센터’",
+                  "link": "http://imgnews.naver.net/image/011/2017/04/29/0003024704_004_20170429111103697.jpg",
+                  "description": ""
+                },
+                {
+                  "title": "강남 오르고 광화문 내리고...파이낸스센터 몸값 '희비'",
+                  "link": "http://imgnews.naver.net/image/015/2018/10/05/0004021273_001_20181005165526197.jpg",
+                  "description": ""
+                }
+              ],
+              "error": null
+            },
+            "local": {
+              "total": 5,
+              "preview": [
+                {
+                  "title": "강남파이낸스센터",
+                  "link": "http://www.gfckorea.co.kr/",
+                  "description": ""
+                },
+                {
+                  "title": "생어거스틴 역삼점",
+                  "link": "https://www.saintaugustin.co.kr/",
+                  "description": ""
+                },
+                {
+                  "title": "스타벅스 강남파이낸스센터점",
+                  "link": "",
+                  "description": ""
+                }
+              ],
+              "error": null
+            },
+            "cafearticle": {
+              "total": 11257,
+              "preview": [
+                {
+                  "title": "역삼역사무실임대 200평 강남파이낸스센터 초역세권 랜드마크 오피스",
+                  "link": "http://cafe.naver.com/ps2power/633974",
+                  "description": "역삼역사무실임대 200평 <b>강남파이낸스센터</b> 초역세권 랜드마크 오피스 안녕하세요 사무실 임대 전문... 소개드리는 <b>강남파이낸스센터</b>는 그런 기준에서 충분히 우선순위에 둘 수 있는 대표적인 랜드마크 오피스입니다... "
+                },
+                {
+                  "title": "강남파이낸스센터 임대 역삼동 사무실 오피스 빌딩 월세",
+                  "link": "http://cafe.naver.com/dsd22323wws/1791",
+                  "description": "<b>강남파이낸스센터</b> 임대 역삼동 사무실 오피스 빌딩 월세 안녕하세요. 대형 오피스 이전 프로젝트를 구조적으로 분석하는 미르 인사드립니다. 오늘은 <b>강남파이낸스센터</b> 임대 역삼동 사무실 오피스 빌딩 월세 조건을... "
+                },
+                {
+                  "title": "강남파이낸스센터 풀오토 수익형 창업 매매 양도양수 직거래",
+                  "link": "http://cafe.naver.com/changupnamu/26165",
+                  "description": "<b>강남파이낸스센터</b> 풀오토 수익형 창업 매매 양도양수 직거래 ✳️ 매장 기본 정보 ✔ 위치 : 서울 강남구 <b>강남파이낸스센터</b> 상권 ✔ 업종 : 외식 또는 카페 창업 매장 ✔ 설명 : <b>강남파이낸스센터</b> 상권 내 풀오토 운영... "
+                }
+              ],
+              "error": null
+            }
+          },
+          "totals": {
+            "blog": 14964,
+            "news": 11408,
+            "webkr": 3073248,
+            "image": 70367,
+            "local": 5,
+            "cafearticle": 11257
+          },
+          "aggregate_total": 3181249
+        },
+        "강남구 강남파이낸스센터": {
+          "query": "강남구 강남파이낸스센터",
+          "channels": {
+            "blog": {
+              "total": 5873,
+              "preview": [
+                {
+                  "title": "시공, 강남구 역삼동 GFC 강남파이낸스센터 도배 후기",
+                  "link": "https://blog.naver.com/uncle_wallpaper/224242530220",
+                  "description": "이번 현장은 서울 <b>강남구</b> 역삼동 GFC, <b>강남파이낸스센터</b> 내 공유오피스 사무실 도배 작업이었어요. 사진만 봐도 느껴지지만 창밖으로 시티뷰가 한눈에 들어오는 자리라 공간 자체의 분위기가 상당히 좋은... "
+                },
+                {
+                  "title": "강남구도어락 / 역삼동 강남파이낸스센터 상가에 밀레... ",
+                  "link": "https://blog.naver.com/topdoorlockl1/224112095343",
+                  "description": "<b>강남구</b> 역삼동도어락 현장 밀레도어락 M-260 설치 오늘은 <b>강남구</b>도어락 현장에 왔습니다 <b>강남파이낸스센터</b>에 상가 유리문에 설치 의뢰가 들어왔어요. 기존에는 도어락이 없이 사용하셨는데 관리와 사용... "
+                },
+                {
+                  "title": "[서울 강남구] 강남 파이낸스 센터 GFC 몰 창업 특수상권 대형... ",
+                  "link": "https://blog.naver.com/primrose2211/223804819243",
+                  "description": "안녕하세요~:D 오늘은 서울시 <b>강남구</b>를 대표하는 <b>강남</b> 파이내스 <b>센터</b> 대형 빌딩 창업 아이템을 소개해 드리겠습니다! * 주소 : 서울특별시 <b>강남구</b> 테헤란로 152 <b>강남파이낸스센터</b> GFC 몰 <b>강남 파이낸스 센터</b>는... "
+                }
+              ],
+              "error": null
+            },
+            "news": {
+              "total": 3744,
+              "preview": [
+                {
+                  "title": "앤트로픽, 미뤄졌던 韓 지사 설립 구체화…상반기 내 개소 추진",
+                  "link": "https://www.ajunews.com/view/20260512140633344",
+                  "description": "법인 주소는 서울 <b>강남구</b> 테헤란로 <b>강남파이낸스센터</b>(GFC)로 등록됐으며 외국계 공유오피스 소재지를 사용 중인 것으로 전해진다. 현재 앤트로픽 채용 페이지에는 서울 근무 기준 재무·전략, 세일즈, 응용 AI 엔지니어... "
+                },
+                {
+                  "title": "국토부, 43개 단지 2만 5000가구 부정청약 집중 조사",
+                  "link": "https://n.news.naver.com/mnews/article/011/0004619746?sid=101",
+                  "description": "문화<b>센터</b> 등 럭셔리 브랜드와 차병원 건강관리 서비스가 연계된다. <b>강남</b> 초고가 시장에서 압구정 현대... 화재보험협회·키움<b>파이낸스</b>스퀘어 등 주요 오피스가 재건축에 들어가면서 기존 임차인의 이동 수요까지... "
+                },
+                {
+                  "title": "컬리는 네이버 품고, G마켓은 성수로…이커머스 재정비 본격화",
+                  "link": "https://n.news.naver.com/mnews/article/119/0003088903?sid=101",
+                  "description": "G마켓은 올해 하반기 서울 <b>강남구</b> 역삼동 <b>강남파이낸스센터</b>(GFC)를 떠나 성수동으로 본사를 이전할 예정이다. 최근 장승환 G마켓 대표는 임직원 대상 이메일을 통해 &quot;G마켓은 오는 10월, 현재의 <b>강남파이낸스센터</b>(GFC)... "
+                }
+              ],
+              "error": null
+            },
+            "webkr": {
+              "total": 3010145,
+              "preview": [
+                {
+                  "title": "GFC 강남파이낸스센터",
+                  "link": "http://www.gfckorea.co.kr/",
+                  "description": "역삼동 소재, 스타타워 아케이드, 인텔리전트 빌딩, 비즈니스 환경, 임차 및 시설 안내."
+                },
+                {
+                  "title": "GFC 강남파이낸스센터",
+                  "link": "http://www.gfckorea.co.kr/intro/print-map.asp",
+                  "description": "정류장에서 하차 후 도보 5분 역삼역.GS타워 23-281(서울) 역삼역.포스코P&amp;S타워 23-288(서울) | 23288(경기) 역삼역 23-282(서울) | 23282(경기) 역삼역 23-283(서울) | 23283(경기)"
+                },
+                {
+                  "title": "강남파이낸스센터, 강남권 빌딩 중 임대료 가장 비싸",
+                  "link": "https://remaxkorea.co.kr/?vid=45",
+                  "description": "빌딩 전문업체 리맥스와이드파트너스는 이달 <b>강남</b>지역 오피스빌딩 월 임대료 조사 결과 <b>강남구</b> 역삼동 소재 <b>강남파이낸스센터</b>가 3.3㎡당 10만8000원으로 가장 비싼 것으로 파악됐다고 20일 밝혔다.리맥스와이드..."
+                }
+              ],
+              "error": null
+            },
+            "image": {
+              "total": 19058,
+              "preview": [
+                {
+                  "title": "강남 파이낸스 센터",
+                  "link": "https://upload.wikimedia.org/wikipedia/commons/3/33/%EC%84%9C%EC%9A%B8%EC%95%BC%EA%B2%BD_-_panoramio.jpg",
+                  "description": ""
+                },
+                {
+                  "title": "강남파이낸스센터 - 나무위키 강남파이낸스센터",
+                  "link": "https://i.namu.wiki/i/9_6VYY4V0JohogHoHobhDoIrfkTGZFo5Dj4DoU0zcj3dV0xtBmRWgqNte8LBIxVfBv7CQf31jgQZODhGsudS-g.webp",
+                  "description": ""
+                },
+                {
+                  "title": "[점포축소 종착지는?②]강남엔 초밀집, 도봉구는 드문드문...서울 내에서도 편차 극심",
+                  "link": "http://imgnews.naver.net/image/5275/2024/05/17/0000081196_009_20240517072201720.jpg",
+                  "description": ""
+                }
+              ],
+              "error": null
+            },
+            "local": {
+              "total": 5,
+              "preview": [
+                {
+                  "title": "강남파이낸스센터",
+                  "link": "http://www.gfckorea.co.kr/",
+                  "description": ""
+                },
+                {
+                  "title": "생어거스틴 역삼점",
+                  "link": "https://www.saintaugustin.co.kr/",
+                  "description": ""
+                },
+                {
+                  "title": "스타벅스 강남파이낸스센터점",
+                  "link": "",
+                  "description": ""
+                }
+              ],
+              "error": null
+            },
+            "cafearticle": {
+              "total": 8924,
+              "preview": [
+                {
+                  "title": "역삼역사무실임대 200평 강남파이낸스센터 초역세권 랜드마크 오피스",
+                  "link": "http://cafe.naver.com/ps2power/633974",
+                  "description": "가깝습니다 <b>강남파이낸스센터</b> 매물번호 [ m60540 ] 소재지 서울시 <b>강남구</b> 역삼동 전용면적 / 공급면적 229.17평(757.59㎡) / 482.08평(1593.65㎡) 해당층 / 건물규모 지상 33층 / 지하8~45층 규모 연면적 64316.13평(212615.29㎡) 구조 대형... "
+                },
+                {
+                  "title": "강남파이낸스센터 임대 역삼동 사무실 오피스 빌딩 월세",
+                  "link": "http://cafe.naver.com/dsd22323wws/1791",
+                  "description": "2호선 역삼역 <b>강남파이낸스센터</b>는 서울시 <b>강남구</b> 테헤란로에 위치한 강남권 대표 프라임 오피스입니다. 2호선 역삼역과 지하 통로로 직접 연결되어 있어 외부 이동 동선이 단순합니다. 비가 오거나 한여름·한겨울에도... "
+                },
+                {
+                  "title": "강남파이낸스센터 풀오토 수익형 창업 매매 양도양수 직거래",
+                  "link": "http://cafe.naver.com/changupnamu/26165",
+                  "description": "강남파이낸스센터 풀오토 수익형 창업 매매 양도양수 직거래 ✳️ 매장 기본 정보 ✔ 위치 : 서울 <b>강남구 강남파이낸스센터</b> 상권 ✔ 업종 : 외식 또는 카페 창업 매장 ✔ 설명 : 강남파이낸스센터 상권 내 풀오토 운영... "
+                }
+              ],
+              "error": null
+            }
+          },
+          "totals": {
+            "blog": 5873,
+            "news": 3744,
+            "webkr": 3010145,
+            "image": 19058,
+            "local": 5,
+            "cafearticle": 8924
+          },
+          "aggregate_total": 3047749
+        },
+        "서울특별시 강남구 테헤란로 152 (역삼동)": {
+          "query": "서울특별시 강남구 테헤란로 152 (역삼동)",
+          "channels": {
+            "blog": {
+              "total": 20894,
+              "preview": [
+                {
+                  "title": "(동영상 8994) 서울특별시 강남구 테헤란로 333 (역삼동)... ",
+                  "link": "https://blog.naver.com/chanho0810/224144267000",
+                  "description": "소재지 <b>서울특별시 강남구 테헤란로</b> 333<b>(역삼동)</b> 제조업체 한국미쓰비시엘리베이터(주)(인천)... 한국승강기안전공단 <b>서울</b>강남지사 ※이 엘리베이터가 대차전 1993년식 금성엘리베이터 VP... "
+                },
+                {
+                  "title": "경매 서울특별시 강남구 역삼동 707-24 #2024타경4033(2) 시세... ",
+                  "link": "https://blog.naver.com/aa0973/223778351632",
+                  "description": "결론 <b>서울특별시 강남구</b> <b>역삼동</b>에 위치한 이 상가는 다음과 같은 투자 포인트를 가지고 있습니다. 첫째, <b>테헤란로</b>라는 <b>서울</b>의 프라임 업무지구 내에 위치하고 있으며, 공식적으로는 지하층이지만... "
+                },
+                {
+                  "title": "서울특별시 강남구 테헤란로 152 (역삼동) 강남파이낸스센터... ",
+                  "link": "https://blog.naver.com/chp0819/221651109991",
+                  "description": "서울강남지사 B5~2층 셔틀구간(현대엘리베이터) 승강기번호0079-606 검사이력 고장이력 사고이력 자체점검이력건물명강남파이낸스센터(주) 소재지<b>서울특별시 강남구 테헤란로 152 (역삼동)</b>... "
+                }
+              ],
+              "error": null
+            },
+            "news": {
+              "total": 8,
+              "preview": [
+                {
+                  "title": "강남구의회 김현정 의원, 이동노동자들에게 '감사장' 받아",
+                  "link": "https://n.news.naver.com/mnews/article/047/0002395076?sid=100",
+                  "description": "<b>강남구</b>의회는 지난 5월 제311회 임시회에서 김현정 의원이 대표발의한 '<b>서울특별시 강남구</b> 이동노동자 쉼터... (2호점, <b>테헤란로 152</b>)에 조성된 쉼터는 연중 24시간 운영되며 쉼터 외부에는 이동노동자들이 편하게 이용할 수... "
+                },
+                {
+                  "title": "강남구의회, ‘區 이동노동자 쉼터 설치·운영 조례안’ 가결",
+                  "link": "https://www.siminilbo.co.kr/news/newsview.php?ncode=1160279993843598",
+                  "description": "대표발의한 ‘<b>서울특별시 강남구</b> 이동노동자 쉼터 설치 및 운영에 관한 조례안’이 가결됐다. 이에 따라... 공영주차장(<b>테헤란로152</b>)에 2호점을 개설할 예정이다. 구 일자리정책과장은 “이동노동자들은 시간과의 싸움”... "
+                },
+                {
+                  "title": "[아유경제_행정] 강남구의회 김현정 의원, 이동노동자를 위한 쉼터 지원...",
+                  "link": "http://www.areyou.co.kr/news/articleView.html?idxno=76736",
+                  "description": "<b>강남구</b>의회 김현정 의원(압구정동ㆍ청담동)이 대표발의 한 '<b>서울특별시 강남구</b> 이동노동자 쉼터 설치 및... 160)에 이동노동자 쉼터 1호점을 운영하고, 강남파이낸스센터 공영주차장(<b>테헤란로 152</b>)에 2호점을 개설할 예정이다."
+                }
+              ],
+              "error": null
+            },
+            "webkr": {
+              "total": 4385750,
+              "preview": [
+                {
+                  "title": "서울시 강남구 테헤란로 152",
+                  "link": "https://www.jusoen.com/addreng.asp?p1=%EC%84%9C%EC%9A%B8%EC%8B%9C%20%EA%B0%95%EB%82%A8%EA%B5%AC%20%ED%85%8C%ED%97%A4%EB%9E%80%EB%A1%9C%20152",
+                  "description": "전체(1) ; 한글주소 : <b>서울특별시 강남구 테헤란로 152 (역삼동</b>, <b>강남</b>파이낸스센터), 영문주소 : <b>152</b>, Teheran-ro, Gangnam-gu, Seoul, Republic of Korea, 우편번호 : 06236"
+                },
+                {
+                  "title": "서울 강남구 테헤란로 152",
+                  "link": "https://www.jusoen.com/addreng.asp?p1=%EC%84%9C%EC%9A%B8%20%EA%B0%95%EB%82%A8%EA%B5%AC%20%ED%85%8C%ED%97%A4%EB%9E%80%EB%A1%9C%20152",
+                  "description": "전체(1) ; 한글주소 : <b>서울특별시 강남구 테헤란로 152 (역삼동</b>, <b>강남</b>파이낸스센터), 영문주소 : <b>152</b>, Teheran-ro, Gangnam-gu, Seoul, Republic of Korea, 우편번호 : 06236"
+                },
+                {
+                  "title": "서울 강남구 역삼동 737",
+                  "link": "https://www.jusoen.com/addreng.asp?p1=%EC%84%9C%EC%9A%B8%20%EA%B0%95%EB%82%A8%EA%B5%AC%20%EC%97%AD%EC%82%BC%EB%8F%99%20737",
+                  "description": "전체(1) ; 한글주소 : <b>서울특별시 강남구 테헤란로 152 (역삼동</b>, <b>강남</b>파이낸스센터), 영문주소 : <b>152</b>, Teheran-ro, Gangnam-gu, Seoul, Republic of Korea, 우편번호 : 06236"
+                }
+              ],
+              "error": null
+            },
+            "image": {
+              "total": 47735,
+              "preview": [
+                {
+                  "title": "더쿠 - 서울특별시 강남구 테헤란로 152",
+                  "link": "https://img.theqoo.net/img/qXPZf.jpg",
+                  "description": ""
+                },
+                {
+                  "title": "서울특별시 강남구 테헤란로 517 한국무역센터",
+                  "link": "https://i.pinimg.com/474x/4a/49/8c/4a498cbf31bb6b8c514e1252962abb22.jpg",
+                  "description": ""
+                },
+                {
+                  "title": "서울특별시 강남구 테헤란로 517 한국무역센터",
+                  "link": "https://i.pinimg.com/474x/8d/96/f5/8d96f5058f58dc21bc0364aeb24bd098.jpg",
+                  "description": ""
+                }
+              ],
+              "error": null
+            },
+            "local": {
+              "total": 5,
+              "preview": [],
+              "error": null
+            },
+            "cafearticle": {
+              "total": 8557,
+              "preview": [
+                {
+                  "title": "강남사무실임대 역삼역 신축 첫입주 테헤란로 통창 뷰 역삼동사무실임대",
+                  "link": "http://cafe.naver.com/1sejongcity/1913140",
+                  "description": "서울시 <b>강남구</b> <b>역삼동</b> (<b>테헤란로</b>) / 역삼역 도보 1분 교통 : 2호선 역삼역 (언주역·선릉역 접근) 면적 : 전용... 주소 : <b>서울특별시 강남구</b> 언주로 125길 4, L104호 대표자 : 이민정 연락처 : 0 1 0 - 9 8 3 7 - 3 1 5 9 등록번호... "
+                },
+                {
+                  "title": "강남 아파트가 1억대? 보증금 인수 없는 역삼동 경매 물건 분석",
+                  "link": "http://cafe.naver.com/mkas1/1957992",
+                  "description": "물건 개요 사건번호: 2024타경117137 소재지: <b>서울특별시 강남구</b> <b>역삼동</b> 727-9, 1층 111호 물건종별: 아파트... 입지 및 투자 장점 교통 및 접근성: 지하철 2호선 역삼역 남동측 인근으로, <b>테헤란로</b> 업무지구로의... "
+                },
+                {
+                  "title": "강남 사옥 통임대 역삼동 역삼역 도보권 층고 높은 지하 포함 신축 통임대 연면 210평",
+                  "link": "http://cafe.naver.com/1sejongcity/1917252",
+                  "description": "서울 <b>강남구</b> <b>역삼동</b> <b>테헤란로</b>13길에 위치해 있으며 역삼역 도보권 강남 업무지구 중심 입지입니다.... [ 프라임리얼티부동산중개 ] 주소 : <b>서울특별시 강남구</b> 언주로 125길 4 대표자 : 이민정 연락처 : 0 1 0 - 9 8 3 7 - 3 1 5... "
+                }
+              ],
+              "error": null
+            }
+          },
+          "totals": {
+            "blog": 20894,
+            "news": 8,
+            "webkr": 4385750,
+            "image": 47735,
+            "local": 5,
+            "cafearticle": 8557
+          },
+          "aggregate_total": 4462949
+        },
+        "서울특별시 강남구 역삼동 737 강남파이낸스센터": {
+          "query": "서울특별시 강남구 역삼동 737 강남파이낸스센터",
+          "channels": {
+            "blog": {
+              "total": 128047,
+              "preview": [
+                {
+                  "title": "시공, 강남구 역삼동 GFC 강남파이낸스센터 도배 후기",
+                  "link": "https://blog.naver.com/uncle_wallpaper/224242530220",
+                  "description": "이번 현장은 <b>서울</b> <b>강남구 역삼동</b> GFC, <b>강남파이낸스센터</b> 내 공유오피스 사무실 도배 작업이었어요. 사진만 봐도 느껴지지만 창밖으로 시티뷰가 한눈에 들어오는 자리라 공간 자체의 분위기가 상당히 좋은... "
+                },
+                {
+                  "title": "역삼동사무실임대 200평 강남파이낸스센터 정보",
+                  "link": "https://blog.naver.com/monster7402/224243056397",
+                  "description": "<b>강남파이낸스센터</b> 매물 번호◀ M60540 ▶ 소재지 <b>서울</b>시 <b>강남구 역삼동</b> 전용면적 / 계약면적 229.17평(757.59㎡) / 482.08평(1593.65㎡) 해당 층 / 건물 규모 33층 / 지하 8층 ~ 지상 45층 연면적 64316.13평 ( 212615.29㎡) 구조... "
+                },
+                {
+                  "title": "역삼동 사무실 임대 강남파이낸스센터",
+                  "link": "https://blog.naver.com/pointauction/224165087777",
+                  "description": "소재지 <b>서울</b>시 <b>강남구 역삼동 737</b> 규모 B8F/45F 연면적 212,615.2㎡ 사용승인일 2001.7.31 주용도 업무시설 E/V 승객용 29대 비상용 2대 냉난방 방식 중앙 냉난방 방향(출입구 기준) 북향 <b>강남파이낸스센터</b>는... "
+                }
+              ],
+              "error": null
+            },
+            "news": {
+              "total": 2,
+              "preview": [
+                {
+                  "title": "[무료강연] '피터 린치' 처럼 투자하라‥생활 속 위대한 주식 발굴법",
+                  "link": "https://n.news.naver.com/mnews/article/215/0000074657?sid=101",
+                  "description": "- 주제: 생활 속에서 발견한 위대한 주식 무료강연회 - 강사: 황보원경 우리투자증권 청담지점 과장 - 일시: 3월 26일(수) 오후 4:00~5:30 - 장소: <b>서울특별시 강남구 역삼동 737 강남파이낸스센터</b> 14F - 회비: 무료(선착순 50명)... "
+                },
+                {
+                  "title": "[비즈니스 포커스]PB센터 7개…‘초대형·럭셔리’로 승부",
+                  "link": "https://n.news.naver.com/mnews/article/050/0000022879",
+                  "description": "<b>서울특별시 강남구 역삼동 737</b>, <b>강남파이낸스센터</b>(GFC, 옛 스타타워)가 위치한 곳이다. 강남구의 한복판이면서 지하철 2호선 역삼역과 바로 연결되는 이 빌딩은 총면적 20만㎡ 규모로 총가격은 1조3000억 원에 달한다.... "
+                }
+              ],
+              "error": null
+            },
+            "webkr": {
+              "total": 20266,
+              "preview": [
+                {
+                  "title": "GFC 강남파이낸스센터",
+                  "link": "http://www.gfckorea.co.kr/intro/print-map.asp",
+                  "description": "정류장에서 하차 후 도보 5분 <b>역삼</b>역.GS타워 23-281(<b>서울</b>) <b>역삼</b>역.포스코P&amp;S타워 23-288(<b>서울</b>) | 23288(경기) <b>역삼</b>역 23-282(<b>서울</b>) | 23282(경기) <b>역삼</b>역 23-283(<b>서울</b>) | 23283(경기)"
+                },
+                {
+                  "title": "강남스타PB센터 - [CBH]은행-증권 복합점포 지점안내 팝업",
+                  "link": "https://omoney.kbstar.com/quics?page=C018682&cc=b028364:b058817&%EC%95%88%EB%82%B4%EB%B6%80%EC%A0%90%EC%BD%94%EB%93%9C=6095",
+                  "description": "도로명 : <b>서울특별시 강남구</b> 테헤란로152,21층(<b>역삼동</b>,<b>강남파이낸스센터</b>), 지번 : <b>서울특별시 강남구 역삼동 737 강남파이낸스센터</b> 21층, 연락처 : 02 )3445-0098, 영업시간 : 09:00 ~ 16:00, 자동화 코너 : 운영시간 해외카드 이용 불가능, 주차여부 : 가능영업점 건물(<b>강남파"
+                },
+                {
+                  "title": "강남 파이낸스 센터",
+                  "link": "https://ko.wikipedia.org/wiki/%EA%B0%95%EB%82%A8_%ED%8C%8C%EC%9D%B4%EB%82%B8%EC%8A%A4_%EC%84%BC%ED%84%B0",
+                  "description": "대한민국 <b>서울특별시 강남구 역삼동</b>에 대지면적 3,980평에 건립된... <b>역삼</b>역 연결 같이 보기 <b>서울특별시</b>의 마천루 목록 <b>서울</b> <b>강남구</b>의... <b>서울</b>국제금융<b>센터</b> 각주 외부 링크 <b>강남 파이낸스 센터</b> - 공식..."
+                }
+              ],
+              "error": null
+            },
+            "image": {
+              "total": 638,
+              "preview": [
+                {
+                  "title": "“스타타워 강남파이낸스센터로 불러주세요”",
+                  "link": "http://imgnews.naver.net/image/003/2007/04/25/NISI20070425_0004274020_web.jpg",
+                  "description": ""
+                },
+                {
+                  "title": "Dunkin' - 역삼1동 - 서울특별시, 서울특별시 Dunkin'",
+                  "link": "https://fastly.4sqi.net/img/general/600x600/29176994_EgrqK1KvtOvJ5dM6xsnYGjaV_B5xZiGYd4l540TS6cI.jpg",
+                  "description": ""
+                },
+                {
+                  "title": "역삼동 중소형사무실 3,000/280 만원 - 서울특별시 강남구 역삼동",
+                  "link": "https://kr.object.ncloudstorage.com/confirms-object/upload/result/7597058/13d263051562a048ff693d5b4e939908.JPG",
+                  "description": ""
+                }
+              ],
+              "error": null
+            },
+            "local": {
+              "total": 5,
+              "preview": [
+                {
+                  "title": "강남파이낸스센터",
+                  "link": "http://www.gfckorea.co.kr/",
+                  "description": ""
+                },
+                {
+                  "title": "생어거스틴 역삼점",
+                  "link": "https://www.saintaugustin.co.kr/",
+                  "description": ""
+                },
+                {
+                  "title": "스타벅스 강남파이낸스센터점",
+                  "link": "",
+                  "description": ""
+                }
+              ],
+              "error": null
+            },
+            "cafearticle": {
+              "total": 64479,
+              "preview": [
+                {
+                  "title": "역삼역사무실임대 200평 강남파이낸스센터 초역세권 랜드마크 오피스",
+                  "link": "http://cafe.naver.com/ps2power/633974",
+                  "description": "가깝습니다 <b>강남파이낸스센터</b> 매물번호 [ m60540 ] 소재지 <b>서울</b>시 <b>강남구 역삼동</b> 전용면적 / 공급면적 229.17평(757.59㎡) / 482.08평(1593.65㎡) 해당층 / 건물규모 지상 33층 / 지하8~45층 규모 연면적 64316.13평(212615.29㎡) 구조 대형... "
+                },
+                {
+                  "title": "강남파이낸스센터 임대 역삼동 사무실 오피스 빌딩 월세",
+                  "link": "http://cafe.naver.com/dsd22323wws/1791",
+                  "description": "역삼역 사무실 임대 대로변 랜드마크 대형 오피스 찾기 <b>강남파이낸스센터</b> 매물번호 [ m64868 ] 소재지 <b>서울</b>시 <b>강남구 역삼동</b> 전용면적 / 공급면적 299.54평(990.21㎡) / 630.07평(2082.88㎡) 해당층 / 건물규모 지상 4층 / 지하8~45층... "
+                },
+                {
+                  "title": "역삼동 사무실 임대 100평 테헤란로 2호선 합리적인 월세 삼정빌딩",
+                  "link": "http://cafe.naver.com/ps2power/635662",
+                  "description": "해당 건물은 <b>서울</b>시 <b>강남구 역삼동</b>에 위치하며, 역삼역과 <b>강남</b>역을 모두 이용할 수 있는 입지적 장점을... 테헤란로를 중심으로 <b>강남 파이낸스센터</b>, <b>센터</b>필드 등 주요 업무시설이 밀집해 있어 비즈니스 연계 및 네트워크... "
+                }
+              ],
+              "error": null
+            }
+          },
+          "totals": {
+            "blog": 128047,
+            "news": 2,
+            "webkr": 20266,
+            "image": 638,
+            "local": 5,
+            "cafearticle": 64479
+          },
+          "aggregate_total": 213437
+        }
+      },
+      "naver_searchad_keyword_tool": {
+        "hint_keyword": "강남파이낸스센터",
+        "total_returned": 30,
+        "items": [
+          {
+            "keyword": "강남파이낸스센터",
+            "pc_search": 1130,
+            "mobile_search": 2410,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "GFC",
+            "pc_search": 820,
+            "mobile_search": 1580,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "강남파이낸스센터임대",
+            "pc_search": 40,
+            "mobile_search": 50,
+            "ad_competition": "높음"
+          },
+          {
+            "keyword": "GFC임대료",
+            "pc_search": "< 10",
+            "mobile_search": "< 10",
+            "ad_competition": "낮음"
+          },
+          {
+            "keyword": "역삼GFC",
+            "pc_search": 140,
+            "mobile_search": 330,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "역삼역강남파이낸스센터",
+            "pc_search": "< 10",
+            "mobile_search": "< 10",
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "파르나스타워",
+            "pc_search": 810,
+            "mobile_search": 1020,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "오토웨이타워",
+            "pc_search": 260,
+            "mobile_search": 310,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "리오빌딩",
+            "pc_search": 10,
+            "mobile_search": 20,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "미디어센터",
+            "pc_search": 360,
+            "mobile_search": 500,
+            "ad_competition": "높음"
+          },
+          {
+            "keyword": "벤처캐슬빌딩",
+            "pc_search": "< 10",
+            "mobile_search": 10,
+            "ad_competition": "높음"
+          },
+          {
+            "keyword": "신사미타워",
+            "pc_search": 40,
+            "mobile_search": 140,
+            "ad_competition": "높음"
+          },
+          {
+            "keyword": "안국빌딩",
+            "pc_search": 100,
+            "mobile_search": 310,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "칠산빌딩",
+            "pc_search": "< 10",
+            "mobile_search": 10,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "캠브리지빌딩",
+            "pc_search": 30,
+            "mobile_search": 60,
+            "ad_competition": "높음"
+          },
+          {
+            "keyword": "푸르덴셜타워",
+            "pc_search": "< 10",
+            "mobile_search": 10,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "한화빌딩",
+            "pc_search": 450,
+            "mobile_search": 750,
+            "ad_competition": "높음"
+          },
+          {
+            "keyword": "일옥빌딩",
+            "pc_search": 10,
+            "mobile_search": 10,
+            "ad_competition": "낮음"
+          },
+          {
+            "keyword": "751빌딩",
+            "pc_search": 40,
+            "mobile_search": 60,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "한국과학기술회관",
+            "pc_search": 1660,
+            "mobile_search": 1740,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "신사동J타워",
+            "pc_search": "< 10",
+            "mobile_search": "< 10",
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "신사동제이타워",
+            "pc_search": 20,
+            "mobile_search": 10,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "강남역과학기술회관",
+            "pc_search": "< 10",
+            "mobile_search": "< 10",
+            "ad_competition": "낮음"
+          },
+          {
+            "keyword": "서울과학기술회관",
+            "pc_search": 40,
+            "mobile_search": 40,
+            "ad_competition": "낮음"
+          },
+          {
+            "keyword": "레베쌍트빌딩",
+            "pc_search": 60,
+            "mobile_search": 20,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "건설회관",
+            "pc_search": 810,
+            "mobile_search": 1420,
+            "ad_competition": "낮음"
+          },
+          {
+            "keyword": "강남신한L타워",
+            "pc_search": "< 10",
+            "mobile_search": 10,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "신한L강남타워",
+            "pc_search": 30,
+            "mobile_search": 210,
+            "ad_competition": "중간"
+          },
+          {
+            "keyword": "태광타워",
+            "pc_search": 110,
+            "mobile_search": 80,
+            "ad_competition": "높음"
+          },
+          {
+            "keyword": "논현동건설회관",
+            "pc_search": 30,
+            "mobile_search": 50,
+            "ad_competition": "중간"
+          }
+        ]
+      },
+      "kakao_local_keyword": {
+        "total_count": 99,
+        "documents": [
+          {
+            "place_name": "KB국민은행 강남파이낸스",
+            "category": "금융,보험 > 금융서비스 > 은행 > KB국민은행",
+            "address": "서울 강남구 테헤란로 152",
+            "phone": "1588-9999",
+            "distance_m": "0"
+          },
+          {
+            "place_name": "KB국민은행 강남스타PB센터",
+            "category": "금융,보험 > 금융서비스 > 은행 > KB국민은행",
+            "address": "서울 강남구 테헤란로 152",
+            "phone": "1588-9999",
+            "distance_m": "0"
+          },
+          {
+            "place_name": "NH투자증권 프리미어블루 강남센터",
+            "category": "금융,보험 > 금융서비스 > 증권 > NH투자증권",
+            "address": "서울 강남구 테헤란로 152",
+            "phone": "1544-0000",
+            "distance_m": "0"
+          },
+          {
+            "place_name": "고우가 역삼역점",
+            "category": "음식점 > 한식 > 육류,고기",
+            "address": "서울 강남구 테헤란로 152",
+            "phone": "02-555-9554",
+            "distance_m": "0"
+          },
+          {
+            "place_name": "브리즘 역삼점",
+            "category": "가정,생활 > 패션 > 패션잡화점 > 안경,렌즈",
+            "address": "서울 강남구 테헤란로 152",
+            "phone": "02-558-0988",
+            "distance_m": "0"
+          },
+          {
+            "place_name": "버핏그라운드 역삼GFC",
+            "category": "스포츠,레저 > 스포츠시설 > 헬스클럽",
+            "address": "서울 강남구 테헤란로 152",
+            "phone": "010-7374-3624",
+            "distance_m": "0"
+          },
+          {
+            "place_name": "후라토식당 GFC역삼직영점",
+            "category": "음식점 > 일식 > 후라토식당",
+            "address": "서울 강남구 테헤란로 152",
+            "phone": "02-3452-2202",
+            "distance_m": "0"
+          },
+          {
+            "place_name": "솔솥 GFC몰점(강남파이낸스센터)",
+            "category": "음식점 > 한식 > 솔솥",
+            "address": "서울 강남구 테헤란로 152",
+            "phone": "070-7603-0055",
+            "distance_m": "0"
+          },
+          {
+            "place_name": "홍수계찜닭 강남파이낸스센터점",
+            "category": "음식점 > 한식 > 육류,고기 > 닭요리",
+            "address": "서울 강남구 테헤란로 152",
+            "phone": "02-565-5455",
+            "distance_m": "0"
+          },
+          {
+            "place_name": "인텔렉추얼디스커버리",
+            "category": "서비스,산업 > 전문대행",
+            "address": "서울 강남구 테헤란로 152",
+            "phone": "02-6004-8000",
+            "distance_m": "0"
+          }
+        ]
+      }
+    },
+    "score": 82,
+    "grade": "A",
+    "strengths": [
+      "브랜드명 '강남파이낸스센터' 단독 검색 시 블로그 14,964건, 뉴스 11,408건, 카페 11,257건, 이미지 70,367건으로 전 채널에 걸쳐 풍부한 콘텐츠 존재",
+      "네이버 SearchAd 기준 '강남파이낸스센터' 월간 검색량 PC 1,130 + 모바일 2,410 = 약 3,540건으로 오피스 빌딩 단일 브랜드로는 상당한 수준",
+      "'GFC'라는 약칭 키워드도 PC 820 + 모바일 1,580 = 2,400건의 독립적 검색 수요 보유, 브랜드 인지도가 약칭으로도 확산된 상태",
+      "카카오 로컬 키워드 검색에서 동일 주소(테헤란로 152) 기준 99개 매칭, 금융·F&B·스포츠 등 다양한 업종 입점 POI가 확인되어 생활 밀착형 인지도 형성",
+      "나무위키·위키피디아·공식 홈페이지(gfckorea.co.kr) 등 레퍼런스 페이지가 상위 노출되어 정보 신뢰성과 브랜드 공신력 뒷받침",
+      "앤트로픽 한국 지사, G마켓 본사 이전 등 최신 뉴스에서 랜드마크 주소로 반복 언급되어 미디어 노출 지속성 확인"
+    ],
+    "weaknesses": [
+      "SearchAd 핵심 키워드 월간 총 검색량이 약 3,500건 수준으로, 소비자 대상 복합시설(예: 코엑스, IFC몰 등)에 비해 절대 검색량은 낮은 편",
+      "네이버 로컬 채널 결과가 5건에 불과해 지도·장소 기반 검색 최적화가 미흡하며, 일반 소비자의 방문 목적 검색 유입이 제한적",
+      "블로그·카페 콘텐츠의 상당수가 사무실 임대 중개 목적의 상업성 게시물로, 유기적 브랜드 팬덤이나 일반 대중 인지도보다는 B2B 업무용 인지도에 편중"
+    ],
+    "risks": [
+      "G마켓 본사 이전(2025년 하반기 예정) 등 주요 앵커 테넌트 이탈 뉴스가 검색 결과에 노출되어 브랜드 이미지에 부정적 연관 키워드 형성 가능성",
+      "검색 콘텐츠의 대부분이 임대·부동산 중개 목적으로, STO 투자자 관점의 자산 가치·수익성 관련 정보 콘텐츠는 상대적으로 희소하여 투자 인지도와 일반 인지도 간 괴리 존재",
+      "약칭 'GFC' 키워드가 다른 의미(GFC = Global Financial Crisis 등)와 혼용될 수 있어 해외 투자자 대상 브랜드 명확성 저하 우려"
+    ],
+    "rationale": "강남파이낸스센터(GFC)는 네이버 통합검색 전 채널에서 고른 콘텐츠 볼륨을 보유한 서울 대표 프라임 오피스 랜드마크다. 브랜드명 단독 쿼리 기준 블로그 약 1.5만 건, 뉴스 약 1.1만 건, 이미지 약 7만 건이 집계되며, 웹 전체 결과는 300만 건을 상회한다. SearchAd 데이터에서 '강남파이낸스센터' 월간 검색량은 PC+모바일 합산 약 3,540건이며, 'GFC' 약칭으로도 2,400건의 독립 수요가 확인되어 브랜드 인지도가 약칭 단계까지 내재화된 것으로 판단된다. 카카오 로컬에서는 동일 주소 기준 99개 POI가 매칭되어 건물 내 다양한 업종의 생활 밀착형 인지도도 형성되어 있다. 다만 네이버 로컬 결과가 5건에 그치고, 콘텐츠 대부분이 B2B 임대 중개 목적이어서 일반 소비자 인지도보다는 업무용·투자자 인지도에 집중된 구조다. 최근 앤트로픽 한국 지사 등록, G마켓 이전 이슈 등으로 미디어 노출은 지속되고 있으나 일부 부정적 연관 키워드 형성 리스크도 존재한다. 종합적으로 서울 주요 오피스 빌딩 중 상위권의 브랜드 인지도를 보유하고 있으나, 소비자 대중 인지도보다는 B2B·투자자 특화 인지도임을 감안해 82점(A등급)으로 평가한다."
+  },
+  "vitality": {
+    "axis": "VITALITY",
+    "evidence": {
+      "kakao_poi_radius_300m": {
+        "radius_m": 300,
+        "x": "127.036508620542",
+        "y": "37.5000242405515",
+        "by_category": {
+          "대형마트": {
+            "total_count": 0,
+            "samples": []
+          },
+          "편의점": {
+            "total_count": 22,
+            "samples": [
+              {
+                "name": "세븐일레븐 강남파이낸스점",
+                "category": "가정,생활 > 편의점 > 세븐일레븐",
+                "distance_m": "0"
+              },
+              {
+                "name": "세븐일레븐 역삼GFC점",
+                "category": "가정,생활 > 편의점 > 세븐일레븐",
+                "distance_m": "0"
+              },
+              {
+                "name": "GS25 S역삼역점",
+                "category": "가정,생활 > 편의점 > GS25",
+                "distance_m": "77"
+              },
+              {
+                "name": "세븐일레븐 역삼창조점",
+                "category": "가정,생활 > 편의점 > 세븐일레븐",
+                "distance_m": "103"
+              },
+              {
+                "name": "GS25 역삼스타점",
+                "category": "가정,생활 > 편의점 > GS25",
+                "distance_m": "114"
+              }
+            ]
+          },
+          "어린이집_유치원": {
+            "total_count": 0,
+            "samples": []
+          },
+          "학교": {
+            "total_count": 0,
+            "samples": []
+          },
+          "학원": {
+            "total_count": 30,
+            "samples": [
+              {
+                "name": "코리아IT아카데미학원 강남점",
+                "category": "교육,학문 > 학원 > 컴퓨터학원",
+                "distance_m": "83"
+              },
+              {
+                "name": "패스트원 역삼센터",
+                "category": "교육,학문 > 학원 > 어학원 > 영어학원",
+                "distance_m": "87"
+              },
+              {
+                "name": "공신닷컴",
+                "category": "교육,학문 > 학원",
+                "distance_m": "90"
+              },
+              {
+                "name": "수지전화영어",
+                "category": "교육,학문 > 학원 > 어학원 > 영어학원",
+                "distance_m": "91"
+              },
+              {
+                "name": "스파크네스트",
+                "category": "교육,학문 > 학원 > 어학원 > 영어학원",
+                "distance_m": "113"
+              }
+            ]
+          },
+          "주차장": {
+            "total_count": 38,
+            "samples": [
+              {
+                "name": "강남파이낸스센터 주차장",
+                "category": "교통,수송 > 교통시설 > 주차장",
+                "distance_m": "4"
+              },
+              {
+                "name": "카카오 T 강남파이낸스센터 주차장",
+                "category": "교통,수송 > 교통시설 > 주차장",
+                "distance_m": "4"
+              },
+              {
+                "name": "테헤란로 26길 공영주차장",
+                "category": "교통,수송 > 교통시설 > 주차장 > 공영주차장",
+                "distance_m": "56"
+              },
+              {
+                "name": "역삼대세빌딩 주차장",
+                "category": "교통,수송 > 교통시설 > 주차장",
+                "distance_m": "99"
+              },
+              {
+                "name": "근영빌딩 주차장",
+                "category": "교통,수송 > 교통시설 > 주차장",
+                "distance_m": "104"
+              }
+            ]
+          },
+          "주유소_충전소": {
+            "total_count": 1,
+            "samples": [
+              {
+                "name": "에너지플러스허브 GS타워주유소",
+                "category": "교통,수송 > 자동차 > 주유,가스 > 주유소 > GS칼텍스",
+                "distance_m": "298"
+              }
+            ]
+          },
+          "지하철역": {
+            "total_count": 1,
+            "samples": [
+              {
+                "name": "역삼역 2호선",
+                "category": "교통,수송 > 지하철,전철 > 수도권2호선",
+                "distance_m": "72"
+              }
+            ]
+          },
+          "은행": {
+            "total_count": 42,
+            "samples": [
+              {
+                "name": "SC제일은행 강남파이낸스 ATM",
+                "category": "금융,보험 > 금융서비스 > 은행 > ATM",
+                "distance_m": "0"
+              },
+              {
+                "name": "하나은행 강남파이낸스PB센터 ATM",
+                "category": "금융,보험 > 금융서비스 > 은행 > ATM",
+                "distance_m": "0"
+              },
+              {
+                "name": "하나은행365 강남파이낸스센터 2층 ATM",
+                "category": "금융,보험 > 금융서비스 > 은행 > ATM",
+                "distance_m": "0"
+              },
+              {
+                "name": "KB국민은행 강남파이낸스",
+                "category": "금융,보험 > 금융서비스 > 은행 > KB국민은행",
+                "distance_m": "0"
+              },
+              {
+                "name": "SC제일은행 강남파이낸스지점",
+                "category": "금융,보험 > 금융서비스 > 은행 > SC제일은행",
+                "distance_m": "0"
+              }
+            ]
+          },
+          "문화시설": {
+            "total_count": 3,
+            "samples": [
+              {
+                "name": "진훈인터내셔날",
+                "category": "문화,예술 > 문화시설 > 공연장,연극극장",
+                "distance_m": "214"
+              },
+              {
+                "name": "히든엠갤러리",
+                "category": "문화,예술 > 문화시설 > 전시관",
+                "distance_m": "215"
+              },
+              {
+                "name": "GS아트센터",
+                "category": "문화,예술 > 문화시설 > 공연장,연극극장",
+                "distance_m": "258"
+              }
+            ]
+          },
+          "중개업소": {
+            "total_count": 55,
+            "samples": [
+              {
+                "name": "대안시스템",
+                "category": "부동산 > 부동산서비스 > 부동산중개업",
+                "distance_m": "73"
+              },
+              {
+                "name": "중앙부동산공인중개사사무소",
+                "category": "부동산 > 부동산서비스 > 부동산중개업",
+                "distance_m": "94"
+              },
+              {
+                "name": "하이츠114 공인중개사사무소",
+                "category": "부동산 > 부동산서비스 > 부동산중개업",
+                "distance_m": "109"
+              },
+              {
+                "name": "오피에스 코리아공인중개사사무소",
+                "category": "부동산 > 부동산서비스 > 부동산중개업",
+                "distance_m": "114"
+              },
+              {
+                "name": "지케이부동산중개",
+                "category": "부동산 > 부동산서비스 > 부동산중개업",
+                "distance_m": "116"
+              }
+            ]
+          },
+          "공공기관": {
+            "total_count": 2,
+            "samples": [
+              {
+                "name": "퀸슬랜드주정부 한국사무소",
+                "category": "사회,공공기관 > 외국기관 > 대사관,영사관,외국공관",
+                "distance_m": "1"
+              },
+              {
+                "name": "체코관광청 한국사무소",
+                "category": "사회,공공기관 > 외국기관 > 대사관,영사관,외국공관",
+                "distance_m": "111"
+              }
+            ]
+          },
+          "관광명소": {
+            "total_count": 0,
+            "samples": []
+          },
+          "숙박": {
+            "total_count": 12,
+            "samples": [
+              {
+                "name": "호텔스타",
+                "category": "여행 > 숙박 > 호텔",
+                "distance_m": "108"
+              },
+              {
+                "name": "강남스테이호텔",
+                "category": "여행 > 숙박 > 호텔",
+                "distance_m": "117"
+              },
+              {
+                "name": "NGP",
+                "category": "여행 > 숙박 > 호텔",
+                "distance_m": "125"
+              },
+              {
+                "name": "AC 호텔 바이 메리어트 서울 강남",
+                "category": "여행 > 숙박 > 호텔 > 메리어트호텔",
+                "distance_m": "165"
+              },
+              {
+                "name": "희앤썬",
+                "category": "여행 > 숙박 > 호텔",
+                "distance_m": "165"
+              }
+            ]
+          },
+          "음식점": {
+            "total_count": 277,
+            "samples": [
+              {
+                "name": "고우가 역삼역점",
+                "category": "음식점 > 한식 > 육류,고기",
+                "distance_m": "0"
+              },
+              {
+                "name": "솔솥 GFC몰점(강남파이낸스센터)",
+                "category": "음식점 > 한식 > 솔솥",
+                "distance_m": "0"
+              },
+              {
+                "name": "후라토식당 GFC역삼직영점",
+                "category": "음식점 > 일식 > 후라토식당",
+                "distance_m": "0"
+              },
+              {
+                "name": "홍수계찜닭 강남파이낸스센터점",
+                "category": "음식점 > 한식 > 육류,고기 > 닭요리",
+                "distance_m": "0"
+              },
+              {
+                "name": "스노우폭스 역삼파이낸스점",
+                "category": "음식점 > 도시락",
+                "distance_m": "0"
+              }
+            ]
+          },
+          "카페": {
+            "total_count": 84,
+            "samples": [
+              {
+                "name": "알레시에스프레소 GFC점",
+                "category": "음식점 > 카페 > 커피전문점",
+                "distance_m": "0"
+              },
+              {
+                "name": "플레어비 역삼GFC몰점",
+                "category": "음식점 > 카페",
+                "distance_m": "0"
+              },
+              {
+                "name": "커피기업",
+                "category": "음식점 > 카페",
+                "distance_m": "0"
+              },
+              {
+                "name": "카페드몽슈슈 GFC점",
+                "category": "음식점 > 카페 > 테마카페 > 디저트카페",
+                "distance_m": "1"
+              },
+              {
+                "name": "폴바셋 GFC점",
+                "category": "음식점 > 카페 > 커피전문점 > 폴바셋",
+                "distance_m": "3"
+              }
+            ]
+          },
+          "병원": {
+            "total_count": 56,
+            "samples": [
+              {
+                "name": "서울대학교병원 강남치과의원",
+                "category": "의료,건강 > 병원 > 치과",
+                "distance_m": "0"
+              },
+              {
+                "name": "서울대학교병원 강남센터",
+                "category": "의료,건강 > 병원 > 일반의원",
+                "distance_m": "18"
+              },
+              {
+                "name": "서울더숲정신건강의학과의원",
+                "category": "의료,건강 > 병원 > 정신건강의학과",
+                "distance_m": "73"
+              },
+              {
+                "name": "연세베러의원",
+                "category": "의료,건강 > 병원 > 피부과",
+                "distance_m": "73"
+              },
+              {
+                "name": "스카이치과의원",
+                "category": "의료,건강 > 병원 > 치과",
+                "distance_m": "73"
+              }
+            ]
+          },
+          "약국": {
+            "total_count": 14,
+            "samples": [
+              {
+                "name": "해림온누리약국",
+                "category": "의료,건강 > 약국",
+                "distance_m": "6"
+              },
+              {
+                "name": "역삼오늘약국",
+                "category": "의료,건강 > 약국",
+                "distance_m": "73"
+              },
+              {
+                "name": "모두약국",
+                "category": "의료,건강 > 약국",
+                "distance_m": "77"
+              },
+              {
+                "name": "365역삼역약국",
+                "category": "의료,건강 > 약국",
+                "distance_m": "77"
+              },
+              {
+                "name": "역삼365매일여는약국",
+                "category": "의료,건강 > 약국",
+                "distance_m": "77"
+              }
+            ]
+          }
+        },
+        "category_totals": {
+          "대형마트": 0,
+          "편의점": 22,
+          "어린이집_유치원": 0,
+          "학교": 0,
+          "학원": 30,
+          "주차장": 38,
+          "주유소_충전소": 1,
+          "지하철역": 1,
+          "은행": 42,
+          "문화시설": 3,
+          "중개업소": 55,
+          "공공기관": 2,
+          "관광명소": 0,
+          "숙박": 12,
+          "음식점": 277,
+          "카페": 84,
+          "병원": 56,
+          "약국": 14
+        },
+        "overall_total": 637
+      },
+      "kakao_poi_radius_500m_totals": {
+        "대형마트": 0,
+        "편의점": 50,
+        "어린이집_유치원": 5,
+        "학교": 0,
+        "학원": 99,
+        "주차장": 102,
+        "주유소_충전소": 1,
+        "지하철역": 1,
+        "은행": 72,
+        "문화시설": 12,
+        "중개업소": 124,
+        "공공기관": 2,
+        "관광명소": 0,
+        "숙박": 44,
+        "음식점": 675,
+        "카페": 178,
+        "병원": 93,
+        "약국": 23
+      },
+      "sbiz_radius_300m": {
+        "radius_m": 300,
+        "total_count": 100,
+        "by_large_industry": {
+          "과학·기술": 45,
+          "음식": 15,
+          "소매": 12,
+          "부동산": 8,
+          "교육": 8,
+          "시설관리·임대": 5,
+          "수리·개인": 3,
+          "보건의료": 2,
+          "숙박": 1,
+          "예술·스포츠": 1
+        },
+        "by_small_industry": {
+          "경영 컨설팅업": 10,
+          "부동산 중개/대리업": 8,
+          "세무사": 8,
+          "광고 대행업": 7,
+          "백반/한정식": 5,
+          "약국": 3,
+          "김밥/만두/분식": 3,
+          "건축 설계 및 관련 서비스업": 3,
+          "법무사": 3,
+          "공인회계사": 3,
+          "편의점": 2,
+          "운동용품 소매업": 2,
+          "요가/필라테스 학원": 2,
+          "카페": 2,
+          "공인노무사": 2,
+          "중국집": 2,
+          "고용 알선업": 2,
+          "변리사": 2,
+          "기타 교육지원 서비스업": 2,
+          "시장 조사 및 여론 조사업": 2,
+          "건강보조식품 소매업": 2,
+          "시각 디자인업": 1,
+          "여관/모텔": 1,
+          "교육컨설팅업": 1,
+          "침구류/커튼 소매업": 1,
+          "PC방": 1,
+          "전시/컨벤션/행사 대행 서비스업": 1,
+          "번역/통역 서비스업": 1,
+          "기타 광고 관련 서비스업": 1,
+          "담배/전자담배 소매업": 1
+        },
+        "samples": [
+          {
+            "bizesId": "MA010120220800821636",
+            "bizesNm": "싱크미디어",
+            "brchNm": "",
+            "indsLclsCd": "M1",
+            "indsLclsNm": "과학·기술",
+            "indsMclsCd": "M105",
+            "indsMclsNm": "광고",
+            "indsSclsCd": "M10501",
+            "indsSclsNm": "광고 대행업",
+            "ksicCd": "M71310",
+            "ksicNm": "광고 대행업",
+            "ctprvnCd": "11",
+            "ctprvnNm": "서울특별시",
+            "signguCd": "11680",
+            "signguNm": "강남구",
+            "adongCd": "11680640",
+            "adongNm": "역삼1동",
+            "ldongCd": "1168010100",
+            "ldongNm": "역삼동",
+            "lnoCd": "1168010100106470011",
+            "plotSctCd": "1",
+            "plotSctNm": "대지",
+            "lnoMnno": 647,
+            "lnoSlno": 11,
+            "lnoAdr": "서울특별시 강남구 역삼동 647-11",
+            "rdnmCd": "116804166718",
+            "rdnm": "서울특별시 강남구 테헤란로13길",
+            "bldMnno": 8,
+            "bldSlno": 10,
+            "bldMngNo": "1168010100106470011023663",
+            "bldNm": "동영빌딩",
+            "rdnmAdr": "서울특별시 강남구 테헤란로13길 8-10",
+            "oldZipcd": "135911",
+            "newZipcd": "06133",
+            "dongNo": "",
+            "flrNo": "6",
+            "hoNo": "",
+            "lon": 127.033248505436,
+            "lat": 37.5003546109113
+          },
+          {
+            "bizesId": "MA010120220800430429",
+            "bizesNm": "연탄마을",
+            "brchNm": "",
+            "indsLclsCd": "I2",
+            "indsLclsNm": "음식",
+            "indsMclsCd": "I201",
+            "indsMclsNm": "한식",
+            "indsSclsCd": "I20101",
+            "indsSclsNm": "백반/한정식",
+            "ksicCd": "I56111",
+            "ksicNm": "한식 일반 음식점업",
+            "ctprvnCd": "11",
+            "ctprvnNm": "서울특별시",
+            "signguCd": "11680",
+            "signguNm": "강남구",
+            "adongCd": "11680640",
+            "adongNm": "역삼1동",
+            "ldongCd": "1168010100",
+            "ldongNm": "역삼동",
+            "lnoCd": "1168010100106370033",
+            "plotSctCd": "1",
+            "plotSctNm": "대지",
+            "lnoMnno": 637,
+            "lnoSlno": 33,
+            "lnoAdr": "서울특별시 강남구 역삼동 637-33",
+            "rdnmCd": "116804166721",
+            "rdnm": "서울특별시 강남구 테헤란로19길",
+            "bldMnno": 13,
+            "bldSlno": "",
+            "bldMngNo": "1168010100106370033023540",
+            "bldNm": "",
+            "rdnmAdr": "서울특별시 강남구 테헤란로19길 13",
+            "oldZipcd": "135909",
+            "newZipcd": "06131",
+            "dongNo": "",
+            "flrNo": "",
+            "hoNo": "",
+            "lon": 127.033350539023,
+            "lat": 37.5009222159224
+          },
+          {
+            "bizesId": "MA010120220800779379",
+            "bizesNm": "쭈꾸미앤낙지",
+            "brchNm": "",
+            "indsLclsCd": "I2",
+            "indsLclsNm": "음식",
+            "indsMclsCd": "I201",
+            "indsMclsNm": "한식",
+            "indsSclsCd": "I20101",
+            "indsSclsNm": "백반/한정식",
+            "ksicCd": "I56111",
+            "ksicNm": "한식 일반 음식점업",
+            "ctprvnCd": "11",
+            "ctprvnNm": "서울특별시",
+            "signguCd": "11680",
+            "signguNm": "강남구",
+            "adongCd": "11680640",
+            "adongNm": "역삼1동",
+            "ldongCd": "1168010100",
+            "ldongNm": "역삼동",
+            "lnoCd": "1168010100107350011",
+            "plotSctCd": "1",
+            "plotSctNm": "대지",
+            "lnoMnno": 735,
+            "lnoSlno": 11,
+            "lnoAdr": "서울특별시 강남구 역삼동 735-11",
+            "rdnmCd": "116804166203",
+            "rdnm": "서울특별시 강남구 논현로87길",
+            "bldMnno": 41,
+            "bldSlno": "",
+            "bldMngNo": "1168010100107350011023955",
+            "bldNm": "",
+            "rdnmAdr": "서울특별시 강남구 논현로87길 41",
+            "oldZipcd": "135923",
+            "newZipcd": "06235",
+            "dongNo": "",
+            "flrNo": "",
+            "hoNo": "",
+            "lon": 127.033519241111,
+            "lat": 37.4988318340124
+          },
+          {
+            "bizesId": "MA010120220800565478",
+            "bizesNm": "제이스커뮤니케이션즈",
+            "brchNm": "",
+            "indsLclsCd": "M1",
+            "indsLclsNm": "과학·기술",
+            "indsMclsCd": "M112",
+            "indsMclsNm": "전문 디자인",
+            "indsSclsCd": "M11203",
+            "indsSclsNm": "시각 디자인업",
+            "ksicCd": "M73203",
+            "ksicNm": "시각 디자인업",
+            "ctprvnCd": "11",
+            "ctprvnNm": "서울특별시",
+            "signguCd": "11680",
+            "signguNm": "강남구",
+            "adongCd": "11680640",
+            "adongNm": "역삼1동",
+            "ldongCd": "1168010100",
+            "ldongNm": "역삼동",
+            "lnoCd": "1168010100107350011",
+            "plotSctCd": "1",
+            "plotSctNm": "대지",
+            "lnoMnno": 735,
+            "lnoSlno": 11,
+            "lnoAdr": "서울특별시 강남구 역삼동 735-11",
+            "rdnmCd": "116804166203",
+            "rdnm": "서울특별시 강남구 논현로87길",
+            "bldMnno": 41,
+            "bldSlno": "",
+            "bldMngNo": "1168010100107350011023955",
+            "bldNm": "신일유토빌",
+            "rdnmAdr": "서울특별시 강남구 논현로87길 41",
+            "oldZipcd": "135923",
+            "newZipcd": "06235",
+            "dongNo": "",
+            "flrNo": "",
+            "hoNo": "",
+            "lon": 127.033519241111,
+            "lat": 37.4988318340124
+          },
+          {
+            "bizesId": "MA010120220800418100",
+            "bizesNm": "씨유역삼유토빌점",
+            "brchNm": "",
+            "indsLclsCd": "G2",
+            "indsLclsNm": "소매",
+            "indsMclsCd": "G204",
+            "indsMclsNm": "종합 소매",
+            "indsSclsCd": "G20405",
+            "indsSclsNm": "편의점",
+            "ksicCd": "G47122",
+            "ksicNm": "체인화 편의점",
+            "ctprvnCd": "11",
+            "ctprvnNm": "서울특별시",
+            "signguCd": "11680",
+            "signguNm": "강남구",
+            "adongCd": "11680640",
+            "adongNm": "역삼1동",
+            "ldongCd": "1168010100",
+            "ldongNm": "역삼동",
+            "lnoCd": "1168010100107350011",
+            "plotSctCd": "1",
+            "plotSctNm": "대지",
+            "lnoMnno": 735,
+            "lnoSlno": 11,
+            "lnoAdr": "서울특별시 강남구 역삼동 735-11",
+            "rdnmCd": "116804166203",
+            "rdnm": "서울특별시 강남구 논현로87길",
+            "bldMnno": 41,
+            "bldSlno": "",
+            "bldMngNo": "1168010100107350011023955",
+            "bldNm": "신일유토빌",
+            "rdnmAdr": "서울특별시 강남구 논현로87길 41",
+            "oldZipcd": "135923",
+            "newZipcd": "06235",
+            "dongNo": "",
+            "flrNo": "",
+            "hoNo": "",
+            "lon": 127.033519241111,
+            "lat": 37.4988318340124
+          },
+          {
+            "bizesId": "MA010120220800873866",
+            "bizesNm": "JS공인중개사사무소",
+            "brchNm": "",
+            "indsLclsCd": "L1",
+            "indsLclsNm": "부동산",
+            "indsMclsCd": "L102",
+            "indsMclsNm": "부동산 서비스",
+            "indsSclsCd": "L10203",
+            "indsSclsNm": "부동산 중개/대리업",
+            "ksicCd": "L68221",
+            "ksicNm": "부동산 중개 및 대리업",
+            "ctprvnCd": "11",
+            "ctprvnNm": "서울특별시",
+            "signguCd": "11680",
+            "signguNm": "강남구",
+            "adongCd": "11680640",
+            "adongNm": "역삼1동",
+            "ldongCd": "1168010100",
+            "ldongNm": "역삼동",
+            "lnoCd": "1168010100107350011",
+            "plotSctCd": "1",
+            "plotSctNm": "대지",
+            "lnoMnno": 735,
+            "lnoSlno": 11,
+            "lnoAdr": "서울특별시 강남구 역삼동 735-11",
+            "rdnmCd": "116804166203",
+            "rdnm": "서울특별시 강남구 논현로87길",
+            "bldMnno": 41,
+            "bldSlno": "",
+            "bldMngNo": "1168010100107350011023955",
+            "bldNm": "신일유토빌",
+            "rdnmAdr": "서울특별시 강남구 논현로87길 41",
+            "oldZipcd": "135923",
+            "newZipcd": "06235",
+            "dongNo": "",
+            "flrNo": "",
+            "hoNo": "",
+            "lon": 127.033519241111,
+            "lat": 37.4988318340124
+          },
+          {
+            "bizesId": "MA010120220800411843",
+            "bizesNm": "피티지에쿼티파트너스",
+            "brchNm": "",
+            "indsLclsCd": "M1",
+            "indsLclsNm": "과학·기술",
+            "indsMclsCd": "M107",
+            "indsMclsNm": "본사·경영 컨설팅",
+            "indsSclsCd": "M10703",
+            "indsSclsNm": "경영 컨설팅업",
+            "ksicCd": "M71531",
+            "ksicNm": "경영 컨설팅업",
+            "ctprvnCd": "11",
+            "ctprvnNm": "서울특별시",
+            "signguCd": "11680",
+            "signguNm": "강남구",
+            "adongCd": "11680640",
+            "adongNm": "역삼1동",
+            "ldongCd": "1168010100",
+            "ldongNm": "역삼동",
+            "lnoCd": "1168010100107350003",
+            "plotSctCd": "1",
+            "plotSctNm": "대지",
+            "lnoMnno": 735,
+            "lnoSlno": 3,
+            "lnoAdr": "서울특별시 강남구 역삼동 735-3",
+            "rdnmCd": "116803122010",
+            "rdnm": "서울특별시 강남구 테헤란로",
+            "bldMnno": 134,
+            "bldSlno": "",
+            "bldMngNo": "1168010100107350005028032",
+            "bldNm": "포스코타워",
+            "rdnmAdr": "서울특별시 강남구 테헤란로 134",
+            "oldZipcd": "135923",
+            "newZipcd": "06235",
+            "dongNo": "",
+            "flrNo": "17",
+            "hoNo": "",
+            "lon": 127.033813517324,
+            "lat": 37.4993813639434
+          },
+          {
+            "bizesId": "MA010120220800394677",
+            "bizesNm": "에스지엠주",
+            "brchNm": "",
+            "indsLclsCd": "I1",
+            "indsLclsNm": "숙박",
+            "indsMclsCd": "I101",
+            "indsMclsNm": "일반 숙박",
+            "indsSclsCd": "I10102",
+            "indsSclsNm": "여관/모텔",
+            "ksicCd": "I55102",
+            "ksicNm": "여관업",
+            "ctprvnCd": "11",
+            "ctprvnNm": "서울특별시",
+            "signguCd": "11680",
+            "signguNm": "강남구",
+            "adongCd": "11680640",
+            "adongNm": "역삼1동",
+            "ldongCd": "1168010100",
+            "ldongNm": "역삼동",
+            "lnoCd": "1168010100107350027",
+            "plotSctCd": "1",
+            "plotSctNm": "대지",
+            "lnoMnno": 735,
+            "lnoSlno": 27,
+            "lnoAdr": "서울특별시 강남구 역삼동 735-27",
+            "rdnmCd": "116804166720",
+            "rdnm": "서울특별시 강남구 테헤란로16길",
+            "bldMnno": 11,
+            "bldSlno": "",
+            "bldMngNo": "1168010100107350027024000",
+            "bldNm": "",
+            "rdnmAdr": "서울특별시 강남구 테헤란로16길 11",
+            "oldZipcd": "135923",
+            "newZipcd": "06235",
+            "dongNo": "",
+            "flrNo": "1",
+            "hoNo": "",
+            "lon": 127.033915040401,
+            "lat": 37.4988137009204
+          },
+          {
+            "bizesId": "MA010120220800902022",
+            "bizesNm": "나우리씨엠",
+            "brchNm": "",
+            "indsLclsCd": "L1",
+            "indsLclsNm": "부동산",
+            "indsMclsCd": "L102",
+            "indsMclsNm": "부동산 서비스",
+            "indsSclsCd": "L10203",
+            "indsSclsNm": "부동산 중개/대리업",
+            "ksicCd": "L68221",
+            "ksicNm": "부동산 중개 및 대리업",
+            "ctprvnCd": "11",
+            "ctprvnNm": "서울특별시",
+            "signguCd": "11680",
+            "signguNm": "강남구",
+            "adongCd": "11680640",
+            "adongNm": "역삼1동",
+            "ldongCd": "1168010100",
+            "ldongNm": "역삼동",
+            "lnoCd": "1168010100107350032",
+            "plotSctCd": "1",
+            "plotSctNm": "대지",
+            "lnoMnno": 735,
+            "lnoSlno": 32,
+            "lnoAdr": "서울특별시 강남구 역삼동 735-32",
+            "rdnmCd": "116804166723",
+            "rdnm": "서울특별시 강남구 테헤란로20길",
+            "bldMnno": 10,
+            "bldSlno": "",
+            "bldMngNo": "1168010100107350032000001",
+            "bldNm": "쓰리엠타워",
+            "rdnmAdr": "서울특별시 강남구 테헤란로20길 10",
+            "oldZipcd": "135923",
+            "newZipcd": "06235",
+            "dongNo": "",
+            "flrNo": "",
+            "hoNo": "",
+            "lon": 127.03414133909,
+            "lat": 37.4990839376091
+          },
+          {
+            "bizesId": "MA010120220800291813",
+            "bizesNm": "경희자연한약국",
+            "brchNm": "",
+            "indsLclsCd": "G2",
+            "indsLclsNm": "소매",
+            "indsMclsCd": "G215",
+            "indsMclsNm": "의약·화장품 소매",
+            "indsSclsCd": "G21501",
+            "indsSclsNm": "약국",
+            "ksicCd": "G47811",
+            "ksicNm": "의약품 및 의료용품 소매업",
+            "ctprvnCd": "11",
+            "ctprvnNm": "서울특별시",
+            "signguCd": "11680",
+            "signguNm": "강남구",
+            "adongCd": "11680640",
+            "adongNm": "역삼1동",
+            "ldongCd": "1168010100",
+            "ldongNm": "역삼동",
+            "lnoCd": "1168010100106440003",
+            "plotSctCd": "1",
+            "plotSctNm": "대지",
+            "lnoMnno": 644,
+            "lnoSlno": 3,
+            "lnoAdr": "서울특별시 강남구 역삼동 644-3",
+            "rdnmCd": "116804166207",
+            "rdnm": "서울특별시 강남구 논현로95길",
+            "bldMnno": 29,
+            "bldSlno": 13,
+            "bldMngNo": "1168010100106440003023506",
+            "bldNm": "코디하우스",
+            "rdnmAdr": "서울특별시 강남구 논현로95길 29-13",
+            "oldZipcd": "135910",
+            "newZipcd": "06131",
+            "dongNo": "",
+            "flrNo": "2",
+            "hoNo": "",
+            "lon": 127.034187482203,
+            "lat": 37.5010751476831
+          }
+        ]
+      },
+      "molit_transactions_12mo": {
+        "skipped": "PublicDataReader not installed"
+      },
+      "land_price": {
+        "indvdLandPrices": {
+          "field": [
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1990-08-30",
+              "stdLandAt": "N",
+              "stdrYear": "1990",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "10000000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1991-06-29",
+              "stdLandAt": "N",
+              "stdrYear": "1991",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "16800000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1992-06-01",
+              "stdLandAt": "N",
+              "stdrYear": "1992",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "14700000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1993-05-22",
+              "stdLandAt": "N",
+              "stdrYear": "1993",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "14100000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1994-06-30",
+              "stdLandAt": "N",
+              "stdrYear": "1994",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "14100000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1995-06-30",
+              "stdLandAt": "N",
+              "stdrYear": "1995",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "13600000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1996-06-29",
+              "stdLandAt": "N",
+              "stdrYear": "1996",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "13600000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1997-06-30",
+              "stdLandAt": "N",
+              "stdrYear": "1997",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "14000000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1998-06-30",
+              "stdLandAt": "N",
+              "stdrYear": "1998",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "14000000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "737",
+              "pblntfDe": "1999-06-30",
+              "stdLandAt": "N",
+              "stdrYear": "1999",
+              "pnu": "1168010100107370000",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1168010100",
+              "ldCodeNm": "서울특별시 강남구 역삼동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "12000000",
+              "regstrSeCode": "1"
+            }
+          ],
+          "pageNo": "1",
+          "resultCode": "",
+          "totalCount": "39",
+          "numOfRows": "10",
+          "resultMsg": ""
+        }
+      }
+    },
+    "score": 91,
+    "grade": "A+",
+    "strengths": [
+      "역삼역 2호선이 반경 72m 이내에 위치, 최상급 대중교통 접근성",
+      "반경 300m 내 음식점 277개, 카페 84개로 외식·음료 인프라 극도로 풍부",
+      "은행·ATM 42개, 병원 56개, 약국 14개로 금융·의료 서비스 밀집",
+      "편의점 22개, 주차장 38개, 학원 30개 등 생활편의 POI 전방위 충족",
+      "소상공인 상권정보 기준 과학·기술(45), 음식(15), 소매(12) 등 업종 다양성 우수",
+      "강남파이낸스센터, GS타워, 포스코타워 등 대형 오피스 앵커 테넌트 다수 존재",
+      "공시지가 최근 기록 기준 역삼동 내 상위권 수준(㎡당 1,000만 원대 이상 추정)"
+    ],
+    "weaknesses": [
+      "대형마트·관광명소 0개로 대규모 소비 집객 시설 부재",
+      "어린이집·유치원·학교 0개로 주거 배후 수요(가족 단위) 취약",
+      "실거래가 데이터(molit_transactions_12mo) 미수집으로 거래 활성도 직접 검증 불가",
+      "공시지가 이력이 1999년까지만 제공되어 최근 가격 수준 정밀 확인 한계",
+      "소상공인 상권정보 샘플 수(100건)가 카카오 POI 대비 적어 업종 커버리지 일부 제한"
+    ],
+    "risks": [
+      "오피스 중심 상권 특성상 주말·공휴일 유동인구 급감 리스크 존재",
+      "테헤란로 대형 오피스 공실 증가 시 음식점·카페 등 종속 상권 동반 위축 가능성",
+      "실거래 데이터 부재로 최근 12개월 가격 추세 및 거래 빈도 불확실성 잔존",
+      "고밀도 업종 경쟁으로 개별 점포 수익성 변동성이 높을 수 있음"
+    ],
+    "rationale": "해당 위치는 서울 강남구 역삼동 테헤란로 일대로, 반경 300m 내 카카오 POI 총 637개에 달하는 초고밀도 상권이다. 역삼역 2호선이 72m 거리에 위치해 대중교통 접근성이 최상급이며, 음식점 277개·카페 84개·은행 42개·병원 56개 등 핵심 생활 인프라가 모두 충족된다. 소상공인 상권정보에서도 과학·기술 업종(45개)이 주도하는 가운데 음식·소매·부동산·교육 등 다양한 업종이 혼재해 상권 다양성이 높다. 강남파이낸스센터, GS타워, 포스코타워 등 대형 오피스 빌딩이 앵커 역할을 하며 평일 유동인구를 안정적으로 공급한다. 공시지가는 역삼동 내 상위권으로 추정되며 장기적 토지 가치 안정성도 양호하다. 다만 대형마트·학교·관광명소 등 주거 및 관광 수요 기반 시설이 전무하고, 오피스 의존형 상권 특성상 주말 공동화 리스크가 존재한다. 실거래가 데이터가 수집되지 않아 최근 거래 활성도를 직접 검증하지 못한 점은 평가의 불확실성 요인으로 남는다. 종합적으로 서울 최상위 업무 상권 중 하나로, 상권·입지 활성도 측면에서 매우 높은 수준으로 평가된다."
+  },
+  "report_markdown": "# 부동산 STO 사회적 가치 평가 리포트\n## 강남파이낸스센터 (GFC, Gangnam Finance Center)\n\n---\n\n## 1. 표지 / 종합 요약\n\n| 항목 | 내용 |\n|---|---|\n| **대상 자산** | 강남파이낸스센터 (GFC) |\n| **소재지** | 서울특별시 강남구 테헤란로 152 (역삼동 737) |\n| **평가 기준일** | 2026-05-14 |\n| **종합 점수** | **75.0 / 100** |\n| **종합 등급** | **B+** |\n| **한 줄 종합 의견** | 서울 최상위 프라임 오피스 입지의 강점과 검증된 브랜드 인지도를 보유하여 STO 발행 적합성은 우수하나, 친환경 인증 미보유 및 25년 경과에 따른 ESG 측면 보완이 요구되는 자산. |\n\n> **핵심 메시지**: 입지·인지도 축은 시장 최상위 수준(A+/A)이며, ESG 축이 종합점수의 주된 하방 요인이다. 발행 시 입지·랜드마크성·임차 안정성에 강조 포커스를, 친환경·노후도 이슈에 대한 보완 계획을 디스클로저로 제시할 것을 권고한다.\n\n---\n\n## 2. 대상 자산 개요\n\n### 2.1 주소 및 식별자\n\n| 구분 | 값 |\n|---|---|\n| 도로명 주소 | 서울특별시 강남구 테헤란로 152 (역삼동) |\n| 지번 주소 | 서울특별시 강남구 역삼동 737 |\n| 건물명 | 강남파이낸스센터 (GFC) |\n| PNU | 1168010100107370000 |\n| 건물관리번호 | 1168010100107370000023659 |\n| 우편번호 | 06236 |\n| 좌표 (경도, 위도) | 127.0365, 37.5000 |\n\n### 2.2 건물 메타데이터\n\n| 항목 | 값 |\n|---|---|\n| 주용도 | 업무시설 |\n| 부가 용도 | 업무시설, 근린생활시설, 운동시설 |\n| 구조 | 철골철근콘크리트구조(SRC) |\n| 지상 층수 | 45층 |\n| 지하 층수 | 8층 |\n| 건축면적 | 5,600.51 ㎡ |\n| 연면적 | 212,615.29 ㎡ (약 64,316평) |\n| 용적률 산정 연면적 | 130,933.99 ㎡ |\n| 건폐율 | 42.57% |\n| 용적률 | 995.19% |\n| 건물 높이 | 202.65 m |\n| 승객용 EV | 29대 |\n| 비상용 EV | 2대 |\n| 옥내 자동주차 | 1,300대 / 52,282.69 ㎡ |\n| 사용승인일 | 2001-07-31 |\n| 건물 연령 (2026 기준) | 약 25년 |\n| 지붕 | (철근)콘크리트(평지붕) |\n| 위반건축물 여부 | 미확인(null) |\n\n### 2.3 토지 메타데이터\n\n| 항목 | 값 |\n|---|---|\n| 지목 | 대 |\n| 토지 면적 | 13,156.7 ㎡ |\n| 형상 | 세로장방 |\n| 지세 | 평지 |\n| 도로 접면 | 광대소각 (광대로각지) |\n| 용도지역 | 일반상업지역 |\n| 용도지구 | 중심지미관지구 (대표), 역사문화미관지구, 일반미관지구 |\n| 용도구역 | 지구단위계획구역 |\n| 기타 지정 | 대공방어협조구역, 과밀억제권역, 토지거래허가구역(2025년 신규), 리모델링지구(2026-04), 가로구역별 최고높이 제한지역, 건축선 저촉 |\n| 공시지가 추이(원/㎡) | 2013년 33.7M → 2022년 66.44M (9년간 약 2배 상승) |\n\n---\n\n## 3. 평가 요약 표\n\n| 축 | 점수 | 등급 | 가중치 | 한 줄 코멘트 |\n|---|---|---|---|---|\n| **ESG** | 52 | B | 1/3 | SRC 구조 내구성은 양호하나 G-SEED 미인증 및 25년 경과로 친환경성 한계 |\n| **인지도(AWARENESS)** | 82 | A | 1/3 | 'GFC' 약칭까지 검색수요 확보된 강남 대표 프라임 오피스 브랜드 |\n| **상권·입지 활성도(VITALITY)** | 91 | A+ | 1/3 | 역삼역 직결 + 반경 300m POI 637개의 서울 최상위 업무상권 |\n| **종합(COMPOSITE)** | **75.0** | **B+** | — | 입지·브랜드 강점 vs ESG 보완 필요의 명확한 콘트라스트 |\n\n> 본 평가에서 N/A로 제외된 축은 없으며, 3축 모두 산식에 반영되었다.\n\n---\n\n## 4. ESG 상세 (점수: 52 / B)\n\n### 4.1 평가 근거 데이터\n\n| 항목 | 값 |\n|---|---|\n| G-SEED(녹색건축인증) | not_found (미확인) |\n| 건물 연령 | 25년 (2001-07-31 준공) |\n| 주용도 | 업무시설 |\n| 구조 | 철골철근콘크리트구조 |\n| 위반건축물 | null (미확인) |\n| 토지 환경 메타 | 데이터 결측 |\n\n### 4.2 강점\n\n- 철골철근콘크리트(SRC) 구조로 내구성 및 구조 안전성이 높음\n- 연면적 약 21만 ㎡ 규모의 대형 업무시설로 공공 인프라(교통·상업) 접근성 측면에서 사회적 활용도가 높을 가능성\n- 위반건축물 여부가 null로 확인되지 않아 현재 시점에서 위반 확정 리스크는 없음\n- 지하 8층·지상 45층 규모의 복합 업무시설로 도심 고밀 개발 효율성 측면에서 토지 이용 효율이 높음 (용적률 995.19%)\n\n### 4.3 약점\n\n- G-SEED(녹색건축인증) 데이터 미확인 — 친환경 인증 실적 부재\n- 준공 후 약 25년 경과, 2001년 기준 에너지 효율 설계 기준 적용으로 현행 대비 열위 가능성\n- 토지 환경 메타데이터 결측으로 입지의 환경성·공익성 정량평가 제한\n- 거버넌스(G) 항목은 제공 데이터로 평가 불가 — 부분 N/A\n\n### 4.4 리스크 디스클로저\n\n| 리스크 | 내용 |\n|---|---|\n| 녹색건축 규제 강화 | G-SEED 미인증 상태에서 의무화 규제 확대 시 인증 취득·리모델링 비용 발생 |\n| 노후 설비 교체 | 25년 경과에 따른 냉난방·전기·배관·승강기(승객용 29대) 등 교체 CAPEX 부담 |\n| 위반사항 잠재 | violation_yn null로 실사 시 위반 발견 가능성 잔존 |\n| 환경 규제 불확실성 | 토지 용도지역 환경 규제 데이터 부재 |\n\n### 4.5 종합 평가\n\n본 건물은 2001년 준공된 지상 45층·지하 8층, 연면적 약 21만 ㎡의 대형 업무시설로, SRC 구조 기반의 높은 구조적 내구성을 보유한다. 그러나 준공 후 25년이 경과하여 현행 에너지 절약 설계기준 대비 에너지 성능 열위 가능성이 있으며, G-SEED 인증 이력이 확인되지 않아 친환경 가점 근거가 부재하다. 사회(S) 측면은 업무시설로서 중립적이며, 거버넌스(G)는 데이터 부족으로 평가 보류 영역이다. 기본 점수 50에서 구조·규모 강점을 반영하여 **52점(B등급)**으로 산정한다.\n\n---\n\n## 5. 인지도 상세 (점수: 82 / A)\n\n### 5.1 네이버 통합검색 채널별 볼륨 ('강남파이낸스센터' 단독 쿼리)\n\n| 채널 | 결과 수 |\n|---|---|\n| 블로그 | 14,964 |\n| 뉴스 | 11,408 |\n| 웹 | 3,073,248 |\n| 이미지 | 70,367 |\n| 카페 | 11,257 |\n| 로컬 | 5 |\n| **합계** | **3,181,249** |\n\n### 5.2 SearchAd 키워드 월간 검색량 (PC + 모바일)\n\n| 키워드 | PC | 모바일 | 합계 | 광고 경쟁 |\n|---|---|---|---|---|\n| 강남파이낸스센터 | 1,130 | 2,410 | **3,540** | 중간 |\n| GFC | 820 | 1,580 | **2,400** | 중간 |\n| 강남파이낸스센터임대 | 40 | 50 | 90 | 높음 |\n| 역삼GFC | 140 | 330 | 470 | 중간 |\n\n> 본명+약칭 합산 월 약 6,000건 수준의 직접 브랜드 검색 수요 보유.\n\n### 5.3 강점\n\n- 모든 검색 채널에서 풍부한 콘텐츠 볼륨 (블로그 1.5만, 뉴스 1.1만, 이미지 7만)\n- 'GFC' 약칭 키워드까지 독립 검색량 형성 — 브랜드 인지도 내재화 단계\n- 카카오 로컬 동일 주소 기준 99개 POI 매칭 (금융·F&B·스포츠 등 다양)\n- 나무위키·위키피디아·공식 홈페이지 상위 노출로 정보 신뢰도 확보\n- 앤트로픽 한국지사 등록(2026-05), 금감원 거점점포 검사 대상 등 최신 미디어 노출 지속\n\n### 5.4 약점\n\n- SearchAd 핵심 키워드 월 검색량 약 3,500건은 소비자 복합시설(코엑스·IFC몰 등) 대비 낮은 수준\n- 네이버 로컬 채널 결과 5건으로 지도·장소 기반 검색 최적화 미흡\n- 콘텐츠 상당수가 사무실 임대 중개 목적 — B2B 인지도 편중, 대중 팬덤 부족\n\n### 5.5 리스크 디스클로저\n\n| 리스크 | 내용 |\n|---|---|\n| 앵커 테넌트 이탈 보도 | G마켓 본사 성수동 이전(2025년 하반기) 등 부정적 연관 키워드 형성 |\n| 투자 정보 콘텐츠 부족 | 임대·중개 콘텐츠 편중으로 STO 투자자 관점 정보 희소 |\n| 약칭 모호성 | 'GFC' = Global Financial Crisis 등 해외 투자자 대상 명확성 저하 |\n\n### 5.6 종합 평가\n\nGFC는 서울 프라임 오피스 빌딩 중 최상위권의 브랜드 인지도를 보유한다. 본명·약칭 모두에서 안정적 검색 수요가 발생하며, 위키·공식 홈페이지·미디어 노출 등 정보 인프라가 견고하다. 다만 일반 소비자 인지도보다는 B2B·투자자 특화 인지도로 편중되어 있어 STO 리테일 마케팅 시 별도의 브랜딩 전략이 필요할 수 있다. **82점(A등급)**.\n\n---\n\n## 6. 상권·입지 활성도 상세 (점수: 91 / A+)\n\n### 6.1 카카오 POI 반경 300m / 500m 카테고리별 집계\n\n| 카테고리 | 300m | 500m |\n|---|---|---|\n| 지하철역 | 1 (역삼역 2호선, 72m) | 1 |\n| 음식점 | 277 | 675 |\n| 카페 | 84 | 178 |\n| 은행/ATM | 42 | 72 |\n| 병원 | 56 | 93 |\n| 약국 | 14 | 23 |\n| 학원 | 30 | 99 |\n| 편의점 | 22 | 50 |\n| 주차장 | 38 | 102 |\n| 부동산 중개업소 | 55 | 124 |\n| 숙박 | 12 | 44 |\n| 문화시설 | 3 | 12 |\n| 공공기관 | 2 | 2 |\n| 대형마트 | 0 | 0 |\n| 학교 | 0 | 0 |\n| 어린이집/유치원 | 0 | 5 |\n| 관광명소 | 0 | 0 |\n| **합계(300m)** | **637** | — |\n\n### 6.2 소상공인 상권정보 반경 300m (총 100건 샘플)\n\n| 대분류 | 건수 |\n|---|---|\n| 과학·기술 | 45 |\n| 음식 | 15 |\n| 소매 | 12 |\n| 부동산 | 8 |\n| 교육 | 8 |\n| 시설관리·임대 | 5 |\n| 수리·개인 | 3 |\n| 보건의료 | 2 |\n| 숙박 | 1 |\n| 예술·스포츠 | 1 |\n\n> 상위 업종: 경영 컨설팅(10), 부동산 중개(8), 세무사(8), 광고 대행(7) — 전형적 프라임 오피스 배후 전문서비스 클러스터.\n\n### 6.3 공시지가 추이 (대상 필지)\n\n| 기준연도 | 공시지가(원/㎡) |\n|---|---|\n| 2013 | 33,700,000 |\n| 2017 | 41,900,000 |\n| 2020 | 54,510,000 |\n| 2022 | 66,440,000 |\n\n> 2013→2022 9년간 약 1.97배 상승, 강남 핵심 업무지구 토지가치 안정 상승 기조 확인.\n\n### 6.4 강점\n\n- 역삼역 2호선 72m, 지하 직결 가능 — 최상급 대중교통\n- 반경 300m POI 637개, 음식점·카페만 361개의 초고밀도 상권\n- 은행·ATM 42개, 병원 56개 등 금융·의료 인프라 압도적\n- 과학·기술(컨설팅·디자인)·전문서비스 업종 다양성 우수\n- 인근 GS타워·포스코타워 등 대형 오피스 앵커 클러스터\n- 공시지가 장기 상승 추세, 일반상업지역·지구단위계획구역\n\n### 6.5 약점\n\n- 대형마트 0개, 관광명소 0개 — 대규모 집객 시설 부재\n- 학교·어린이집 부재 — 가족·주거 배후수요 취약\n- 국토부 실거래가 데이터 미수집(PublicDataReader 미설치) — 거래 활성도 직접 검증 불가\n\n### 6.6 리스크 디스클로저\n\n| 리스크 | 내용 |\n|---|---|\n| 주말 공동화 | 오피스 의존형 상권 특성상 주말·공휴일 유동인구 급감 |\n| 종속 상권 연동 | 테헤란로 오피스 공실 증가 시 F&B 동반 위축 |\n| 토지거래허가구역 | 2025년 신규 지정으로 거래 절차상 제약 |\n| 리모델링지구 지정 | 2026-04 지정으로 향후 정비계획 변동 가능성 |\n\n### 6.7 종합 평가\n\n대상지는 서울 강남구 테헤란로 핵심 업무축의 중심에 위치하여, 반경 300m 내 637개 POI라는 초고밀도 상권을 형성하고 있다. 역삼역 2호선 직결, 풍부한 외식·금융·의료 인프라, 전문서비스 업종 클러스터링이 결합된 서울 최상위 업무 상권이다. 공시지가도 장기 상승세를 이어가고 있어 토지 가치 안정성이 매우 높다. 주말 공동화·실거래 데이터 결측을 감안하더라도 **91점(A+등급)**의 평가가 합당하다.\n\n---\n\n## 7. 종합 STO 적합성 의견\n\n### 7.1 종합 점수 산정\n\n| 축 | 점수 | 가중치 |\n|---|---|---|\n| ESG | 52 | 1/3 |\n| 인지도 | 82 | 1/3 |\n| 상권·입지 | 91 | 1/3 |\n| **종합** | **75.0** | **B+** |\n\n### 7.2 투자자 관점 적합성\n\n- **유동성 확보 측면**: 검증된 브랜드 인지도(GFC)와 강남 테헤란로 랜드마크 지위로 리테일 STO 투자자 모집 시 인지 비용이 낮음 → 1차 청약 흥행 가능성 양호.\n- **현금흐름 안정성**: 업무시설 주용도, 대규모 임차 면적(연면적 약 21만 ㎡), 다국적 기업(앤트로픽 등) 및 금융기관(KB·NH·SC제일·하나) 입주로 임대수익 기반 안정.\n- **자산가치 보존**: 일반상업지역 + 지구단위계획구역 + 공시지가 9년 2배 상승의 토지가치 강점 보유.\n\n### 7.3 발행 시 강조 포인트\n\n1. **위치 프리미엄**: 역삼역 2호선 지하 직결, 테헤란로 정중앙 입지, 강남 프라임 오피스 빌딩 임대료 최상위권 사실.\n2. **앵커 테넌트**: 다수의 금융기관·글로벌 IT기업 입주, GFC몰을 통한 상업 가시성.\n3. **랜드마크 가치**: 'GFC' 약칭으로 정착된 브랜드성, 위키피디아·나무위키 등 공신력 있는 레퍼런스.\n4. **토지 가치**: 13,156.7 ㎡ 대지 + 일반상업지역 용적률 활용 + 장기 공시지가 상승 기조.\n\n### 7.4 리스크 디스클로저 (필수 명시)\n\n| 구분 | 내용 |\n|---|---|\n| ESG | G-SEED 등 친환경 인증 미보유, 25년 경과로 친환경 리모델링 CAPEX 가능성 |\n| ESG | 위반건축물 여부 미확인 — 발행 전 정밀 실사 권고 |\n| 인지도 | G마켓 등 일부 앵커 테넌트 이탈 보도로 일시적 공실 우려 |\n| 입지 | 오피스 의존형 상권의 주말 공동화 특성 |\n| 규제 | 토지거래허가구역(2025), 리모델링지구 지정(2026-04), 건축선 저촉 — 거래·정비 절차상 추가 검토 필요 |\n| 데이터 | 실거래가 및 일부 토지 환경 데이터 결측에 따른 평가 불확실성 |\n\n---\n\n## 8. 데이터 한계 및 출처\n\n### 8.1 데이터 한계\n\n| 항목 | 한계 내용 |\n|---|---|\n| G-SEED 친환경 인증 | API 매칭 결과 not_found — 인증 실제 보유 여부 추가 확인 필요 |\n| 위반건축물 여부 | violation_yn 값 null — 표제부 데이터에서 미확정 |\n| 토지 환경 메타 | ESG 평가용 land_summary 비어 있음 |\n| 거버넌스(G) | 운영사·관리주체 정보 미수집으로 G 항목 평가 불가 |\n| 실거래가 | PublicDataReader 미설치로 국토부 거래 데이터 미수집 |\n| 공시지가 최신값 | 본 보고서 수록 항목은 1990~2022 데이터 (최신 연도 일부 누락) |\n| 네이버 로컬 | 채널 결과 5건으로 지도 기반 인지도 표본 제한 |\n| 소상공인 상권정보 | 샘플 100건으로 전체 업종 커버리지 한계 |\n\n### 8.2 주요 출처\n\n- **주소·식별자**: 카카오 로컬 주소 검색 API\n- **토지대장·공시지가·토지이용**: 국토교통부 토지·임야대장, 개별공시지가, 토지이용계획 정보\n- **건축물대장**: 국토교통부 건축물대장(표제부·총괄·층별·전유부·지역지구)\n- **인지도**: 네이버 검색 API(블로그·뉴스·웹·이미지·카페·로컬), 네이버 SearchAd 키워드 도구, 카카오 로컬 키워드 검색\n- **상권·입지**: 카카오 로컬 카테고리 검색(반경 300m/500m), 소상공인진흥공단 상권정보\n- **친환경 인증**: G-SEED 데이터베이스 매칭 결과\n- **평가 기준일**: 2026-05-14\n\n> 본 보고서는 제공된 평가 결과 JSON에 한정하여 작성되었으며, 실제 STO 발행 의사결정 전 별도의 법무·세무·기술 실사(DD)와 최신 데이터 재검증을 반드시 수행해야 한다."
+}

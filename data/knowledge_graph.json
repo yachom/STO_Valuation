@@ -1,0 +1,2868 @@
+{
+  "directed": true,
+  "multigraph": true,
+  "graph": {},
+  "nodes": [
+    {
+      "type": "Asset",
+      "name": "서울특별시 동작구 사당로 28 (상도동)",
+      "asset_name": "서울특별시 동작구 사당로 28 (상도동)",
+      "road": "서울특별시 동작구 사당로 28 (상도동)",
+      "jibun": "서울특별시 동작구 상도동 505-1",
+      "sigungu": "동작구",
+      "bjdong": "상도동",
+      "pnu": "1159010200105050001",
+      "location": "동작구 상도동",
+      "road_address": "사당로 28",
+      "address_type": "road_address",
+      "proximity": "7호선 상도역 인근",
+      "address": "서울특별시 동작구 상도동 505-1",
+      "district": "동작구",
+      "dong": "상도동",
+      "id": "59f775681c6ecbf5"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "\"전세 줄고 월세 오른다\"…서울 전월세시장 '불안', 장기임대 수요↑",
+      "link": "https://weekly.hankooki.com/news/articleView.html?idxno=7162110",
+      "pubDate": "Wed, 29 Apr 2026 16:12:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "370678925a3ffa27"
+    },
+    {
+      "type": "Asset",
+      "name": "엑소디움 상도역",
+      "location": "동작구 상도동",
+      "max_lease_term": "10년",
+      "status": "계약 진행 중",
+      "project_type": "주거시설",
+      "supply_model": "10년 거주 후 분양전환",
+      "id": "f88db9097feb9562"
+    },
+    {
+      "type": "Location",
+      "name": "동작구 상도동",
+      "sigungu": "동작구",
+      "bjdong": "상도동",
+      "characteristic": "역세권",
+      "region": "서울특별시",
+      "city": "서울특별시",
+      "region_type": "강남권 인접 지역",
+      "role": "여의도, 강남 등 주요 업무지구의 배후 주거지역",
+      "id": "d7d4b14f9213620a"
+    },
+    {
+      "type": "Issue",
+      "name": "서울 전월세시장 불안",
+      "trend": "전세 감소, 월세 상승",
+      "scope": "서울 전역",
+      "id": "7c86aee11ae118c6"
+    },
+    {
+      "type": "Metric",
+      "name": "장기임대 수요",
+      "direction": "증가",
+      "context": "전월세시장 변화",
+      "id": "0ba5ac81cc5f69b7"
+    },
+    {
+      "type": "Axis",
+      "name": "VITALITY",
+      "id": "6fb8838c8da80e09"
+    },
+    {
+      "type": "Axis",
+      "name": "AWARENESS",
+      "id": "7239324297247f13"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[전문가 칼럼] 고시촌 이미지 벗는 노량진…여의도·용산 잇는 신흥 삼...",
+      "link": "https://www.tfmedia.co.kr/news/article.html?no=204132",
+      "pubDate": "Wed, 29 Apr 2026 13:56:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "bc6653e7d67e2ad4"
+    },
+    {
+      "type": "Asset",
+      "name": "노량진 뉴타운",
+      "location": "노량진",
+      "id": "6ba432fb6e937d95"
+    },
+    {
+      "type": "Location",
+      "name": "동작구",
+      "sigungu": "동작구",
+      "region_type": "자치구",
+      "city": "서울특별시",
+      "region": "서울특별시",
+      "id": "1b5bdcc4ec333931"
+    },
+    {
+      "type": "Location",
+      "name": "여의도",
+      "region_type": "주요 상업지구",
+      "id": "2938cea0631ed036"
+    },
+    {
+      "type": "Location",
+      "name": "용산",
+      "region_type": "주요 상업지구",
+      "id": "06a256c114e3c3f3"
+    },
+    {
+      "type": "Event",
+      "name": "노량진 뉴타운 완성",
+      "event_type": "개발 완료",
+      "impact_area": "상도동, 동작구 일대",
+      "id": "b6cecfc335f8dcc2"
+    },
+    {
+      "type": "Axis",
+      "name": "ESG",
+      "id": "5e774fbeec33ea7f"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "7억대로 반포자이, 잠실르엘 산다…미리내집, 총 441가구 모집",
+      "link": "https://realty.chosun.com/site/data/html_dir/2026/04/22/2026042201502.html",
+      "pubDate": "Wed, 22 Apr 2026 10:26:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "cfecb118cbef5afd"
+    },
+    {
+      "type": "Event",
+      "name": "미리내집 공급 프로젝트",
+      "scale": "441가구",
+      "unit_count": 85,
+      "focus": "역세권",
+      "id": "5ba80cd72252c50a"
+    },
+    {
+      "type": "Asset",
+      "name": "메이플자이",
+      "unit_size": "43㎡",
+      "recent_transaction": "10억5000만원 (2026년 4월 전세)",
+      "id": "bcb8974132ff0a89"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "상도역 인근 '상도역 엑소디움', 공급 및 청약 결과 확인",
+      "link": "https://www.etoday.co.kr/news/view/2577980",
+      "pubDate": "Wed, 22 Apr 2026 10:20:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "e6fe3a2953786598"
+    },
+    {
+      "type": "Asset",
+      "name": "상도역 엑소디움",
+      "location": "서울 동작구 상도역 인근",
+      "status": "완공",
+      "id": "c9c2dac5a47dd5aa"
+    },
+    {
+      "type": "Location",
+      "name": "상도동",
+      "sigungu": "동작구",
+      "development_status": "신속통합기획 대상지",
+      "property_type": "대학가 원룸 밀집지역",
+      "id": "f9beeaf4642c3f2f"
+    },
+    {
+      "type": "Organization",
+      "name": "동작구청",
+      "facility": "신청사",
+      "leader": "박일하",
+      "id": "b4ca8411a62e5c5c"
+    },
+    {
+      "type": "Organization",
+      "name": "동작구의회",
+      "id": "3d8e5a21e2b578da"
+    },
+    {
+      "type": "Organization",
+      "name": "동작구 보건소",
+      "id": "a63f2ad49fcc24e3"
+    },
+    {
+      "type": "Metric",
+      "name": "지하철 접근성",
+      "impact": "주거 여건 및 가격 형성에 영향",
+      "id": "e3a2536aa87fb703"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "서울 반포 분상제ㆍ노량진 비분상제 아파트 청약경쟁률 30배차",
+      "link": "https://www.dnews.co.kr/uhtml/view.jsp?idxno=202604151453418860390",
+      "pubDate": "Wed, 15 Apr 2026 15:42:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "39d182a43916536a"
+    },
+    {
+      "type": "Asset",
+      "name": "상도파크자이",
+      "location": "서울특별시 동작구 상도동",
+      "completion_year": 2016,
+      "unit_type": "전용 84㎡",
+      "recent_transaction_price": "21억5000만원",
+      "recent_transaction_floor": "25층",
+      "recent_transaction_date": "2026-03-30",
+      "id": "fb41ba056aabf6bc"
+    },
+    {
+      "type": "Asset",
+      "name": "라클라체 자이 드파인",
+      "location": "동작구 노량진동",
+      "project_type": "신규 분양",
+      "district_type": "비분상제",
+      "id": "d5b6b4d31123b5ae"
+    },
+    {
+      "type": "Event",
+      "name": "청약경쟁률 비교",
+      "context": "반포 분상제 vs 노량진 비분상제 아파트",
+      "competition_rate_gap": "약 30배",
+      "id": "e4ca6cee7ad85380"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "공급 없는데 매물 잠겨…\"입지 좋은 곳 청약이 탈출구\"",
+      "link": "https://n.news.naver.com/mnews/article/015/0005283673?sid=101",
+      "pubDate": "Wed, 06 May 2026 15:52:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "8a3ef4c8df2904a8"
+    },
+    {
+      "type": "Asset",
+      "name": "동작 센트럴 동문 디 이스트",
+      "location": "서울특별시 동작구 상도동",
+      "unit_count": 301,
+      "status": "분양예정",
+      "id": "4d19907aa9f10a51"
+    },
+    {
+      "type": "Organization",
+      "name": "동문건설",
+      "role": "시공사",
+      "id": "15efe9f721319095"
+    },
+    {
+      "type": "Organization",
+      "name": "아실",
+      "role": "부동산 빅데이터 업체",
+      "business": "부동산 빅데이터 업체",
+      "id": "15c29e9d625795b9"
+    },
+    {
+      "type": "Event",
+      "name": "신규 분양",
+      "timing": "2026년 5월",
+      "period_analyzed": "2026년 3월 31일~4월 30일",
+      "id": "f1f7291392214f11"
+    },
+    {
+      "type": "Issue",
+      "name": "매물 부족",
+      "scope": "서울 아파트 시장",
+      "description": "공급 없는 상황에서 매물 잠김",
+      "id": "9509116f9352cf50"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[아유경제_부동산] 서울시, 신혼부부 '미리내집' 441가구 입주자 모집",
+      "link": "http://www.areyou.co.kr/news/articleView.html?idxno=93463",
+      "pubDate": "Tue, 21 Apr 2026 11:40:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "37ad5d89d416a9db"
+    },
+    {
+      "type": "Asset",
+      "name": "힐스테이트동작시그니처",
+      "location": "동작구 상도동",
+      "unit_count": 91,
+      "project_type": "신규 공급 단지",
+      "id": "0fc38e3a6ac0df01"
+    },
+    {
+      "type": "Organization",
+      "name": "서울시",
+      "role": "공급자",
+      "id": "ce1c470c17738e5c"
+    },
+    {
+      "type": "Event",
+      "name": "미리내집 입주자 모집",
+      "total_units": 441,
+      "total_complexes": 85,
+      "target_demographic": "신혼부부",
+      "date": "2026-04-21",
+      "scope": "85개 단지",
+      "id": "58f0953b18b98370"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[#부동산 나들이] GS '인도 재생에너지 공략'·'미리내집' 441세대 모집·...",
+      "link": "https://www.newsworks.co.kr/news/articleView.html?idxno=838441",
+      "pubDate": "Tue, 21 Apr 2026 11:32:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "1a1a47e0b4b3126a"
+    },
+    {
+      "type": "Asset",
+      "name": "힐스테이트 동작시그니처",
+      "location": "동작구 상도동",
+      "units": 91,
+      "program": "미리내집",
+      "unit_count": 91,
+      "status": "신규",
+      "supply_units": 91,
+      "target_market": "신혼부부",
+      "nearby_stations": [
+        "상도역(7호선)",
+        "장승배기역(7호선)"
+      ],
+      "id": "0c1df407ae4f2ee0"
+    },
+    {
+      "type": "Organization",
+      "name": "GS건설",
+      "role": "개발사/시행사",
+      "id": "59832c4084c6e82e"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "엑소디움 상도역, 평균 3.76대 1 경쟁률…계약 진행 중",
+      "link": "https://n.news.naver.com/mnews/article/015/0005277575?sid=101",
+      "pubDate": "Tue, 21 Apr 2026 11:12:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "af0cb4645a7002f6"
+    },
+    {
+      "type": "Location",
+      "name": "서울 동작구 상도동",
+      "sigungu": "동작구",
+      "bjdong": "상도동",
+      "id": "332ecc1d4e957cb5"
+    },
+    {
+      "type": "Event",
+      "name": "엑소디움 상도역 당첨자 발표",
+      "date": "2026-04-18",
+      "competition_rate": "3.76:1",
+      "id": "42b72ed900fc8972"
+    },
+    {
+      "type": "Event",
+      "name": "상도동 신속통합기획 재개발",
+      "method": "신속통합기획",
+      "id": "0c986a824a280aca"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "동문건설, 서울 동작구 일원 ‘동작 센트럴 동문 디 이스트’ 분양 예정",
+      "link": "https://n.news.naver.com/mnews/article/215/0001249687?sid=101",
+      "pubDate": "Tue, 21 Apr 2026 10:46:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "f2c402a988d3425c"
+    },
+    {
+      "type": "Location",
+      "name": "동작구청 종합행정타운",
+      "facilities": [
+        "동작구청",
+        "구의회",
+        "보건소"
+      ],
+      "proximity": "도보 생활권",
+      "id": "0977f8fd533ccc5f"
+    },
+    {
+      "type": "Event",
+      "name": "노량진뉴타운 개발",
+      "location": "동작구",
+      "id": "3d2908a4b7bd3fbb"
+    },
+    {
+      "type": "Event",
+      "name": "복합문화센터 신설",
+      "location": "동작구",
+      "id": "e76bc604daa18ca4"
+    },
+    {
+      "type": "Event",
+      "name": "상도동 재개발",
+      "location": "상도동",
+      "id": "a85a09ca061072b8"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "잠실르엘 전세를 5억원에…보증금 70%만 내도 되는 미리내집 441세대 모...",
+      "link": "https://n.news.naver.com/mnews/article/016/0002632605?sid=101",
+      "pubDate": "Tue, 21 Apr 2026 06:01:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "865cc842f10f6317"
+    },
+    {
+      "type": "Location",
+      "name": "상도역",
+      "distance_from_asset": "도보 10분 내",
+      "line": "지하철 7호선",
+      "description": "초역세권",
+      "id": "2336210e35f24b53"
+    },
+    {
+      "type": "Event",
+      "name": "미리내집 모집",
+      "program_type": "전세 보증금 경감 프로그램",
+      "deposit_ratio": "70%",
+      "scale": "441세대",
+      "id": "48b0d21f31002d1d"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "'재개발 대어' 상도15구역 건설사 6곳 눈독",
+      "link": "https://n.news.naver.com/mnews/article/014/0005507652?sid=101",
+      "pubDate": "Tue, 14 Apr 2026 18:22:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "32bc213cbaf3edf0"
+    },
+    {
+      "type": "Asset",
+      "name": "상도15구역",
+      "location": "동작구 상도동 279번지 일대",
+      "area_sqm": 141286.8,
+      "basement_floors": 8,
+      "id": "3f988d57a4aee089"
+    },
+    {
+      "type": "Event",
+      "name": "상도15구역 재개발 사업",
+      "status": "ongoing",
+      "id": "d01e7549a53f06ef"
+    },
+    {
+      "type": "Asset",
+      "name": "상도동 성대빌라",
+      "location": "상도15구역 내",
+      "measurement_basis": "전용면적",
+      "id": "4f861cf5566c3db3"
+    },
+    {
+      "type": "Organization",
+      "name": "건설사 6곳",
+      "count": 6,
+      "interest": "상도15구역 재개발",
+      "id": "6360fad15539b208"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[부동산 현장탐방] 동작구, 16억원 호가 형성…추가 대책 주시",
+      "link": "https://news.einfomax.co.kr/news/articleView.html?idxno=4414368",
+      "pubDate": "Tue, 12 May 2026 14:50:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "3d7909cde8b20369"
+    },
+    {
+      "type": "Metric",
+      "name": "구축 아파트 매매 호가",
+      "value": "16억원대",
+      "asset_type": "구축 아파트",
+      "location": "동작구 상도동",
+      "id": "dd01e33010fbb629"
+    },
+    {
+      "type": "Issue",
+      "name": "다주택자 양도소득세 중과",
+      "policy_type": "세제 정책",
+      "impact_area": "동작구",
+      "id": "be3975cb2c4a72d0"
+    },
+    {
+      "type": "Metric",
+      "name": "동작구 아파트 매물 수",
+      "value": "2천건 이상",
+      "date": "2026년 3월말",
+      "trend": "감소",
+      "id": "328a9d452e7ca3e8"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "3억 저렴한데 구성은 동일 \"큰 집 필요한가요\"…84㎡ 분양 공급 넘어선...",
+      "link": "https://n.news.naver.com/mnews/article/277/0005756850?sid=101",
+      "pubDate": "Thu, 30 Apr 2026 07:00:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "c23d55f45a1503bc"
+    },
+    {
+      "type": "Asset",
+      "name": "상도 푸르지오 클라베뉴",
+      "location": "서울특별시 동작구 상도동",
+      "general_units": 771,
+      "unit_59sqm": 261,
+      "unit_84sqm": "미상",
+      "id": "352fedf0fc15e4c0"
+    },
+    {
+      "type": "Organization",
+      "name": "우리은행 부동산연구원",
+      "role": "시장분석기관",
+      "id": "51cbb43d26b2b4fd"
+    },
+    {
+      "type": "Person",
+      "name": "남혁우",
+      "affiliation": "우리은행 부동산연구원",
+      "id": "8b48dce43a9153d9"
+    },
+    {
+      "type": "Issue",
+      "name": "건축비 상승에 따른 분양가 경쟁력 변화",
+      "category": "시장가격",
+      "impact": "소형평면 공급 증가",
+      "id": "e9f160a69f4d05a9"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "금호건설 올해 아테라 첫 분양 돌입, 조완석 유상증자 뒤 LH 발주 사업서...",
+      "link": "https://www.businesspost.co.kr/BP?command=article_view&num=436371",
+      "pubDate": "Thu, 23 Apr 2026 14:52:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "b5dfa923d8e8ce02"
+    },
+    {
+      "type": "Asset",
+      "name": "서울특별시 동작구 상도동 주택사업",
+      "location": "서울특별시 동작구 상도동",
+      "status": "좌초(중단)",
+      "id": "ff06bdff70f11b31"
+    },
+    {
+      "type": "Organization",
+      "name": "금호건설",
+      "role": "개발사",
+      "id": "a2dd0d178ebd871f"
+    },
+    {
+      "type": "Person",
+      "name": "조완석",
+      "title": "금호건설 사장",
+      "id": "d8eca413e9965254"
+    },
+    {
+      "type": "Issue",
+      "name": "우발부채",
+      "resolution_method": "출자전환",
+      "id": "1238ee6932e5832f"
+    },
+    {
+      "type": "Event",
+      "name": "유상증자",
+      "related_person": "조완석",
+      "id": "4eab2e86c2e5c57c"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "7호선 상도역 인근 ‘상도역 대우 엑소디움’ 공급… 역세권 민간임대 ...",
+      "link": "https://n.news.naver.com/mnews/article/243/0000096438?sid=101",
+      "pubDate": "Thu, 16 Apr 2026 11:25:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "7a86f7ce3f868ae9"
+    },
+    {
+      "type": "Asset",
+      "name": "상도역 대우 엑소디움",
+      "location": "상도역 인근",
+      "developer": "대우건설",
+      "status": "청약 진행 중",
+      "id": "5354f6c3660deae1"
+    },
+    {
+      "type": "Location",
+      "name": "7호선 상도역",
+      "line": "7호선",
+      "id": "4b6dd7d1222df49b"
+    },
+    {
+      "type": "Event",
+      "name": "장승배기 종합행정타운 완공",
+      "date": "2025년 3월",
+      "location": "동작구",
+      "facilities": [
+        "동작구청 신청사",
+        "구의회",
+        "보건소"
+      ],
+      "id": "5147641168e21629"
+    },
+    {
+      "type": "Metric",
+      "name": "역세권 접근성",
+      "impact": "주거 편의성 및 자산 가치 향상",
+      "id": "f3fe7cd978435058"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "반토막 난 아파트 입주물량 … 노도강 넘어 서울 전역서 전세대란 폭탄...",
+      "link": "https://biz.newdaily.co.kr/site/data/html/2026/04/16/2026041600115.html",
+      "pubDate": "Thu, 16 Apr 2026 11:22:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "2e31e5995c7e5b92"
+    },
+    {
+      "type": "Asset",
+      "name": "상도더샵1차",
+      "location": "서울특별시 동작구 상도동",
+      "asset_type": "아파트",
+      "id": "3fedb168da548993"
+    },
+    {
+      "type": "Issue",
+      "name": "전세대란",
+      "severity": "심각",
+      "scope": "서울 전역",
+      "id": "e6950df4c62abf4d"
+    },
+    {
+      "type": "Metric",
+      "name": "서울 아파트 임대차 매물 감소",
+      "baseline_date": "2023-04-01",
+      "baseline_value": "7만74건",
+      "current_date": "2026-04-13",
+      "current_value": "2만9726건",
+      "decline_rate": "57.6%",
+      "id": "d152f0465e06ce49"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "“실거주하며 재개발 기다리자”…서울 빌라 거래량 61% 급증",
+      "link": "https://n.news.naver.com/mnews/article/011/0004617068?sid=101",
+      "pubDate": "Sun, 03 May 2026 21:06:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "a45f8fb8c10ed45c"
+    },
+    {
+      "type": "Asset",
+      "name": "다인캐슬2차",
+      "address": "동작구 상도동 244-29",
+      "exclusive_area": "27㎡",
+      "transaction_price_ratio": "123% (감정가 대비)",
+      "id": "f89eae94166a9ff2"
+    },
+    {
+      "type": "Event",
+      "name": "동작구 상도동 재개발 수요 증가",
+      "date": "2026년 4월~5월",
+      "region": "동작구 상도동",
+      "indicator": "빌라 거래량 61% 급증",
+      "id": "5523e2bc9fc22425"
+    },
+    {
+      "type": "Issue",
+      "name": "재개발 기대감에 따른 가격 상승",
+      "nature": "시장 심리",
+      "manifestation": "감정가 초과 낙찰",
+      "id": "55c83b961b547d3c"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "신고가 찍었는데 거래는 달랑 한 건 … 규제 탓 집값 '외톨이 상승' 빈번...",
+      "link": "https://biz.newdaily.co.kr/site/data/html/2026/04/30/2026043000208.html",
+      "pubDate": "Sun, 03 May 2026 06:00:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "a3726b43d67ad95d"
+    },
+    {
+      "type": "Asset",
+      "name": "상도두산위브",
+      "location": "서울특별시 동작구 상도동",
+      "unit_type": "전용 84㎡ A타입",
+      "transaction_date": "2026-04-04",
+      "transaction_price": "16억9000만원",
+      "id": "4212450a9c198fc6"
+    },
+    {
+      "type": "Organization",
+      "name": "한국부동산원",
+      "id": "68c724a220e5caf1"
+    },
+    {
+      "type": "Metric",
+      "name": "전국 아파트 매매거래",
+      "period": "2026년 3월",
+      "value": "5만6604가구",
+      "id": "7d7062d00d143e4e"
+    },
+    {
+      "type": "Issue",
+      "name": "규제로 인한 가격-거래량 불일치",
+      "description": "신고가 기록에도 불구하고 거래량 부진",
+      "id": "cf55c58c7ce092dc"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "반포자이가 7억?···신혼부부 위한 '강남행 막차' 떴다",
+      "link": "https://www.sisajournal-e.com/news/articleView.html?idxno=420710",
+      "pubDate": "Sat, 25 Apr 2026 09:00:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "07ceb4353a3ea314"
+    },
+    {
+      "type": "Location",
+      "name": "장승배기역",
+      "line": "지하철 7호선",
+      "id": "27e3bc996c8840f1"
+    },
+    {
+      "type": "Issue",
+      "name": "분할납부제 구조적 한계",
+      "description": "분할납부제는 부담을 뒤로 미루는 방식일 뿐 총액을 줄여주지 않음",
+      "id": "e8ffc6942d492341"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "“이주대란, 공공이 직접 해결” 동작구 ‘이주단지’ 실험 통할까 [부...",
+      "link": "https://n.news.naver.com/mnews/article/016/0002638328?sid=101",
+      "pubDate": "Sat, 02 May 2026 11:01:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "458d661aed1fd39f"
+    },
+    {
+      "type": "Event",
+      "name": "노량진뉴타운 재건축·재개발 사업",
+      "location": "동작구 노량진 일대",
+      "status": "관리처분 및 이주·철거 단계",
+      "id": "03c6e143e1625ffc"
+    },
+    {
+      "type": "Asset",
+      "name": "공공 이주단지",
+      "scale": "지하1층~지상 5층",
+      "purpose": "이주 대책",
+      "operator_type": "공공",
+      "id": "b2dc4f36022888f8"
+    },
+    {
+      "type": "Issue",
+      "name": "이주대란",
+      "category": "주거·이주 문제",
+      "scope": "서울 재건축·재개발 사업지",
+      "id": "3a5835fd59acd4c6"
+    },
+    {
+      "type": "Organization",
+      "name": "부동산R114",
+      "role": "부동산 정보 제공",
+      "id": "5138976a5b2a2efc"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[주택뉴스] 삼성물산 홈플랫폼 홈닉, 서해종합건설과 스마트 주거 기술...",
+      "link": "https://www.ibabynews.com/news/articleView.html?idxno=150868",
+      "pubDate": "Mon, 27 Apr 2026 15:46:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "a2388e784ebfb805"
+    },
+    {
+      "type": "Asset",
+      "name": "서울특별시 동작구 상도동 재개발·재건축 단지",
+      "location": "동작구 상도동",
+      "pnu": "1159010200105050001",
+      "project_type": "재개발·재건축",
+      "id": "b33272e81fd5d1a3"
+    },
+    {
+      "type": "Organization",
+      "name": "삼성물산",
+      "role": "홈플랫폼 홈닉 제공",
+      "business": "정비사업(재개발)",
+      "target_region": "강남권",
+      "id": "36c85131f1f796f0"
+    },
+    {
+      "type": "Organization",
+      "name": "서해종합건설",
+      "role": "스마트 주거 기술 협력",
+      "id": "8e2a4e6117f86748"
+    },
+    {
+      "type": "Event",
+      "name": "냉·난방비 제로화 프로젝트",
+      "description": "세계 최초 재개발·재건축 단지 냉·난방비 제로화 실현",
+      "location": "상도동",
+      "id": "65746660a3f2e59e"
+    },
+    {
+      "type": "Issue",
+      "name": "에너지 효율화",
+      "focus": "스마트 주거 기술을 통한 냉난방비 절감",
+      "id": "b420ce4c91668344"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "동작구 '엑소디움 상도역' 공급… 10년 거주 후 분양전환 방식 적용",
+      "link": "https://www.newspim.com/news/view/20260427000763",
+      "pubDate": "Mon, 27 Apr 2026 13:15:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "5058940fe0f136cc"
+    },
+    {
+      "type": "Event",
+      "name": "엑소디움 상도역 청약 접수",
+      "date_start": "2026-04-11",
+      "date_end": "2026-04-16",
+      "id": "ff3031b6b7291175"
+    },
+    {
+      "type": "Issue",
+      "name": "전세 물량 축소 및 월세 부담 증가",
+      "category": "주거시장",
+      "impact": "주거 선택 기준 변화",
+      "id": "60be71237041e1ad"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[르포] 고분양가 논란에도 노량진뉴타운 청약 선전…후속타자 '아크로 ...",
+      "link": "https://www.asiatoday.co.kr/view.php?key=20260420010005912",
+      "pubDate": "Mon, 20 Apr 2026 19:00:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "165dfa2666d49328"
+    },
+    {
+      "type": "Asset",
+      "name": "e편한세상 상도 노빌리티",
+      "location": "동작구 상도동",
+      "unit_size": "84㎡",
+      "total_units": 893,
+      "completion_year": 2018,
+      "id": "f6d26dce50cea0b8"
+    },
+    {
+      "type": "Event",
+      "name": "노량진뉴타운 청약",
+      "location": "동작구 노량진",
+      "id": "8661c3ed16887848"
+    },
+    {
+      "type": "Issue",
+      "name": "고분양가 논란",
+      "location": "동작구 노량진뉴타운",
+      "nature": "가격 논쟁",
+      "id": "d76668fb8ba7d8f7"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "재개발 기대에 서울 빌라 거래 활발…성북동은 1년 새 8배[집슐랭]",
+      "link": "https://n.news.naver.com/mnews/article/011/0004617230?sid=101",
+      "pubDate": "Mon, 04 May 2026 11:36:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "3975843354a36cb6"
+    },
+    {
+      "type": "Asset",
+      "name": "다인캐슐2차",
+      "location": "동작구 상도동 244-29",
+      "unit_size": "27㎡",
+      "transaction_date": "2026년 4월",
+      "id": "c65e18d90e9aede7"
+    },
+    {
+      "type": "Organization",
+      "name": "NH농협은행",
+      "role": "부동산 전문 평가기관",
+      "id": "4d3e8c6ff12b1ed5"
+    },
+    {
+      "type": "Person",
+      "name": "윤수민",
+      "title": "NH농협은행 부동산 전문위원",
+      "id": "d152a4108b2f5468"
+    },
+    {
+      "type": "Event",
+      "name": "재개발 기대감",
+      "region": "동작구 상도동",
+      "impact": "빌라 거래 활발화",
+      "id": "ea45ebd78c496de4"
+    },
+    {
+      "type": "Metric",
+      "name": "낙찰가 대비 감정가 비율",
+      "value": "123%",
+      "asset": "다인캐슐2차",
+      "interpretation": "감정가 초과 낙찰",
+      "id": "0630f6105ca3d588"
+    },
+    {
+      "type": "Issue",
+      "name": "서울 신축 아파트 공급 제약",
+      "scope": "서울 전역",
+      "consequence": "기존 주택 재건축 수요 증가",
+      "id": "aee2786d58dc5862"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "삼성물산, 정비사업 수주 10조 청신호…강남권 핵심단지 무혈입성 예고",
+      "link": "https://n.news.naver.com/mnews/article/011/0004617136?sid=101",
+      "pubDate": "Mon, 04 May 2026 07:32:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "3d0a651efcc6648a"
+    },
+    {
+      "type": "Asset",
+      "name": "동작구 상도동 다세대 주택",
+      "location": "서울특별시 동작구 상도동",
+      "market_signal": "경매 낙찰가 감정가 대비 123%",
+      "id": "9338a94b002ea279"
+    },
+    {
+      "type": "Event",
+      "name": "재개발 정비사업 수주 확대",
+      "scale": "10조 규모",
+      "actor": "삼성물산",
+      "impact_region": "강남권",
+      "id": "c0e3725116c50e67"
+    },
+    {
+      "type": "Metric",
+      "name": "경매 낙찰가율",
+      "value": "123%",
+      "base": "감정가",
+      "asset_type": "다세대 주택",
+      "id": "7700a341735b2747"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "대학가 덮친 월세 상승…청춘은 더 좁은 방으로[르포]",
+      "link": "https://n.news.naver.com/mnews/article/003/0013906966?sid=101",
+      "pubDate": "Fri, 24 Apr 2026 04:30:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "52444e9e4e52e6b0"
+    },
+    {
+      "type": "Issue",
+      "name": "월세 상승",
+      "category": "주거비 부담",
+      "affected_demographic": "청년층/대학생",
+      "id": "97afb262fe0edbae"
+    },
+    {
+      "type": "Metric",
+      "name": "상도동 원룸 월세",
+      "deposit": "1000만원",
+      "monthly_rent": "약 65만원",
+      "additional_costs": "평균 10만원 이상",
+      "id": "5ecb2328ed7f2dc5"
+    },
+    {
+      "type": "Metric",
+      "name": "동작구 평균 월세",
+      "value": "62만원",
+      "comparison": "서울 평균보다 낮음",
+      "id": "23335b1831175bdd"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "국평 25억 노량진뉴타운 청약 흥행 증명…'동작 센트럴 동문 디 이스트...",
+      "link": "https://www.joongangenews.com/news/articleView.html?idxno=512616",
+      "pubDate": "Fri, 17 Apr 2026 10:40:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "aeed3650b35d0445"
+    },
+    {
+      "type": "Asset",
+      "name": "동문 디 이스트",
+      "location": "서울시 동작구 상도동 363-10번지",
+      "floors": "지하 8층~지상 29층",
+      "buildings": 3,
+      "units": 301,
+      "area_range": "46~62㎡",
+      "id": "fb6b0edf8c63127b"
+    },
+    {
+      "type": "Asset",
+      "name": "노량진뉴타운",
+      "location": "동작구",
+      "id": "da231ef785b51352"
+    },
+    {
+      "type": "Event",
+      "name": "청약 흥행",
+      "date": "2026-04-14",
+      "id": "62ecde712f864d2c"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "상도역 초역세권 민간임대 아파트 청약 완료",
+      "link": "https://edu.donga.com/news/articleView.html?idxno=106439",
+      "pubDate": "Fri, 17 Apr 2026 10:28:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "090775e395269739"
+    },
+    {
+      "type": "Event",
+      "name": "상도역 대우 엑소디움 청약",
+      "date": "2026-04-17",
+      "id": "f17e3ec439cea1e5"
+    },
+    {
+      "type": "Issue",
+      "name": "서울 주택시장 주거 환경 변화",
+      "scope": "서울 전역",
+      "id": "661c1784d79c1775"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "상도동 7500가구 ‘친환경 주거타운’ 탈바꿈",
+      "link": "https://www.dnews.co.kr/uhtml/view.jsp?idxno=202604161439435700557",
+      "pubDate": "Fri, 17 Apr 2026 09:20:00 +0900",
+      "query": "동작구 상도동 부동산",
+      "id": "ebb68b6c743a2605"
+    },
+    {
+      "type": "Asset",
+      "name": "상도동 친환경 주거타운",
+      "location": "서울특별시 동작구 상도동",
+      "scale": "7500가구",
+      "characteristic": "친환경",
+      "id": "1c98c85732dbece3"
+    },
+    {
+      "type": "Event",
+      "name": "상도동 정비사업",
+      "status": "본격화",
+      "scale": "7500가구",
+      "id": "0c1eb798f2f561d4"
+    },
+    {
+      "type": "Issue",
+      "name": "지역 가치 상승",
+      "driver": "정비사업 본격화",
+      "id": "521ef7fe9851e5ef"
+    }
+  ],
+  "links": [
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 동작구 상도동에서 공급 중인 장기 민간임대 아파트 '엑소디움 상도역'이 언급되며, 서울 전월세시장의 전세 감소와 월세 상승 추세 속에서 장기임대 수요 증가를 보여주는 사례로 제시됨.",
+      "source": "59f775681c6ecbf5",
+      "target": "370678925a3ffa27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울특별시 동작구 상도동",
+      "source": "59f775681c6ecbf5",
+      "target": "d7d4b14f9213620a",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "polarity": "positive",
+      "strength": 4,
+      "note": "7500가구 규모 정비사업으로 지역 활성화 및 주거 수요 창출",
+      "article": "ebb68b6c743a2605",
+      "source": "59f775681c6ecbf5",
+      "target": "6fb8838c8da80e09",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "polarity": "positive",
+      "strength": 3,
+      "note": "여의도, 강남 등 주요 업무지구 배후지로서의 위치 가치 인식 제고",
+      "article": "ebb68b6c743a2605",
+      "source": "59f775681c6ecbf5",
+      "target": "7239324297247f13",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
+      "source": "59f775681c6ecbf5",
+      "target": "bc6653e7d67e2ad4",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울특별시 동작구 상도동",
+      "source": "59f775681c6ecbf5",
+      "target": "1b5bdcc4ec333931",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "polarity": "positive",
+      "strength": 4,
+      "note": "친환경 주거타운 개발로 환경 친화적 특성 강조",
+      "article": "ebb68b6c743a2605",
+      "source": "59f775681c6ecbf5",
+      "target": "5e774fbeec33ea7f",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동을 포함한 역세권 중심의 미리내집 공급 프로젝트에서 총 441가구가 모집되며, 해당 지역의 부동산 시장 활성화를 반영하고 있다.",
+      "source": "59f775681c6ecbf5",
+      "target": "cfecb118cbef5afd",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동과 신대방동, 강북구 미아동 등 역세권을 중심으로 총 85개 단지",
+      "source": "59f775681c6ecbf5",
+      "target": "5ba80cd72252c50a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울시가 신혼부부 대상 '미리내집' 사업으로 동작구 상도동을 포함한 85개 아파트 단지 441가구를 모집 중이며, 신규 단지 '힐스테이트동작시그니처' 91가구가 포함됨.",
+      "source": "59f775681c6ecbf5",
+      "target": "37ad5d89d416a9db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 상도동에서 상도15구역 재개발 사업이 진행 중이며, 이로 인해 인근 부동산 가격이 상승 추세를 보이고 있다. 건설사 6곳이 이 재개발 사업에 관심을 보이고 있다.",
+      "source": "59f775681c6ecbf5",
+      "target": "32bc213cbaf3edf0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "상도동에서 상도15구역 재개발은 동작구 상도동 279번지 일대에 진행",
+      "source": "59f775681c6ecbf5",
+      "target": "3f988d57a4aee089",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
+      "source": "59f775681c6ecbf5",
+      "target": "3d7909cde8b20369",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
+      "source": "59f775681c6ecbf5",
+      "target": "7a86f7ce3f868ae9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "장승배기 종합행정타운이 지난 2025년 3월 완공돼 동작구청 신청사와 구의회, 보건소 등이 입주",
+      "source": "59f775681c6ecbf5",
+      "target": "5147641168e21629",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "지하철역 접근성이 주거 편의성과 자산 가치에 영향을 미치는 요소",
+      "source": "59f775681c6ecbf5",
+      "target": "f3fe7cd978435058",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 재개발 수요 증가로 빌라 거래량이 61% 급증했으며, 해당 지역 다세대 주택이 감정가 대비 123%의 높은 가격으로 낙찰되는 현상이 나타나고 있다.",
+      "source": "59f775681c6ecbf5",
+      "target": "a45f8fb8c10ed45c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 일대에서 진행 중인 노량진뉴타운 재건축·재개발 사업과 관련하여 공공이 주도하는 이주단지 조성 실험이 추진되고 있다. 이주단지는 지하1층~지상 5층 규모로 계획되어 있다.",
+      "source": "59f775681c6ecbf5",
+      "target": "458d661aed1fd39f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 노량진뉴타운 일대 모습... 상도동",
+      "source": "59f775681c6ecbf5",
+      "target": "03c6e143e1625ffc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 사당로 인근에서 '엑소디움 상도역' 프로젝트가 공급되었으며, 10년 거주 후 분양전환 방식을 적용하는 임차인 친화적 모델을 제시하고 있다.",
+      "source": "59f775681c6ecbf5",
+      "target": "5058940fe0f136cc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 노량진뉴타운 개발 관련 기사에서 대상 자산 인근의 상도동 'e편한세상 상도 노빌리티' 아파트(2018년 입주, 893가구, 84㎡형)가 비교 사례로 언급되었다. 노량진뉴타운의 고분양가 논란과 청약 선전 현황을 다루고 있다.",
+      "source": "59f775681c6ecbf5",
+      "target": "165dfa2666d49328",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "인근에서 893가구 규모로 2018년 입주한 상도동 'e편한세상 상도 노빌리티'",
+      "source": "59f775681c6ecbf5",
+      "target": "f6d26dce50cea0b8",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
+      "source": "59f775681c6ecbf5",
+      "target": "3975843354a36cb6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "동작구 상도동 지역의 재개발 기대감",
+      "source": "59f775681c6ecbf5",
+      "target": "ea45ebd78c496de4",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 상도동 일대의 월세 상승 현황을 다룬 기사로, 원룸 월세가 보증금 1000만원 기준 약 65만원 수준임을 보도하고 있다. 청년층의 주거비 부담 증가 추세를 반영하는 시장 뉴스다.",
+      "source": "59f775681c6ecbf5",
+      "target": "52444e9e4e52e6b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "상도동 일대 원룸 월세는 보증금 1000만원 기준 약 65만원 수준",
+      "source": "59f775681c6ecbf5",
+      "target": "f9beeaf4642c3f2f",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
+      "source": "59f775681c6ecbf5",
+      "target": "aeed3650b35d0445",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 사당로 일대에서 '상도역 대우 엑소디움' 민간임대 아파트 청약이 진행 중이며, 이는 서울 주택시장의 주거 환경 변화를 반영하는 것으로 분석되고 있다.",
+      "source": "59f775681c6ecbf5",
+      "target": "090775e395269739",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 동작구 상도동에서 공급 중인 장기 민간임대 아파트 '엑소디움 상도역'이 언급되며, 서울 전월세시장의 전세 감소와 월세 상승 추세 속에서 장기임대 수요 증가를 보여주는 사례로 제시됨.",
+      "source": "f88db9097feb9562",
+      "target": "370678925a3ffa27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "동작구 상도동에서 공급 중인 장기 민간임대 아파트인 '엑소디움 상도역'",
+      "source": "f88db9097feb9562",
+      "target": "d7d4b14f9213620a",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "최근 동작구 상도동에서 공급 중인 장기 민간임대 아파트인 '엑소디움 상도역'의 해당 단지는 최대 10년까지",
+      "source": "f88db9097feb9562",
+      "target": "7c86aee11ae118c6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동의 장기 일반민간임대주택 '엑소디움 상도역'이 평균 3.76대 1의 높은 경쟁률로 당첨자 발표를 완료했으며, 현재 계약 진행 중이다. 상도동 일대에서는 신속통합기획을 통한 재개발도 동시에 진행 중이다.",
+      "source": "f88db9097feb9562",
+      "target": "af0cb4645a7002f6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 동작구 상도동에 공급되는 장기 일반민간임대주택 '엑소디움 상도역'",
+      "source": "f88db9097feb9562",
+      "target": "332ecc1d4e957cb5",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "지난 18일 당첨자 발표",
+      "source": "f88db9097feb9562",
+      "target": "42b72ed900fc8972",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 사당로 인근에서 '엑소디움 상도역' 프로젝트가 공급되었으며, 10년 거주 후 분양전환 방식을 적용하는 임차인 친화적 모델을 제시하고 있다.",
+      "source": "f88db9097feb9562",
+      "target": "5058940fe0f136cc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 동작구 상도동에서 공급된 '엑소디움 상도역'",
+      "source": "f88db9097feb9562",
+      "target": "59f775681c6ecbf5",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 동작구 상도동",
+      "source": "f88db9097feb9562",
+      "target": "1b5bdcc4ec333931",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "지난 11일부터 16일까지 진행된 청약 접수",
+      "source": "f88db9097feb9562",
+      "target": "ff3031b6b7291175",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "전세 물량 축소와 월세 부담 증가가 맞물리면서",
+      "source": "f88db9097feb9562",
+      "target": "60be71237041e1ad",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 동작구 상도동에서 공급 중인 장기 민간임대 아파트 '엑소디움 상도역'이 언급되며, 서울 전월세시장의 전세 감소와 월세 상승 추세 속에서 장기임대 수요 증가를 보여주는 사례로 제시됨.",
+      "source": "d7d4b14f9213620a",
+      "target": "370678925a3ffa27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동을 포함한 역세권 중심의 미리내집 공급 프로젝트에서 총 441가구가 모집되며, 해당 지역의 부동산 시장 활성화를 반영하고 있다.",
+      "source": "d7d4b14f9213620a",
+      "target": "cfecb118cbef5afd",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 '상도파크자이' 아파트가 전용 84㎡ 기준 21억5000만원에 거래되었으며, 인근 노량진동 신규 분양 아파트와의 청약경쟁률 격차를 보여주는 사례로 언급되었다.",
+      "source": "d7d4b14f9213620a",
+      "target": "39d182a43916536a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
+      "source": "d7d4b14f9213620a",
+      "target": "8a3ef4c8df2904a8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "서울에서 아파트 매물이 가장 크게",
+      "source": "d7d4b14f9213620a",
+      "target": "9509116f9352cf50",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "GS건설의 '미리내집' 프로젝트에서 동작구 상도동 힐스테이트 동작시그니처 91세대가 입주자 모집 대상으로 선정되었다. 상도동을 포함한 85개 단지에서 모집이 진행 중이다.",
+      "source": "d7d4b14f9213620a",
+      "target": "1a1a47e0b4b3126a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 힐스테이트 동작시그니처가 미리내집 프로그램으로 91세대를 모집 중이며, 보증금 70% 수준으로 전세 진입이 가능한 신규 단지로 주목받고 있다.",
+      "source": "d7d4b14f9213620a",
+      "target": "865cc842f10f6317",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
+      "source": "d7d4b14f9213620a",
+      "target": "3d7909cde8b20369",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "동작구 상도동 일대. 구축도 16억원대로 매매 호가",
+      "source": "d7d4b14f9213620a",
+      "target": "dd01e33010fbb629",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "다주택자 양도소득세 중과 시행",
+      "source": "d7d4b14f9213620a",
+      "target": "be3975cb2c4a72d0",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "동작구 아파트 매물은 전날 기준",
+      "source": "d7d4b14f9213620a",
+      "target": "328a9d452e7ca3e8",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 '상도 푸르지오 클라베뉴' 분양 프로젝트에서 84㎡ 소형 평면의 공급이 59㎡ 대비 증가하는 추세를 보이고 있으며, 이는 건축비 상승에 따른 가격 경쟁력 변화를 반영하고 있다.",
+      "source": "d7d4b14f9213620a",
+      "target": "c23d55f45a1503bc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전역의 아파트 전세 매물이 급감하면서 전세대란이 심화되고 있으며, 동작구 상도동의 상도더샵1차도 전세 매물 1건에 불과한 상황이다.",
+      "source": "d7d4b14f9213620a",
+      "target": "2e31e5995c7e5b92",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "동작구에서도 상도동 상도더샵1차는 전세 1건",
+      "source": "d7d4b14f9213620a",
+      "target": "e6950df4c62abf4d",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 재개발 수요 증가로 빌라 거래량이 61% 급증했으며, 해당 지역 다세대 주택이 감정가 대비 123%의 높은 가격으로 낙찰되는 현상이 나타나고 있다.",
+      "source": "d7d4b14f9213620a",
+      "target": "a45f8fb8c10ed45c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "동작구 상도동 지역의 재개발 수요 증가",
+      "source": "d7d4b14f9213620a",
+      "target": "5523e2bc9fc22425",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "재개발 기대감에 따른 가격 상승",
+      "source": "d7d4b14f9213620a",
+      "target": "55c83b961b547d3c",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 '상도두산위브' 아파트가 신고가를 기록했으나 실제 거래량은 제한적인 상황을 보이고 있다. 규제로 인한 가격 상승과 거래 부진의 불일치 현상이 나타나고 있다.",
+      "source": "d7d4b14f9213620a",
+      "target": "a3726b43d67ad95d",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 재개발 수요가 높아지고 있으며, 경매 시장에서 다세대 주택이 감정가의 123%에 낙찰되어 강세를 보이고 있다. 삼성물산의 정비사업 수주 확대가 강남권 핵심단지 개발을 촉진할 것으로 예상된다.",
+      "source": "d7d4b14f9213620a",
+      "target": "3d0a651efcc6648a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 일대가 7500가구 규모의 친환경 주거타운으로 재개발되며 여의도, 강남 등 주요 업무지구의 배후 주거지역으로 거듭나고 있다. 지역 부동산 업계는 정비사업 본격화에 따른 가치 상승을 예상하고 있다.",
+      "source": "d7d4b14f9213620a",
+      "target": "ebb68b6c743a2605",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 동작구 상도동에서 공급 중인 장기 민간임대 아파트 '엑소디움 상도역'이 언급되며, 서울 전월세시장의 전세 감소와 월세 상승 추세 속에서 장기임대 수요 증가를 보여주는 사례로 제시됨.",
+      "source": "7c86aee11ae118c6",
+      "target": "370678925a3ffa27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "장기임대 수요↑",
+      "source": "7c86aee11ae118c6",
+      "target": "0ba5ac81cc5f69b7",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 동작구 상도동에서 공급 중인 장기 민간임대 아파트 '엑소디움 상도역'이 언급되며, 서울 전월세시장의 전세 감소와 월세 상승 추세 속에서 장기임대 수요 증가를 보여주는 사례로 제시됨.",
+      "source": "0ba5ac81cc5f69b7",
+      "target": "370678925a3ffa27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
+      "source": "6ba432fb6e937d95",
+      "target": "bc6653e7d67e2ad4",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "노량진 뉴타운이 완성되면 주변 상도동이나 동작구 일대 주거 환경도 함께 개선",
+      "source": "6ba432fb6e937d95",
+      "target": "59f775681c6ecbf5",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
+      "source": "1b5bdcc4ec333931",
+      "target": "bc6653e7d67e2ad4",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
+      "source": "1b5bdcc4ec333931",
+      "target": "7a86f7ce3f868ae9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 사당로 인근에서 '엑소디움 상도역' 프로젝트가 공급되었으며, 10년 거주 후 분양전환 방식을 적용하는 임차인 친화적 모델을 제시하고 있다.",
+      "source": "1b5bdcc4ec333931",
+      "target": "5058940fe0f136cc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
+      "source": "1b5bdcc4ec333931",
+      "target": "aeed3650b35d0445",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
+      "source": "2938cea0631ed036",
+      "target": "bc6653e7d67e2ad4",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
+      "source": "06a256c114e3c3f3",
+      "target": "bc6653e7d67e2ad4",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
+      "source": "b6cecfc335f8dcc2",
+      "target": "bc6653e7d67e2ad4",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "노량진 뉴타운이 완성되면 주변 상도동...주거 환경도 함께 개선",
+      "source": "b6cecfc335f8dcc2",
+      "target": "59f775681c6ecbf5",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동을 포함한 역세권 중심의 미리내집 공급 프로젝트에서 총 441가구가 모집되며, 해당 지역의 부동산 시장 활성화를 반영하고 있다.",
+      "source": "5ba80cd72252c50a",
+      "target": "cfecb118cbef5afd",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동을 포함한 역세권 중심의 미리내집 공급 프로젝트에서 총 441가구가 모집되며, 해당 지역의 부동산 시장 활성화를 반영하고 있다.",
+      "source": "bcb8974132ff0a89",
+      "target": "cfecb118cbef5afd",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "메이플자이 전용 43㎡는 올해 4월 체결된 전세 실거래가",
+      "source": "bcb8974132ff0a89",
+      "target": "5ba80cd72252c50a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
+      "source": "c9c2dac5a47dd5aa",
+      "target": "e6fe3a2953786598",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "상도역 인근 '상도역 엑소디움'",
+      "source": "c9c2dac5a47dd5aa",
+      "target": "f9beeaf4642c3f2f",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
+      "source": "f9beeaf4642c3f2f",
+      "target": "e6fe3a2953786598",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 상도동 일대의 월세 상승 현황을 다룬 기사로, 원룸 월세가 보증금 1000만원 기준 약 65만원 수준임을 보도하고 있다. 청년층의 주거비 부담 증가 추세를 반영하는 시장 뉴스다.",
+      "source": "f9beeaf4642c3f2f",
+      "target": "52444e9e4e52e6b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "대학가 덮친 월세 상승",
+      "source": "f9beeaf4642c3f2f",
+      "target": "97afb262fe0edbae",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "상도동 일대 원룸 월세는 보증금 1000만원 기준 약 65만원 수준",
+      "source": "f9beeaf4642c3f2f",
+      "target": "5ecb2328ed7f2dc5",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "동작구는 평균 월세가 62만원으로 서울 평균보단 낮은 편",
+      "source": "f9beeaf4642c3f2f",
+      "target": "23335b1831175bdd",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
+      "source": "b4ca8411a62e5c5c",
+      "target": "e6fe3a2953786598",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "완공되면서 동작구청 신청사와 구의회, 보건소 등이 입주",
+      "source": "b4ca8411a62e5c5c",
+      "target": "c9c2dac5a47dd5aa",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
+      "source": "b4ca8411a62e5c5c",
+      "target": "a2388e784ebfb805",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
+      "source": "3d8e5a21e2b578da",
+      "target": "e6fe3a2953786598",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "완공되면서 동작구청 신청사와 구의회, 보건소 등이 입주",
+      "source": "3d8e5a21e2b578da",
+      "target": "c9c2dac5a47dd5aa",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
+      "source": "a63f2ad49fcc24e3",
+      "target": "e6fe3a2953786598",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "완공되면서 동작구청 신청사와 구의회, 보건소 등이 입주",
+      "source": "a63f2ad49fcc24e3",
+      "target": "c9c2dac5a47dd5aa",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
+      "source": "e3a2536aa87fb703",
+      "target": "e6fe3a2953786598",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "지하철 접근성이 주거 여건과 가격 형성에 영향",
+      "source": "e3a2536aa87fb703",
+      "target": "f9beeaf4642c3f2f",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 '상도파크자이' 아파트가 전용 84㎡ 기준 21억5000만원에 거래되었으며, 인근 노량진동 신규 분양 아파트와의 청약경쟁률 격차를 보여주는 사례로 언급되었다.",
+      "source": "fb41ba056aabf6bc",
+      "target": "39d182a43916536a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "인근 상도동 '상도파크자이(2016년 입주)'",
+      "source": "fb41ba056aabf6bc",
+      "target": "d7d4b14f9213620a",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "상도동 '상도파크자이(2016년 입주)' 전용 84㎡가 지난달 30일 21억5000만원에 거래된 바 있다",
+      "source": "fb41ba056aabf6bc",
+      "target": "e4ca6cee7ad85380",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 '상도파크자이' 아파트가 전용 84㎡ 기준 21억5000만원에 거래되었으며, 인근 노량진동 신규 분양 아파트와의 청약경쟁률 격차를 보여주는 사례로 언급되었다.",
+      "source": "d5b6b4d31123b5ae",
+      "target": "39d182a43916536a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 노량진동 '라클라체 자이 드파인'(노량진6구역... 청약경쟁률",
+      "source": "d5b6b4d31123b5ae",
+      "target": "e4ca6cee7ad85380",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 '상도파크자이' 아파트가 전용 84㎡ 기준 21억5000만원에 거래되었으며, 인근 노량진동 신규 분양 아파트와의 청약경쟁률 격차를 보여주는 사례로 언급되었다.",
+      "source": "e4ca6cee7ad85380",
+      "target": "39d182a43916536a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
+      "source": "4d19907aa9f10a51",
+      "target": "8a3ef4c8df2904a8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "동작구 상도동 '동작 센트럴 동문 디 이스트'",
+      "source": "4d19907aa9f10a51",
+      "target": "d7d4b14f9213620a",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "동문건설, 서울 동작구 일원 '동작 센트럴 동문 디 이스트' 분양 예정",
+      "source": "4d19907aa9f10a51",
+      "target": "15efe9f721319095",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "이달 분양",
+      "source": "4d19907aa9f10a51",
+      "target": "f1f7291392214f11",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
+      "source": "4d19907aa9f10a51",
+      "target": "f2c402a988d3425c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "동작구청 종합행정타운이 도보 생활권에 있어 행정 편의도 뛰어나다",
+      "source": "4d19907aa9f10a51",
+      "target": "0977f8fd533ccc5f",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "노량진뉴타운 개발...풍부한 개발 호재",
+      "source": "4d19907aa9f10a51",
+      "target": "3d2908a4b7bd3fbb",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "복합문화센터 신설...풍부한 개발 호재",
+      "source": "4d19907aa9f10a51",
+      "target": "e76bc604daa18ca4",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "상도동 재개발...풍부한 개발 호재",
+      "source": "4d19907aa9f10a51",
+      "target": "a85a09ca061072b8",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
+      "source": "15efe9f721319095",
+      "target": "8a3ef4c8df2904a8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
+      "source": "15efe9f721319095",
+      "target": "f2c402a988d3425c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
+      "source": "15c29e9d625795b9",
+      "target": "8a3ef4c8df2904a8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "부동산 빅데이터 업체 아실에 따르면",
+      "source": "15c29e9d625795b9",
+      "target": "f1f7291392214f11",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
+      "source": "15c29e9d625795b9",
+      "target": "3d7909cde8b20369",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "부동산 빅데이터 업체 아실에 따르면",
+      "source": "15c29e9d625795b9",
+      "target": "328a9d452e7ca3e8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
+      "source": "f1f7291392214f11",
+      "target": "8a3ef4c8df2904a8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
+      "source": "9509116f9352cf50",
+      "target": "8a3ef4c8df2904a8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울시가 신혼부부 대상 '미리내집' 사업으로 동작구 상도동을 포함한 85개 아파트 단지 441가구를 모집 중이며, 신규 단지 '힐스테이트동작시그니처' 91가구가 포함됨.",
+      "source": "0fc38e3a6ac0df01",
+      "target": "37ad5d89d416a9db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "동작구 상도동 신규 단지 '힐스테이트동작시그니처' 91가구",
+      "source": "0fc38e3a6ac0df01",
+      "target": "59f775681c6ecbf5",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "서울시... 신규 공급 단지는 '힐스테이트동작시그니처'",
+      "source": "0fc38e3a6ac0df01",
+      "target": "ce1c470c17738e5c",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울시가 신혼부부 대상 '미리내집' 사업으로 동작구 상도동을 포함한 85개 아파트 단지 441가구를 모집 중이며, 신규 단지 '힐스테이트동작시그니처' 91가구가 포함됨.",
+      "source": "ce1c470c17738e5c",
+      "target": "37ad5d89d416a9db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울시가 신혼부부 대상 '미리내집' 사업으로 동작구 상도동을 포함한 85개 아파트 단지 441가구를 모집 중이며, 신규 단지 '힐스테이트동작시그니처' 91가구가 포함됨.",
+      "source": "58f0953b18b98370",
+      "target": "37ad5d89d416a9db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동ㆍ신대방동... 신규 단지 124가구를 포함해 총 85개 아파트 단지에서 441가구",
+      "source": "58f0953b18b98370",
+      "target": "59f775681c6ecbf5",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "GS건설의 '미리내집' 프로젝트에서 동작구 상도동 힐스테이트 동작시그니처 91세대가 입주자 모집 대상으로 선정되었다. 상도동을 포함한 85개 단지에서 모집이 진행 중이다.",
+      "source": "58f0953b18b98370",
+      "target": "1a1a47e0b4b3126a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "GS건설의 '미리내집' 프로젝트에서 동작구 상도동 힐스테이트 동작시그니처 91세대가 입주자 모집 대상으로 선정되었다. 상도동을 포함한 85개 단지에서 모집이 진행 중이다.",
+      "source": "0c1df407ae4f2ee0",
+      "target": "1a1a47e0b4b3126a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "GS건설이... 모집은 동작구 상도동·신대방동... 상도동 힐스테이트 동작시그니처 91세대",
+      "source": "0c1df407ae4f2ee0",
+      "target": "59832c4084c6e82e",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "신규 단지인 힐스테이트 동작시그니처(동작구 상도동)",
+      "source": "0c1df407ae4f2ee0",
+      "target": "d7d4b14f9213620a",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "상도동 힐스테이트 동작시그니처 91세대 등이... 모집",
+      "source": "0c1df407ae4f2ee0",
+      "target": "58f0953b18b98370",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 힐스테이트 동작시그니처가 미리내집 프로그램으로 91세대를 모집 중이며, 보증금 70% 수준으로 전세 진입이 가능한 신규 단지로 주목받고 있다.",
+      "source": "0c1df407ae4f2ee0",
+      "target": "865cc842f10f6317",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "힐스테이트 동작시그니처(동작구 상도동)는 91세대를 모집한다",
+      "source": "0c1df407ae4f2ee0",
+      "target": "48b0d21f31002d1d",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "도보 10분 내 상도역",
+      "source": "0c1df407ae4f2ee0",
+      "target": "2336210e35f24b53",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "지하철 7호선 상도역과 장승배기역과...",
+      "source": "0c1df407ae4f2ee0",
+      "target": "2336210e35f24b53",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동에 위치한 '힐스테이트 동작시그니처' 신규 아파트 단지가 91가구 공급되며, 지하철 7호선 접근성을 갖춘 신혼부부 대상 프로젝트로 소개됨. 분할납부제 등 구매 방식에 대한 전문가 의견 포함.",
+      "source": "0c1df407ae4f2ee0",
+      "target": "07ceb4353a3ea314",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "분할납부제는 구조적으로 부담을 뒤로 미루는 방식",
+      "source": "0c1df407ae4f2ee0",
+      "target": "e8ffc6942d492341",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "GS건설의 '미리내집' 프로젝트에서 동작구 상도동 힐스테이트 동작시그니처 91세대가 입주자 모집 대상으로 선정되었다. 상도동을 포함한 85개 단지에서 모집이 진행 중이다.",
+      "source": "59832c4084c6e82e",
+      "target": "1a1a47e0b4b3126a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동의 장기 일반민간임대주택 '엑소디움 상도역'이 평균 3.76대 1의 높은 경쟁률로 당첨자 발표를 완료했으며, 현재 계약 진행 중이다. 상도동 일대에서는 신속통합기획을 통한 재개발도 동시에 진행 중이다.",
+      "source": "332ecc1d4e957cb5",
+      "target": "af0cb4645a7002f6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "상도동 일대에서는 신속통합기획을 통한 재개발도 진행 중",
+      "source": "332ecc1d4e957cb5",
+      "target": "0c986a824a280aca",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동의 장기 일반민간임대주택 '엑소디움 상도역'이 평균 3.76대 1의 높은 경쟁률로 당첨자 발표를 완료했으며, 현재 계약 진행 중이다. 상도동 일대에서는 신속통합기획을 통한 재개발도 동시에 진행 중이다.",
+      "source": "42b72ed900fc8972",
+      "target": "af0cb4645a7002f6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동의 장기 일반민간임대주택 '엑소디움 상도역'이 평균 3.76대 1의 높은 경쟁률로 당첨자 발표를 완료했으며, 현재 계약 진행 중이다. 상도동 일대에서는 신속통합기획을 통한 재개발도 동시에 진행 중이다.",
+      "source": "0c986a824a280aca",
+      "target": "af0cb4645a7002f6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
+      "source": "0977f8fd533ccc5f",
+      "target": "f2c402a988d3425c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
+      "source": "3d2908a4b7bd3fbb",
+      "target": "f2c402a988d3425c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
+      "source": "e76bc604daa18ca4",
+      "target": "f2c402a988d3425c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
+      "source": "a85a09ca061072b8",
+      "target": "f2c402a988d3425c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 힐스테이트 동작시그니처가 미리내집 프로그램으로 91세대를 모집 중이며, 보증금 70% 수준으로 전세 진입이 가능한 신규 단지로 주목받고 있다.",
+      "source": "2336210e35f24b53",
+      "target": "865cc842f10f6317",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동에 위치한 '힐스테이트 동작시그니처' 신규 아파트 단지가 91가구 공급되며, 지하철 7호선 접근성을 갖춘 신혼부부 대상 프로젝트로 소개됨. 분할납부제 등 구매 방식에 대한 전문가 의견 포함.",
+      "source": "2336210e35f24b53",
+      "target": "07ceb4353a3ea314",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 사당로 일대에서 '상도역 대우 엑소디움' 민간임대 아파트 청약이 진행 중이며, 이는 서울 주택시장의 주거 환경 변화를 반영하는 것으로 분석되고 있다.",
+      "source": "2336210e35f24b53",
+      "target": "090775e395269739",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 힐스테이트 동작시그니처가 미리내집 프로그램으로 91세대를 모집 중이며, 보증금 70% 수준으로 전세 진입이 가능한 신규 단지로 주목받고 있다.",
+      "source": "48b0d21f31002d1d",
+      "target": "865cc842f10f6317",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 상도동에서 상도15구역 재개발 사업이 진행 중이며, 이로 인해 인근 부동산 가격이 상승 추세를 보이고 있다. 건설사 6곳이 이 재개발 사업에 관심을 보이고 있다.",
+      "source": "3f988d57a4aee089",
+      "target": "32bc213cbaf3edf0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "상도15구역 재개발은 동작구 상도동 279번지 일대에 진행되는 사업",
+      "source": "3f988d57a4aee089",
+      "target": "d01e7549a53f06ef",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 상도동에서 상도15구역 재개발 사업이 진행 중이며, 이로 인해 인근 부동산 가격이 상승 추세를 보이고 있다. 건설사 6곳이 이 재개발 사업에 관심을 보이고 있다.",
+      "source": "d01e7549a53f06ef",
+      "target": "32bc213cbaf3edf0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 상도동에서 상도15구역 재개발 사업이 진행 중이며, 이로 인해 인근 부동산 가격이 상승 추세를 보이고 있다. 건설사 6곳이 이 재개발 사업에 관심을 보이고 있다.",
+      "source": "4f861cf5566c3db3",
+      "target": "32bc213cbaf3edf0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "상도15구역 내 상도동 성대빌라",
+      "source": "4f861cf5566c3db3",
+      "target": "3f988d57a4aee089",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 상도동에서 상도15구역 재개발 사업이 진행 중이며, 이로 인해 인근 부동산 가격이 상승 추세를 보이고 있다. 건설사 6곳이 이 재개발 사업에 관심을 보이고 있다.",
+      "source": "6360fad15539b208",
+      "target": "32bc213cbaf3edf0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "상도15구역 재개발은 동작구 상도도 279번지 일대에 진행되는 사업으로 구역면적 약 14만1286.8㎡에 지하 8층... 재개발 기대감으로 인근 부동산 가격은 상승 추세다",
+      "source": "6360fad15539b208",
+      "target": "d01e7549a53f06ef",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
+      "source": "dd01e33010fbb629",
+      "target": "3d7909cde8b20369",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
+      "source": "be3975cb2c4a72d0",
+      "target": "3d7909cde8b20369",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
+      "source": "328a9d452e7ca3e8",
+      "target": "3d7909cde8b20369",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 '상도 푸르지오 클라베뉴' 분양 프로젝트에서 84㎡ 소형 평면의 공급이 59㎡ 대비 증가하는 추세를 보이고 있으며, 이는 건축비 상승에 따른 가격 경쟁력 변화를 반영하고 있다.",
+      "source": "352fedf0fc15e4c0",
+      "target": "c23d55f45a1503bc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "동작구 상도동 '상도 푸르지오 클라베뉴'",
+      "source": "352fedf0fc15e4c0",
+      "target": "d7d4b14f9213620a",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "건축비 상승에 따른 분양가 경쟁력 변화로 84㎡ 공급 증가",
+      "source": "352fedf0fc15e4c0",
+      "target": "e9f160a69f4d05a9",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 '상도 푸르지오 클라베뉴' 분양 프로젝트에서 84㎡ 소형 평면의 공급이 59㎡ 대비 증가하는 추세를 보이고 있으며, 이는 건축비 상승에 따른 가격 경쟁력 변화를 반영하고 있다.",
+      "source": "51cbb43d26b2b4fd",
+      "target": "c23d55f45a1503bc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 '상도 푸르지오 클라베뉴' 분양 프로젝트에서 84㎡ 소형 평면의 공급이 59㎡ 대비 증가하는 추세를 보이고 있으며, 이는 건축비 상승에 따른 가격 경쟁력 변화를 반영하고 있다.",
+      "source": "8b48dce43a9153d9",
+      "target": "c23d55f45a1503bc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "남혁우 우리은행 부동산연구원은 청약자가 원하는 입지에 분양받을 수 있는 물건 가격이 건축비 상승...",
+      "source": "8b48dce43a9153d9",
+      "target": "e9f160a69f4d05a9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동의 '상도 푸르지오 클라베뉴' 분양 프로젝트에서 84㎡ 소형 평면의 공급이 59㎡ 대비 증가하는 추세를 보이고 있으며, 이는 건축비 상승에 따른 가격 경쟁력 변화를 반영하고 있다.",
+      "source": "e9f160a69f4d05a9",
+      "target": "c23d55f45a1503bc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "금호건설이 서울 동작구 상도동의 과거 주택사업 좌초로 인한 우발부채를 출자전환 형태로 정리했으며, 이는 조완석 회장의 유상증자 과정에서 처리된 것으로 보도됨.",
+      "source": "ff06bdff70f11b31",
+      "target": "b5dfa923d8e8ce02",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OWNED_BY",
+      "evidence": "금호건설은 오는 27일 특별공급부터... 과거 서울 동작구 상도동 주택사업이 좌초",
+      "source": "ff06bdff70f11b31",
+      "target": "a2dd0d178ebd871f",
+      "key": "OWNED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "금호건설이 서울 동작구 상도동의 과거 주택사업 좌초로 인한 우발부채를 출자전환 형태로 정리했으며, 이는 조완석 회장의 유상증자 과정에서 처리된 것으로 보도됨.",
+      "source": "a2dd0d178ebd871f",
+      "target": "b5dfa923d8e8ce02",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "금호건설이 서울 동작구 상도동의 과거 주택사업 좌초로 인한 우발부채를 출자전환 형태로 정리했으며, 이는 조완석 회장의 유상증자 과정에서 처리된 것으로 보도됨.",
+      "source": "d8eca413e9965254",
+      "target": "b5dfa923d8e8ce02",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "금호건설이 서울 동작구 상도동의 과거 주택사업 좌초로 인한 우발부채를 출자전환 형태로 정리했으며, 이는 조완석 회장의 유상증자 과정에서 처리된 것으로 보도됨.",
+      "source": "1238ee6932e5832f",
+      "target": "b5dfa923d8e8ce02",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "과거 서울 동작구 상도동 주택사업이 좌초하면서 안게 된 우발부채",
+      "source": "1238ee6932e5832f",
+      "target": "ff06bdff70f11b31",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "우발부채를 출자전환 형태로 털어낸 것",
+      "source": "1238ee6932e5832f",
+      "target": "4eab2e86c2e5c57c",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "금호건설이 서울 동작구 상도동의 과거 주택사업 좌초로 인한 우발부채를 출자전환 형태로 정리했으며, 이는 조완석 회장의 유상증자 과정에서 처리된 것으로 보도됨.",
+      "source": "4eab2e86c2e5c57c",
+      "target": "b5dfa923d8e8ce02",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
+      "source": "5354f6c3660deae1",
+      "target": "7a86f7ce3f868ae9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "7호선 상도역 인근 '상도역 대우 엑소디움' 공급",
+      "source": "5354f6c3660deae1",
+      "target": "4b6dd7d1222df49b",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 사당로 일대에서 '상도역 대우 엑소디움' 민간임대 아파트 청약이 진행 중이며, 이는 서울 주택시장의 주거 환경 변화를 반영하는 것으로 분석되고 있다.",
+      "source": "5354f6c3660deae1",
+      "target": "090775e395269739",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 동작구 상도동 일대에서 공급된 '상도역 대우 엑소디움'",
+      "source": "5354f6c3660deae1",
+      "target": "59f775681c6ecbf5",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "상도역 초역세권 민간임대 아파트",
+      "source": "5354f6c3660deae1",
+      "target": "2336210e35f24b53",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "청약 일정을 진행하며",
+      "source": "5354f6c3660deae1",
+      "target": "f17e3ec439cea1e5",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
+      "source": "4b6dd7d1222df49b",
+      "target": "7a86f7ce3f868ae9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
+      "source": "5147641168e21629",
+      "target": "7a86f7ce3f868ae9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
+      "source": "f3fe7cd978435058",
+      "target": "7a86f7ce3f868ae9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전역의 아파트 전세 매물이 급감하면서 전세대란이 심화되고 있으며, 동작구 상도동의 상도더샵1차도 전세 매물 1건에 불과한 상황이다.",
+      "source": "3fedb168da548993",
+      "target": "2e31e5995c7e5b92",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "동작구에서도 상도동 상도더샵1차는",
+      "source": "3fedb168da548993",
+      "target": "d7d4b14f9213620a",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "상도더샵1차는 전세 1건에 머물렀다",
+      "source": "3fedb168da548993",
+      "target": "e6950df4c62abf4d",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전역의 아파트 전세 매물이 급감하면서 전세대란이 심화되고 있으며, 동작구 상도동의 상도더샵1차도 전세 매물 1건에 불과한 상황이다.",
+      "source": "e6950df4c62abf4d",
+      "target": "2e31e5995c7e5b92",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "서울 아파트 임대차 매물은 2023년 4월 1일 7만74건에서 지난 13일 2만9726건으로 57.6%",
+      "source": "e6950df4c62abf4d",
+      "target": "d152f0465e06ce49",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전역의 아파트 전세 매물이 급감하면서 전세대란이 심화되고 있으며, 동작구 상도동의 상도더샵1차도 전세 매물 1건에 불과한 상황이다.",
+      "source": "d152f0465e06ce49",
+      "target": "2e31e5995c7e5b92",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 재개발 수요 증가로 빌라 거래량이 61% 급증했으며, 해당 지역 다세대 주택이 감정가 대비 123%의 높은 가격으로 낙찰되는 현상이 나타나고 있다.",
+      "source": "f89eae94166a9ff2",
+      "target": "a45f8fb8c10ed45c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "동작구 상도동 244-29",
+      "source": "f89eae94166a9ff2",
+      "target": "d7d4b14f9213620a",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "지난 4월 동작구 상도동 244-29의 다세대 주택 '다인캐슬2차' 전용 27㎡ 매물은 감정가의 123%에 낙찰",
+      "source": "f89eae94166a9ff2",
+      "target": "5523e2bc9fc22425",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 재개발 수요 증가로 빌라 거래량이 61% 급증했으며, 해당 지역 다세대 주택이 감정가 대비 123%의 높은 가격으로 낙찰되는 현상이 나타나고 있다.",
+      "source": "5523e2bc9fc22425",
+      "target": "a45f8fb8c10ed45c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 재개발 수요 증가로 빌라 거래량이 61% 급증했으며, 해당 지역 다세대 주택이 감정가 대비 123%의 높은 가격으로 낙찰되는 현상이 나타나고 있다.",
+      "source": "55c83b961b547d3c",
+      "target": "a45f8fb8c10ed45c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 '상도두산위브' 아파트가 신고가를 기록했으나 실제 거래량은 제한적인 상황을 보이고 있다. 규제로 인한 가격 상승과 거래 부진의 불일치 현상이 나타나고 있다.",
+      "source": "4212450a9c198fc6",
+      "target": "a3726b43d67ad95d",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "동작구 상도동 '상도두산위브'",
+      "source": "4212450a9c198fc6",
+      "target": "d7d4b14f9213620a",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "전용 84㎡ A타입은 지난 4월 4일 16억9000만원에 거래",
+      "source": "4212450a9c198fc6",
+      "target": "7d7062d00d143e4e",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "신고가 찍었는데 거래는 달랑 한 건",
+      "source": "4212450a9c198fc6",
+      "target": "cf55c58c7ce092dc",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 '상도두산위브' 아파트가 신고가를 기록했으나 실제 거래량은 제한적인 상황을 보이고 있다. 규제로 인한 가격 상승과 거래 부진의 불일치 현상이 나타나고 있다.",
+      "source": "68c724a220e5caf1",
+      "target": "a3726b43d67ad95d",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
+      "source": "68c724a220e5caf1",
+      "target": "aeed3650b35d0445",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원 청약홈에 따르면",
+      "source": "68c724a220e5caf1",
+      "target": "62ecde712f864d2c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 '상도두산위브' 아파트가 신고가를 기록했으나 실제 거래량은 제한적인 상황을 보이고 있다. 규제로 인한 가격 상승과 거래 부진의 불일치 현상이 나타나고 있다.",
+      "source": "7d7062d00d143e4e",
+      "target": "a3726b43d67ad95d",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원에 따르면",
+      "source": "7d7062d00d143e4e",
+      "target": "68c724a220e5caf1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 '상도두산위브' 아파트가 신고가를 기록했으나 실제 거래량은 제한적인 상황을 보이고 있다. 규제로 인한 가격 상승과 거래 부진의 불일치 현상이 나타나고 있다.",
+      "source": "cf55c58c7ce092dc",
+      "target": "a3726b43d67ad95d",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동에 위치한 '힐스테이트 동작시그니처' 신규 아파트 단지가 91가구 공급되며, 지하철 7호선 접근성을 갖춘 신혼부부 대상 프로젝트로 소개됨. 분할납부제 등 구매 방식에 대한 전문가 의견 포함.",
+      "source": "27e3bc996c8840f1",
+      "target": "07ceb4353a3ea314",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동에 위치한 '힐스테이트 동작시그니처' 신규 아파트 단지가 91가구 공급되며, 지하철 7호선 접근성을 갖춘 신혼부부 대상 프로젝트로 소개됨. 분할납부제 등 구매 방식에 대한 전문가 의견 포함.",
+      "source": "e8ffc6942d492341",
+      "target": "07ceb4353a3ea314",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 일대에서 진행 중인 노량진뉴타운 재건축·재개발 사업과 관련하여 공공이 주도하는 이주단지 조성 실험이 추진되고 있다. 이주단지는 지하1층~지상 5층 규모로 계획되어 있다.",
+      "source": "03c6e143e1625ffc",
+      "target": "458d661aed1fd39f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "이주단지는 지하1층~지상 5층 규모로 상도동... 이주·철거 단계",
+      "source": "03c6e143e1625ffc",
+      "target": "3a5835fd59acd4c6",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 일대에서 진행 중인 노량진뉴타운 재건축·재개발 사업과 관련하여 공공이 주도하는 이주단지 조성 실험이 추진되고 있다. 이주단지는 지하1층~지상 5층 규모로 계획되어 있다.",
+      "source": "b2dc4f36022888f8",
+      "target": "458d661aed1fd39f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "공공이 직접 해결... 이주단지 실험",
+      "source": "b2dc4f36022888f8",
+      "target": "3a5835fd59acd4c6",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 일대에서 진행 중인 노량진뉴타운 재건축·재개발 사업과 관련하여 공공이 주도하는 이주단지 조성 실험이 추진되고 있다. 이주단지는 지하1층~지상 5층 규모로 계획되어 있다.",
+      "source": "3a5835fd59acd4c6",
+      "target": "458d661aed1fd39f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 일대에서 진행 중인 노량진뉴타운 재건축·재개발 사업과 관련하여 공공이 주도하는 이주단지 조성 실험이 추진되고 있다. 이주단지는 지하1층~지상 5층 규모로 계획되어 있다.",
+      "source": "5138976a5b2a2efc",
+      "target": "458d661aed1fd39f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "부동산R114에 따르면 올해 1분기 기준으로 관리처분 및 이주·철거 단계",
+      "source": "5138976a5b2a2efc",
+      "target": "03c6e143e1625ffc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
+      "source": "b33272e81fd5d1a3",
+      "target": "a2388e784ebfb805",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "상도동... 냉·난방비 제로화를 실현하고자",
+      "source": "b33272e81fd5d1a3",
+      "target": "65746660a3f2e59e",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "스마트 주거 기술",
+      "source": "b33272e81fd5d1a3",
+      "target": "b420ce4c91668344",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
+      "source": "36c85131f1f796f0",
+      "target": "a2388e784ebfb805",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 재개발 수요가 높아지고 있으며, 경매 시장에서 다세대 주택이 감정가의 123%에 낙찰되어 강세를 보이고 있다. 삼성물산의 정비사업 수주 확대가 강남권 핵심단지 개발을 촉진할 것으로 예상된다.",
+      "source": "36c85131f1f796f0",
+      "target": "3d0a651efcc6648a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "삼성물산, 정비사업 수주 10조 정조준",
+      "source": "36c85131f1f796f0",
+      "target": "c0e3725116c50e67",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
+      "source": "8e2a4e6117f86748",
+      "target": "a2388e784ebfb805",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
+      "source": "65746660a3f2e59e",
+      "target": "a2388e784ebfb805",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "동작구(구청장 박일하)가 세계최초로 재개발·재건축 단지의 냉·난방비 제로화를 실현하고자",
+      "source": "65746660a3f2e59e",
+      "target": "b4ca8411a62e5c5c",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "삼성물산 홈플랫폼 홈닉",
+      "source": "65746660a3f2e59e",
+      "target": "36c85131f1f796f0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서해종합건설과 스마트 주거 기술",
+      "source": "65746660a3f2e59e",
+      "target": "8e2a4e6117f86748",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
+      "source": "b420ce4c91668344",
+      "target": "a2388e784ebfb805",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 사당로 인근에서 '엑소디움 상도역' 프로젝트가 공급되었으며, 10년 거주 후 분양전환 방식을 적용하는 임차인 친화적 모델을 제시하고 있다.",
+      "source": "ff3031b6b7291175",
+      "target": "5058940fe0f136cc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 사당로 인근에서 '엑소디움 상도역' 프로젝트가 공급되었으며, 10년 거주 후 분양전환 방식을 적용하는 임차인 친화적 모델을 제시하고 있다.",
+      "source": "60be71237041e1ad",
+      "target": "5058940fe0f136cc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 노량진뉴타운 개발 관련 기사에서 대상 자산 인근의 상도동 'e편한세상 상도 노빌리티' 아파트(2018년 입주, 893가구, 84㎡형)가 비교 사례로 언급되었다. 노량진뉴타운의 고분양가 논란과 청약 선전 현황을 다루고 있다.",
+      "source": "f6d26dce50cea0b8",
+      "target": "165dfa2666d49328",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 노량진뉴타운 개발 관련 기사에서 대상 자산 인근의 상도동 'e편한세상 상도 노빌리티' 아파트(2018년 입주, 893가구, 84㎡형)가 비교 사례로 언급되었다. 노량진뉴타운의 고분양가 논란과 청약 선전 현황을 다루고 있다.",
+      "source": "8661c3ed16887848",
+      "target": "165dfa2666d49328",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "고분양가 논란에도 불구하고",
+      "source": "8661c3ed16887848",
+      "target": "d76668fb8ba7d8f7",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 노량진뉴타운 개발 관련 기사에서 대상 자산 인근의 상도동 'e편한세상 상도 노빌리티' 아파트(2018년 입주, 893가구, 84㎡형)가 비교 사례로 언급되었다. 노량진뉴타운의 고분양가 논란과 청약 선전 현황을 다루고 있다.",
+      "source": "d76668fb8ba7d8f7",
+      "target": "165dfa2666d49328",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
+      "source": "c65e18d90e9aede7",
+      "target": "3975843354a36cb6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "동작구 상도동 244-29의 다세대 주택",
+      "source": "c65e18d90e9aede7",
+      "target": "59f775681c6ecbf5",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
+      "source": "4d3e8c6ff12b1ed5",
+      "target": "3975843354a36cb6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
+      "source": "d152a4108b2f5468",
+      "target": "3975843354a36cb6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "윤수민 NH농협은행 부동산 전문위원은 '서울 신축 아파트 공급이 제한적인 상황에서'",
+      "source": "d152a4108b2f5468",
+      "target": "aee2786d58dc5862",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
+      "source": "ea45ebd78c496de4",
+      "target": "3975843354a36cb6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "감정가의 123%에 낙찰됐다",
+      "source": "ea45ebd78c496de4",
+      "target": "0630f6105ca3d588",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
+      "source": "0630f6105ca3d588",
+      "target": "3975843354a36cb6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
+      "source": "aee2786d58dc5862",
+      "target": "3975843354a36cb6",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 재개발 수요가 높아지고 있으며, 경매 시장에서 다세대 주택이 감정가의 123%에 낙찰되어 강세를 보이고 있다. 삼성물산의 정비사업 수주 확대가 강남권 핵심단지 개발을 촉진할 것으로 예상된다.",
+      "source": "9338a94b002ea279",
+      "target": "3d0a651efcc6648a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "동작구 상도동 다세대 주택",
+      "source": "9338a94b002ea279",
+      "target": "d7d4b14f9213620a",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "동작구 상도동 다세대 주택이 감정가의 123%에 낙찰",
+      "source": "9338a94b002ea279",
+      "target": "7700a341735b2747",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 재개발 수요가 높아지고 있으며, 경매 시장에서 다세대 주택이 감정가의 123%에 낙찰되어 강세를 보이고 있다. 삼성물산의 정비사업 수주 확대가 강남권 핵심단지 개발을 촉진할 것으로 예상된다.",
+      "source": "c0e3725116c50e67",
+      "target": "3d0a651efcc6648a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "정비사업 수주 확대가 강남권 핵심단지 개발을 촉진",
+      "source": "c0e3725116c50e67",
+      "target": "d7d4b14f9213620a",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 재개발 수요가 높아지고 있으며, 경매 시장에서 다세대 주택이 감정가의 123%에 낙찰되어 강세를 보이고 있다. 삼성물산의 정비사업 수주 확대가 강남권 핵심단지 개발을 촉진할 것으로 예상된다.",
+      "source": "7700a341735b2747",
+      "target": "3d0a651efcc6648a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 상도동 일대의 월세 상승 현황을 다룬 기사로, 원룸 월세가 보증금 1000만원 기준 약 65만원 수준임을 보도하고 있다. 청년층의 주거비 부담 증가 추세를 반영하는 시장 뉴스다.",
+      "source": "97afb262fe0edbae",
+      "target": "52444e9e4e52e6b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 상도동 일대의 월세 상승 현황을 다룬 기사로, 원룸 월세가 보증금 1000만원 기준 약 65만원 수준임을 보도하고 있다. 청년층의 주거비 부담 증가 추세를 반영하는 시장 뉴스다.",
+      "source": "5ecb2328ed7f2dc5",
+      "target": "52444e9e4e52e6b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "대상 자산이 위치한 상도동 일대의 월세 상승 현황을 다룬 기사로, 원룸 월세가 보증금 1000만원 기준 약 65만원 수준임을 보도하고 있다. 청년층의 주거비 부담 증가 추세를 반영하는 시장 뉴스다.",
+      "source": "23335b1831175bdd",
+      "target": "52444e9e4e52e6b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
+      "source": "fb6b0edf8c63127b",
+      "target": "aeed3650b35d0445",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울시 동작구 상도동 363-10번지 일원에 들어서며",
+      "source": "fb6b0edf8c63127b",
+      "target": "1b5bdcc4ec333931",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
+      "source": "da231ef785b51352",
+      "target": "aeed3650b35d0445",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "동작구에서",
+      "source": "da231ef785b51352",
+      "target": "1b5bdcc4ec333931",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
+      "source": "62ecde712f864d2c",
+      "target": "aeed3650b35d0445",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "동문 디 이스트 청약",
+      "source": "62ecde712f864d2c",
+      "target": "fb6b0edf8c63127b",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 사당로 일대에서 '상도역 대우 엑소디움' 민간임대 아파트 청약이 진행 중이며, 이는 서울 주택시장의 주거 환경 변화를 반영하는 것으로 분석되고 있다.",
+      "source": "f17e3ec439cea1e5",
+      "target": "090775e395269739",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "서울 주택시장 주거 환경 변화와 연계된 흐름",
+      "source": "f17e3ec439cea1e5",
+      "target": "661c1784d79c1775",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 사당로 일대에서 '상도역 대우 엑소디움' 민간임대 아파트 청약이 진행 중이며, 이는 서울 주택시장의 주거 환경 변화를 반영하는 것으로 분석되고 있다.",
+      "source": "661c1784d79c1775",
+      "target": "090775e395269739",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 일대가 7500가구 규모의 친환경 주거타운으로 재개발되며 여의도, 강남 등 주요 업무지구의 배후 주거지역으로 거듭나고 있다. 지역 부동산 업계는 정비사업 본격화에 따른 가치 상승을 예상하고 있다.",
+      "source": "1c98c85732dbece3",
+      "target": "ebb68b6c743a2605",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 동작구 상도동 일대가 7500가구 '친환경 주거타운' 탈바꿈",
+      "source": "1c98c85732dbece3",
+      "target": "d7d4b14f9213620a",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "상도동 일대가 7500가구 친환경 주거타운으로 탈바꿈",
+      "source": "1c98c85732dbece3",
+      "target": "0c1eb798f2f561d4",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 일대가 7500가구 규모의 친환경 주거타운으로 재개발되며 여의도, 강남 등 주요 업무지구의 배후 주거지역으로 거듭나고 있다. 지역 부동산 업계는 정비사업 본격화에 따른 가치 상승을 예상하고 있다.",
+      "source": "0c1eb798f2f561d4",
+      "target": "ebb68b6c743a2605",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "상도동 일대 정비사업이 본격화하며 가치 상승이 닻을 올렸다",
+      "source": "0c1eb798f2f561d4",
+      "target": "521ef7fe9851e5ef",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 동작구 상도동 일대가 7500가구 규모의 친환경 주거타운으로 재개발되며 여의도, 강남 등 주요 업무지구의 배후 주거지역으로 거듭나고 있다. 지역 부동산 업계는 정비사업 본격화에 따른 가치 상승을 예상하고 있다.",
+      "source": "521ef7fe9851e5ef",
+      "target": "ebb68b6c743a2605",
+      "key": "MENTIONED_IN"
+    }
+  ]
+}

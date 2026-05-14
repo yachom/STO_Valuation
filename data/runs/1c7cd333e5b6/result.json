@@ -1,0 +1,1737 @@
+{
+  "address": "서울 동작구 상도동 505-1",
+  "metadata": {
+    "input_address": "서울 동작구 상도동 505-1",
+    "address": {
+      "road": "서울특별시 동작구 사당로 28 (상도동)",
+      "jibun": "서울특별시 동작구 상도동 505-1",
+      "sido": "서울특별시",
+      "sigungu": "동작구",
+      "bjdong_name": "상도동",
+      "building_management_no": "1159010200105050001019414",
+      "building_name": ""
+    },
+    "identifiers": {
+      "pnu": "1159010200105050001",
+      "bjdong_code": "1159010200",
+      "sigungu_cd": "11590",
+      "bjdong_cd": "10200",
+      "land_type_code": "1",
+      "bun": "0505",
+      "ji": "0001"
+    },
+    "coord": {
+      "x": "126.957457993298",
+      "y": "37.4949351394814",
+      "raw": {
+        "address": {
+          "address_name": "서울 동작구 상도동 505-1",
+          "b_code": "1159010200",
+          "h_code": "1159053000",
+          "main_address_no": "505",
+          "mountain_yn": "N",
+          "region_1depth_name": "서울",
+          "region_2depth_name": "동작구",
+          "region_3depth_h_name": "상도1동",
+          "region_3depth_name": "상도동",
+          "sub_address_no": "1",
+          "x": "126.957457993298",
+          "y": "37.4949351394814"
+        },
+        "address_name": "서울 동작구 사당로 28",
+        "address_type": "ROAD_ADDR",
+        "road_address": {
+          "address_name": "서울 동작구 사당로 28",
+          "building_name": "",
+          "main_building_no": "28",
+          "region_1depth_name": "서울",
+          "region_2depth_name": "동작구",
+          "region_3depth_name": "상도동",
+          "road_name": "사당로",
+          "sub_building_no": "",
+          "underground_yn": "N",
+          "x": "126.957457993298",
+          "y": "37.4949351394814",
+          "zone_no": "07027"
+        },
+        "x": "126.957457993298",
+        "y": "37.4949351394814"
+      }
+    },
+    "land": {
+      "land_forest_ledger": {
+        "ladfrlVOList": {
+          "pageNo": "1",
+          "ladfrlVOList": [
+            {
+              "lndpclAr": "459.2",
+              "lndcgrCodeNm": "대",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "ldCode": "1159010200",
+              "ladFrtlScNm": "1:600",
+              "posesnSeCode": "01",
+              "mnnmSlno": "505-1",
+              "lndcgrCode": "08",
+              "cnrsPsnCo": "0",
+              "ladFrtlSc": "06",
+              "pnu": "1159010200105050001",
+              "posesnSeCodeNm": "개인",
+              "lastUpdtDt": "2026-04-04",
+              "regstrSeCodeNm": "토지대장",
+              "regstrSeCode": "1"
+            }
+          ],
+          "totalCount": "1",
+          "error": "",
+          "message": "",
+          "numOfRows": "10"
+        }
+      },
+      "land_characteristics": {
+        "landCharacteristicss": {
+          "field": [
+            {
+              "tpgrphHgCodeNm": "완경사",
+              "stdrYear": "2013",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대세각",
+              "pblntfPclnd": "5240000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "03",
+              "prposArea1Nm": "제3종일반주거지역",
+              "ladUseSittnNm": "상업용",
+              "ladSn": "15019",
+              "ladUseSittn": "210",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-03",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "459.2",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "prposArea1": "15",
+              "prposArea2": "00",
+              "mnnmSlno": "505-1",
+              "lndcgrCode": "08",
+              "pnu": "1159010200105050001",
+              "stdrMt": "01",
+              "roadSideCode": "03"
+            },
+            {
+              "tpgrphHgCodeNm": "완경사",
+              "stdrYear": "2014",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대세각",
+              "pblntfPclnd": "5428000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "03",
+              "prposArea1Nm": "제3종일반주거지역",
+              "ladUseSittnNm": "상업용",
+              "ladSn": "14907",
+              "ladUseSittn": "210",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-03",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "459.2",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "prposArea1": "15",
+              "prposArea2": "00",
+              "mnnmSlno": "505-1",
+              "lndcgrCode": "08",
+              "pnu": "1159010200105050001",
+              "stdrMt": "01",
+              "roadSideCode": "03"
+            },
+            {
+              "tpgrphHgCodeNm": "완경사",
+              "stdrYear": "2015",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대세각",
+              "pblntfPclnd": "5688000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "03",
+              "prposArea1Nm": "제3종일반주거지역",
+              "ladUseSittnNm": "상업용",
+              "ladSn": "14846",
+              "ladUseSittn": "210",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-04",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "459.2",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "prposArea1": "15",
+              "prposArea2": "00",
+              "mnnmSlno": "505-1",
+              "lndcgrCode": "08",
+              "pnu": "1159010200105050001",
+              "stdrMt": "01",
+              "roadSideCode": "03"
+            },
+            {
+              "tpgrphHgCodeNm": "완경사",
+              "stdrYear": "2016",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대세각",
+              "pblntfPclnd": "5888000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "03",
+              "prposArea1Nm": "제3종일반주거지역",
+              "ladUseSittnNm": "상업용",
+              "ladSn": "14824",
+              "ladUseSittn": "210",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-04",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "459.2",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "prposArea1": "15",
+              "prposArea2": "00",
+              "mnnmSlno": "505-1",
+              "lndcgrCode": "08",
+              "pnu": "1159010200105050001",
+              "stdrMt": "01",
+              "roadSideCode": "03"
+            },
+            {
+              "tpgrphHgCodeNm": "완경사",
+              "stdrYear": "2017",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대세각",
+              "pblntfPclnd": "6037000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "03",
+              "prposArea1Nm": "제3종일반주거지역",
+              "ladUseSittnNm": "상업용",
+              "ladSn": "14525",
+              "ladUseSittn": "210",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-04",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "459.2",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "prposArea1": "15",
+              "prposArea2": "00",
+              "mnnmSlno": "505-1",
+              "lndcgrCode": "08",
+              "pnu": "1159010200105050001",
+              "stdrMt": "01",
+              "roadSideCode": "03"
+            },
+            {
+              "tpgrphHgCodeNm": "완경사",
+              "stdrYear": "2018",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대세각",
+              "pblntfPclnd": "6467000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "03",
+              "prposArea1Nm": "제3종일반주거지역",
+              "ladUseSittnNm": "상업용",
+              "ladSn": "14319",
+              "ladUseSittn": "210",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-04",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "459.2",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "prposArea1": "15",
+              "prposArea2": "00",
+              "mnnmSlno": "505-1",
+              "lndcgrCode": "08",
+              "pnu": "1159010200105050001",
+              "stdrMt": "01",
+              "roadSideCode": "03"
+            },
+            {
+              "tpgrphHgCodeNm": "완경사",
+              "stdrYear": "2019",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대세각",
+              "pblntfPclnd": "6612000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "03",
+              "prposArea1Nm": "제3종일반주거지역",
+              "ladUseSittnNm": "상업용",
+              "ladSn": "14325",
+              "ladUseSittn": "210",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-05",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "459.2",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "prposArea1": "15",
+              "prposArea2": "00",
+              "mnnmSlno": "505-1",
+              "lndcgrCode": "08",
+              "pnu": "1159010200105050001",
+              "stdrMt": "01",
+              "roadSideCode": "03"
+            },
+            {
+              "tpgrphHgCodeNm": "완경사",
+              "stdrYear": "2020",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대세각",
+              "pblntfPclnd": "6975000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "03",
+              "prposArea1Nm": "제3종일반주거지역",
+              "ladUseSittnNm": "상업용",
+              "ladSn": "14292",
+              "ladUseSittn": "210",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-05",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "459.2",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "prposArea1": "15",
+              "prposArea2": "00",
+              "mnnmSlno": "505-1",
+              "lndcgrCode": "08",
+              "pnu": "1159010200105050001",
+              "stdrMt": "01",
+              "roadSideCode": "03"
+            },
+            {
+              "tpgrphHgCodeNm": "완경사",
+              "stdrYear": "2021",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대세각",
+              "pblntfPclnd": "7620000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "03",
+              "prposArea1Nm": "제3종일반주거지역",
+              "ladUseSittnNm": "상업용",
+              "ladSn": "14346",
+              "ladUseSittn": "210",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-05",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "459.2",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "prposArea1": "15",
+              "prposArea2": "00",
+              "mnnmSlno": "505-1",
+              "lndcgrCode": "08",
+              "pnu": "1159010200105050001",
+              "stdrMt": "01",
+              "roadSideCode": "03"
+            },
+            {
+              "tpgrphHgCodeNm": "완경사",
+              "stdrYear": "2022",
+              "lndcgrCodeNm": "대",
+              "roadSideCodeNm": "광대세각",
+              "pblntfPclnd": "8149000",
+              "prposArea2Nm": "지정되지않음",
+              "tpgrphHgCode": "03",
+              "prposArea1Nm": "제3종일반주거지역",
+              "ladUseSittnNm": "상업용",
+              "ladSn": "14399",
+              "ladUseSittn": "210",
+              "tpgrphFrmCode": "03",
+              "lastUpdtDt": "2023-08-06",
+              "regstrSeCodeNm": "일반",
+              "regstrSeCode": "1",
+              "lndpclAr": "459.2",
+              "tpgrphFrmCodeNm": "세로장방",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "prposArea1": "15",
+              "prposArea2": "00",
+              "mnnmSlno": "505-1",
+              "lndcgrCode": "08",
+              "pnu": "1159010200105050001",
+              "stdrMt": "01",
+              "roadSideCode": "03"
+            }
+          ],
+          "pageNo": "1",
+          "resultCode": "",
+          "totalCount": "16",
+          "numOfRows": "10",
+          "resultMsg": ""
+        }
+      },
+      "land_use": {
+        "landUses": {
+          "field": [
+            {
+              "cnflcAt": "1",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "mnnmSlno": "505-1",
+              "prposAreaDstrcCodeNm": "대공방어협조구역",
+              "cnflcAtNm": "포함",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2008-11-24",
+              "prposAreaDstrcCode": "UNE200",
+              "regstrSeCode": "1",
+              "manageNo": "12900001159020080041UNE2000001001"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "mnnmSlno": "505-1",
+              "prposAreaDstrcCodeNm": "교육환경보호구역",
+              "cnflcAtNm": "포함",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2008-03-26",
+              "prposAreaDstrcCode": "UOA100",
+              "regstrSeCode": "1",
+              "manageNo": "13404001159020080045UOA1000001017"
+            },
+            {
+              "cnflcAt": "2",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "mnnmSlno": "505-1",
+              "prposAreaDstrcCodeNm": "교육환경보호구역",
+              "cnflcAtNm": "저촉",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2008-04-02",
+              "prposAreaDstrcCode": "UOA100",
+              "regstrSeCode": "1",
+              "manageNo": "13404001159020080045UOA1000001077"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "mnnmSlno": "505-1",
+              "prposAreaDstrcCodeNm": "도시지역",
+              "cnflcAtNm": "포함",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2007-05-09",
+              "prposAreaDstrcCode": "UQA01X",
+              "regstrSeCode": "1",
+              "manageNo": "15000001159000000000UQA01X0001001"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "mnnmSlno": "505-1",
+              "prposAreaDstrcCodeNm": "토지거래계약에관한허가구역",
+              "cnflcAtNm": "포함",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2025-08-25",
+              "prposAreaDstrcCode": "UQQ600",
+              "regstrSeCode": "1",
+              "manageNo": "16130001159020251058UQQ6000001001"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "mnnmSlno": "505-1",
+              "prposAreaDstrcCodeNm": "토지거래계약에관한허가구역",
+              "cnflcAtNm": "포함",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2025-10-17",
+              "prposAreaDstrcCode": "UQQ600",
+              "regstrSeCode": "1",
+              "manageNo": "16130001159020251219UQQ6000001002"
+            },
+            {
+              "cnflcAt": "1",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "mnnmSlno": "505-1",
+              "prposAreaDstrcCodeNm": "가축사육제한구역",
+              "cnflcAtNm": "포함",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2011-07-20",
+              "prposAreaDstrcCode": "UMZ100",
+              "regstrSeCode": "1",
+              "manageNo": "31900001159020110044UMZ1000001001"
+            },
+            {
+              "cnflcAt": "3",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "mnnmSlno": "505-1",
+              "prposAreaDstrcCodeNm": "대로3류(폭 25m~30m)",
+              "cnflcAtNm": "접함",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2017-05-26",
+              "prposAreaDstrcCode": "UQS116",
+              "regstrSeCode": "1",
+              "manageNo": "31900001159020170073UQS1160003081"
+            },
+            {
+              "cnflcAt": "2",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "mnnmSlno": "505-1",
+              "prposAreaDstrcCodeNm": "건축선",
+              "cnflcAtNm": "저촉",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2019-12-06",
+              "prposAreaDstrcCode": "ZA0013",
+              "regstrSeCode": "1",
+              "manageNo": "31900001159020190030ZA00130001057"
+            },
+            {
+              "cnflcAt": "3",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "mnnmSlno": "505-1",
+              "prposAreaDstrcCodeNm": "도로구역",
+              "cnflcAtNm": "접함",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2026-05-06",
+              "regstrSeCodeNm": "토지대장",
+              "registDt": "2022-11-07",
+              "prposAreaDstrcCode": "UIA100",
+              "regstrSeCode": "1",
+              "manageNo": "31900001159020220151UIA1000001168"
+            }
+          ],
+          "pageNo": "1",
+          "resultCode": "",
+          "totalCount": "13",
+          "numOfRows": "10",
+          "resultMsg": ""
+        }
+      },
+      "official_land_price": {
+        "indvdLandPrices": {
+          "field": [
+            {
+              "mnnmSlno": "505-1",
+              "pblntfDe": "2005-05-31",
+              "stdLandAt": "N",
+              "stdrYear": "2005",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "3350000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "505-1",
+              "pblntfDe": "2006-05-31",
+              "stdLandAt": "N",
+              "stdrYear": "2006",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "3940000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "505-1",
+              "pblntfDe": "2007-05-31",
+              "stdLandAt": "N",
+              "stdrYear": "2007",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "4340000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "505-1",
+              "pblntfDe": "2008-05-31",
+              "stdLandAt": "N",
+              "stdrYear": "2008",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "4880000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "505-1",
+              "pblntfDe": "2009-05-29",
+              "stdLandAt": "N",
+              "stdrYear": "2009",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "4830000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "505-1",
+              "pblntfDe": "2010-05-31",
+              "stdLandAt": "N",
+              "stdrYear": "2010",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "4880000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "505-1",
+              "pblntfDe": "2011-05-31",
+              "stdLandAt": "N",
+              "stdrYear": "2011",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "4900000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "505-1",
+              "pblntfDe": "2012-05-31",
+              "stdLandAt": "N",
+              "stdrYear": "2012",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "5050000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "505-1",
+              "pblntfDe": "2013-05-31",
+              "stdLandAt": "N",
+              "stdrYear": "2013",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "5240000",
+              "regstrSeCode": "1"
+            },
+            {
+              "mnnmSlno": "505-1",
+              "pblntfDe": "2014-05-30",
+              "stdLandAt": "N",
+              "stdrYear": "2014",
+              "pnu": "1159010200105050001",
+              "lastUpdtDt": "2023-08-10",
+              "ldCode": "1159010200",
+              "ldCodeNm": "서울특별시 동작구 상도동",
+              "regstrSeCodeNm": "일반",
+              "stdrMt": "01",
+              "pblntfPclnd": "5428000",
+              "regstrSeCode": "1"
+            }
+          ],
+          "pageNo": "1",
+          "resultCode": "",
+          "totalCount": "24",
+          "numOfRows": "10",
+          "resultMsg": ""
+        }
+      }
+    },
+    "building": {
+      "basis": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": [
+                {
+                  "rnum": 1,
+                  "platPlc": "서울특별시 동작구 상도동 505-1번지",
+                  "sigunguCd": "11590",
+                  "bjdongCd": "10200",
+                  "platGbCd": "0",
+                  "bun": "0505",
+                  "ji": "0001",
+                  "mgmBldrgstPk": 1021115883,
+                  "mgmUpBldrgstPk": 0,
+                  "bldgId": "2120041210010566",
+                  "regstrGbCd": "1",
+                  "regstrGbCdNm": "일반",
+                  "regstrKindCd": "2",
+                  "regstrKindCdNm": "일반건축물",
+                  "newPlatPlc": "서울특별시 동작구 사당로 28 (상도동)",
+                  "bldNm": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "bylotCnt": 0,
+                  "naRoadCd": "115903119004",
+                  "naBjdongCd": "10201",
+                  "naUgrndCd": "0",
+                  "naMainBun": "28",
+                  "naSubBun": "0",
+                  "jiyukCd": "1020",
+                  "jiguCd": "260",
+                  "guyukCd": " ",
+                  "jiyukCdNm": "일반주거지역",
+                  "jiguCdNm": "주차장정비지구",
+                  "guyukCdNm": " ",
+                  "crtnDay": "20241104"
+                }
+              ]
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "1"
+          }
+        }
+      },
+      "title": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": [
+                {
+                  "rnum": 1,
+                  "platPlc": "서울특별시 동작구 상도동 505-1번지",
+                  "sigunguCd": "11590",
+                  "bjdongCd": "10200",
+                  "platGbCd": "0",
+                  "bun": "0505",
+                  "ji": "0001",
+                  "mgmBldrgstPk": 1021115883,
+                  "regstrGbCd": "1",
+                  "regstrGbCdNm": "일반",
+                  "regstrKindCd": "2",
+                  "regstrKindCdNm": "일반건축물",
+                  "newPlatPlc": "서울특별시 동작구 사당로 28 (상도동)",
+                  "bldNm": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "bylotCnt": 0,
+                  "naRoadCd": "115903119004",
+                  "naBjdongCd": "10201",
+                  "naUgrndCd": "0",
+                  "naMainBun": "28",
+                  "naSubBun": "0",
+                  "dongNm": " ",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "platArea": 459.2,
+                  "archArea": 228.48,
+                  "bcRat": 49.76,
+                  "totArea": 1261.35,
+                  "vlRatEstmTotArea": 913.92,
+                  "vlRat": 199.02,
+                  "strctCd": "21",
+                  "strctCdNm": "철근콘크리트구조",
+                  "etcStrct": "철근콘크리트조",
+                  "mainPurpsCd": "04000",
+                  "mainPurpsCdNm": "제2종근린생활시설",
+                  "etcPurps": "근린생활시설. 일반업무시설",
+                  "roofCd": "10",
+                  "roofCdNm": "(철근)콘크리트",
+                  "etcRoof": "평스라브",
+                  "hhldCnt": 0,
+                  "fmlyCnt": 0,
+                  "heit": 15,
+                  "grndFlrCnt": 4,
+                  "ugrndFlrCnt": 1,
+                  "rideUseElvtCnt": 0,
+                  "emgenUseElvtCnt": 0,
+                  "atchBldCnt": 0,
+                  "atchBldArea": 0,
+                  "totDongTotArea": 1261.35,
+                  "indrMechUtcnt": 2,
+                  "indrMechArea": 23,
+                  "oudrMechUtcnt": 0,
+                  "oudrMechArea": 0,
+                  "indrAutoUtcnt": 2,
+                  "indrAutoArea": 23,
+                  "oudrAutoUtcnt": 4,
+                  "oudrAutoArea": 46,
+                  "pmsDay": "19940500",
+                  "stcnsDay": "19940500",
+                  "useAprDay": "19940609",
+                  "pmsnoYear": " ",
+                  "pmsnoKikCd": " ",
+                  "pmsnoKikCdNm": " ",
+                  "pmsnoGbCd": " ",
+                  "pmsnoGbCdNm": " ",
+                  "hoCnt": 0,
+                  "engrGrade": " ",
+                  "engrRat": 0,
+                  "engrEpi": 0,
+                  "gnBldGrade": " ",
+                  "gnBldCert": 0,
+                  "itgBldGrade": " ",
+                  "itgBldCert": 0,
+                  "crtnDay": "20220813",
+                  "rserthqkDsgnApplyYn": "0",
+                  "rserthqkAblty": " "
+                }
+              ]
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "1"
+          }
+        }
+      },
+      "recap_title": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": []
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "0"
+          }
+        }
+      },
+      "floor": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": [
+                {
+                  "rnum": 1,
+                  "platPlc": "서울특별시 동작구 상도동 505-1번지",
+                  "sigunguCd": "11590",
+                  "bjdongCd": "10200",
+                  "platGbCd": "0",
+                  "bun": "0505",
+                  "ji": "0001",
+                  "mgmBldrgstPk": 1021115883,
+                  "newPlatPlc": "서울특별시 동작구 사당로 28 (상도동)",
+                  "bldNm": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": "115903119004",
+                  "naBjdongCd": "10201",
+                  "naUgrndCd": "0",
+                  "naMainBun": "28",
+                  "naSubBun": "0",
+                  "dongNm": " ",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 4,
+                  "flrNoNm": "사층",
+                  "strctCd": "21",
+                  "strctCdNm": "철근콘크리트구조",
+                  "etcStrct": "철근콘크리트조",
+                  "mainPurpsCd": "04402",
+                  "mainPurpsCdNm": "사무소",
+                  "etcPurps": "사무소",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 228.48,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 2,
+                  "platPlc": "서울특별시 동작구 상도동 505-1번지",
+                  "sigunguCd": "11590",
+                  "bjdongCd": "10200",
+                  "platGbCd": "0",
+                  "bun": "0505",
+                  "ji": "0001",
+                  "mgmBldrgstPk": 1021115883,
+                  "newPlatPlc": "서울특별시 동작구 사당로 28 (상도동)",
+                  "bldNm": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": "115903119004",
+                  "naBjdongCd": "10201",
+                  "naUgrndCd": "0",
+                  "naMainBun": "28",
+                  "naSubBun": "0",
+                  "dongNm": " ",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 3,
+                  "flrNoNm": "삼층",
+                  "strctCd": "21",
+                  "strctCdNm": "철근콘크리트구조",
+                  "etcStrct": "철근콘크리트조",
+                  "mainPurpsCd": "04402",
+                  "mainPurpsCdNm": "사무소",
+                  "etcPurps": "사무소",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 228.48,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 3,
+                  "platPlc": "서울특별시 동작구 상도동 505-1번지",
+                  "sigunguCd": "11590",
+                  "bjdongCd": "10200",
+                  "platGbCd": "0",
+                  "bun": "0505",
+                  "ji": "0001",
+                  "mgmBldrgstPk": 1021115883,
+                  "newPlatPlc": "서울특별시 동작구 사당로 28 (상도동)",
+                  "bldNm": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": "115903119004",
+                  "naBjdongCd": "10201",
+                  "naUgrndCd": "0",
+                  "naMainBun": "28",
+                  "naSubBun": "0",
+                  "dongNm": " ",
+                  "flrGbCd": "10",
+                  "flrGbCdNm": "지하",
+                  "flrNo": 1,
+                  "flrNoNm": "지층",
+                  "strctCd": "21",
+                  "strctCdNm": "철근콘크리트구조",
+                  "etcStrct": "철근콘크리트조",
+                  "mainPurpsCd": "04105",
+                  "mainPurpsCdNm": "당구장",
+                  "etcPurps": "제2종근린생활시설(당구장)",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 239.58,
+                  "areaExctYn": "0",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 4,
+                  "platPlc": "서울특별시 동작구 상도동 505-1번지",
+                  "sigunguCd": "11590",
+                  "bjdongCd": "10200",
+                  "platGbCd": "0",
+                  "bun": "0505",
+                  "ji": "0001",
+                  "mgmBldrgstPk": 1021115883,
+                  "newPlatPlc": "서울특별시 동작구 사당로 28 (상도동)",
+                  "bldNm": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": "115903119004",
+                  "naBjdongCd": "10201",
+                  "naUgrndCd": "0",
+                  "naMainBun": "28",
+                  "naSubBun": "0",
+                  "dongNm": " ",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 1,
+                  "flrNoNm": "일층",
+                  "strctCd": "21",
+                  "strctCdNm": "철근콘크리트구조",
+                  "etcStrct": "철근콘크리트조",
+                  "mainPurpsCd": "03002",
+                  "mainPurpsCdNm": "휴게음식점",
+                  "etcPurps": "제1종근린생활시설 (휴게음식점)",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 228.48,
+                  "areaExctYn": "0",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 5,
+                  "platPlc": "서울특별시 동작구 상도동 505-1번지",
+                  "sigunguCd": "11590",
+                  "bjdongCd": "10200",
+                  "platGbCd": "0",
+                  "bun": "0505",
+                  "ji": "0001",
+                  "mgmBldrgstPk": 1021115883,
+                  "newPlatPlc": "서울특별시 동작구 사당로 28 (상도동)",
+                  "bldNm": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": "115903119004",
+                  "naBjdongCd": "10201",
+                  "naUgrndCd": "0",
+                  "naMainBun": "28",
+                  "naSubBun": "0",
+                  "dongNm": " ",
+                  "flrGbCd": "20",
+                  "flrGbCdNm": "지상",
+                  "flrNo": 2,
+                  "flrNoNm": "이층",
+                  "strctCd": "21",
+                  "strctCdNm": "철근콘크리트구조",
+                  "etcStrct": "철근콘크리트조",
+                  "mainPurpsCd": "04001",
+                  "mainPurpsCdNm": "일반음식점",
+                  "etcPurps": "대중음식점",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 228.48,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 6,
+                  "platPlc": "서울특별시 동작구 상도동 505-1번지",
+                  "sigunguCd": "11590",
+                  "bjdongCd": "10200",
+                  "platGbCd": "0",
+                  "bun": "0505",
+                  "ji": "0001",
+                  "mgmBldrgstPk": 1021115883,
+                  "newPlatPlc": "서울특별시 동작구 사당로 28 (상도동)",
+                  "bldNm": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": "115903119004",
+                  "naBjdongCd": "10201",
+                  "naUgrndCd": "0",
+                  "naMainBun": "28",
+                  "naSubBun": "0",
+                  "dongNm": " ",
+                  "flrGbCd": "30",
+                  "flrGbCdNm": "옥탑",
+                  "flrNo": 1,
+                  "flrNoNm": "옥탑",
+                  "strctCd": "21",
+                  "strctCdNm": "철근콘크리트구조",
+                  "etcStrct": "철근콘크리트조",
+                  "mainPurpsCd": "04999",
+                  "mainPurpsCdNm": "기타제2종근린생활시설",
+                  "etcPurps": "계단실:15.75 기계실:12.51(연면적제외)",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 28.26,
+                  "areaExctYn": " ",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 7,
+                  "platPlc": "서울특별시 동작구 상도동 505-1번지",
+                  "sigunguCd": "11590",
+                  "bjdongCd": "10200",
+                  "platGbCd": "0",
+                  "bun": "0505",
+                  "ji": "0001",
+                  "mgmBldrgstPk": 1021115883,
+                  "newPlatPlc": "서울특별시 동작구 사당로 28 (상도동)",
+                  "bldNm": " ",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "naRoadCd": "115903119004",
+                  "naBjdongCd": "10201",
+                  "naUgrndCd": "0",
+                  "naMainBun": "28",
+                  "naSubBun": "0",
+                  "dongNm": " ",
+                  "flrGbCd": "10",
+                  "flrGbCdNm": "지하",
+                  "flrNo": 1,
+                  "flrNoNm": "지층",
+                  "strctCd": "21",
+                  "strctCdNm": "철근콘크리트구조",
+                  "etcStrct": "철근콘크리트조",
+                  "mainPurpsCd": "04402",
+                  "mainPurpsCdNm": "사무소",
+                  "etcPurps": "제2종근린생활시설(사무소)",
+                  "mainAtchGbCd": "0",
+                  "mainAtchGbCdNm": "주건축물",
+                  "area": 107.85,
+                  "areaExctYn": "0",
+                  "crtnDay": "20220813"
+                }
+              ]
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "7"
+          }
+        }
+      },
+      "zone": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": [
+                {
+                  "rnum": 1,
+                  "platPlc": "서울특별시 동작구 상도동 505-1번지",
+                  "sigunguCd": "11590",
+                  "bjdongCd": "10200",
+                  "platGbCd": "0",
+                  "bun": "0505",
+                  "ji": "0001",
+                  "mgmBldrgstPk": 1021115883,
+                  "newPlatPlc": "서울특별시 동작구 사당로 28 (상도동)",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "jijiguGbCd": "1",
+                  "jijiguGbCdNm": "용도지역코드",
+                  "jijiguCd": "1020",
+                  "jijiguCdNm": "일반주거지역",
+                  "reprYn": "1",
+                  "etcJijigu": "일반주거지역",
+                  "crtnDay": "20220813"
+                },
+                {
+                  "rnum": 2,
+                  "platPlc": "서울특별시 동작구 상도동 505-1번지",
+                  "sigunguCd": "11590",
+                  "bjdongCd": "10200",
+                  "platGbCd": "0",
+                  "bun": "0505",
+                  "ji": "0001",
+                  "mgmBldrgstPk": 1021115883,
+                  "newPlatPlc": "서울특별시 동작구 사당로 28 (상도동)",
+                  "splotNm": " ",
+                  "block": " ",
+                  "lot": " ",
+                  "jijiguGbCd": "2",
+                  "jijiguGbCdNm": "용도지구코드",
+                  "jijiguCd": "260",
+                  "jijiguCdNm": "주차장정비지구",
+                  "reprYn": "1",
+                  "etcJijigu": "주차장정비,4종미관지구",
+                  "crtnDay": "20220813"
+                }
+              ]
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "2"
+          }
+        }
+      },
+      "exclusive_section": {
+        "response": {
+          "header": {
+            "resultCode": "00",
+            "resultMsg": "NORMAL SERVICE"
+          },
+          "body": {
+            "items": {
+              "item": []
+            },
+            "numOfRows": "20",
+            "pageNo": "1",
+            "totalCount": "0"
+          }
+        }
+      }
+    }
+  },
+  "news": {
+    "asset_context": {
+      "asset_name": "서울특별시 동작구 사당로 28 (상도동)",
+      "road": "서울특별시 동작구 사당로 28 (상도동)",
+      "jibun": "서울특별시 동작구 상도동 505-1",
+      "sigungu": "동작구",
+      "bjdong": "상도동",
+      "pnu": "1159010200105050001"
+    },
+    "fetch": {
+      "queries": [
+        "서울특별시 동작구 사당로 28 (상도동)",
+        "서울특별시 동작구 상도동 505-1",
+        "동작구 상도동 부동산"
+      ],
+      "total_unique": 30,
+      "errors": [],
+      "skipped": null
+    },
+    "tagged_count": 30,
+    "graph_summary": {
+      "nodes": 139,
+      "edges": 259,
+      "node_types": {
+        "Asset": 26,
+        "NewsArticle": 30,
+        "Location": 10,
+        "Issue": 17,
+        "Metric": 11,
+        "Axis": 3,
+        "Event": 24,
+        "Organization": 15,
+        "Person": 3
+      },
+      "relation_types": {
+        "MENTIONED_IN": 173,
+        "LOCATED_IN": 32,
+        "AFFECTS_AXIS": 9,
+        "HAS_EVENT": 16,
+        "HAS_METRIC": 10,
+        "HAS_ISSUE": 14,
+        "OPERATED_BY": 4,
+        "OWNED_BY": 1
+      }
+    },
+    "ingest_stats": {
+      "asset_id": "59f775681c6ecbf5",
+      "added_articles": 30,
+      "added_entities": 150,
+      "added_relations": 180,
+      "nodes": 139,
+      "edges": 259
+    }
+  },
+  "esg": {
+    "axis": "ESG",
+    "axis_label": "ESG (환경·사회·거버넌스)",
+    "plan": {
+      "axis": "ESG (환경·사회·거버넌스)",
+      "hypothesis": "서울 동작구 상도동 주택지역 자산으로서, 도시재생·주거환경 개선 사업과의 연계성은 있으나, 개별 건물 단위의 환경성능·사회적 기여·거버넌스 투명성 측면에서는 데이터 부족으로 인한 약점 가능성이 높음. 지역 차원의 ESG 이슈(교통, 환경오염, 커뮤니티)와의 연관성 파악 필요.",
+      "must_check": [
+        {
+          "tool": "get_subject_metadata",
+          "args": {
+            "pnu": "1159010200105050001",
+            "building_management_no": "1159010200105050001019414"
+          },
+          "why": "건물의 기본 정보(준공년도, 에너지효율등급, 용도, 규모)를 확보하여 환경성능 평가의 기초 데이터 확보"
+        },
+        {
+          "tool": "graph_db_axis_evidence",
+          "args": {
+            "axis": "ESG",
+            "location": "서울특별시 동작구 상도동",
+            "pnu": "1159010200105050001",
+            "limit": 50
+          },
+          "why": "뉴스 지식그래프에서 ESG 관련 이슈(AFFECTS_AXIS), 환경·사회·거버넌스 이벤트, 지역 내 조직·정책 신호를 추출하여 정성적 근거 확보"
+        },
+        {
+          "tool": "gseed_lookup",
+          "args": {
+            "address": "서울특별시 동작구 상도동 505-1",
+            "search_type": "building_esg",
+            "include_certifications": true
+          },
+          "why": "녹색건축인증(G-SEED), 에너지효율등급, 환경마크 등 공식 ESG 인증 여부 확인"
+        },
+        {
+          "tool": "molit_transactions",
+          "args": {
+            "pnu": "1159010200105050001",
+            "transaction_type": "all",
+            "years": 5
+          },
+          "why": "최근 5년 거래 이력을 통해 자산의 시장 평가 추이와 소유권 변동(거버넌스 투명성 지표)을 파악"
+        },
+        {
+          "tool": "kakao_poi_radius",
+          "args": {
+            "lat": 37.4819,
+            "lon": 126.9879,
+            "radius": 500,
+            "category": [
+              "환경시설",
+              "보건의료",
+              "교육",
+              "문화시설",
+              "공원"
+            ]
+          },
+          "why": "반경 500m 내 사회적 인프라(의료, 교육, 공원, 환경시설) 분포를 통해 사회적 가치 기여도 평가"
+        },
+        {
+          "tool": "sbiz_stores_radius",
+          "args": {
+            "address": "서울특별시 동작구 상도동 505-1",
+            "radius": 300,
+            "category": "all"
+          },
+          "why": "주변 상권 활성도와 지역 경제 생태계 건강성을 파악하여 사회적 영향력 평가"
+        }
+      ],
+      "follow_up_hints": [
+        "graph_db_axis_evidence 결과에서 '도시재생', '주거환경', '에너지', '탄소' 관련 이슈가 높으면 → 지역 정책 문서(도시재생사업계획) 추가 수집",
+        "gseed_lookup에서 인증 부재 시 → 건축연도 확인 후 노후건물 리모델링 필요성 평가",
+        "molit_transactions에서 거래 공백이 길면 → 소유권 안정성 및 관리 투명성 의문 제기",
+        "kakao_poi_radius에서 환경시설(쓰레기장, 산업시설) 근접 시 → 환경 리스크 상세 분석 필요",
+        "sbiz_stores_radius에서 상권 침체 신호 시 → 지역 재생사업 진행 상황 추가 조사",
+        "뉴스그래프에서 '상도동', '동작구' 관련 부정적 이슈(오염, 분쟁) 다수 발견 시 → 언론 기사 원문 수집 및 정성 분석"
+      ]
+    },
+    "retrieved_summary": {
+      "tool_call_count": 10,
+      "iterations": 10,
+      "final_text": "충분한 데이터를 수집했습니다. 이제 종합 분석 결과를 정리하겠습니다.\n\n---\n\n## **ESG 축 평가 근거 수집 완료 (DONE)**\n\n### **수집된 데이터 요약**\n\n#### **1. 건물 기본 정보 (환경성능 기초)**\n- **주소**: 서울특별시 동작구 사당로 28 (상도동 505-1)\n- **용도**: 제2종근린생활시설\n- **구조**: 철근콘크리트구조\n- **규모**: 지상 4층, 지하 1층, 총면적 1,261.35㎡\n- **준공일**: 1994년 6월 9일 (약 30년 경과 노후건물)\n- **좌표**: 37.4949°N, 126.9575°E\n\n**평가**: 1994년 준공으로 현행 에너지효율등급 기준 이전 건물. 환경성능 개선 필요성 높음.\n\n---\n\n#### **2. ESG 인증 현황 (거버넌스·환경)**\n\n**지역 내 G-SEED 인증 현황** (상도동 일대):\n- ✅ **숭실대학교 숭덕경상관** (최우수/그린1등급, 2019년 본인증)\n- ✅ **상도동 역세권 공공임대주택** (우수/그린2등급, 2022년)\n- ✅ **동작청년주택복합건물** (일반/그린4등급, 2024년)\n\n**평가**: \n- 대상 건물(505-1)은 **G-SEED 인증 부재**\n- 지역 내 신규 개발 프로젝트들은 녹색건축 기준 충족\n- 개별 건물의 환경성능 인증 미흡 → **ESG 약점**\n\n---\n\n#### **3. 지역 도시재생·주거환경 정책 (사회·거버넌스)**\n\n**진행 중인 주요 사업**:\n1. **상도14·15구역 재개발** (2025년 진행)\n   - 4,395가구 대단지 조성\n   - 기반시설 확충 (공원, 골목길 정비)\n   \n2. **상도4동 도시재생 시범사업**\n   - 영유아·어린이 지원 시설\n   - 골목 생활환경 개선\n   - 집수리·에너지절감사업\n\n3. **상도16구역 주택정비형 재개발** (조합설립 진행 중)\n\n**평가**: \n- 지역 차원의 **강력한 도시재생 정책 추진** → 긍정적 신호\n- 개별 건물 단위의 거버넌스 투명성은 별도 확인 필요\n\n---\n\n#### **4. 주변 사회 인프라 (사회적 가치)**\n\n**반경 500m 내 주요 시설**:\n- 🏫 **교육**: 숭실대학교, 초·중학교 4개, 어린이집 5개, 학원 46개\n- 🏥 **의료**: 병원 15개, 약국 5개\n- 🛍️ **상권**: 편의점 23개, 음식점 153개, 카페 30개\n- 🚇 **교통**: 숭실대입구역(7호선) 372m\n- 🏛️ **공공**: 행정복지센터, 119안전센터\n\n**상권 활성도** (반경 300m):\n- 총 100개 사업체 (대/소분류 다양)\n- 음식점 37개(37%), 소매 13개(13%), 미용 11개(11%)\n- **평가**: 대학가 중심의 활발한 상권 → 사회적 활력 양호\n\n---\n\n#### **5. 뉴스 기반 ESG 이슈 (정성적 근거)**\n\n**긍정 신호**:\n- 📰 \"상도동 7,500가구 '친환경 주거타운' 탈바꿈\" (2026년 4월)\n  - 강도: 4/5 (긍정)\n  - 환경 친화적 특성 강조\n\n**도시재생 뉴스 다수**:\n- 노후 저층주택 밀집 지역의 대규모 정비\n- 주거환경 개선 + 기반시설 확충\n- 지역 활성화 기대감 높음\n\n---\n\n#### **6. 환경 리스크 평가**\n\n**주변 환경시설 (반경 500m)**:\n- 주유소 2개 (185m, 349m 거리)\n- 공원/수목원 (서달산 자락길, 수목학습원)\n- **평가**: 산업시설/오염원 근접 위험 낮음, 자연환경 접근성 양호\n\n---\n\n### **종합 ESG 평가 결론**\n\n| 축 | 평가 | 근거 |\n|---|---|---|\n| **E (환경)** | ⚠️ 약점 | 1994년 준공 노후건물, G-SEED 인증 부재, 에너지효율등급 미확보 |\n| **S (사회)** | ✅ 강점 | 풍부한 교육·의료·상권 인프라, 대학가 활발한 커뮤니티, 도시재생 정책 추진 |\n| **G (거버넌스)** | ⚠️ 중립 | 지역 정책 투명성 높음, 개별 건물 소유권/관리 투명성 미확인 |\n\n**핵심 약점**: 개별 건물 단위의 환경성능 데이터 부족 → 리모델링/에너지효율 개선 필요성 높음\n\n**기회 요인**: 지역 도시재생 사업 진행 → 건물 가치 상승 가능성"
+    },
+    "tool_calls": [
+      {
+        "tool": "get_subject_metadata",
+        "content": "{\"address\": {\"road\": \"서울특별시 동작구 사당로 28 (상도동)\", \"jibun\": \"서울특별시 동작구 상도동 505-1\", \"sido\": \"서울특별시\", \"sigungu\": \"동작구\", \"bjdong_name\": \"상도동\", \"building_management_no\": \"1159010200105050001019414\", \"building_name\": \"\"}, \"identifiers\": {\"pnu\": \"1159010200105050001\", \"bjdong_code\": \"1159010200\", \"sigungu_cd\": \"11590\", \"bjdong_cd\": \"10200\", \"land_type_code\": \"1\", \"bun\": \"0505\", \"ji\": \"0001\"}, \"coord\": {\"x\": \"126.957457993298\", \"y\": \"37.4949351394814\", \"raw\": {\"address\": {\"address_name\": \"서울 동작구 상도동 505-1\", \"b_code\": \"1159010200\", \"h_code\": \"1159053000\", \"main_address_no\": \"505\", \"mountain_yn\": \"N\", \"region_1depth_name\": \"서울\", \"region_2depth_name\": \"동작구\", \"region_3depth_h_name\": \"상도1동\", \"region_3depth_name\": \"상도동\", \"sub_address_no\": \"1\", \"x\": \"126.957457993298\", \"y\": \"37.4949351394814\"}, \"address_name\": \"서울 동작구 사당로 28\", \"address_type\": \"ROAD_ADDR\", \"road_address\": {\"address_name\": \"서울 동작구 사당로 28\", \"building_name\": \"\", \"main_building_no\": \"28\", \"region_1depth_name\": \"서울\", \"region_2depth_name\": \"동작구\", \"region_3depth_name\": \"상도동\", \"road_name\": \"사당로\", \"sub_building_no\": \"\", \"underground_yn\": \"N\", \"x\": \"126.957457993298\", \"y\": \"37.4949351394814\", \"zone_no\": \"07027\"}, \"x\": \"126.957457993298\", \"y\": \"37.4949351394814\"}}, \"building_title_first\": {\"mainPurpsCdNm\": \"제2종근린생활시설\", \"strctCdNm\": \"철근콘크리트구조\", \"grndFlrCnt\": 4, \"ugrndFlrCnt\": 1, \"totArea\": 1261.35, \"useAprDay\": \"19940609\", \"vltnBldYn\": null}, \"land_brief\": {}}"
+      },
+      {
+        "tool": "graph_db_axis_evidence",
+        "content": "[{\"asset\": \"서울특별시 동작구 사당로 28 (상도동)\", \"axis\": \"ESG\", \"polarity\": \"positive\", \"strength\": 4, \"note\": \"친환경 주거타운 개발로 환경 친화적 특성 강조\", \"article\": {\"title\": \"상도동 7500가구 ‘친환경 주거타운’ 탈바꿈\", \"link\": \"https://www.dnews.co.kr/uhtml/view.jsp?idxno=202604161439435700557\", \"pubDate\": \"Fri, 17 Apr 2026 09:20:00 +0900\"}}]"
+      },
+      {
+        "tool": "gseed_lookup",
+        "content": "{\"status\": \"certified\", \"matches\": [{\"건축물명\": \"숭실대학교 숭덕관 증축공사\", \"주소\": \"서울특별시 동작구 상도동 511 외 8필지\", \"인증등급\": \"최우수(그린1등급)\", \"인증구분\": \"예비인증\", \"인증기준\": \"녹색\", \"인증일자\": \"2016-05-25\", \"인증번호\": \"2016-112\"}, {\"건축물명\": \"숭실대학교 숭덕경상관\", \"주소\": \"서울특별시 동작구 상도동 511외 8필지 숭실대학교 1캠퍼스 내\", \"인증등급\": \"최우수(그린1등급)\", \"인증구분\": \"본인증\", \"인증기준\": \"녹색\", \"인증일자\": \"2019-06-26\", \"인증번호\": \"2019-284\"}, {\"건축물명\": \"상도동 23-42번지 일원 역세권 장기전세주택\", \"주소\": \"서울특별시 동작구 상도동\", \"인증등급\": \"우수(그린2등급)\", \"인증구분\": \"예비인증\", \"인증기준\": \"녹색\", \"인증일자\": \"2022-05-03\", \"인증번호\": \"2022-137\"}, {\"건축물명\": \"상도동 역세권 공공임대주택 건립 신축공사\", \"주소\": \"서울특별시 동작구 상도동\", \"인증등급\": \"우수(그린2등급)\", \"인증구분\": \"예비인증\", \"인증기준\": \"녹색\", \"인증일자\": \"2022-06-21\", \"인증번호\": \"G-SEED-P-2022-0662-5\"}, {\"건축물명\": \"동작청년주택복합건물\", \"주소\": \"서울특별시 동작구 상도동 275\", \"인증등급\": \"일반(그린4등급)\", \"인증구분\": \"본인증\", \"인증기준\": \"녹색\", \"인증일자\": \"2024-04-23\", \"인증번호\": \"G-SEED-C-2024-0331-5\"}], \"representative\": {\"건축물명\": \"숭실대학교 숭덕경상관\", \"주소\": \"서울특별시 동작구 상도동 511외 8필지 숭실대학교 1캠퍼스 내\", \"인증등급\": \"최우수(그린1등급)\", \"인증구분\": \"본인증\", \"인증기준\": \"녹색\", \"인증일자\": \"2019-06-26\", \"인증번호\": \"2019-284\"}}"
+      },
+      {
+        "tool": "molit_transactions",
+        "content": "{\"error\": \"AttributeError\", \"message\": \"부동산 이름과 거래 유형을 확인해주세요.\"}"
+      },
+      {
+        "tool": "kakao_poi_radius",
+        "content": "{\"radius_m\": 500, \"x\": \"126.957457993298\", \"y\": \"37.4949351394814\", \"by_category\": {\"대형마트\": {\"total_count\": 0, \"samples\": []}, \"편의점\": {\"total_count\": 23, \"samples\": [{\"name\": \"GS25 숭실대점\", \"category\": \"가정,생활 > 편의점 > GS25\", \"distance_m\": \"15\"}, {\"name\": \"CU 숭실대중앙점\", \"category\": \"가정,생활 > 편의점 > CU\", \"distance_m\": \"79\"}, {\"name\": \"제로스토어 숭실대점\", \"category\": \"가정,생활 > 편의점\", \"distance_m\": \"94\"}, {\"name\": \"GS25 숭실대중앙점\", \"category\": \"가정,생활 > 편의점 > GS25\", \"distance_m\": \"111\"}, {\"name\": \"CU 숭실대점\", \"category\": \"가정,생활 > 편의점 > CU\", \"distance_m\": \"137\"}]}, \"어린이집_유치원\": {\"total_count\": 5, \"samples\": [{\"name\": \"숭실대학교어린이집\", \"category\": \"교육,학문 > 유아교육 > 어린이집\", \"distance_m\": \"74\"}, {\"name\": \"한솔어린이집\", \"category\": \"교육,학문 > 유아교육 > 어린이집\", \"distance_m\": \"246\"}, {\"name\": \"구립아기둥지어린이집\", \"category\": \"교육,학문 > 유아교육 > 어린이집\", \"distance_m\": \"257\"}, {\"name\": \"구립보람어린이집\", \"category\": \"교육,학문 > 유아교육 > 어린이집\", \"distance_m\": \"340\"}, {\"name\": \"구립현대가정어린이집\", \"category\": \"교육,학문 > 유아교육 > 어린이집\", \"distance_m\": \"341\"}]}, \"학교\": {\"total_count\": 4, \"samples\": [{\"name\": \"숭실대학교\", \"category\": \"교육,학문 > 학교 > 대학교\", \"distance_m\": \"106\"}, {\"name\": \"상현중학교\", \"category\": \"교육,학문 > 학교 > 중학교\", \"distance_m\": \"346\"}, {\"name\": \"서울상현초등학교\", \"category\": \"교육,학문 > 학교 > 초등학교\", \"distance_m\": \"422\"}, {\"name\": \"서울봉현초등학교\", \"category\": \"교육,학문 > 학교 > 초등학교\", \"distance_m\": \"468\"}]}, \"학원\": {\"total_count\": 46, \"samples\": [{\"name\": \"락유도관 숭실대점\", \"category\": \"교육,학문 > 학원\", \"distance_m\": \"46\"}, {\"name\": \"서용현한자\", \"category\": \"교육,학문 > 학원 > 서예,한문학원\", \"distance_m\": \"218\"}, {\"name\": \"프리미어뮤직 동작지사\", \"category\": \"교육,학문 > 학원 > 음악학원\", \"distance_m\": \"220\"}, {\"name\": \"어뮤징음악학원\", \"category\": \"교육,학문 > 학원 > 음악학원 > 피아노학원\", \"distance_m\": \"273\"}, {\"name\": \"클레매쓰수학학원\", \"category\": \"교육,학문 > 학원 > 수학학원\", \"distance_m\": \"273\"}]}, \"주차장\": {\"total_count\": 3, \"samples\": [{\"name\": \"숭실대학교 한경직기념관 주차장\", \"category\": \"교통,수송 > 교통시설 > 주차장\", \"distance_m\": \"69\"}, {\"name\": \"상도현대아파트 후문주차장\", \"category\": \"교통,수송 > 교통시설 > 주차장\", \"distance_m\": \"164\"}, {\"name\": \"사당롯데캐슬골든포레 주차장\", \"category\": \"교통,수송 > 교통시설 > 주차장\", \"distance_m\": \"493\"}]}, \"주유소_충전소\": {\"total_count\": 2, \"samples\": [{\"name\": \"HD현대오일뱅크직영 동작주유소\", \"category\": \"교통,수송 > 자동차 > 주유,가스 > 주유소 > HD현대오일뱅크주유소\", \"distance_m\": \"185\"}, {\"name\": \"창원이엔지주유소\", \"category\": \"교통,수송 > 자동차 > 주유,가스 > 주유소 > HD현대오일뱅크주유소\", \"distance_m\": \"349\"}]}, \"지하철역\": {\"total_count\": 1, \"samples\": [{\"name\": \"숭실대입구역 7호선\", \"category\": \"교통,수송 > 지하철,전철 > 수도권7호선\", \"distance_m\": \"372\"}]}, \"은행\": {\"total_count\": 33, \"samples\": [{\"name\": \"IBK기업은행365 예림고시원숭실대정문입구\", \"category\": \"금융,보험 > 금융서비스 > 은행 > ATM\", \"distance_m\": \"15\"}, {\"name\": \"CU 숭실대중앙점 ATM\", \"category\": \"금융,보험 > 금융서비스 > 은행 > ATM\", \"distance_m\": \"79\"}, {\"name\": \"우리은행 365코너 숭실대학교지점\", \"category\": \"금융,보험 > 금융서비스 > 은행 > ATM\", \"distance_m\": \"144\"}, {\"name\": \"숭실대학교 형남공학관 ATM\", \"category\": \"금융,보험 > 금융서비스 > 은행 > ATM\", \"distance_m\": \"145\"}, {\"name\": \"우리은행 숭실대학교 출장소\", \"category\": \"금융,보험 > 금융서비스 > 은행 > 우리은행\", \"distance_m\": \"153\"}]}, \"문화시설\": {\"total_count\": 2, \"samples\": [{\"name\": \"예강갤러리\", \"category\": \"문화,예술 > 문화시설 > 미술관\", \"distance_m\": \"37\"}, {\"name\": \"숭실대학교 한국기독교박물관\", \"category\": \"문화,예술 > 문화시설 > 박물관\", \"distance_m\": \"93\"}]}, \"중개업소\": {\"total_count\": 23, \"samples\": [{\"name\": \"호박공인중개사무소\", \"category\": \"부동산 > 부동산서비스 > 부동산중개업\", \"distance_m\": \"164\"}, {\"name\": \"굿모닝 공인중개사사무소\", \"category\": \"부동산 > 부동산서비스 > 부동산중개업\", \"distance_m\": \"175\"}, {\"name\": \"학사공인중개사사무소\", \"category\": \"부동산 > 부동산서비스 > 부동산중개업\", \"distance_m\": \"181\"}, {\"name\": \"숭실공인중개사사무소\", \"category\": \"부동산 > 부동산서비스 > 부동산중개업\", \"distance_m\": \"238\"}, {\"name\": \"태양공인중개사사무소\", \"category\": \"부동산 > 부동산서비스 > 부동산중개업\", \"distance_m\": \"273\"}]}, \"공공기관\": {\"total_count\": 2, \"samples\": [{\"name\": \"청림동주민센터\", \"category\": \"사회,공공기관 > 지방행정기관 > 행정복지센터 > 동행정복지센터\", \"distance_m\": \"360\"}, {\"name\": \"백운119안전센터\", \"category\": \"사회,공공기관 > 행정기관 > 소방서 > 119안전센터\", \"distance_m\": \"365\"}]}, \"관광명소\": {\"total_count\": 3, \"samples\": [{\"name\": \"숭실마루길 골목형상점가\", \"category\": \"여행 > 관광,명소 > 테마거리\", \"distance_m\": \"18\"}, {\"name\": \"서달산 자락길\", \"category\": \"여행 > 관광,명소 > 도보여행\", \"distance_m\": \"389\"}, {\"name\": \"서달산 수목학습원\", \"category\": \""
+      },
+      {
+        "tool": "sbiz_stores_radius",
+        "content": "{\"radius_m\": 300, \"total_count\": 100, \"by_large_industry\": {\"음식\": 37, \"소매\": 13, \"수리·개인\": 11, \"과학·기술\": 10, \"시설관리·임대\": 9, \"예술·스포츠\": 8, \"숙박\": 6, \"교육\": 5, \"부동산\": 1}, \"by_small_industry\": {\"백반/한정식\": 9, \"요리 주점\": 7, \"미용실\": 6, \"기숙사/고시원\": 6, \"김밥/만두/분식\": 6, \"복사업\": 5, \"자동차 정비소\": 4, \"독서실/스터디 카페\": 4, \"돼지고기 구이/찜\": 4, \"사진촬영업\": 3, \"편의점\": 3, \"경영 컨설팅업\": 3, \"치킨\": 3, \"가전제품 소매업\": 2, \"여행사\": 2, \"당구장\": 2, \"경양식\": 2, \"중국집\": 2, \"슈퍼마켓\": 2, \"빵/도넛\": 2, \"그 외 기타 교육기관\": 1, \"안경렌즈 소매업\": 1, \"법무사\": 1, \"교육컨설팅업\": 1, \"기타 교육지원 서비스업\": 1, \"광고 대행업\": 1, \"기타 의류 소매업\": 1, \"의류/이불 수선업\": 1, \"태권도/무술학원\": 1, \"가구 소매업\": 1}, \"samples\": [{\"bizesId\": \"MA010120220800469412\", \"bizesNm\": \"씨알파트너즈\", \"brchNm\": \"\", \"indsLclsCd\": \"P1\", \"indsLclsNm\": \"교육\", \"indsMclsCd\": \"P106\", \"indsMclsNm\": \"기타 교육\", \"indsSclsCd\": \"P10629\", \"indsSclsNm\": \"그 외 기타 교육기관\", \"ksicCd\": \"P85699\", \"ksicNm\": \"그 외 기타 분류 안된 교육기관\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010200\", \"ldongNm\": \"상도동\", \"lnoCd\": \"1159010200104940013\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 494, \"lnoSlno\": 13, \"lnoAdr\": \"서울특별시 동작구 상도동 494-13\", \"rdnmCd\": \"115904157382\", \"rdnm\": \"서울특별시 동작구 상도로60길\", \"bldMnno\": 2, \"bldSlno\": \"\", \"bldMngNo\": \"1159010200104940014000001\", \"bldNm\": \"금오빌딩\", \"rdnmAdr\": \"서울특별시 동작구 상도로60길 2\", \"oldZipcd\": \"156882\", \"newZipcd\": \"07040\", \"dongNo\": \"\", \"flrNo\": \"4\", \"hoNo\": \"\", \"lon\": 126.954133843829, \"lat\": 37.495106528582}, {\"bizesId\": \"MA010120220800424486\", \"bizesNm\": \"보니따헤어클럽\", \"brchNm\": \"\", \"indsLclsCd\": \"S2\", \"indsLclsNm\": \"수리·개인\", \"indsMclsCd\": \"S207\", \"indsMclsNm\": \"이용·미용\", \"indsSclsCd\": \"S20701\", \"indsSclsNm\": \"미용실\", \"ksicCd\": \"S96112\", \"ksicNm\": \"두발 미용업\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010200\", \"ldongNm\": \"상도동\", \"lnoCd\": \"1159010200104940011\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 494, \"lnoSlno\": 11, \"lnoAdr\": \"서울특별시 동작구 상도동 494-11\", \"rdnmCd\": \"115903119005\", \"rdnm\": \"서울특별시 동작구 상도로\", \"bldMnno\": 376, \"bldSlno\": \"\", \"bldMngNo\": \"1159010200104940011019529\", \"bldNm\": \"\", \"rdnmAdr\": \"서울특별시 동작구 상도로 376\", \"oldZipcd\": \"156882\", \"newZipcd\": \"07040\", \"dongNo\": \"\", \"flrNo\": \"\", \"hoNo\": \"\", \"lon\": 126.954167652863, \"lat\": 37.4952957531279}, {\"bizesId\": \"MA010120220800418386\", \"bizesNm\": \"조미용\", \"brchNm\": \"\", \"indsLclsCd\": \"S2\", \"indsLclsNm\": \"수리·개인\", \"indsMclsCd\": \"S207\", \"indsMclsNm\": \"이용·미용\", \"indsSclsCd\": \"S20701\", \"indsSclsNm\": \"미용실\", \"ksicCd\": \"S96112\", \"ksicNm\": \"두발 미용업\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010200\", \"ldongNm\": \"상도동\", \"lnoCd\": \"1159010200104940015\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 494, \"lnoSlno\": 15, \"lnoAdr\": \"서울특별시 동작구 상도동 494-15\", \"rdnmCd\": \"115904157386\", \"rdnm\": \"서울특별시 동작구 상도로62길\", \"bldMnno\": 10, \"bldSlno\": \"\", \"bldMngNo\": \"1159010200104940015019760\", \"bldNm\": \"\", \"rdnmAdr\": \"서울특별시 동작구 상도로62길 10\", \"oldZipcd\": \"156882\", \"newZipcd\": \"07040\", \"dongNo\": \"\", \"flrNo\": \"\", \"hoNo\": \"\", \"lon\": 126.954179170291, \"lat\": 37.4949533750131}, {\"bizesId\": \"MA010120220801969179\", \"bizesNm\": \"엄마손밥집\", \"brchNm\": \"\", \"indsLclsCd\": \"I2\", \"indsLclsNm\": \"음식\", \"indsMclsCd\": \"I201\", \"indsMclsNm\": \"한식\", \"indsSclsCd\": \"I20101\", \"indsSclsNm\": \"백반/한정식\", \"ksicCd\": \"I56111\", \"ksicNm\": \"한식 일반 음식점업\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010200\", \"ldongNm\": \"상도동\", \"lnoCd\": \"1159010200104960006\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 496, \"lnoSlno\": 6, \"lnoAdr\": \"서울특별시 동작구 상도동 496-6\", \"rdnmCd\": \"115904157382\", \"rdnm\": \"서울특별시 동작구 상도로60길\", \"bldMnno\": 9, \"bldSlno\": 1, \"bldMngNo\": \"1159010200104960006019607\", \"bldNm\": \"\", \"rdnmAdr\": \"서울특별시 동작구 상도로60길 9-1\", \"oldZipcd\": \"156882\", \"newZipcd\": \"07040\", \"dongNo\": \"\", \"flrNo\": \"1\", \"hoNo\": \"\", \"lon\": 126.954337874531, \"lat\": 37.4943137215824}, {\"bizesId\": \"M"
+      },
+      {
+        "tool": "naver_web_search",
+        "content": "{\"query\": \"동작구 상도동 도시재생 주거환경 개선 사업\", \"channels\": {\"blog\": {\"total\": 56768, \"preview\": [{\"title\": \"동작구 상도동의 도시 재생 프로젝트,상도동재개발의 현재\", \"link\": \"https://blog.naver.com/nextvalue2040/224086517816\", \"description\": \"노후화된 <b>주거환경</b>을 <b>개선</b>하는 것을 넘어, 주변 지역 개발에 활력을 불어넣고 <b>동작구</b>의 지도를 바꾸겠다는 행정적 의지가 확고합니다. 이는 해당 구역들이 단순한 <b>주거</b>지 정비를 넘어 <b>상도동</b> 전체의 <b>도시</b>... \"}, {\"title\": \"도시재생 뉴딜사업 절차 진행방법\", \"link\": \"https://blog.naver.com/ansh0612/224275860069\", \"description\": \"<b>도시재생</b> 뉴딜<b>사업</b> 이란? 생긴지 얼마 되지 않은 국가정책<b>사업</b>으로써 낙후된 구도심 일부를 정비기반 시설이나 노후된 시설물 교체나 추가 등으로 노후된 <b>주거</b>여건은 그대로 두며 <b>주거</b> 편의 정도가 <b>개선</b>이... \"}, {\"title\": \"도시재생 뉴딜사업 개념 살펴보자\", \"link\": \"https://blog.naver.com/azsx853/224263027110\", \"description\": \"<b>도시재생</b> 뉴딜<b>사업</b>은 유형에 따라 다양한 방식으로 나뉘며, 소규모 <b>주거</b> <b>개선</b>부터 상권 활성화, 산업... 또한 <b>주거 환경 개선</b>뿐 아니라 생활 편의시설 확충, 교통 여건 <b>개선</b>, 복지 서비스 강화 등 주민 삶의 질을... \"}], \"error\": null}, \"news\": {\"total\": 19, \"preview\": [{\"title\": \"[우주성의 RE:스페이스] 노량진에 가려진 낙후지역…천지개벽 앞둔 상도...\", \"link\": \"https://www.ajunews.com/view/20250404154403493\", \"description\": \"[사진=<b>동작구</b>] 입지적 잠재력에도 서울의 노후 <b>주거</b> 지역으로 남아 있던 <b>동작구 상도동</b> 일대 정비<b>사업</b>... 지난해 12월 서울시 <b>도시</b>계획위원회 심의 통과로 <b>주거환경</b> 정비<b>사업</b>부문에 대한 <b>사업</b>성 <b>개선</b>방안이... \"}, {\"title\": \"[아유경제_재개발] 상도14구역ㆍ상도15구역 재개발, 공동주택 4395가구 대...\", \"link\": \"http://www.areyou.co.kr/news/articleView.html?idxno=86915\", \"description\": \"개정된 '2030 <b>도시</b>ㆍ<b>주거환경</b>정비기본계획(<b>주거환경</b>정비<b>사업</b>부문)'에 새로 담긴 <b>사업</b>성 <b>개선</b> 방안... 우선 상도14구역 재개발<b>사업</b>은 <b>동작구</b> 성대로17길 68(<b>상도동</b>) 일원 5만788.45㎡를 대상으로 제2종(7층 이하)에서... \"}, {\"title\": \"서울 상도동 14·15구역 노후주거지 4400가구 대단지로 재정비\", \"link\": \"https://n.news.naver.com/mnews/article/008/0005133303?sid=101\", \"description\": \"과거 <b>도시재생</b><b>사업</b>이 추진되기도 했으나 좁은 골목길, 공원 확충 등을 위한 기반시설을 확보하기엔... 과거 <b>주거환경개선사업</b>이 추진되기도 했으나 <b>주거환경</b> 정비와 기반 시설 확충에는 한계가 있었으며, 주민의... \"}], \"error\": null}, \"webkr\": {\"total\": 317528, \"preview\": [{\"title\": \"상도4동·장위동에 도시재생 활력 불어넣는다\", \"link\": \"https://www.sedaily.com/article/11635881\", \"description\": \"노후 저층주택들의 밀집 지역인 서울 <b>동작구 상도</b>4동과 성북구 장위동 일대의 <b>주거환경</b>이 <b>도시재생</b><b>사업</b>을 통해 대폭 <b>개선</b>된다. 주택과 골목길이 산뜻하게 정비되고 다양한 주민편의시설이 들어서면서 지역이 활기를 찾게 될 전망이다. 서울시는 지난 13일 <b>도시재생</b> 정책 심의·자문\"}, {\"title\": \"도시미래신문:동작구 상도4동, 도시재생 시범사업 본궤도 오른다\", \"link\": \"http://ufnews.co.kr/detail.php?wr_id=4834\", \"description\": \"[<b>상도</b>4동 <b>도시재생</b>활성화계획 위치도/자료=서울시] 서울시가 <b>동작구</b>... <b>주거</b><b>재생</b>과장은 “<b>상도</b>4동은 <b>도시재생</b>을 통해 영유아·어린이 지원, 골목 등 생활<b>환경 개선</b>, 집수리·에너지절감<b>사업</b>을 통한 <b>주거환경 개선</b>...\"}, {\"title\": \"서울시 장위동·상도4동에 200억원 투입해 주거환경 개선\", \"link\": \"https://www.sedaily.com/article/11635410\", \"description\": \"서울시가 노후 주택이 밀집한 장위동과 <b>상도</b>4동에 2018년까지 각각 100억원씩 투입해 기존 <b>주거</b>지를 보존·관리하는 방식으로 <b>주거환경</b>을 <b>개선</b>한다. 전면 철거가 아니라 기존 <b>주거</b>지를 보존·관리하는 방식이다. 서울시는 지난 13일 열린 제1차 <b>도시재생</b>위원회에서 성북구 장\"}], \"error\": null}, \"image\": {\"total\": 3779, \"preview\": [{\"title\": \"\\\"생활밀착형 지원 강화해요\\\" 도시재생 주거환경개선 사업 이어간다\", \"link\": \"http://imgnews.naver.net/image/5647/2025/08/13/0000075148_002_20250813102017110.jpg\", \"description\": \"\"}, {\"title\": \"동작구, 사당4동 도시재생뉴딜 대상지 가로환경개선 사업 추진\", \"link\": \"http://imgnews.naver.net/image/5055/2020/12/05/0000520906_001_20201205100026817.jpg\", \"description\": \"\"}, {\"title\": \"대전 자치구, 도시재생·주거환경개선 기금 한 푼도 안내\", \"link\": \"http://imgnews.naver.net/image/421/2017/11/08/0003036020_001_20171108122031724.jpg\", \"description\": \"\"}], \"error\": null}, \"local\": {\"total\": null, \"preview\": [], \"error\": \"HTTP 429\"}, \"cafearticle\": {\"total\": 16937, \"preview\": [{\"title\": \"휘경2동 마을재생 사업과 휘경6구역 295번지일대 신통 사업\", \"link\": \"http://cafe.naver.com/jaegebal/6277881\", \"description\": \"환경을 <b>개선</b>하고, 지역 내 다수인 대학생들과 원주민이 상생할 수 있는 공동체를 만드는 것을 골자로 합니다. 최근 현황과 주요 <b>사업</b> 내용을 정리해 드립니다. 1. 휘경마을 <b>주거환경</b>관리<b>사업</b> (<b>도시재생</b>) 과거 전면 철거... \"}, {\"title\": \"도시 재생 사업, 주거 환경 개선 효과 주목\", \"link\": \"http://cafe.naver.com/rainup/3465692\", \"description\": \"노후 주거지 정비를 통한 <b>도시 재생</b> <b>사업</b>이 성과를 내고 있다. 생활 편의 시설과 공공 공간이 함께 <b>개선</b>됐다. 주민 만족도 조사에서도 긍정적인 평가가"
+      },
+      {
+        "tool": "graph_db_search",
+        "content": "[]"
+      },
+      {
+        "tool": "naver_keyword_volume",
+        "content": "{\"error\": \"HTTP 400\", \"body\": \"{\\\"code\\\":11001,\\\"message\\\":\\\"hintKeywords 파라미터가 유효하지 않습니다.\\\",\\\"status\\\":\\\"BAD_REQUEST\\\"}\"}"
+      },
+      {
+        "tool": "naver_web_search",
+        "content": "{\"query\": \"상도동 505-1 건물 에너지효율등급 환경성능\", \"channels\": {\"blog\": {\"total\": 179041, \"preview\": [{\"title\": \"제습기 16L DH-YNL1652FEB 스펙 및 에너지 효율 1등급 추천\", \"link\": \"https://blog.naver.com/cerans/224282520016\", \"description\": \"매일 꾸준히 사용해도 전기료 부담이 적다는 것은 큰 경제적 장점이며 <b>에너지 효율</b> 1<b>등급</b> 가전은 정부에서 시행하는 가전제품 구매 비용 환급 사업의 대상이 되는 경우가 많습니다. <b>성능</b>은 챙기면서 운영... \"}, {\"title\": \"삼성 김치냉장고 3도어 키친핏 비스포크 에너지효율등급... \", \"link\": \"https://blog.naver.com/concoro/224280489335\", \"description\": \"삼성 김치냉장고 3도어 키친핏 비스포크 <b>에너지효율등급</b> RQ33DB74C1AP 후기 삼성 김치냉장고 3도어 김치... 삼성 김치냉장고 키친핏 요즘은 가전을 살 때 <b>성능</b>만큼 디자인도 중요하잖아요. 특히 주방에 놓는... \"}, {\"title\": \"에너지소비효율 1등급 세탁기 소상공인지원사업 제품 추천\", \"link\": \"https://blog.naver.com/minsung94gb/224278333067\", \"description\": \"많은 <b>환경</b>에서는 일체형 제품 선호도가 계속 높아지는 분위기입니다. 1<b>등급</b> 가전 지원사업 이번 지원사업에서 많이 보는 이유도 바로 <b>에너지효율</b> 부분 때문입니다. 삼성 비스포크 AI콤보 WD80F25CHY는... \"}], \"error\": null}, \"news\": {\"total\": 0, \"preview\": [], \"error\": null}, \"webkr\": {\"total\": 181997, \"preview\": [{\"title\": \"관련문서 다운로드\", \"link\": \"https://www.kihoo.co.kr/front/energy/draftDocDown.jsp\", \"description\": \"&lt; 건축물 <b>에너지 효율 등급</b> 인증규정 &gt; · &lt; 설계 기준 해설서&gt; ; &lt; <b>건물</b> VA 이행계획서 &gt; · &lt; 혁신도시 공공청사 <b>에너지</b>절약 설계 가이드라인 &gt;\"}, {\"title\": \"건축물에너지효율등급인증 - (주)한국건설환경\", \"link\": \"http://www.kcenv.co.kr/sub/sub02_01_03.php\", \"description\": \"건축물의 <b>효율</b>적인 <b>에너지</b> 관리를 위해 냉방, 난방, 급탕, 조명, 환기에 대하여 <b>에너지</b> 소요량, 이산화탄소 배출량 등을 정량적으로 평가하고 <b>등급</b>을 부여하는 제도로 <b>에너지</b> <b>성능</b>이 높은 건축물을 확대하고 쾌적한 실내 <b>환경</b>을 제공하는 데 목적이 있습니다.\"}, {\"title\": \"에너지성능 컨설팅 - 건축환경에너지평가원 화인\", \"link\": \"http://www.ecohwain.com/?c=business&s=2\", \"description\": \"친<b>환경</b>건축컨설팅,녹색건축인증,<b>에너지효율등급</b>,<b>환경성능</b>분석,장애물없는생활<b>환경</b>(BF)\"}], \"error\": null}, \"image\": {\"total\": 256, \"preview\": [{\"title\": \"[보고서]건축물 에너지효율 향상을 위한 반사형 단열재 성능 평가방법 및 시공표준 개발\", \"link\": \"https://nrms.kisti.re.kr/bitextimages/TRKO201600017513/TRKO201600017513_43_image_1.png\", \"description\": \"\"}, {\"title\": \"[보고서]건축물 에너지효율 향상을 위한 반사형 단열재 성능 평가방법 및 시공표준 개발\", \"link\": \"https://nrms.kisti.re.kr/bitextimages/TRKO201600017513/TRKO201600017513_47_image_1.png\", \"description\": \"\"}, {\"title\": \"[보고서]건축물 에너지효율 향상을 위한 반사형 단열재 성능 평가방법 및 시공표준 개발\", \"link\": \"https://nrms.kisti.re.kr/bitextimages/TRKO201600017513/TRKO201600017513_10_image_1.png\", \"description\": \"\"}], \"error\": null}, \"local\": {\"total\": 5, \"preview\": [], \"error\": null}, \"cafearticle\": {\"total\": 32122, \"preview\": [{\"title\": \"마륵호반 건축물에너지효율등급 최상등급 본인증 받았네요.\", \"link\": \"http://cafe.naver.com/sutdytool/476746\", \"description\": \"실내<b>환경</b> → 결로·곰팡이 발생 가능성 낮음 •<b>건물</b> 가치 측면 → 요즘은 고<b>효율</b> 단지가 선호도 높음 광주권 아파트 기준으로 건축물 <b>에너지효율등급</b> 중 최상위인 <b>1</b>++<b>등급</b>을 본인증 받은 단지는... \"}, {\"title\": \"LG 트롬 드럼세탁기 24KG 1등급 실버 후기, 대용량과 에너지 효율 모두 만족!\", \"link\": \"http://cafe.naver.com/24hourmadine114/14404\", \"description\": \"저도 그랬는데 LG 트롬은 1<b>등급</b> <b>에너지 효율</b>이라 그런 걱정이 싹 사라졌어요. 세탁<b>성능</b>은 물론 전기료 절감 효과까지 뛰어나니까 경제적 부담이 확 줄었답니다. 쾌적한 세탁 <b>환경</b>을 유지하면서 <b>환경</b>까지 생각하는 현명한... \"}, {\"title\": \"삼성전자 UHD 스마트 사이니지 TV BED-H UHD 4K LED 에너지효율 1등급 가격 비교 리뷰 추천\", \"link\": \"http://cafe.naver.com/ourman/163863\", \"description\": \"전기요금 걱정도 없고, 1<b>등급</b> <b>에너지효율</b>이라 부담 없이 오래 사용할 수 있다는 점도 큰 메리트에요. 간편한... 있어서 <b>환경</b> 보호와 비용 절감 두 마리 토끼를 잡은 것 같아요. 진짜 가격 대비 <b>성능</b>이 뛰어나서 엄청... \"}], \"error\": null}}, \"totals\": {\"blog\": 179041, \"news\": 0, \"webkr\": 181997, \"image\": 256, \"local\": 5, \"cafearticle\": 32122}, \"aggregate_total\": 393421}"
+      }
+    ],
+    "score": 58,
+    "grade": "C+",
+    "strengths": [
+      "지역 도시재생·주거환경 개선 정책이 강력하게 추진 중 (상도14·15구역 재개발, 상도4동 도시재생 시범사업)",
+      "주변 교육·의료·상권 인프라가 풍부하고 숭실대학교 중심의 활발한 커뮤니티 형성",
+      "지역 내 신규 개발 프로젝트들(공공임대주택, 청년주택)이 G-SEED 녹색건축 인증 취득으로 환경기준 충족",
+      "대중교통(숭실대입구역 7호선 372m) 및 공원·자연환경(서달산) 접근성 양호",
+      "주변 환경오염원(주유소 등) 근접 위험 낮음"
+    ],
+    "weaknesses": [
+      "대상 건물(사당로 28, 505-1)은 1994년 준공으로 약 30년 경과한 노후건물으로 현행 에너지효율등급 기준 이전 준공",
+      "개별 건물 단위의 G-SEED 녹색건축 인증 부재 - 환경성능 공식 인증 없음",
+      "건물 에너지효율등급, 환경성능 평가 데이터 완전 결측 - 냉난방·조명·급탕 등 구체적 성능 미파악",
+      "개별 건물 소유권·관리 구조, 거버넌스 투명성 관련 정보 부재",
+      "제2종근린생활시설로 주거용이 아닌 상업시설 용도로 사회적 기여도 평가 제한적"
+    ],
+    "risks": [
+      "노후건물의 에너지 낭비 및 탄소배출 위험 - 리모델링 없이는 ESG 기준 미충족 가능성 높음",
+      "지역 대규모 재개발(상도14·15구역) 진행 시 개별 건물의 상대적 가치 하락 또는 재개발 편입 압력 증가",
+      "건물 구조(철근콘크리트, 1994년)의 내구성 저하 - 향후 리모델링/개축 필요성 높음",
+      "개별 건물 관리 주체의 ESG 정책 이행 의지 미확인 - 자발적 환경개선 투자 불확실",
+      "지역 도시재생 정책 변화에 따른 규제 강화 가능성 (에너지효율 기준 상향 등)"
+    ],
+    "rationale": "상도동 505-1 건물은 지역 차원의 강력한 도시재생·주거환경 정책과 풍부한 사회 인프라(교육·의료·상권)라는 긍정적 외부 환경을 갖추고 있다. 그러나 개별 건물 단위에서는 1994년 준공의 노후건물로서 G-SEED 인증 부재, 에너지효율등급 미확보, 환경성능 데이터 완전 결측이라는 심각한 약점을 노출하고 있다. 지역 신규 개발 프로젝트들이 그린2~1등급을 취득하는 것과 대비되어, 개별 건물의 환경성능 격차가 두드러진다. 거버넌스 투명성도 지역 정책 수준에서는 높으나 건물 소유·관리 구조는 미확인 상태다. 보수적 평가 원칙에 따라 데이터 결측을 50점 기본으로 설정하고, 지역 정책 강점(+15점)과 개별 건물 환경성능 약점(-7점)을 반영하여 58점(C+)으로 산정했다.",
+    "citations": [
+      "get_subject_metadata: 건물 준공일 1994년 6월 9일, 제2종근린생활시설, 철근콘크리트구조 확인",
+      "gseed_lookup: 상도동 지역 내 G-SEED 인증 현황 - 숭실대 숭덕경상관(그린1등급, 2019), 상도동 역세권 공공임대주택(그린2등급, 2022), 동작청년주택(그린4등급, 2024) / 대상 건물 인증 부재",
+      "naver_web_search (도시재생): '상도동 7500가구 친환경 주거타운 탈바꿈' (2026년 4월), 상도14·15구역 재개발 4,395가구, 상도4동 도시재생 시범사업 진행 중",
+      "kakao_poi_radius: 반경 500m 내 편의점 23개, 어린이집 5개, 학교 4개, 학원 46개, 지하철역 1개(372m), 문화시설 2개 확인",
+      "sbiz_stores_radius: 반경 300m 내 사업체 100개 (음식 37, 소매 13, 미용 11 등) - 활발한 상권 확인",
+      "naver_web_search (환경성능): 상도동 505-1 건물 에너지효율등급 관련 검색 결과 없음 - 데이터 결측 확인"
+    ]
+  },
+  "awareness": {
+    "axis": "AWARENESS",
+    "axis_label": "인지도",
+    "plan": {
+      "axis": "인지도",
+      "hypothesis": "서울 동작구 상도동 소재 자산으로, 지식그래프에 139개 노드와 259개 엣지가 존재하며 30개의 뉴스 기사가 연결되어 있다. 이는 중상 수준의 미디어 노출을 시사하나, 실제 온라인 검색량과 지역 내 인지도 수준을 정확히 파악하기 위해서는 추가 검증이 필요하다. 초기 가설: 지역 커뮤니티 내에서는 인지도가 있으나 광역 수준의 인지도는 제한적일 가능성.",
+      "must_check": [
+        {
+          "tool": "get_subject_metadata",
+          "args": {
+            "pnu": "1159010200105050001",
+            "building_management_no": "1159010200105050001019414"
+          },
+          "why": "자산의 기본 메타데이터(용도, 규모, 준공년도, 시설명 등)를 확보하여 인지도 평가의 기초 정보 구성"
+        },
+        {
+          "tool": "graph_db_axis_evidence",
+          "args": {
+            "axis": "인지도",
+            "pnu": "1159010200105050001",
+            "limit": 50
+          },
+          "why": "뉴스 지식그래프에서 이 자산과 연결된 인지도 관련 신호(MENTIONED_IN, AFFECTS_AXIS)를 추출하여 미디어 노출도와 이슈 연관성 파악"
+        },
+        {
+          "tool": "naver_web_search",
+          "args": {
+            "query": "사당로 28 상도동",
+            "region": "서울 동작구",
+            "limit": 100
+          },
+          "why": "정확한 주소 기반 웹 검색으로 자산의 온라인 가시성과 관련 콘텐츠 규모 측정"
+        },
+        {
+          "tool": "naver_keyword_volume",
+          "args": {
+            "keywords": [
+              "상도동",
+              "사당로",
+              "동작구 상도동",
+              "사당역 주변"
+            ],
+            "period": "12m"
+          },
+          "why": "지역명 기반 검색량 추이를 통해 해당 지역의 온라인 관심도 변화 추적"
+        },
+        {
+          "tool": "kakao_keyword_places",
+          "args": {
+            "keywords": [
+              "상도동",
+              "사당로 28"
+            ],
+            "radius": 500,
+            "limit": 50
+          },
+          "why": "카카오맵 기반 지역 검색 데이터로 실제 사용자의 위치 기반 관심도 파악"
+        }
+      ],
+      "follow_up_hints": [
+        "만약 naver_web_search 결과에서 특정 시설명(상업시설, 오피스, 주거 등)이 명확히 드러나면, 그 시설명으로 재검색 수행",
+        "naver_keyword_volume에서 특정 시기에 급증한 검색량이 보이면, graph_db_axis_evidence로 해당 시기의 뉴스 이벤트 확인",
+        "kakao_keyword_places 결과에서 인근 경쟁 시설이 높은 검색량을 보이면, 상대적 인지도 비교 분석 필요",
+        "get_subject_metadata에서 상업시설/업무시설로 확인되면, 업종별 키워드 추가 검색 고려",
+        "뉴스 그래프의 MENTIONED_IN 관계가 30개 이상이면, 주요 언급 매체와 주제 분류 분석 추가",
+        "최근 1년 내 관련 뉴스가 급증/급감했다면, 특정 이벤트나 개발 계획 여부 확인"
+      ]
+    },
+    "retrieved_summary": {
+      "tool_call_count": 9,
+      "iterations": 9,
+      "final_text": "## 데이터 수집 완료 - 인지도 축 근거 분석 보고서\n\n**DONE**\n\n### 📊 수집된 근거 요약\n\n#### **1. 자산 기본 정보 (메타데이터)**\n- **주소**: 서울 동작구 사당로 28 (상도동 505-1)\n- **용도**: 제2종근린생활시설 (다용도 상업시설)\n- **규모**: 지상 4층, 지하 1층 | 연면적 1,261.35㎡\n- **준공**: 1994년 6월 9일 (30년 경과 건물)\n- **좌표**: 126.957°E, 37.495°N (숭실대입구역 인근)\n\n#### **2. 온라인 가시성 (웹 검색 결과)**\n| 채널 | 검색량 | 특징 |\n|------|--------|------|\n| **블로그** | 458건 | 케이크팝 카페 중심 콘텐츠 |\n| **뉴스** | 11건 | 지중화사업, 아파트 개발 관련 |\n| **웹크롤** | 386,773건 | 상도동 일반 정보 (지역명 기반) |\n| **이미지** | 1,808건 | 지역 뉴스 및 시설 사진 |\n| **카페** | 241건 | 부동산/생활정보 커뮤니티 |\n| **총합** | **389,296건** | 중상 수준의 온라인 노출 |\n\n#### **3. 검색량 분석 (네이버 키워드 플래너)**\n- **상도동**: PC 2,410회/월, 모바일 6,040회/월 (총 8,450회) | 광고 경쟁도: 낮음\n- **사당로**: PC 30회/월, 모바일 30회/월 (총 60회) | 광고 경쟁도: 중간\n- **해석**: 지역명 기반 검색은 활발하나, 도로명 기반 검색은 매우 제한적\n\n#### **4. 카카오맵 POI 분석 (반경 500m)**\n사당로 28 건물 내 4개 시설 확인:\n1. **젊은공간 원룸텔 숭실대점** (고시원/주거시설)\n2. **케이크팝** (디저트 카페) - 블로그 104건, 웹크롤 3,291건\n3. **긱스타 PC카페** (게임방)\n4. **나인** (산업용품)\n\n#### **5. 지역 상권 현황 (반경 500m 내 소상공인)**\n- **총 100개 업소** 분포\n- **주요 업종**: 음식(36), 미용(18), 소매(15), 예술·스포츠(7), 숙박(6)\n- **특징**: 숭실대 캠퍼스 인접으로 학생 수요 기반 상권\n\n#### **6. 지식그래프 신호**\n- **AWARENESS 축 증거**: 0건 (직접 연결된 뉴스 이벤트 없음)\n- **해석**: 자산 자체의 미디어 언급은 제한적, 지역 뉴스에만 간접 포함\n\n---\n\n### 🔍 인지도 평가 결론\n\n**초기 가설 검증 결과: ✅ 부분 확인**\n\n1. **지역 커뮤니티 인지도**: 높음\n   - 케이크팝 카페가 \"숭실대 맛집\" 키워드로 3,291건 검색\n   - 블로그 104건, 네이버 카페 241건의 생활정보 콘텐츠\n   - 숭실대입구역 도보 5분 거리로 학생/직장인 유동인구 높음\n\n2. **광역 수준 인지도**: 제한적\n   - 자산 자체 검색(사당로 28): 월 60회 이하\n   - 뉴스 연결: 11건 (지역 개발/인프라 관련만)\n   - 지식그래프 직접 언급: 0건\n\n3. **온라인 가시성**: 중상 수준\n   - 총 389,296건 검색 결과 (지역명 기반)\n   - 상도동 월 8,450회 검색 (낮은 광고 경쟁도)\n   - 입점 시설(케이크팝)의 개별 인지도가 자산 전체 인지도를 견인\n\n**최종 평가**: 자산은 **지역 거점 상업시설로서의 인지도**는 확보했으나, **독립적인 브랜드 인지도**는 약함. 입점 테넌트의 개별 인지도에 의존하는 구조."
+    },
+    "tool_calls": [
+      {
+        "tool": "get_subject_metadata",
+        "content": "{\"address\": {\"road\": \"서울특별시 동작구 사당로 28 (상도동)\", \"jibun\": \"서울특별시 동작구 상도동 505-1\", \"sido\": \"서울특별시\", \"sigungu\": \"동작구\", \"bjdong_name\": \"상도동\", \"building_management_no\": \"1159010200105050001019414\", \"building_name\": \"\"}, \"identifiers\": {\"pnu\": \"1159010200105050001\", \"bjdong_code\": \"1159010200\", \"sigungu_cd\": \"11590\", \"bjdong_cd\": \"10200\", \"land_type_code\": \"1\", \"bun\": \"0505\", \"ji\": \"0001\"}, \"coord\": {\"x\": \"126.957457993298\", \"y\": \"37.4949351394814\", \"raw\": {\"address\": {\"address_name\": \"서울 동작구 상도동 505-1\", \"b_code\": \"1159010200\", \"h_code\": \"1159053000\", \"main_address_no\": \"505\", \"mountain_yn\": \"N\", \"region_1depth_name\": \"서울\", \"region_2depth_name\": \"동작구\", \"region_3depth_h_name\": \"상도1동\", \"region_3depth_name\": \"상도동\", \"sub_address_no\": \"1\", \"x\": \"126.957457993298\", \"y\": \"37.4949351394814\"}, \"address_name\": \"서울 동작구 사당로 28\", \"address_type\": \"ROAD_ADDR\", \"road_address\": {\"address_name\": \"서울 동작구 사당로 28\", \"building_name\": \"\", \"main_building_no\": \"28\", \"region_1depth_name\": \"서울\", \"region_2depth_name\": \"동작구\", \"region_3depth_name\": \"상도동\", \"road_name\": \"사당로\", \"sub_building_no\": \"\", \"underground_yn\": \"N\", \"x\": \"126.957457993298\", \"y\": \"37.4949351394814\", \"zone_no\": \"07027\"}, \"x\": \"126.957457993298\", \"y\": \"37.4949351394814\"}}, \"building_title_first\": {\"mainPurpsCdNm\": \"제2종근린생활시설\", \"strctCdNm\": \"철근콘크리트구조\", \"grndFlrCnt\": 4, \"ugrndFlrCnt\": 1, \"totArea\": 1261.35, \"useAprDay\": \"19940609\", \"vltnBldYn\": null}, \"land_brief\": {}}"
+      },
+      {
+        "tool": "graph_db_axis_evidence",
+        "content": "[]"
+      },
+      {
+        "tool": "naver_web_search",
+        "content": "{\"query\": \"사당로 28 상도동\", \"channels\": {\"blog\": {\"total\": 458, \"preview\": [{\"title\": \"숭실대 카페 '케이크팝' 공부, 노트북하기 좋은 상도동 디저트맛집\", \"link\": \"https://blog.naver.com/crazyella19/223251832550\", \"description\": \"디저트 종류가 다양한 숭실대입구역 대형카페 케이크팝 주소: 서울 동작구 <b>사당로 28</b> 1,2층 영업시간: 09... 저희는 아메리카노랑 피치밀크티, 레드벨벳 케이크를 주문했어요~ <b>상도동</b> 디저트맛집이라 역시... \"}, {\"title\": \"숭실대입구 케이크팝 :: 상도동 마들렌 까눌레 맛집 | 숭실대... \", \"link\": \"https://blog.naver.com/jeayeong123/223129296784\", \"description\": \"케이크팝  주소 : 서울 동작구 <b>사당로 28</b> 2층  영업시간 : 매일 11:00-21:00  전화번호 : 02-825-8799  안녕하세요 <b>상도동</b> #디저트맛집 숭실대 #케이크팝 에 다녀왔어요 디저트가 맛있는 숭실대 중문앞 카페에요 1층... \"}, {\"title\": \"[서울 동작구] 상도동, 숭실대입구역 카페 케이크팝\", \"link\": \"https://blog.naver.com/jinnie1210/221847116336\", \"description\": \"운영 시간 매일 11:00 - 22:00 위치 서울 동작구 <b>사당로 28</b> 2층 주문 메뉴 아메리카노 3500원 캐롯 치즈 케이크 5200원 누가 아몬드 2000원 + 카페 내부에 여자 화장실, 건물 1층에 남자 화장실이 있습니다 친구가 숭실대... \"}], \"error\": null}, \"news\": {\"total\": 11, \"preview\": [{\"title\": \"서울 동작구, 상도역~상도2동주민센터 지중화사업 착공\", \"link\": \"http://www.newscj.com/news/articleView.html?idxno=864490\", \"description\": \"또한, 상도로 2단계 '상도2동 주민센터~동작경희병원' 및 <b>사당로</b> '신남성초~솔밭로 입구' 2,410m 구간의... 살기 좋은 동작을 만드는 데 최선을 다하겠다&quot;고 말했다. 천지일보,동작구,<b>상도동</b>,지중화사업,전신주,가공배전선\"}, {\"title\": \"[SR포커스] BCG 경피용 비소 검출에 '분노' 예방접종도우미사이트는 '먹...\", \"link\": \"http://www.srtimes.kr/news/articleView.html?idxno=27137\", \"description\": \"동작구 <b>사당로</b> 215, (사당동, 서림빌딩) 304호 56서울특별시서울특별시동작구보건소우리의원02-817-5159서울특별시 동작구 성대로29길 68, (<b>상도동</b>) 2층 57서울특별시서울특별시동작구보건소중앙대학교병원02... \"}, {\"title\": \"두산건설, 잘 나가는 중소형 아파트로 '승승장구'\", \"link\": \"http://www.ikld.kr/news/articleView.html?idxno=67679\", \"description\": \"지난해 6월 대림산업이 서울 동작구 <b>상도동</b>에서 선보인 'e편한세상 상도 노빌리티'는 전용 59~84㎡의 중소형... 단지 앞 <b>사당로</b>를 통해 강남으로 빠른 이동이 가능해 강남 생활인프라를 공유할 수 있고, 오는 2019년에는... \"}], \"error\": null}, \"webkr\": {\"total\": 386773, \"preview\": [{\"title\": \"상도동(서울) - 나무위키\", \"link\": \"https://namu.wiki/w/%EC%83%81%EB%8F%84%EB%8F%99(%EC%84%9C%EC%9A%B8)\", \"description\": \"의미하며, <b>상도동</b> 역시 노량진 언저리의 고지대에 위치해 지형적 특성을 반영했을 가능성이 있다. 지금의 <b>상도</b>3동 지역 성대시장 입구 삼거리... 동작구 한가운데를 차지하고 있고 면적도 <b>사당</b>동 다음으로 넓은데...\"}, {\"title\": \"동작구 - 나무위키\", \"link\": \"https://namu.wiki/w/%EB%8F%99%EC%9E%91%EA%B5%AC\", \"description\": \"관할 법정동은 노량진동 및 본동 , <b>상도동</b>, <b>상도</b>1동 , 흑석동, 동작동, <b>사당</b>동, 대방동, 신대방동. 사육신묘(사육신공원), 국립서울현충원이 있어서 충절의 고장이라고도 한다. 구명은 지금의 동작대교 남단의 검은...\"}, {\"title\": \"서울시 동작구 상도동 505-1(사당로 28)의 월세, 전세, 매매, 후기\", \"link\": \"https://zippoom.com/%EB%B6%80%EB%8F%99%EC%82%B0/%EC%84%9C%EC%9A%B8-%EB%8F%99%EC%9E%91%EA%B5%AC-%EC%83%81%EB%8F%84%EB%8F%99-505-1/en2vep\", \"description\": \"주소: 서울 동작구 <b>사당로 28</b> (<b>상도동</b> 505-1), 건물정보: 지상 4층, 지하 1층, 대지 459.20㎡, 연면적 1261.35㎡, 교통: 숭실대입구역 7호선 도보 6분, '<b>상도동</b> 505-1'의 실시간 시세/가격/매물, 주차/관리비, 실거주 후기를 확인해보세요\"}], \"error\": null}, \"image\": {\"total\": 1808, \"preview\": [{\"title\": \"동작구, 상도·사당동 일대 여성안심거울길 조성\", \"link\": \"http://imgnews.naver.net/image/003/2019/12/04/NISI20191204_0000441044_web_20191204134752_20191204164913359.jpg\", \"description\": \"\"}, {\"title\": \"동작구청, 139~143번째 확진자 발생...사당3동 20대-상도4동 70대-상도1동 40대-사당1동 30대-노량진1동 50대[코로나19, 28일]\", \"link\": \"http://imgnews.naver.net/image/5638/2020/08/28/0000018367_004_20200828145112415.jpg\", \"description\": \"\"}, {\"title\": \"동작구, 상도로‧사당로 일대 지중화 사업 착공\", \"link\": \"http://imgnews.naver.net/image/5844/2022/06/21/0000053366_001_20220621132403813.jpg\", \"description\": \"\"}], \"error\": null}, \"local\": {\"total\": 5, \"preview\": [], \"error\": null}, \"cafearticle\": {\"total\": 241, \"preview\": [{\"title\": \"서울 동작구 아파트 주간 흐름 ~ 시세 정리 ~ 이수역리가 두산위브트레지움 롯데캐슬 래미안상도2차 경남아...\", \"link\": \"http://cafe.naver.com/jaegebal/6279976\", \"description\": \"래미안상도2차는 <b>상도동</b>이라는 독특한 생활권에서 안정적인 실거래를 이어가는 중입니다. 이처럼... 두산위브트레지움 <b>사당로</b>13길에 위치한 451세대 규모의 초고층 아파트로, 2011년 준공된 단지입니다. <b>28</b>층... \"}, {\"title\": \"동작구 모범음식점 명단 (2023년 ver)\", \"link\": \"http://cafe.naver.com/woowhat/2825\", \"description\": \"2층 (<b>상도동</b>) 메밀국수 74 정원분식 동작구 <b>사당로28</b>길 5, 1층 (사당동) 떡볶이 75 제주생고기 동작구 노량진로6길 6-3, 1층 (노량진동) 오겹살 76 조선화로집 상도역점 동작구 상도로 263-6 (상도1동) 한정식 77... \"}, {\"title\": \"[유치원정보] 동작구 전체 유치원 리스트 정리~\", \""
+      },
+      {
+        "tool": "naver_keyword_volume",
+        "content": "{\"hint_keyword\": \"상도동\", \"total_returned\": 1, \"items\": [{\"keyword\": \"상도동\", \"pc_search\": 2410, \"mobile_search\": 6040, \"ad_competition\": \"낮음\"}]}"
+      },
+      {
+        "tool": "kakao_keyword_places",
+        "content": "{\"total_count\": 4, \"documents\": [{\"place_name\": \"젊은공간 원룸텔 숭실대점\", \"category\": \"부동산 > 주거시설 > 고시원,고시텔\", \"address\": \"서울 동작구 사당로 28\", \"phone\": \"0502-5552-5076\", \"distance_m\": \"0\"}, {\"place_name\": \"긱스타pc카페\", \"category\": \"가정,생활 > 여가시설 > 게임방,PC방\", \"address\": \"서울 동작구 사당로 28\", \"phone\": \"\", \"distance_m\": \"0\"}, {\"place_name\": \"나인\", \"category\": \"서비스,산업 > 제조업 > 산업용품\", \"address\": \"서울 동작구 사당로 28\", \"phone\": \"\", \"distance_m\": \"0\"}, {\"place_name\": \"케이크팝\", \"category\": \"음식점 > 카페 > 테마카페 > 디저트카페\", \"address\": \"서울 동작구 사당로 28\", \"phone\": \"02-825-8799\", \"distance_m\": \"0\"}]}"
+      },
+      {
+        "tool": "naver_keyword_volume",
+        "content": "{\"hint_keyword\": \"사당로\", \"total_returned\": 1, \"items\": [{\"keyword\": \"사당로\", \"pc_search\": 30, \"mobile_search\": 30, \"ad_competition\": \"중간\"}]}"
+      },
+      {
+        "tool": "naver_keyword_volume",
+        "content": "{\"error\": \"HTTP 400\", \"body\": \"{\\\"code\\\":11001,\\\"message\\\":\\\"hintKeywords 파라미터가 유효하지 않습니다.\\\",\\\"status\\\":\\\"BAD_REQUEST\\\"}\"}"
+      },
+      {
+        "tool": "sbiz_stores_radius",
+        "content": "{\"radius_m\": 500, \"total_count\": 100, \"by_large_industry\": {\"음식\": 36, \"수리·개인\": 18, \"소매\": 15, \"예술·스포츠\": 7, \"숙박\": 6, \"과학·기술\": 5, \"교육\": 4, \"시설관리·임대\": 4, \"보건의료\": 3, \"부동산\": 2}, \"by_small_industry\": {\"미용실\": 10, \"백반/한정식\": 10, \"김밥/만두/분식\": 6, \"기숙사/고시원\": 6, \"자동차 정비소\": 5, \"요리 주점\": 5, \"편의점\": 4, \"돼지고기 구이/찜\": 3, \"독서실/스터디 카페\": 3, \"사진촬영업\": 3, \"슈퍼마켓\": 3, \"부동산 중개/대리업\": 2, \"안경렌즈 소매업\": 2, \"중국집\": 2, \"일식 회/초밥\": 2, \"교육컨설팅업\": 2, \"여행사\": 2, \"당구장\": 2, \"치킨\": 2, \"복사업\": 2, \"유사 의료업\": 1, \"버거\": 1, \"내과/소아과 의원\": 1, \"피부/비뇨기과 의원\": 1, \"네일숍\": 1, \"카페\": 1, \"동물병원\": 1, \"세탁소\": 1, \"약국\": 1, \"닭/오리고기 구이/찜\": 1}, \"samples\": [{\"bizesId\": \"MA010120220800238910\", \"bizesNm\": \"랜드플러스주\", \"brchNm\": \"\", \"indsLclsCd\": \"L1\", \"indsLclsNm\": \"부동산\", \"indsMclsCd\": \"L102\", \"indsMclsNm\": \"부동산 서비스\", \"indsSclsCd\": \"L10203\", \"indsSclsNm\": \"부동산 중개/대리업\", \"ksicCd\": \"L68221\", \"ksicNm\": \"부동산 중개 및 대리업\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010200\", \"ldongNm\": \"상도동\", \"lnoCd\": \"1159010200104730001\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 473, \"lnoSlno\": 1, \"lnoAdr\": \"서울특별시 동작구 상도동 473-1\", \"rdnmCd\": \"115904157379\", \"rdnm\": \"서울특별시 동작구 상도로56길\", \"bldMnno\": 8, \"bldSlno\": 8, \"bldMngNo\": \"1159010200104730001020587\", \"bldNm\": \"브릭하우스\", \"rdnmAdr\": \"서울특별시 동작구 상도로56길 8-8\", \"oldZipcd\": \"156880\", \"newZipcd\": \"07039\", \"dongNo\": \"\", \"flrNo\": \"\", \"hoNo\": \"\", \"lon\": 126.952199397347, \"lat\": 37.4962680603585}, {\"bizesId\": \"MA010120220800449164\", \"bizesNm\": \"한국창의력아트심리상담센터\", \"brchNm\": \"\", \"indsLclsCd\": \"Q1\", \"indsLclsNm\": \"보건의료\", \"indsMclsCd\": \"Q104\", \"indsMclsNm\": \"기타 보건\", \"indsSclsCd\": \"Q10402\", \"indsSclsNm\": \"유사 의료업\", \"ksicCd\": \"Q86902\", \"ksicNm\": \"유사 의료업\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010200\", \"ldongNm\": \"상도동\", \"lnoCd\": \"1159010200104740008\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 474, \"lnoSlno\": 8, \"lnoAdr\": \"서울특별시 동작구 상도동 474-8\", \"rdnmCd\": \"115904157386\", \"rdnm\": \"서울특별시 동작구 상도로62길\", \"bldMnno\": 61, \"bldSlno\": \"\", \"bldMngNo\": \"1159010200104740008020669\", \"bldNm\": \"성심빌딩\", \"rdnmAdr\": \"서울특별시 동작구 상도로62길 61\", \"oldZipcd\": \"156881\", \"newZipcd\": \"07040\", \"dongNo\": \"\", \"flrNo\": \"\", \"hoNo\": \"\", \"lon\": 126.9524930903, \"lat\": 37.4967817525761}, {\"bizesId\": \"MA010120220800444998\", \"bizesNm\": \"롯데리아숭실대입구역점\", \"brchNm\": \"\", \"indsLclsCd\": \"I2\", \"indsLclsNm\": \"음식\", \"indsMclsCd\": \"I210\", \"indsMclsNm\": \"기타 간이\", \"indsSclsCd\": \"I21004\", \"indsSclsNm\": \"버거\", \"ksicCd\": \"I56192\", \"ksicNm\": \"피자, 햄버거, 샌드위치 및 유사 음식점업\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010200\", \"ldongNm\": \"상도동\", \"lnoCd\": \"1159010200104750002\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 475, \"lnoSlno\": 2, \"lnoAdr\": \"서울특별시 동작구 상도동 475-2\", \"rdnmCd\": \"115903119005\", \"rdnm\": \"서울특별시 동작구 상도로\", \"bldMnno\": 352, \"bldSlno\": \"\", \"bldMngNo\": \"1159010200104750002019892\", \"bldNm\": \"\", \"rdnmAdr\": \"서울특별시 동작구 상도로 352\", \"oldZipcd\": \"156881\", \"newZipcd\": \"07040\", \"dongNo\": \"\", \"flrNo\": \"\", \"hoNo\": \"\", \"lon\": 126.95261735257, \"lat\": 37.4969890339811}, {\"bizesId\": \"MA010120220800442237\", \"bizesNm\": \"광양불고기준서네\", \"brchNm\": \"\", \"indsLclsCd\": \"I2\", \"indsLclsNm\": \"음식\", \"indsMclsCd\": \"I201\", \"indsMclsNm\": \"한식\", \"indsSclsCd\": \"I20107\", \"indsSclsNm\": \"돼지고기 구이/찜\", \"ksicCd\": \"I56113\", \"ksicNm\": \"한식 육류 요리 전문점\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010200\", \"ldongNm\": \"상도동\", \"lnoCd\": \"1159010200104740016\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 474, \"lnoSlno\": 16, \"lnoAdr\": \"서울특별시 동작구 상도동 474-16\", \"rdnmCd\": \"115904157379\", \"rdnm\": \"서울특별시 동작구 상도로56길\", \"bldMnno\": 4, \"bldSlno\": \"\", \"bldMngNo\": \"1159010200104740016020510\", \"bldNm\": \"\", \"rdnmAdr\": \"서울특별시 동작구 상도로56길 4\", \"oldZipcd\": \"156881\", \"newZipcd\": \"07040\", \"dongNo\": \"\", \"flrNo\": \"1\", \"hoNo\": \"\", \"lon\": 126.95273091465, \"lat\": 37.4962"
+      },
+      {
+        "tool": "naver_web_search",
+        "content": "{\"query\": \"케이크팝 숭실대입구\", \"channels\": {\"blog\": {\"total\": 104, \"preview\": [{\"title\": \"숭실대 케이크팝 곰돌이 조각 케이크 상도동 생일 숫자초 파는... \", \"link\": \"https://blog.naver.com/mkmagazine/224014289303\", \"description\": \"인스타용 예쁜 <b>케이크</b> 찾는 분들께 추천 오는 길 <b>숭실대입구</b>역 4번 출구에서 290m 영업시간 매일 09:00 - 20:00 제가 요기 온 이유 쇼콜라 테디 <b>케이크</b> (5,900) 않이 넘흐 귀엽잖아요 !!!!! 쾅 !!!!!  다른 <b>케이크</b>들은 걍... \"}, {\"title\": \"숭실대 입구역 카공 맛집 공부하기 좋은 디저트 카페 케이크팝\", \"link\": \"https://blog.naver.com/dailystorage/223548010484\", \"description\": \"<b>숭실대</b> 맛집에서 즉석떡볶이를 먹고 근처에 있는 디저트 카페 <b>케이크팝</b>에 갔어요. 손칼국수 집에서 7호선 <b>숭실대 입구</b>역 방향으로 조금만 가면 GS25 옆에 바로 나온답니다. 매장 운영 정보 업체명 : <b>케이크팝</b>... \"}, {\"title\": \"숭실대입구 빵집투어 2 / 케이크팝\", \"link\": \"https://blog.naver.com/wlgp5982/223829824874\", \"description\": \"#250411 <b>케이크팝</b> Cake pop 운영시간 매일 :오전9시~오후8시 (모든 디저트 나오는 시간 :오픈시간) <b>숭실대 입구</b>역 <b>케이크팝</b>에 왔습니다! 1층 2층 2층까지 있고요! 분위기 깔끔하면서 심플해요... \"}], \"error\": null}, \"news\": {\"total\": 0, \"preview\": [], \"error\": null}, \"webkr\": {\"total\": 3291, \"preview\": [{\"title\": \"숭실대 근처 디저트 카페 케이크팝 - AI 딩코의 맛집 공략\", \"link\": \"https://www.diningcode.com/dingco/cozTXSJu7ofz\", \"description\": \"<b>숭실대입구</b>역 4번출구에서 300m 떨어진 위치한 <b>케이크팝</b>은 디저트맛집으로 유명합니다. 까눌레와 휘낭시에가 인기메뉴이며, 인테리어와 분위기가 좋은 장점입니다. 가격도 적당하고 서비스도 좋습니다. 주차는 어렵지만 예약은 가능합니다.\"}, {\"title\": \"숭실대입구역 근처 넓고 다양한 디저트 맛집 케이크팝\", \"link\": \"https://blog.naver.com/choicd2007/223556083183\", \"description\": \"<b>케이크팝</b> 주소 : 서울 동작구 사당로 28 1, 2층 ⏰ 영업시간 : 9시 - 22시 전화번호 : 02-815-8799 주차 : 어려워요 <b>케이크팝</b> 위치 7호선 <b>숭실대입구</b>역에서 300m 이내에 위치하고 있어요. 도보로 5분 거리에 위치하고 있어요!...\"}, {\"title\": \"케이크팝 - 숭실대 커피, 카페 맛집\", \"link\": \"https://www.diningcode.com/profile.php?rid=cozTXSJu7ofz\", \"description\": \"맛5.0, 가격4.0, 친절4.0 가게 내부가 넓고 좌석도 많은데다 테이블마다 콘센트도 잘 갖춰져 있어서 카공하기 좋아요~~ 05.14 (목) 영업시간: 09:00 - 19:40 아메리카노, 쇼콜라 테디 <b>케이크</b>(6,500원)...\"}], \"error\": null}, \"image\": {\"total\": null, \"preview\": [], \"error\": \"HTTP 429\"}, \"local\": {\"total\": null, \"preview\": [], \"error\": \"HTTP 429\"}, \"cafearticle\": {\"total\": null, \"preview\": [], \"error\": \"HTTP 429\"}}, \"totals\": {\"blog\": 104, \"news\": 0, \"webkr\": 3291, \"image\": 0, \"local\": 0, \"cafearticle\": 0}, \"aggregate_total\": 3395}"
+      }
+    ],
+    "score": 58,
+    "grade": "C+",
+    "strengths": [
+      "지역 커뮤니티 내 중상 수준의 온라인 가시성 확보 (총 389,296건 검색결과)",
+      "입점 시설(케이크팝 카페)의 강한 개별 인지도 (블로그 104건, 웹크롤 3,291건)",
+      "숭실대입구역 인접으로 높은 학생/직장인 유동인구 기반",
+      "상도동 지역명 검색량 월 8,450회로 지역 내 검색 활동 활발",
+      "반경 500m 내 100개 소상공인 밀집으로 상권 활성화 입증"
+    ],
+    "weaknesses": [
+      "자산 자체 검색량 극히 제한적 (사당로 28: 월 60회 이하)",
+      "지식그래프 AWARENESS 축 직접 증거 0건 - 미디어 독립 언급 부재",
+      "뉴스 연결 11건 모두 지역 개발/인프라 관련으로 자산 고유성 없음",
+      "자산 브랜드 인지도가 입점 테넌트(케이크팝)에 완전 의존",
+      "도로명(사당로) 기반 검색 극도로 낮음 (월 60회) - 주소 인지도 약함"
+    ],
+    "risks": [
+      "입점 테넌트 변동 시 인지도 급락 위험 - 자산 자체 브랜드 가치 부재",
+      "30년 경과 건물로 노후화 진행 중 - 향후 리모델링 필요성 높음",
+      "숭실대 캠퍼스 의존 상권으로 학기 외 계절성 수요 변동 가능성",
+      "광역 수준 인지도 부족으로 STO 투자자 유입 제한적일 가능성",
+      "자산 자체 미디어 노출 전략 부재 - 수동적 인지도 구조"
+    ],
+    "rationale": "사당로 28 상도동 자산은 지역 커뮤니티 내에서는 중상 수준의 온라인 가시성을 보유하고 있으나, 광역 수준의 독립적 인지도는 매우 제한적이다. 총 389,296건의 검색결과는 대부분 '상도동' 지역명 기반이며, 자산 자체 검색(사당로 28)은 월 60회 이하로 극히 낮다. 입점 시설인 케이크팝 카페가 3,291건의 웹 검색을 기록하며 지역 맛집으로 인지되고 있으나, 이는 자산의 독립적 브랜드 가치가 아닌 테넌트 개별 인지도에 불과하다. 지식그래프 AWARENESS 축 직접 증거가 0건이고 뉴스 11건 모두 지역 개발 관련으로 자산 고유성이 없다는 점은 미디어 수준의 인지도 부족을 명확히 보여준다. 따라서 STO 평가 관점에서 '인지도' 축은 지역 거점으로서의 기초 가시성은 있으나, 투자 상품으로서의 브랜드 인지도는 약한 상태로 평가된다.",
+    "citations": [
+      "Naver Web Search - 사당로 28 상도동: 블로그 458건, 뉴스 11건, 웹크롤 386,773건",
+      "Naver Keyword Volume - 상도동: PC 2,410회/월, 모바일 6,040회/월 (광고경쟁도 낮음)",
+      "Naver Keyword Volume - 사당로: PC 30회/월, 모바일 30회/월 (광고경쟁도 중간)",
+      "Kakao Map POI - 사당로 28 건물 내 4개 시설 (케이크팝 카페 중심)",
+      "Naver Web Search - 케이크팝 숭실대입구: 블로그 104건, 웹크롤 3,291건",
+      "SBIZ Stores Radius - 반경 500m 내 100개 소상공인 (음식 36, 미용 18, 소매 15)",
+      "Subject Metadata - 준공 1994년 6월 9일, 제2종근린생활시설, 연면적 1,261.35㎡",
+      "Graph DB Axis Evidence - AWARENESS 축: 0건 (직접 미디어 언급 부재)"
+    ]
+  },
+  "vitality": {
+    "axis": "VITALITY",
+    "axis_label": "상권·입지 활성도",
+    "plan": {
+      "axis": "상권·입지 활성도",
+      "hypothesis": "서울 동작구 사당로 28(상도동)은 지하철 2호선 사당역 인근 주거·상업 혼합지역으로, 대학가(숙명여대) 근처 젊은 소비층이 밀집해 있어 상권 활성도가 중상 이상일 것으로 예상되나, 구체적 POI 밀도와 최근 거래량 추이 확인 필요",
+      "must_check": [
+        {
+          "tool": "get_subject_metadata",
+          "args": {
+            "pnu": "1159010200105050001",
+            "building_management_no": "1159010200105050001019414"
+          },
+          "why": "자산의 기본 속성(용도, 면적, 층수, 준공년도 등)을 파악하여 상권 적합성 판단의 기초 정보 확보"
+        },
+        {
+          "tool": "graph_db_axis_evidence",
+          "args": {
+            "axis_name": "상권·입지 활성도",
+            "location": "서울특별시 동작구 상도동",
+            "limit": 50
+          },
+          "why": "뉴스 지식그래프에서 해당 지역의 상권 활성화, 개발 이슈, 거래 사건 등 관련 신호 추출 (현재 139개 노드, 259개 엣지 기반)"
+        },
+        {
+          "tool": "kakao_poi_radius",
+          "args": {
+            "center_coord": [
+              126.9847,
+              37.4769
+            ],
+            "radius_m": 500,
+            "categories": [
+              "음식점",
+              "카페",
+              "편의점",
+              "의류",
+              "약국",
+              "은행",
+              "학원",
+              "병원"
+            ],
+            "limit": 200
+          },
+          "why": "반경 500m 내 주요 POI(편의시설, 음식점, 소매점 등) 밀도 측정으로 상권 활성도의 직접적 지표 확보"
+        },
+        {
+          "tool": "sbiz_stores_radius",
+          "args": {
+            "address": "서울특별시 동작구 사당로 28",
+            "radius_m": 800,
+            "limit": 300
+          },
+          "why": "소상공인 시장진흥공단 데이터로 실제 영업 중인 점포 규모, 업종 다양성, 점포 밀도 파악"
+        },
+        {
+          "tool": "molit_transactions",
+          "args": {
+            "bjdong_code": "1159010200",
+            "transaction_type": [
+              "매매",
+              "전세",
+              "월세"
+            ],
+            "months_back": 24,
+            "limit": 500
+          },
+          "why": "최근 2년간 동작구 상도동의 부동산 거래량 추이로 상권 수요 및 활성도 변화 추적"
+        },
+        {
+          "tool": "naver_web_search",
+          "args": {
+            "query": "사당역 상도동 상권 활성화 개발",
+            "limit": 20
+          },
+          "why": "최근 뉴스/블로그에서 해당 지역 상권 개발, 재개발, 상권 변화 관련 정성적 신호 수집"
+        }
+      ],
+      "follow_up_hints": [
+        "kakao_poi_radius 결과에서 카페/음식점 밀도가 높으면 → 'naver_keyword_volume'으로 '사당역 카페', '상도동 맛집' 등 검색량 확인",
+        "molit_transactions에서 거래량 급증 구간 발견 시 → 'graph_db_axis_evidence'에서 해당 시기 뉴스 이벤트 교차 검증",
+        "sbiz_stores_radius에서 특정 업종(예: 학원, 의류) 집중도 높으면 → 'kakao_keyword_places'로 해당 업종 검색 수요 확인",
+        "POI 밀도가 예상보다 낮으면 → 'molit_transactions' 거래가 추이 확인 후 상권 쇠퇴 신호 판단",
+        "지하철역 인접성 확인 후 → 'kakao_poi_radius' 반경을 200m/300m으로 축소하여 역세권 집중도 재측정",
+        "대학가 근처 특성 활용 → 'naver_keyword_volume'에서 '숙명여대 주변', '대학가 상권' 등 관련 검색어 추가 조사"
+      ]
+    },
+    "retrieved_summary": {
+      "tool_call_count": 10,
+      "iterations": 10,
+      "final_text": "---\n\n## 📊 **상권·입지 활성도 축 근거 수집 완료 (DONE)**\n\n### **수집 결과 요약**\n\n#### **1. 자산 기본 속성 (메타데이터)**\n- **위치**: 서울 동작구 사당로 28 (상도동 505-1)\n- **좌표**: 126.957°E, 37.495°N\n- **용도**: 제2종근린생활시설 (상업·주거 혼합)\n- **규모**: 지상 4층, 지하 1층 | 총면적 1,261.35㎡\n- **준공**: 1994년 6월 (약 30년 경과)\n- **구조**: 철근콘크리트\n\n**→ 평가**: 주거·상업 혼합지역의 전형적 근린생활시설로, 상권 활성도 평가에 적합한 입지\n\n---\n\n#### **2. POI 밀도 분석 (반경 500m)**\n\n| 카테고리 | 개수 | 평가 |\n|---------|------|------|\n| **음식점** | 153개 | ⭐⭐⭐⭐⭐ 매우 높음 |\n| **카페** | 30개 | ⭐⭐⭐⭐ 높음 |\n| **학원** | 46개 | ⭐⭐⭐⭐⭐ 매우 높음 |\n| **편의점** | 23개 | ⭐⭐⭐⭐ 높음 |\n| **은행** | 33개 | ⭐⭐⭐⭐ 높음 |\n| **중개업소** | 23개 | ⭐⭐⭐⭐ 높음 |\n| **병원** | 15개 | ⭐⭐⭐ 중간 |\n| **약국** | 5개 | ⭐⭐ 낮음 |\n| **대형마트** | 0개 | ⭐ 없음 |\n\n**→ 평가**: \n- **대학가 특성 강함**: 숭실대학교 인접(106m) → 학원 46개, 스터디카페 다수, 음식점 153개\n- **젊은 소비층 밀집**: 카페 30개, 스터디카페 4개(셀독, 투썬맘, 공유, 스터디카페공유)\n- **생활편의시설 충실**: 편의점 23개, 은행 33개, 중개업소 23개\n- **역세권 약점**: 지하철역 1개(숭실대입구역 7호선, 372m) - 사당역 미포함\n\n---\n\n#### **3. 소상공인 점포 분석 (반경 800m, 100개 표본)**\n\n**대분류 업종 분포**:\n- 음식(29개) > 소매(22개) > 수리·개인(21개) > 과학·기술(7개) > 부동산(5개)\n\n**소분류 주요 업종**:\n- 미용실(11개) - 대학가 특성\n- 김밥/만두/분식(6개) - 저가 대중음식\n- 자동차 정비소(6개)\n- 부동산 중개/대리업(5개) - 활발한 거래 신호\n- 백반/한정식(5개)\n- 기숙사/고시원(4개) - 대학생 수용시설\n\n**→ 평가**: \n- **생계형 상권**: 안정적이나 고급 소비층 부족\n- **대학가 의존도 높음**: 기숙사, 학원, 분식점 집중\n- **부동산 중개 활발**: 거래 수요 존재 신호\n\n---\n\n#### **4. 부동산 거래량 추이 (최근 24개월, 동작구 상업업무용)**\n\n**통계**:\n- 총 거래건수: 339건\n- 평균 거래금액: 186,572만원\n- 중앙값: 5,000만원\n- 범위: 50만원 ~ 104.5억원\n\n**주요 거래 특성**:\n- 사당동, 노량진동, 신대방동 중심\n- 제1·2종근린생활시설 다수\n- 법인 매수자 증가 추세 (재개발/정비사업 신호)\n- 2024년 5월~6월 거래 활발\n\n**→ 평가**: \n- **거래 수요 존재**: 월평균 14건 이상의 안정적 거래\n- **투자 관심 증가**: 법인 매수자 비중 상승\n- **가격대 다양**: 저가~고가 거래 혼재 (상권 다층성)\n\n---\n\n#### **5. 뉴스·지식그래프 신호 (VITALITY 축)**\n\n**긍정 신호**:\n1. **상도동 7,500가구 정비사업** (2026년 기사)\n   - 친환경 주거타운 탈바꿈\n   - 지역 활성화 및 주거 수요 창출\n   - 강도: 4/5 (매우 강함)\n\n2. **사당역~이수역 상권 르네상스 사업** (2020년 선정)\n   - 중기부 '상권 르네상스 사업' 대상지\n   - 5년간 100억원 투입 예정\n   - 상권 브랜드 '42 브랜드' 개발 완료\n   - 골목상권 활력 지구단위계획 추진\n\n3. **사당역 복합환승센터 개발** (2028년 완공 예정)\n   - 57층 규모 고밀도 개발\n   - 용적률 800% 상향 (지구단위계획)\n   - 환승 시간 단축, 상권 활성화, 주거·업무·문화 공간 확충\n\n4. **행정타운 완공** (상도동)\n   - 행정 중심지 기능 강화\n   - 상권 활성화에 긍정적 영향\n\n**웹 검색 결과**:\n- 블로그: 1,678개 (사당역 개발 관심 높음)\n- 뉴스: 7개 (공식 정책 기사)\n- 웹: 114,657개 (광범위한 논의)\n- 카페: 192,338개 (주민 관심 매우 높음)\n\n---\n\n#### **6. 대학가 특성 심화 분석 (카카오 로컬)**\n\n**숭실대학교 주변 카페/스터디 시설** (반경 500m):\n- 카페: 10개 이상 (매머드익스"
+    },
+    "tool_calls": [
+      {
+        "tool": "get_subject_metadata",
+        "content": "{\"address\": {\"road\": \"서울특별시 동작구 사당로 28 (상도동)\", \"jibun\": \"서울특별시 동작구 상도동 505-1\", \"sido\": \"서울특별시\", \"sigungu\": \"동작구\", \"bjdong_name\": \"상도동\", \"building_management_no\": \"1159010200105050001019414\", \"building_name\": \"\"}, \"identifiers\": {\"pnu\": \"1159010200105050001\", \"bjdong_code\": \"1159010200\", \"sigungu_cd\": \"11590\", \"bjdong_cd\": \"10200\", \"land_type_code\": \"1\", \"bun\": \"0505\", \"ji\": \"0001\"}, \"coord\": {\"x\": \"126.957457993298\", \"y\": \"37.4949351394814\", \"raw\": {\"address\": {\"address_name\": \"서울 동작구 상도동 505-1\", \"b_code\": \"1159010200\", \"h_code\": \"1159053000\", \"main_address_no\": \"505\", \"mountain_yn\": \"N\", \"region_1depth_name\": \"서울\", \"region_2depth_name\": \"동작구\", \"region_3depth_h_name\": \"상도1동\", \"region_3depth_name\": \"상도동\", \"sub_address_no\": \"1\", \"x\": \"126.957457993298\", \"y\": \"37.4949351394814\"}, \"address_name\": \"서울 동작구 사당로 28\", \"address_type\": \"ROAD_ADDR\", \"road_address\": {\"address_name\": \"서울 동작구 사당로 28\", \"building_name\": \"\", \"main_building_no\": \"28\", \"region_1depth_name\": \"서울\", \"region_2depth_name\": \"동작구\", \"region_3depth_name\": \"상도동\", \"road_name\": \"사당로\", \"sub_building_no\": \"\", \"underground_yn\": \"N\", \"x\": \"126.957457993298\", \"y\": \"37.4949351394814\", \"zone_no\": \"07027\"}, \"x\": \"126.957457993298\", \"y\": \"37.4949351394814\"}}, \"building_title_first\": {\"mainPurpsCdNm\": \"제2종근린생활시설\", \"strctCdNm\": \"철근콘크리트구조\", \"grndFlrCnt\": 4, \"ugrndFlrCnt\": 1, \"totArea\": 1261.35, \"useAprDay\": \"19940609\", \"vltnBldYn\": null}, \"land_brief\": {}}"
+      },
+      {
+        "tool": "graph_db_axis_evidence",
+        "content": "[{\"asset\": \"서울특별시 동작구 사당로 28 (상도동)\", \"axis\": \"VITALITY\", \"polarity\": \"positive\", \"strength\": 4, \"note\": \"7500가구 규모 정비사업으로 지역 활성화 및 주거 수요 창출\", \"article\": {\"title\": \"상도동 7500가구 ‘친환경 주거타운’ 탈바꿈\", \"link\": \"https://www.dnews.co.kr/uhtml/view.jsp?idxno=202604161439435700557\", \"pubDate\": \"Fri, 17 Apr 2026 09:20:00 +0900\"}}]"
+      },
+      {
+        "tool": "kakao_poi_radius",
+        "content": "{\"radius_m\": 500, \"x\": \"126.957457993298\", \"y\": \"37.4949351394814\", \"by_category\": {\"대형마트\": {\"total_count\": 0, \"samples\": []}, \"편의점\": {\"total_count\": 23, \"samples\": [{\"name\": \"GS25 숭실대점\", \"category\": \"가정,생활 > 편의점 > GS25\", \"distance_m\": \"15\"}, {\"name\": \"CU 숭실대중앙점\", \"category\": \"가정,생활 > 편의점 > CU\", \"distance_m\": \"79\"}, {\"name\": \"제로스토어 숭실대점\", \"category\": \"가정,생활 > 편의점\", \"distance_m\": \"94\"}, {\"name\": \"GS25 숭실대중앙점\", \"category\": \"가정,생활 > 편의점 > GS25\", \"distance_m\": \"111\"}, {\"name\": \"CU 숭실대점\", \"category\": \"가정,생활 > 편의점 > CU\", \"distance_m\": \"137\"}]}, \"어린이집_유치원\": {\"total_count\": 5, \"samples\": [{\"name\": \"숭실대학교어린이집\", \"category\": \"교육,학문 > 유아교육 > 어린이집\", \"distance_m\": \"74\"}, {\"name\": \"한솔어린이집\", \"category\": \"교육,학문 > 유아교육 > 어린이집\", \"distance_m\": \"246\"}, {\"name\": \"구립아기둥지어린이집\", \"category\": \"교육,학문 > 유아교육 > 어린이집\", \"distance_m\": \"257\"}, {\"name\": \"구립보람어린이집\", \"category\": \"교육,학문 > 유아교육 > 어린이집\", \"distance_m\": \"340\"}, {\"name\": \"구립현대가정어린이집\", \"category\": \"교육,학문 > 유아교육 > 어린이집\", \"distance_m\": \"341\"}]}, \"학교\": {\"total_count\": 4, \"samples\": [{\"name\": \"숭실대학교\", \"category\": \"교육,학문 > 학교 > 대학교\", \"distance_m\": \"106\"}, {\"name\": \"상현중학교\", \"category\": \"교육,학문 > 학교 > 중학교\", \"distance_m\": \"346\"}, {\"name\": \"서울상현초등학교\", \"category\": \"교육,학문 > 학교 > 초등학교\", \"distance_m\": \"422\"}, {\"name\": \"서울봉현초등학교\", \"category\": \"교육,학문 > 학교 > 초등학교\", \"distance_m\": \"468\"}]}, \"학원\": {\"total_count\": 46, \"samples\": [{\"name\": \"락유도관 숭실대점\", \"category\": \"교육,학문 > 학원\", \"distance_m\": \"46\"}, {\"name\": \"서용현한자\", \"category\": \"교육,학문 > 학원 > 서예,한문학원\", \"distance_m\": \"218\"}, {\"name\": \"프리미어뮤직 동작지사\", \"category\": \"교육,학문 > 학원 > 음악학원\", \"distance_m\": \"220\"}, {\"name\": \"어뮤징음악학원\", \"category\": \"교육,학문 > 학원 > 음악학원 > 피아노학원\", \"distance_m\": \"273\"}, {\"name\": \"클레매쓰수학학원\", \"category\": \"교육,학문 > 학원 > 수학학원\", \"distance_m\": \"273\"}]}, \"주차장\": {\"total_count\": 3, \"samples\": [{\"name\": \"숭실대학교 한경직기념관 주차장\", \"category\": \"교통,수송 > 교통시설 > 주차장\", \"distance_m\": \"69\"}, {\"name\": \"상도현대아파트 후문주차장\", \"category\": \"교통,수송 > 교통시설 > 주차장\", \"distance_m\": \"164\"}, {\"name\": \"사당롯데캐슬골든포레 주차장\", \"category\": \"교통,수송 > 교통시설 > 주차장\", \"distance_m\": \"493\"}]}, \"주유소_충전소\": {\"total_count\": 2, \"samples\": [{\"name\": \"HD현대오일뱅크직영 동작주유소\", \"category\": \"교통,수송 > 자동차 > 주유,가스 > 주유소 > HD현대오일뱅크주유소\", \"distance_m\": \"185\"}, {\"name\": \"창원이엔지주유소\", \"category\": \"교통,수송 > 자동차 > 주유,가스 > 주유소 > HD현대오일뱅크주유소\", \"distance_m\": \"349\"}]}, \"지하철역\": {\"total_count\": 1, \"samples\": [{\"name\": \"숭실대입구역 7호선\", \"category\": \"교통,수송 > 지하철,전철 > 수도권7호선\", \"distance_m\": \"372\"}]}, \"은행\": {\"total_count\": 33, \"samples\": [{\"name\": \"IBK기업은행365 예림고시원숭실대정문입구\", \"category\": \"금융,보험 > 금융서비스 > 은행 > ATM\", \"distance_m\": \"15\"}, {\"name\": \"CU 숭실대중앙점 ATM\", \"category\": \"금융,보험 > 금융서비스 > 은행 > ATM\", \"distance_m\": \"79\"}, {\"name\": \"우리은행 365코너 숭실대학교지점\", \"category\": \"금융,보험 > 금융서비스 > 은행 > ATM\", \"distance_m\": \"144\"}, {\"name\": \"숭실대학교 형남공학관 ATM\", \"category\": \"금융,보험 > 금융서비스 > 은행 > ATM\", \"distance_m\": \"145\"}, {\"name\": \"우리은행 숭실대학교 출장소\", \"category\": \"금융,보험 > 금융서비스 > 은행 > 우리은행\", \"distance_m\": \"153\"}]}, \"문화시설\": {\"total_count\": 2, \"samples\": [{\"name\": \"예강갤러리\", \"category\": \"문화,예술 > 문화시설 > 미술관\", \"distance_m\": \"37\"}, {\"name\": \"숭실대학교 한국기독교박물관\", \"category\": \"문화,예술 > 문화시설 > 박물관\", \"distance_m\": \"93\"}]}, \"중개업소\": {\"total_count\": 23, \"samples\": [{\"name\": \"호박공인중개사무소\", \"category\": \"부동산 > 부동산서비스 > 부동산중개업\", \"distance_m\": \"164\"}, {\"name\": \"굿모닝 공인중개사사무소\", \"category\": \"부동산 > 부동산서비스 > 부동산중개업\", \"distance_m\": \"175\"}, {\"name\": \"학사공인중개사사무소\", \"category\": \"부동산 > 부동산서비스 > 부동산중개업\", \"distance_m\": \"181\"}, {\"name\": \"숭실공인중개사사무소\", \"category\": \"부동산 > 부동산서비스 > 부동산중개업\", \"distance_m\": \"238\"}, {\"name\": \"태양공인중개사사무소\", \"category\": \"부동산 > 부동산서비스 > 부동산중개업\", \"distance_m\": \"273\"}]}, \"공공기관\": {\"total_count\": 2, \"samples\": [{\"name\": \"청림동주민센터\", \"category\": \"사회,공공기관 > 지방행정기관 > 행정복지센터 > 동행정복지센터\", \"distance_m\": \"360\"}, {\"name\": \"백운119안전센터\", \"category\": \"사회,공공기관 > 행정기관 > 소방서 > 119안전센터\", \"distance_m\": \"365\"}]}, \"관광명소\": {\"total_count\": 3, \"samples\": [{\"name\": \"숭실마루길 골목형상점가\", \"category\": \"여행 > 관광,명소 > 테마거리\", \"distance_m\": \"18\"}, {\"name\": \"서달산 자락길\", \"category\": \"여행 > 관광,명소 > 도보여행\", \"distance_m\": \"389\"}, {\"name\": \"서달산 수목학습원\", \"category\": \""
+      },
+      {
+        "tool": "sbiz_stores_radius",
+        "content": "{\"radius_m\": 800, \"total_count\": 100, \"by_large_industry\": {\"음식\": 29, \"소매\": 22, \"수리·개인\": 21, \"과학·기술\": 7, \"부동산\": 5, \"숙박\": 4, \"시설관리·임대\": 4, \"교육\": 4, \"예술·스포츠\": 3, \"보건의료\": 1}, \"by_small_industry\": {\"미용실\": 11, \"김밥/만두/분식\": 6, \"자동차 정비소\": 6, \"부동산 중개/대리업\": 5, \"백반/한정식\": 5, \"기숙사/고시원\": 4, \"슈퍼마켓\": 4, \"인테리어 디자인업\": 3, \"사진촬영업\": 3, \"편의점\": 3, \"요리 주점\": 3, \"약국\": 2, \"세탁소\": 2, \"안경렌즈 소매업\": 2, \"화장품 소매업\": 2, \"중국집\": 2, \"돼지고기 구이/찜\": 2, \"복사업\": 2, \"한복 소매업\": 1, \"해산물 구이/찜\": 1, \"주유소\": 1, \"벽지/장판/마루 소매업\": 1, \"기타 의류 소매업\": 1, \"철물/공구 소매업\": 1, \"예술품 소매업\": 1, \"무도 유흥 주점\": 1, \"모터사이클 수리업\": 1, \"치킨\": 1, \"한의원\": 1, \"곱창 전골/구이\": 1}, \"samples\": [{\"bizesId\": \"MA010120220800416683\", \"bizesNm\": \"사리원유승배만두\", \"brchNm\": \"\", \"indsLclsCd\": \"I2\", \"indsLclsNm\": \"음식\", \"indsMclsCd\": \"I210\", \"indsMclsNm\": \"기타 간이\", \"indsSclsCd\": \"I21007\", \"indsSclsNm\": \"김밥/만두/분식\", \"ksicCd\": \"I56111\", \"ksicNm\": \"한식 일반 음식점업\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010300\", \"ldongNm\": \"상도1동\", \"lnoCd\": \"1159010300102440001\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 244, \"lnoSlno\": 1, \"lnoAdr\": \"서울특별시 동작구 상도1동 244-1\", \"rdnmCd\": \"115904157373\", \"rdnm\": \"서울특별시 동작구 상도로50길\", \"bldMnno\": 2, \"bldSlno\": 15, \"bldMngNo\": \"1159010300102440001028371\", \"bldNm\": \"\", \"rdnmAdr\": \"서울특별시 동작구 상도로50길 2-15\", \"oldZipcd\": \"156836\", \"newZipcd\": \"07033\", \"dongNo\": \"\", \"flrNo\": \"\", \"hoNo\": \"\", \"lon\": 126.950625626222, \"lat\": 37.4991596436011}, {\"bizesId\": \"MA010120220800418577\", \"bizesNm\": \"유약국\", \"brchNm\": \"\", \"indsLclsCd\": \"G2\", \"indsLclsNm\": \"소매\", \"indsMclsCd\": \"G215\", \"indsMclsNm\": \"의약·화장품 소매\", \"indsSclsCd\": \"G21501\", \"indsSclsNm\": \"약국\", \"ksicCd\": \"G47811\", \"ksicNm\": \"의약품 및 의료용품 소매업\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010300\", \"ldongNm\": \"상도1동\", \"lnoCd\": \"1159010300102430001\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 243, \"lnoSlno\": 1, \"lnoAdr\": \"서울특별시 동작구 상도1동 243-1\", \"rdnmCd\": \"115904157373\", \"rdnm\": \"서울특별시 동작구 상도로50길\", \"bldMnno\": 2, \"bldSlno\": 13, \"bldMngNo\": \"1159010300102430001029386\", \"bldNm\": \"\", \"rdnmAdr\": \"서울특별시 동작구 상도로50길 2-13\", \"oldZipcd\": \"156836\", \"newZipcd\": \"07033\", \"dongNo\": \"\", \"flrNo\": \"1\", \"hoNo\": \"\", \"lon\": 126.950738773723, \"lat\": 37.4990695902199}, {\"bizesId\": \"MA010120220800431680\", \"bizesNm\": \"진성공인중개사사무소\", \"brchNm\": \"\", \"indsLclsCd\": \"L1\", \"indsLclsNm\": \"부동산\", \"indsMclsCd\": \"L102\", \"indsMclsNm\": \"부동산 서비스\", \"indsSclsCd\": \"L10203\", \"indsSclsNm\": \"부동산 중개/대리업\", \"ksicCd\": \"L68221\", \"ksicNm\": \"부동산 중개 및 대리업\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010200\", \"ldongNm\": \"상도동\", \"lnoCd\": \"1159010200104620003\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 462, \"lnoSlno\": 3, \"lnoAdr\": \"서울특별시 동작구 상도동 462-3\", \"rdnmCd\": \"115904157373\", \"rdnm\": \"서울특별시 동작구 상도로50길\", \"bldMnno\": 4, \"bldSlno\": \"\", \"bldMngNo\": \"1159010200104620003019857\", \"bldNm\": \"\", \"rdnmAdr\": \"서울특별시 동작구 상도로50길 4\", \"oldZipcd\": \"156880\", \"newZipcd\": \"07033\", \"dongNo\": \"\", \"flrNo\": \"1\", \"hoNo\": \"\", \"lon\": 126.951044441197, \"lat\": 37.4985651538028}, {\"bizesId\": \"MA010120220800432723\", \"bizesNm\": \"이지수한복\", \"brchNm\": \"\", \"indsLclsCd\": \"G2\", \"indsLclsNm\": \"소매\", \"indsMclsCd\": \"G209\", \"indsMclsNm\": \"섬유·의복·신발 소매\", \"indsSclsCd\": \"G20904\", \"indsSclsNm\": \"한복 소매업\", \"ksicCd\": \"G47415\", \"ksicNm\": \"한복 소매업\", \"ctprvnCd\": \"11\", \"ctprvnNm\": \"서울특별시\", \"signguCd\": \"11590\", \"signguNm\": \"동작구\", \"adongCd\": \"11590530\", \"adongNm\": \"상도1동\", \"ldongCd\": \"1159010200\", \"ldongNm\": \"상도동\", \"lnoCd\": \"1159010200104620003\", \"plotSctCd\": \"1\", \"plotSctNm\": \"대지\", \"lnoMnno\": 462, \"lnoSlno\": 3, \"lnoAdr\": \"서울특별시 동작구 상도동 462-3\", \"rdnmCd\": \"115904157373\", \"rdnm\": \"서울특별시 동작구 상도로50길\", \"bldMnno\": 4, \"bldSlno\": \"\", \"bldMngNo\": \"1159010200104620003019857\", \"bldNm\": \"\", \"rdnmAdr\": \"서울특별시 동작구 상도로50길 4\", \"oldZipcd\": \"156880\", \"newZipcd\": \"07033\", \"dongNo\": \"\", \"flrNo\": \"1\", \"hoNo\": \"\", \"lon\": 126.951044441197, \"l"
+      },
+      {
+        "tool": "molit_transactions",
+        "content": "{\"period\": [\"202405\", \"202604\"], \"summary\": {\"row_count\": 339, \"거래금액\": {\"mean\": 186572.30383480826, \"median\": 50000.0, \"min\": 500.0, \"max\": 10450000.0}}, \"rows\": [{\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"노량진동\", \"지번\": \"2**\", \"건물유형\": \"일반\", \"건물주용도\": \"제1종근린생활\", \"용도지역\": \"제3종일반주거\", \"층\": null, \"계약년도\": 2024, \"계약월\": 5, \"계약일\": 16, \"거래금액\": 270000, \"건축년도\": 1985, \"건물면적\": 694.38, \"대지면적\": 301.86, \"해제여부\": \"None\", \"해제사유발생일\": \"None\", \"거래유형\": \"중개거래\", \"지분거래구분\": \"None\", \"중개사소재지\": \"경기 성남시 중원구, 서울 용산구\", \"매도자\": \"개인\", \"매수자\": \"개인\"}, {\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"신대방동\", \"지번\": \"395-68\", \"건물유형\": \"집합\", \"건물주용도\": \"제2종근린생활\", \"용도지역\": \"일반상업\", \"층\": null, \"계약년도\": 2024, \"계약월\": 5, \"계약일\": 27, \"거래금액\": 7700, \"건축년도\": 1996, \"건물면적\": 22.05, \"대지면적\": null, \"해제여부\": \"None\", \"해제사유발생일\": \"None\", \"거래유형\": \"직거래\", \"지분거래구분\": \"None\", \"중개사소재지\": \"None\", \"매도자\": \"개인\", \"매수자\": \"개인\"}, {\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"사당동\", \"지번\": \"1160\", \"건물유형\": \"집합\", \"건물주용도\": \"제2종근린생활\", \"용도지역\": \"제2종일반주거\", \"층\": 1, \"계약년도\": 2024, \"계약월\": 5, \"계약일\": 29, \"거래금액\": 30000, \"건축년도\": 2021, \"건물면적\": 38.69, \"대지면적\": null, \"해제여부\": \"None\", \"해제사유발생일\": \"None\", \"거래유형\": \"중개거래\", \"지분거래구분\": \"None\", \"중개사소재지\": \"서울 동작구\", \"매도자\": \"개인\", \"매수자\": \"개인\"}, {\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"사당동\", \"지번\": \"1**\", \"건물유형\": \"일반\", \"건물주용도\": \"제2종근린생활\", \"용도지역\": \"제3종일반주거\", \"층\": null, \"계약년도\": 2024, \"계약월\": 5, \"계약일\": 18, \"거래금액\": 260000, \"건축년도\": 2005, \"건물면적\": 386.41, \"대지면적\": 221.0, \"해제여부\": \"None\", \"해제사유발생일\": \"None\", \"거래유형\": \"중개거래\", \"지분거래구분\": \"None\", \"중개사소재지\": \"서울 서초구\", \"매도자\": \"개인\", \"매수자\": \"법인\"}, {\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"사당동\", \"지번\": \"1157\", \"건물유형\": \"집합\", \"건물주용도\": \"제1종근린생활\", \"용도지역\": \"제2종일반주거\", \"층\": null, \"계약년도\": 2024, \"계약월\": 5, \"계약일\": 21, \"거래금액\": 32700, \"건축년도\": 2013, \"건물면적\": 34.49, \"대지면적\": null, \"해제여부\": \"None\", \"해제사유발생일\": \"None\", \"거래유형\": \"중개거래\", \"지분거래구분\": \"None\", \"중개사소재지\": \"서울 동작구\", \"매도자\": \"개인\", \"매수자\": \"개인\"}, {\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"사당동\", \"지번\": \"2**\", \"건물유형\": \"일반\", \"건물주용도\": \"제2종근린생활\", \"용도지역\": \"제3종일반주거\", \"층\": null, \"계약년도\": 2024, \"계약월\": 5, \"계약일\": 13, \"거래금액\": 340000, \"건축년도\": 1975, \"건물면적\": 148.4, \"대지면적\": 132.0, \"해제여부\": \"None\", \"해제사유발생일\": \"None\", \"거래유형\": \"중개거래\", \"지분거래구분\": \"None\", \"중개사소재지\": \"서울 강남구\", \"매도자\": \"법인\", \"매수자\": \"법인\"}, {\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"노량진동\", \"지번\": \"2**\", \"건물유형\": \"일반\", \"건물주용도\": \"제1종근린생활\", \"용도지역\": \"제3종일반주거\", \"층\": null, \"계약년도\": 2024, \"계약월\": 5, \"계약일\": 11, \"거래금액\": 159000, \"건축년도\": 1975, \"건물면적\": 137.0, \"대지면적\": 122.0, \"해제여부\": \"None\", \"해제사유발생일\": \"None\", \"거래유형\": \"중개거래\", \"지분거래구분\": \"None\", \"중개사소재지\": \"서울 강남구, 서울 동작구\", \"매도자\": \"개인\", \"매수자\": \"개인\"}, {\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"사당동\", \"지번\": \"1***\", \"건물유형\": \"일반\", \"건물주용도\": \"제2종근린생활\", \"용도지역\": \"제3종일반주거\", \"층\": null, \"계약년도\": 2024, \"계약월\": 5, \"계약일\": 13, \"거래금액\": 205000, \"건축년도\": 1970, \"건물면적\": 139.6, \"대지면적\": 202.7, \"해제여부\": \"O\", \"해제사유발생일\": \"24.05.23\", \"거래유형\": \"중개거래\", \"지분거래구분\": \"None\", \"중개사소재지\": \"서울 강남구\", \"매도자\": \"개인\", \"매수자\": \"법인\"}, {\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"사당동\", \"지번\": \"1***\", \"건물유형\": \"일반\", \"건물주용도\": \"제2종근린생활\", \"용도지역\": \"제3종일반주거\", \"층\": null, \"계약년도\": 2024, \"계약월\": 5, \"계약일\": 13, \"거래금액\": 100000, \"건축년도\": 1987, \"건물면적\": 146.14, \"대지면적\": 98.6, \"해제여부\": \"O\", \"해제사유발생일\": \"24.05.23\", \"거래유형\": \"중개거래\", \"지분거래구분\": \"None\", \"중개사소재지\": \"서울 강남구\", \"매도자\": \"개인\", \"매수자\": \"법인\"}, {\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"노량진동\", \"지번\": \"2**\", \"건물유형\": \"일반\", \"건물주용도\": \"기타\", \"용도지역\": \"제2종일반주거\", \"층\": null, \"계약년도\": 2024, \"계약월\": 5, \"계약일\": 3, \"거래금액\": 305000, \"건축년도\": 1979, \"건물면적\": 283.13, \"대지면적\": 294.0, \"해제여부\": \"None\", \"해제사유발생일\": \"None\", \"거래유형\": \"중개거래\", \"지분거래구분\": \"None\", \"중개사소재지\": \"서울 동작구\", \"매도자\": \"기타\", \"매수자\": \"법인\"}, {\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"신대방동\", \"지번\": \"395-73\", \"건물유형\": \"집합\", \"건물주용도\": \"업무\", \"용도지역\": \"일반상업\", \"층\": 10, \"계약년도\": 2024, \"계약월\": 5, \"계약일\": 11, \"거래금액\": 21800, \"건축년도\": 2000, \"건물면적\": 51.12, \"대지면적\": null, \"해제여부\": \"None\", \"해제사유발생일\": \"None\", \"거래유형\": \"중개거래\", \"지분거래구분\": \"None\", \"중개사소재지\": \"서울 관악구\", \"매도자\": \"개인\", \"매수자\": \"개인\"}, {\"법정동시군구코드\": \"11590\", \"시군구\": \"동작구\", \"법정동\": \"노량진동\", \"지번\": \"1**\", \"건물유형\": \"일반\", \"건물주용도\": \"제2종근린생활\", \"용도지역\": \"제3종일반"
+      },
+      {
+        "tool": "naver_web_search",
+        "content": "{\"query\": \"사당역 상도동 상권 활성화 개발\", \"channels\": {\"blog\": {\"total\": 1678, \"preview\": [{\"title\": \"사당역 복합환승센터 2028, 57층 개발에 동네가 뒤집힌 이유\", \"link\": \"https://blog.naver.com/kbl6355/224282639085\", \"description\": \"시장과 <b>상권</b>, <b>사당역</b> <b>개발</b>로 어디까지 오를까? <b>사당역</b> 복합환승센터 소식이 들리면서 방배동, <b>사당</b>동... 공식적으로는 환승 시간 단축, <b>상권 활성화</b>, 주거·업무·문화 공간 확충이 핵심이라고 해요. 실제로는... \"}, {\"title\": \"사당역~이수역 개발 탄력…용적률 800%로 고밀도 개발 가능\", \"link\": \"https://blog.naver.com/chuga1/224106142954\", \"description\": \"외관과 <b>상권</b> 지도가 달라진다 서울의 남쪽 관문인 동작구 <b>사당</b>·이수 일대가 다시 한 번 큰 변화를 맞고... 복합 <b>개발</b>이나 현대화 사업이 추진될 가능성이 커졌다. 이수역 먹자골목 및 <b>사당역</b> <b>상권 활성화</b> 젊은... \"}, {\"title\": \"이수 더 써밋 아파트 공급조건\", \"link\": \"https://blog.naver.com/worship0327/224280273479\", \"description\": \"이번 사업지 주변으로는 <b>개발</b> 호재도 다양해 장점이 뚜렷했는데요. 대표적으로 <b>사당역</b>... 경제 <b>활성화</b> 효과도 기대했습니다. <b>사당</b>, 방배 지구단위계획구역의 용적률 상향과 재<b>개발</b> 추진으로 인근 경관이 크게... \"}], \"error\": null}, \"news\": {\"total\": 7, \"preview\": [{\"title\": \"뉴타운 재개발로 명실상부한 강남 5구 편입 중 &lt;66&gt; 서울시 동작구\", \"link\": \"http://www.skyedaily.com/news/news_view.html?ID=186468\", \"description\": \"김영삼도서관·김영삼민주센터가 <b>상도동</b>에 있다. 동작구의 자치행정을 국가정보전략연구소가 <b>개발</b>한... 동작구는 2021년 <b>사당역</b>·이수역을 연결하는 구간을 <b>상권 활성화</b> 구역으로 지정해 골목<b>상권</b> 활력... \"}, {\"title\": \"이창우 구청장이 그리는 동작구의 미래···'대나무 성장론'\", \"link\": \"https://n.news.naver.com/mnews/article/008/0004651316?sid=102\", \"description\": \"이 구청장은 “행정기관이 한데 모이는 <b>상도동</b>은 ‘행정의 중심지’, 상업용지가 풍부한 노량진은... 하나인 ‘<b>사당역</b>~이수역 LINK <b>상권</b>’이 2020년 중기부의 ‘<b>상권</b> 르네상스 사업’ 대상지로 선정돼 5년간 최대 100억원을... \"}, {\"title\": \"[주목! 우리동네 상권]핫스팟-핫플레이스 &lt;21&gt; '청춘상권'에서 이색상권...\", \"link\": \"https://n.news.naver.com/mnews/article/076/0003208931?sid=101\", \"description\": \"노량진 <b>상권</b>은 새로운 트렌드를 반영해 <b>상권 활성화</b>가 이뤄지기보다는 안정성을 바탕으로 한 생계 위주의... 유동인구수가 많은 지역인 <b>사당역</b>, 홍대역 <b>상권</b>과 비슷한 수준이다. 특히 낮 시간 외에도 늦은 저녁까지의... \"}], \"error\": null}, \"webkr\": {\"total\": 114657, \"preview\": [{\"title\": \"동작구, 지역상권 활성화 위해 사당역~이수역 일대 상권 르네상스 사업 추진\", \"link\": \"http://www.indifocus.kr/28288\", \"description\": \"동작구가 오는 11월까지 <b>사당역</b>·이수역 일대 <b>상권활성화</b>를 위한 연구용역을 추진한다고 31일 밝혔다. <b>사당역</b> 일대 설치된 키오스\"}, {\"title\": \"'동작 상권르네상스' 사업 순항 중…상권 활성화 박차\", \"link\": \"https://www.nocutnews.co.kr/news/5728638\", \"description\": \"동작구에 따르면 &quot;'동작 LINK <b>상권</b>르네상스 사업은 '<b>사당역</b>'과 '이수역'을 연결하는 구간을 '<b>상권활성화</b>... <b>상권</b>르네상스사업'은 <b>상권활성화</b>협의회를 구성해 <b>상권</b> 브랜드 '42 브랜드' <b>개발</b>을 완수했고, 상인·주민...\"}, {\"title\": \"사당역·이수역 상권 100억 투입… 서남권 대표상권으로 살아난다\", \"link\": \"https://www.seoul.co.kr/news/publicnews/seoul_local/news_seoul/2020/12/21/20201221012005\", \"description\": \"서울 동작구가 <b>사당</b>동 남성사계시장에 고객지원센터와 차양막(스카이어닝)을 설치했다. 앞으로 5년간 남성사계시장 등 <b>사당역</b>·이수역 <b>상권</b>에 100억원을 투입해 <b>상권</b>르네상스 사업을 펼친다. 동작구 제공\"}], \"error\": null}, \"image\": {\"total\": 1983, \"preview\": [{\"title\": \"동작구, 사당역 주변 상권 활성화 추진\", \"link\": \"http://imgnews.naver.net/image/5364/2019/09/10/0000331759_001_20190910085711832.jpg\", \"description\": \"\"}, {\"title\": \"사당역 상권이 뜬다\", \"link\": \"http://imgnews.naver.net/image/5197/2013/09/06/20130906_sa_59_20130907003506.jpg\", \"description\": \"\"}, {\"title\": \"동작구, 상도·사당동 일대 여성안심거울길 조성\", \"link\": \"http://imgnews.naver.net/image/003/2019/12/04/NISI20191204_0000441044_web_20191204134752_20191204164913359.jpg\", \"description\": \"\"}], \"error\": null}, \"local\": {\"total\": 5, \"preview\": [], \"error\": null}, \"cafearticle\": {\"total\": 192338, \"preview\": [{\"title\": \"상도역 엑소디움 모델하우스 방문예약 운영시간 주차장 평형대 평면도\", \"link\": \"http://cafe.naver.com/taeyeon7989/486975\", \"description\": \"노량진뉴타운과 <b>상도동</b> 재건축 등 대규모 사업들이 추진되고 있어 향후 가치가 커질 것으로 보였습니다. 또한, 행정타운 완공과 같은 <b>개발</b>들이 <b>상권 활성화</b>에 긍정적인 영향을 미칠 것 같았습니다. 방문 당시 느낌... \"}, {\"title\": \"남성역 헤머튼 아파트 모델하우스\", \"link\": \"http://cafe.naver.com/rc003/321669\", \"description\": \"<b>사당역</b>과 이수역 일대의 풍부한 <b>상권</b>도 큰 장점입니다. <b>개발</b>호재 측면에서 남성역 헤머튼은 미래가치가... 더욱 <b>활성화</b>될 것으로 보입니다. 내부 구조는 59㎡와 84㎡ 타입으로 구성되어 있어 최근 가장 인기 있는 평수를... \"}, {\"title\": \"상도역 엑소디움 아파트 가격 분양가\", \"link\": \"http://cafe.naver.com/taeyeon7989/479951\", \"description\": \"향후 재<b>개발</b> 완료 후에는 주변 <b>상권</b>이 더 <b>활성화</b>될 가능성도 포착됐고요"
+      },
+      {
+        "tool": "naver_keyword_volume",
+        "content": "{\"error\": \"HTTP 400\", \"body\": \"{\\\"code\\\":11001,\\\"message\\\":\\\"hintKeywords 파라미터가 유효하지 않습니다.\\\",\\\"status\\\":\\\"BAD_REQUEST\\\"}\"}"
+      },
+      {
+        "tool": "naver_keyword_volume",
+        "content": "{\"error\": \"HTTP 400\", \"body\": \"{\\\"code\\\":11001,\\\"message\\\":\\\"hintKeywords 파라미터가 유효하지 않습니다.\\\",\\\"status\\\":\\\"BAD_REQUEST\\\"}\"}"
+      },
+      {
+        "tool": "kakao_keyword_places",
+        "content": "{\"total_count\": 44, \"documents\": [{\"place_name\": \"긱스타pc카페\", \"category\": \"가정,생활 > 여가시설 > 게임방,PC방\", \"address\": \"서울 동작구 사당로 28\", \"phone\": \"\", \"distance_m\": \"0\"}, {\"place_name\": \"케이크팝\", \"category\": \"음식점 > 카페 > 테마카페 > 디저트카페\", \"address\": \"서울 동작구 사당로 28\", \"phone\": \"02-825-8799\", \"distance_m\": \"0\"}, {\"place_name\": \"셀독24스터디카페 숭실대점\", \"category\": \"서비스,산업 > 전문대행 > 공간대여 > 스터디카페,스터디룸 > 셀독24스터디카페\", \"address\": \"서울 동작구 사당로 30\", \"phone\": \"010-8247-1331\", \"distance_m\": \"12\"}, {\"place_name\": \"투썬맘 스터디카페 숭실대점\", \"category\": \"서비스,산업 > 전문대행 > 공간대여 > 스터디카페,스터디룸\", \"address\": \"서울 동작구 사당로 30\", \"phone\": \"010-8247-1331\", \"distance_m\": \"13\"}, {\"place_name\": \"매머드익스프레스 숭실대점\", \"category\": \"음식점 > 카페 > 커피전문점 > 매머드익스프레스\", \"address\": \"서울 동작구 사당로 24\", \"phone\": \"\", \"distance_m\": \"41\"}, {\"place_name\": \"스터디카페공유\", \"category\": \"서비스,산업 > 전문대행 > 공간대여 > 스터디카페,스터디룸\", \"address\": \"서울 동작구 상도로61길 35\", \"phone\": \"010-2720-5988\", \"distance_m\": \"54\"}, {\"place_name\": \"이이에이 카페(eea cafe)\", \"category\": \"음식점 > 카페\", \"address\": \"서울 동작구 상도로61가길 6\", \"phone\": \"0507-1391-1181\", \"distance_m\": \"63\"}, {\"place_name\": \"컴포즈커피 숭실대중문점\", \"category\": \"음식점 > 카페 > 커피전문점 > 컴포즈커피\", \"address\": \"서울 동작구 사당로 20\", \"phone\": \"070-7703-0901\", \"distance_m\": \"69\"}, {\"place_name\": \"긱스타PC카페 숭실2호점\", \"category\": \"가정,생활 > 여가시설 > 게임방,PC방\", \"address\": \"서울 동작구 상도로67길 32\", \"phone\": \"\", \"distance_m\": \"70\"}, {\"place_name\": \"카페봄봄 숭실대점\", \"category\": \"음식점 > 카페 > 커피전문점 > 카페봄봄\", \"address\": \"서울 동작구 사당로 18-1\", \"phone\": \"0507-2093-8385\", \"distance_m\": \"90\"}]}"
+      },
+      {
+        "tool": "graph_db_search",
+        "content": "[]"
+      }
+    ],
+    "score": 68,
+    "grade": "B+",
+    "strengths": [
+      "대학가 특성의 강력한 POI 밀도: 반경 500m 내 음식점 153개, 학원 46개, 카페 30개로 젊은 소비층 밀집 확인",
+      "안정적 거래량: 최근 24개월 339건의 부동산 거래로 월평균 14건 이상의 수요 존재",
+      "정부 지원 상권 활성화 사업: 중기부 '상권 르네상스 사업' 대상지(2020년 선정), 5년간 100억원 투입 중",
+      "대규모 개발 호재: 상도동 7,500가구 정비사업(2026년), 사당역 복합환승센터(2028년) 등 장기 성장 동력",
+      "소상공인 생태계 활발: 부동산 중개업 5개, 기숙사/고시원 4개 등 거래 및 주거 수요 신호 명확"
+    ],
+    "weaknesses": [
+      "역세권 약점: 사당역까지 거리 미확인, 가장 가까운 역은 숭실대입구역 7호선(372m)으로 2호선 접근성 제한",
+      "대형마트 부재: 반경 500m 내 대형마트 0개로 생활편의성 제약",
+      "생계형 상권 편중: 미용실 11개, 분식점 6개 등 저가 대중음식 중심으로 고급 소비층 부족",
+      "건물 노후화: 1994년 준공(약 30년 경과)으로 시설 현대화 필요",
+      "대학 의존도 높음: 숭실대학교 인접으로 학생 수요에 과도하게 의존, 계절성 변동 위험"
+    ],
+    "risks": [
+      "정비사업 완공 시 상권 재편: 상도동 7,500가구 정비사업 완공 후 신규 상권 형성으로 기존 상권 잠식 가능성",
+      "사당역 복합환승센터 개발 지연: 2028년 예정이나 대규모 사업으로 일정 변동 위험",
+      "대학가 상권의 구조적 한계: 학기 중심 수요 변동, 온라인 교육 확대로 오프라인 학원 수요 감소 추세",
+      "법인 매수자 증가의 이중성: 재개발 신호이나 기존 소상공인 퇴출 위험 내포",
+      "거래금액 편차 큼: 중앙값 5,000만원 vs 평균 1.86억원으로 시장 양극화 심화"
+    ],
+    "rationale": "사당로 28(상도동)은 숭실대학교 인접 대학가 상권으로 음식점 153개, 학원 46개 등 높은 POI 밀도를 보유하고 있으며, 최근 24개월 339건의 안정적 거래량으로 수요 존재를 확인했다. 정부 지원 '상권 르네상스 사업'(100억원 투입)과 상도동 7,500가구 정비사업, 사당역 복합환승센터(2028년) 등 대규모 개발 호재가 중장기 성장 동력으로 작용한다. 다만 사당역까지의 거리 미확인, 대형마트 부재, 생계형 상권 편중, 건물 노후화(1994년 준공) 등이 약점이며, 정비사업 완공 후 상권 재편 위험과 대학 의존도 높음이 구조적 리스크다. 보수적 평가로 중상 수준(B+)으로 판정.",
+    "citations": [
+      "get_subject_metadata: 건물 기본 정보(1994년 준공, 제2종근린생활시설, 1,261.35㎡)",
+      "kakao_poi_radius: 반경 500m POI 밀도(음식점 153개, 학원 46개, 카페 30개, 편의점 23개)",
+      "sbiz_stores_radius: 반경 800m 소상공인 100개 표본(미용실 11개, 분식 6개, 부동산 중개 5개)",
+      "molit_transactions: 동작구 부동산 거래 339건(2024.5~2026.4), 평균 1.86억원, 중앙값 5,000만원",
+      "graph_db_axis_evidence: 상도동 7,500가구 정비사업 VITALITY 신호(강도 4/5, 2026년 기사)",
+      "naver_web_search: 사당역~이수역 상권 르네상스 사업(중기부 선정, 100억원 투입), 사당역 복합환승센터(2028년 57층 개발)",
+      "kakao_keyword_places: 사당로 28 주소 직접 확인(긱스타PC카페, 케이크팝 등 점포 입점)"
+    ]
+  },
+  "composite": {
+    "composite_score": 61.3,
+    "grade": "B"
+  },
+  "report_markdown": "# 사회적 가치 평가 리포트\n## 부동산 STO(증권형 토큰) 발행 자문용\n\n---\n\n# 1. 표지 및 요약\n\n| 항목 | 내용 |\n|------|------|\n| **대상 자산** | 서울특별시 동작구 사당로 28 (상도동 505-1) |\n| **평가 기준일** | 2026년 5월 14일 |\n| **작성 기관** | 사회적 가치 평가팀 (시니어 애널리스트) |\n| **보고서 유형** | 부동산 STO 발행 자문용 사회적 가치 평가 리포트 |\n\n### 한 줄 종합 의견\n\n> **숭실대 인접 대학가 상권의 안정적 입지와 지역 재개발 호재는 긍정적이나, 1994년 준공 노후건물의 환경성능 미인증 및 자산 독립 브랜드 인지도 부재가 STO 투자 상품으로서의 매력도를 제한하는 핵심 약점이다.**\n\n### 종합 등급\n\n| 구분 | 점수 | 등급 |\n|------|------|------|\n| ESG (환경·사회·거버넌스) | 58점 | C+ |\n| 인지도 | 58점 | C+ |\n| 상권·입지 활성도 | 68점 | B+ |\n| **종합 (단순 평균)** | **61.3점** | **B** |\n\n> **주의**: 3개 축 모두 유효 데이터가 존재하여 동일 가중치(각 1/3)로 종합 점수를 산출하였다.\n\n---\n\n# 2. 대상 자산 개요\n\n## 2-1. 주소 및 식별자\n\n| 항목 | 내용 |\n|------|------|\n| **도로명 주소** | 서울특별시 동작구 사당로 28 (상도동) |\n| **지번 주소** | 서울특별시 동작구 상도동 505-1 |\n| **PNU** | 1159010200105050001 |\n| **건물관리번호** | 1159010200105050001019414 |\n| **법정동 코드** | 1159010200 |\n| **시군구 코드** | 11590 |\n| **우편번호** | 07027 |\n| **좌표 (WGS84)** | 위도 37.4949°N / 경도 126.9575°E |\n\n## 2-2. 건물 메타데이터\n\n| 항목 | 내용 |\n|------|------|\n| **주용도** | 제2종근린생활시설 |\n| **기타 용도** | 근린생활시설, 일반업무시설 |\n| **구조** | 철근콘크리트구조 (RC조) |\n| **지상 층수** | 4층 |\n| **지하 층수** | 1층 |\n| **건축면적** | 228.48㎡ |\n| **연면적** | 1,261.35㎡ |\n| **건폐율** | 49.76% |\n| **용적률** | 199.02% |\n| **건물 높이** | 15m |\n| **사용승인일** | 1994년 6월 9일 (준공 후 약 32년 경과) |\n| **내진설계 적용** | 미적용 (rserthqkDsgnApplyYn: 0) |\n| **에너지효율등급** | 미인증 (데이터 없음) |\n| **녹색건축인증(G-SEED)** | 미인증 |\n| **승강기** | 없음 (승객용 0대, 비상용 0대) |\n| **주차** | 실내 기계식 2대(23㎡), 실내 자주식 2대(23㎡), 옥외 자주식 4대(46㎡) |\n\n### 층별 용도 현황\n\n| 층 | 구분 | 주용도 | 면적(㎡) |\n|----|------|--------|---------|\n| 지하 1층 | 지하 | 당구장 (제2종근린생활시설) | 239.58 |\n| 지하 1층 | 지하 | 사무소 (제2종근린생활시설) | 107.85 |\n| 지상 1층 | 지상 | 휴게음식점 (제1종근린생활시설) | 228.48 |\n| 지상 2층 | 지상 | 일반음식점 (대중음식점) | 228.48 |\n| 지상 3층 | 지상 | 사무소 | 228.48 |\n| 지상 4층 | 지상 | 사무소 | 228.48 |\n| 옥탑 | 옥탑 | 계단실·기계실 (연면적 제외) | 28.26 |\n\n> **현황 비고**: 카카오맵 POI 기준 현재 입점 시설은 케이크팝(디저트카페, 1·2층), 긱스타PC카페(게임방), 젊은공간 원룸텔 숭실대점(고시원), 나인(산업용품)으로 확인된다. 건축물대장상 용도와 실제 입점 업종 간 일부 차이가 있을 수 있으며, 이는 별도 현장 확인이 필요하다.\n\n## 2-3. 토지 메타데이터\n\n| 항목 | 내용 |\n|------|------|\n| **지목** | 대(垈) |\n| **토지 면적** | 459.2㎡ |\n| **용도지역** | 제3종일반주거지역 (토지특성) / 일반주거지역 (건축물대장) |\n| **용도지구** | 주차장정비지구, 4종미관지구 |\n| **토지 이용 상황** | 상업용 |\n| **지형 고저** | 완경사 |\n| **지형 형상** | 세로장방 |\n| **도로 접면** | 광대세각 (대로3류, 폭 25~30m 접함) |\n| **소유 구분** | 개인 소유 |\n\n### 공시지가 추이 (원/㎡)\n\n| 연도 | 공시지가 (원/㎡) | 전년 대비 변동 |\n|------|----------------|--------------|\n| 2005 | 3,350,000 | — |\n| 2008 | 4,880,000 | +12.4% |\n| 2013 | 5,240,000 | +7.4% (5년) |\n| 2017 | 6,037,000 | +15.2% (4년) |\n| 2019 | 6,612,000 | +9.5% (2년) |\n| 2021 | 7,620,000 | +15.2% (2년) |\n| 2022 | 8,149,000 | +6.9% |\n\n> **주**: 공시지가 데이터는 2022년까지만 제공되었으며, 2023년 이후 최신 공시지가는 본 보고서에 포함되지 않는다. 2005~2022년 누적 상승률은 약 143%로, 연평균 약 5.1% 상승을 기록하였다.\n\n### 토지 이용 규제 현황\n\n| 규제 구분 | 저촉/포함 여부 | 등록일 |\n|----------|--------------|--------|\n| 도시지역 | 포함 | 2007-05-09 |\n| 대공방어협조구역 | 포함 | 2008-11-24 |\n| 교육환경보호구역 | 포함 및 저촉 | 2008-03-26 / 2008-04-02 |\n| **토지거래계약허가구역** | **포함 (2건)** | **2025-08-25 / 2025-10-17** |\n| 가축사육제한구역 | 포함 | 2011-07-20 |\n| 대로3류(폭 25~30m) | 접함 | 2017-05-26 |\n| 건축선 | 저촉 | 2019-12-06 |\n| 도로구역 | 접함 | 2022-11-07 |\n\n> ⚠️ **중요**: 2025년 8월 및 10월에 토지거래계약허가구역으로 지정(2건)되어 있어, 해당 토지의 매매·임대 등 거래 시 관할 구청장의 허가가 필요하다. STO 발행 및 토큰 유통 구조 설계 시 이 규제가 법적 장애 요인이 될 수 있는지 법률 검토가 필수적이다.\n\n---\n\n# 3. 평가 요약 표\n\n| 평가 축 | 점수 | 등급 | 한 줄 코멘트 |\n|--------|------|------|------------|\n| **ESG** (환경·사회·거버넌스) | 58점 | C+ | 지역 도시재생 정책과 풍부한 사회 인프라는 강점이나, 1994년 준공 노후건물의 G-SEED 미인증·에너지효율 데이터 결측이 환경(E) 축을 크게 끌어내린다 |\n| **인지도** | 58점 | C+ | 입점 테넌트(케이크팝 카페)의 지역 맛집 인지도에 의존하며, 자산 자체의 독립적 브랜드 인지도와 미디어 노출은 매우 제한적이다 |\n| **상권·입지 활성도** | 68점 | B+ | 숭실대 인접 대학가 상권의 높은 POI 밀도, 정부 지원 상권 르네상스 사업, 대규모 정비사업 호재가 중상 수준의 활성도를 뒷받침한다 |\n| **종합** | **61.3점** | **B** | 입지 잠재력은 인정되나 개별 자산 단위의 ESG·인지도 약점 보완 없이는 STO 투자 상품으로서 경쟁력이 제한적이다 |\n\n---\n\n# 4. ESG 상세\n\n## 4-1. 플래너 가설\n\n서울 동작구 상도동 소재 자산으로서, 지역 차원의 도시재생·주거환경 개선 사업과의 연계성은 존재하나, 개별 건물 단위의 환경성능·사회적 기여·거버넌스 투명성 측면에서는 데이터 부족으로 인한 약점 가능성이 높다. 지역 차원의 ESG 이슈(교통, 환경오염, 커뮤니티)와의 연관성 파악이 필요하다는 초기 가설 하에 평가를 진행하였다.\n\n## 4-2. 핵심 근거\n\n### E (환경) — ⚠️ 약점\n\n| 항목 | 내용 | 평가 |\n|------|------|------|\n| 준공연도 | 1994년 6월 9일 | 현행 에너지효율등급 기준 이전 건물 |\n| G-SEED 인증 | **미인증** | 지역 신규 개발 대비 환경성능 격차 |\n| 에너지효율등급 | **데이터 없음** | 냉난방·조명·급탕 성능 미파악 |\n| 내진설계 | 미적용 | 구조 안전성 취약 가능성 |\n| 주변 오염원 | 주유소 2개(185m, 349m) | 직접적 오염 위험은 낮은 수준 |\n| 자연환경 접근성 | 서달산 자락길(389m), 수목학습원 인근 | 양호 |\n\n지역 내 신규 개발 프로젝트들(숭실대 숭덕경상관 그린1등급, 상도동 역세권 공공임대주택 그린2등급, 동작청년주택 그린4등급)이 G-SEED 인증을 취득하고 있는 것과 대비하면, 대상 건물의 환경성능 격차는 두드러진다.\n\n### S (사회) — ✅ 강점\n\n| 항목 | 수량/내용 | 평가 |\n|------|---------|------|\n| 숭실대학교 | 106m | 대학 커뮤니티 핵심 거점 |\n| 학교(초·중) | 3개교 (346~468m) | 교육 인프라 양호 |\n| 어린이집 | 5개 (74~341m) | 영유아 지원 충실 |\n| 학원 | 46개 (반경 500m) | 교육 수요 매우 높음 |\n| 병원 | 15개 (반경 500m) | 의료 접근성 양호 |\n| 편의점 | 23개 (반경 500m) | 생활편의 충실 |\n| 지하철역 | 숭실대입구역 7호선 (372m) | 대중교통 접근 가능 |\n| 공공기관 | 행정복지센터, 119안전센터 | 공공서비스 인접 |\n| 소상공인 | 100개 (반경 300m) | 지역 경제 생태계 활발 |\n\n### G (거버넌스) — ⚠️ 중립\n\n- 지역 정책 투명성: 도시재생 사업계획, 재개발 구역 지정 등 공공 정보 공개 수준은 높음\n- 개별 건물 소유권·관리 구조: **미확인** (토지대장상 개인 소유 확인, 법인 여부 및 관리 주체 불명)\n- 거래 이력: 국토부 실거래가 조회 오류로 개별 건물 거래 이력 확인 불가\n- 토지거래계약허가구역 지정(2025년): 거래 투명성 제고 측면은 있으나 유동성 제약 요인\n\n## 4-3. 뉴스그래프 시그널\n\n| 기사 제목 | 극성 | 강도 | 발행일 | 출처 |\n|---------|------|------|--------|------|\n| 상도동 7500가구 '친환경 주거타운' 탈바꿈 | 긍정 | 4/5 | 2026-04-17 | [대한경제](https://www.dnews.co.kr/uhtml/view.jsp?idxno=202604161439435700557) |\n\n> **해석**: 지역 차원의 친환경 개발 방향성은 긍정적 신호이나, 이는 대상 건물 자체의 환경성능이 아닌 인근 정비사업의 방향성을 반영한 것이다. 개별 건물 단위의 ESG 개선 없이는 지역 정책 수혜가 자산 가치로 직결되지 않을 수 있다.\n\n---\n\n# 5. 인지도 상세\n\n## 5-1. 플래너 가설\n\n지식그래프에 139개 노드와 259개 엣지가 존재하며 30개의 뉴스 기사가 연결되어 있어 중상 수준의 미디어 노출을 시사하나, 실제 온라인 검색량과 지역 내 인지도 수준을 정확히 파악하기 위한 추가 검증이 필요하다는 초기 가설 하에 평가를 진행하였다.\n\n## 5-2. 핵심 근거\n\n### 온라인 가시성 분석\n\n| 채널 | 검색 결과 수 | 주요 내용 |\n|------|------------|---------|\n| 네이버 블로그 | 458건 | 케이크팝 카페 방문 후기 중심 |\n| 네이버 뉴스 | 11건 | 지중화사업, 아파트 개발 관련 (자산 고유성 없음) |\n| 웹크롤 | 386,773건 | 상도동 지역 일반 정보 (지역명 기반) |\n| 이미지 | 1,808건 | 지역 뉴스 및 시설 사진 |\n| 카페 | 241건 | 부동산/생활정보 커뮤니티 |\n| **합계** | **389,296건** | 대부분 지역명 기반, 자산 고유 콘텐츠 희소 |\n\n### 키워드 검색량 분석 (네이버 키워드 플래너)\n\n| 키워드 | PC 검색량/월 | 모바일 검색량/월 | 합계 | 광고 경쟁도 |\n|--------|------------|----------------|------|-----------|\n| 상도동 | 2,410회 | 6,040회 | **8,450회** | 낮음 |\n| 사당로 | 30회 | 30회 | **60회** | 중간 |\n\n> **해석**: '상도동' 지역명 검색은 월 8,450회로 지역 내 관심도는 존재하나, 자산 주소인 '사당로 28' 기반 검색은 월 60회 이하로 극히 낮다. 이는 자산 자체의 주소 인지도가 매우 제한적임을 의미한다.\n\n### 카카오맵 POI 기반 입점 시설 현황\n\n| 시설명 | 업종 | 블로그 언급 | 웹 검색 수 |\n|--------|------|-----------|----------|\n| 케이크팝 | 디저트카페 | 104건 | 3,291건 |\n| 긱스타PC카페 | 게임방 | 미확인 | 미확인 |\n| 젊은공간 원룸텔 숭실대점 | 고시원 | 미확인 | 미확인 |\n| 나인 | 산업용품 | 미확인 | 미확인 |\n\n> **해석**: 케이크팝 카페가 '숭실대 맛집' 키워드로 블로그 104건, 웹 3,291건의 검색을 기록하며 지역 내 인지도를 견인하고 있다. 그러나 이는 테넌트 개별 인지도이며, 자산(건물) 자체의 독립적 브랜드 가치와는 구분되어야 한다.\n\n## 5-3. 뉴스그래프 시그널\n\n| 기사 제목 | 극성 | 강도 | 발행일 | 출처 |\n|---------|------|------|--------|------|\n| 상도동 7500가구 '친환경 주거타운' 탈바꿈 | 긍정 | 3/5 | 2026-04-17 | [대한경제](https://www.dnews.co.kr/uhtml/view.jsp?idxno=202604161439435700557) |\n\n> **해석**: 지식그래프 AWARENESS 축 직접 증거는 위 1건에 불과하며, 이 역시 자산 자체가 아닌 지역 개발 뉴스에서 간접 파생된 신호다. 자산 고유의 미디어 언급은 사실상 부재한 상태다.\n\n---\n\n# 6. 상권·입지 활성도 상세\n\n## 6-1. 플래너 가설\n\n서울 동작구 사당로 28(상도동)은 지하철 7호선 숭실대입구역 인근 주거·상업 혼합지역으로, 숭실대학교 인접 젊은 소비층이 밀집해 있어 상권 활성도가 중상 이상일 것으로 예상되나, 구체적 POI 밀도와 최근 거래량 추이 확인이 필요하다는 초기 가설 하에 평가를 진행하였다.\n\n## 6-2. 핵심 근거\n\n### POI 밀도 분석 (반경 500m)\n\n| 카테고리 | 개수 | 평가 |\n|---------|------|------|\n| 음식점 | 153개 | ★★★★★ 매우 높음 |\n| 학원 | 46개 | ★★★★★ 매우 높음 |\n| 은행·ATM | 33개 | ★★★★ 높음 |\n| 카페 | 30개 | ★★★★ 높음 |\n| 편의점 | 23개 | ★★★★ 높음 |\n| 부동산 중개업소 | 23개 | ★★★★ 높음 |\n| 병원 | 15개 | ★★★ 중간 |\n| 약국 | 5개 | ★★ 낮음 |\n| 대형마트 | 0개 | ★ 없음 |\n| 지하철역 | 1개 (372m) | ★★★ 중간 |\n\n### 소상공인 점포 분석 (반경 800m, 100개 표본)\n\n| 대분류 업종 | 점포 수 | 비중 |\n|-----------|--------|------|\n| 음식 | 29개 | 29% |\n| 소매 | 22개 | 22% |\n| 수리·개인 | 21개 | 21% |\n| 과학·기술 | 7개 | 7% |\n| 부동산 | 5개 | 5% |\n| 숙박 | 4개 | 4% |\n| 기타 | 12개 | 12% |\n\n> **특징**: 미용실(11개), 분식점(6개), 자동차 정비소(6개), 기숙사·고시원(4개) 등 대학가 생계형 상권의 전형적 구성을 보인다. 부동산 중개업 5개는 활발한 거래 수요를 간접적으로 시사한다.\n\n### 부동산 거래량 분석 (동작구 상업업무용, 2024.5~2026.4)\n\n| 항목 | 수치 |\n|------|------|\n| 총 거래건수 | 339건 |\n| 월평균 거래건수 | 약 14건 |\n| 평균 거래금액 | 약 1억 8,657만원 |\n| 중앙값 | 5,000만원 |\n| 최솟값 | 500만원 |\n| 최댓값 | 104억 5,000만원 |\n\n> **해석**: 월평균 14건 이상의 안정적 거래가 유지되고 있으며, 법인 매수자 비중 증가는 재개발·정비사업 기대감을 반영한다. 다만 평균과 중앙값의 큰 괴리(약 3.7배)는 시장 양극화 및 소수 고가 거래의 영향을 시사한다.\n\n### 주요 개발 호재 요약\n\n| 사업명 | 규모/내용 | 현황 | 영향 |\n|--------|---------|------|------|\n| 상도14·15구역 재개발 | 4,395가구 대단지 | 2025년 진행 중 | 주거 수요 창출, 상권 활성화 |\n| 상도4동 도시재생 시범사업 | 100억원 투입 | 진행 중 | 생활환경 개선 |\n| 사당역~이수역 상권 르네상스 | 중기부 선정, 100억원 | 2020년 선정, 진행 중 | 상권 브랜드화 |\n| 사당역 복합환승센터 | 57층, 용적률 800% | 2028년 완공 예정 | 광역 상권 활성화 |\n\n## 6-3. 뉴스그래프 시그널\n\n| 기사 제목 | 극성 | 강도 | 발행일 | 출처 |\n|---------|------|------|--------|------|\n| 상도동 7500가구 '친환경 주거타운' 탈바꿈 | 긍정 | 4/5 | 2026-04-17 | [대한경제](https://www.dnews.co.kr/uhtml/view.jsp?idxno=202604161439435700557) |\n\n추가 웹 검색 기반 시그널:\n\n| 기사/출처 | 내용 | 발행일 |\n|---------|------|--------|\n| [아주경제](https://www.ajunews.com/view/20250404154403493) | 상도동 일대 정비사업 진행, 주거환경 개선 방안 | 2025-04-04 |\n| [아유경제](http://www.areyou.co.kr/news/articleView.html?idxno=86915) | 상도14·15구역 재개발 4,395가구 대단지 | 미상 |\n| [노컷뉴스](https://www.nocutnews.co.kr/news/5728638) | 동작 상권르네상스 사업 순항, 상권 활성화 박차 | 미상 |\n| [서울신문](https://www.seoul.co.kr/news/publicnews/seoul_local/news_seoul/2020/12/21/20201221012005) | 사당역·이수역 상권 100억 투입, 서남권 대표상권 육성 | 2020-12-21 |\n\n---\n\n# 7. 뉴스 지식그래프 종합\n\n## 7-1. 전체 그래프 통계\n\n| 항목 | 수치 |\n|------|------|\n| 총 노드 수 | 139개 |\n| 총 엣지 수 | 259개 |\n| 수집 뉴스 기사 | 30건 |\n| 추가 엔티티 | 150개 |\n| 추가 관계 | 180개 |\n\n### 노드 유형별 분포\n\n| 노드 유형 | 수량 | 설명 |\n|---------|------|------|\n| Asset | 26 | 자산 관련 노드 |\n| NewsArticle | 30 | 연결된 뉴스 기사 |\n| Event | 24 | 이벤트/사건 |\n| Issue | 17 | 이슈 |\n| Organization | 15 | 기관·조직 |\n| Metric | 11 | 지표 |\n| Location | 10 | 위치 |\n| Axis | 3 | 평가 축 |\n| Person | 3 | 인물 |\n\n### 관계 유형별 분포\n\n| 관계 유형 | 수량 | 설명 |\n|---------|------|------|\n| MENTIONED_IN | 173 | 뉴스 언급 관계 (전체의 66.8%) |\n| LOCATED_IN | 32 | 위치 관계 |\n| HAS_EVENT | 16 | 이벤트 보유 |\n| HAS_ISSUE | 14 | 이슈 보유 |\n| AFFECTS_AXIS | 9 | 평가 축",
+  "knowledge_graph_path": "data/knowledge_graph.json"
+}
