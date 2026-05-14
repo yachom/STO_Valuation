@@ -7,6 +7,7 @@ __pycache__/
 report*.md
 result*.json
 data/knowledge_graph*.json
+data/runs/
 *.csv
 .claude/
 naver_api_probe.ipynb

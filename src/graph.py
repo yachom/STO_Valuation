@@ -103,9 +103,14 @@ def run(address: str) -> dict[str, Any]:
         {"address": address},
         config={"callbacks": _CALLBACKS, "run_name": "sto-valuation-v2"},
     )
-    # Save KG snapshot if present
+    # Attach the KG as serialized JSON dict (for callers).
     kg = _RUN_CACHE.get("kg")
     if kg is not None:
+        try:
+            import networkx as nx
+            final["knowledge_graph"] = nx.readwrite.json_graph.node_link_data(kg.g, edges="links")
+        except Exception:
+            pass
         try:
             kg.save("data/knowledge_graph.json")
             final["knowledge_graph_path"] = "data/knowledge_graph.json"
