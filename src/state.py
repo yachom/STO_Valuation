@@ -1,26 +1,17 @@
-"""LangGraph state schema."""
+"""LangGraph state schema (v2)."""
 
 from __future__ import annotations
 
 from typing import Any, TypedDict
 
 
-class AxisResult(TypedDict, total=False):
-    axis: str
-    score: float  # 0~100
-    grade: str  # A+, A, B, C, D
-    strengths: list[str]
-    weaknesses: list[str]
-    risks: list[str]
-    evidence: dict[str, Any]
-    rationale: str
-
-
 class PipelineState(TypedDict, total=False):
     address: str
     metadata: dict[str, Any]
-    esg: AxisResult
-    awareness: AxisResult
-    vitality: AxisResult
+    news: dict[str, Any]          # {fetch, tagged_count, graph_summary, graph(KG object — not serialized)}
+    esg: dict[str, Any]
+    awareness: dict[str, Any]
+    vitality: dict[str, Any]
+    composite: dict[str, Any]
     report_markdown: str
     errors: list[str]

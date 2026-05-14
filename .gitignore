@@ -4,7 +4,9 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .DS_Store
-report.md
-result.json
+report*.md
+result*.json
+data/knowledge_graph*.json
 *.csv
 .claude/
+naver_api_probe.ipynb

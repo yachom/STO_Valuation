@@ -20,8 +20,8 @@ def _get(name: str, default: str | None = None) -> str | None:
 
 # Anthropic
 ANTHROPIC_API_KEY = _get("ANTHROPIC_API_KEY")
-REPORT_MODEL = _get("REPORT_MODEL", "claude-opus-4-7")
-AGENT_MODEL = _get("AGENT_MODEL", "claude-sonnet-4-6")
+REPORT_MODEL = _get("REPORT_MODEL", "claude-sonnet-4-6")
+AGENT_MODEL = _get("AGENT_MODEL", "claude-haiku-4-5-20251001")
 
 # JUSO / MOLIT / VWorld
 JUSO_CONFIRM_KEY = _get("JUSO_CONFIRM_KEY")
