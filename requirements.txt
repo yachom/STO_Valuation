@@ -9,3 +9,4 @@ pandas
 PublicDataReader
 networkx>=3.0
 streamlit>=1.50
+pyvis>=0.3.2

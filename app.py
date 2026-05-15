@@ -21,6 +21,7 @@ from src.graph import run as run_pipeline
 from src.observability import init_langfuse
 from src.qa.graph import answer as qa_answer
 from src.qa.session import QASession
+from src.web.kg_viz import cap_by_degree, filter_subgraph, render_html
 from src.web.run_store import list_runs, load_run, save_run
 
 
@@ -222,6 +223,35 @@ with tab_kg:
         rt = g_summary.get("relation_types") or {}
         if rt:
             st.dataframe(pd.DataFrame(list(rt.items()), columns=["relation", "count"]).sort_values("count", ascending=False), use_container_width=True, hide_index=True)
+
+    st.divider()
+    st.markdown("### 🕸 인터랙티브 그래프")
+    if session.kg and session.kg.g.number_of_nodes() > 0:
+        ctrl_a, ctrl_b, ctrl_c = st.columns([1, 1, 2])
+        with ctrl_a:
+            axis_filter = st.selectbox(
+                "축 필터",
+                ["ALL", "ESG", "AWARENESS", "VITALITY"],
+                key="kg_axis_filter",
+            )
+        with ctrl_b:
+            max_nodes = st.slider("최대 노드 수", 30, 400, 150, step=10, key="kg_max_nodes")
+        with ctrl_c:
+            st.caption(
+                "Asset(빨강) / Axis(보라) / NewsArticle(파랑) / 엔티티(타입별 색상). "
+                "엣지 색: 초록=positive · 빨강=negative · 회색=중립. 노드/엣지에 hover하면 상세."
+            )
+
+        sub = filter_subgraph(session.kg.g, axis_filter)
+        sub = cap_by_degree(sub, max_nodes)
+        st.caption(f"표시: 노드 {sub.number_of_nodes()} · 엣지 {sub.number_of_edges()}")
+        if sub.number_of_nodes() == 0:
+            st.info("선택한 필터에 해당하는 노드가 없습니다.")
+        else:
+            html = render_html(sub)
+            st.components.v1.html(html, height=680, scrolling=True)
+    else:
+        st.info("지식그래프가 비어 있습니다.")
 
     st.divider()
     st.markdown("### 축별 시그널 (AFFECTS_AXIS)")

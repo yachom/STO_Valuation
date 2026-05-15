@@ -1,0 +1,2479 @@
+{
+  "directed": true,
+  "multigraph": true,
+  "graph": {},
+  "nodes": [
+    {
+      "type": "Asset",
+      "name": "에그엘로우",
+      "asset_name": "에그엘로우",
+      "road": "서울특별시 관악구 남부순환로 1820 (봉천동)",
+      "jibun": "서울특별시 관악구 봉천동 862-1 에그엘로우",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
+      "pnu": "1162010100108620001",
+      "location": "서울특별시 관악구 봉천동",
+      "address": "남부순환로 1820",
+      "address_road": "남부순환로 1820",
+      "road_address": "서울특별시 관악구 남부순환로 1820",
+      "district": "관악구",
+      "dong": "봉천동",
+      "id": "fd656ea4dc4f74f9"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "강남은 떨어지는데 여기만 2배 급등… 4년 7개월 만에 깨진 '집값 양극화...",
+      "link": "https://www.wikitree.co.kr/articles/1134119",
+      "pubDate": "Wed, 29 Apr 2026 10:10:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "8955faf4f096aaf2"
+    },
+    {
+      "type": "Asset",
+      "name": "관악푸르지오",
+      "location": "서울특별시 관악구 봉천동",
+      "exclusive_area": "84㎡",
+      "pyeong": "84㎡",
+      "unit_size": "84㎡",
+      "id": "fd33710e0b16682c"
+    },
+    {
+      "type": "Location",
+      "name": "관악구 봉천동",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
+      "region": "서울특별시",
+      "city": "서울",
+      "region_type": "서울 외곽",
+      "rank_in_jeonse": "2위",
+      "id": "4b7135c8f9864c35"
+    },
+    {
+      "type": "Organization",
+      "name": "한국부동산원",
+      "role": "통계 발표 기관",
+      "id": "68c724a220e5caf1"
+    },
+    {
+      "type": "Metric",
+      "name": "전셋값 상승률",
+      "value": "25% (10억5000만 원→13억1000만 원)",
+      "period": "4년 7개월",
+      "id": "98191491d8e07a2e"
+    },
+    {
+      "type": "Axis",
+      "name": "VITALITY",
+      "id": "6fb8838c8da80e09"
+    },
+    {
+      "type": "Axis",
+      "name": "AWARENESS",
+      "id": "7239324297247f13"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "1인가구 따라가는 무인점포...관악·강서 '빨래방', 학군지는 '스터디카...",
+      "link": "https://www.etoday.co.kr/news/view/2579857",
+      "pubDate": "Wed, 29 Apr 2026 06:02:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "b7b2866f449fbb27"
+    },
+    {
+      "type": "Location",
+      "name": "봉천동",
+      "sigungu": "관악구",
+      "characteristics": "청년 1인 가구 밀집 지역",
+      "district": "관악구",
+      "city": "서울특별시",
+      "id": "5885288abaa417a9"
+    },
+    {
+      "type": "Location",
+      "name": "관악구",
+      "characteristics": "대학생, 사회초년생 등 청년층 거주",
+      "city": "서울특별시",
+      "id": "7b934daefe647299"
+    },
+    {
+      "type": "Organization",
+      "name": "NH농협은행",
+      "department": "All100자문센터",
+      "id": "4d3e8c6ff12b1ed5"
+    },
+    {
+      "type": "Person",
+      "name": "윤수민",
+      "title": "부동산 전문위원",
+      "id": "d152a4108b2f5468"
+    },
+    {
+      "type": "Issue",
+      "name": "1인가구 증가에 따른 무인점포 확산",
+      "scope": "관악구, 강서구",
+      "id": "0366c32fb46c9e33"
+    },
+    {
+      "type": "Metric",
+      "name": "임대료 및 수익성",
+      "context": "고수요 지역의 상대적 수익성",
+      "id": "4b45f5979ca050f0"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[오늘의 ABC 뉴스룸] \"작아서 빠르다더니 준공 0건?\" 서울 소규모 재건축...",
+      "link": "https://www.ajunews.com/view/20260422180057200",
+      "pubDate": "Wed, 22 Apr 2026 18:18:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "662b199dbfc90645"
+    },
+    {
+      "type": "Asset",
+      "name": "봉천동 복권아파트",
+      "location": "서울특별시 관악구 봉천동",
+      "project_type": "소규모 재건축",
+      "id": "34addf61c47180c9"
+    },
+    {
+      "type": "Event",
+      "name": "재건축 조합 설립",
+      "status": "진행 중",
+      "duration": "2년 경과",
+      "id": "92e176f61146868e"
+    },
+    {
+      "type": "Issue",
+      "name": "시공사 선정 실패 및 준공 지연",
+      "severity": "high",
+      "affected_projects": [
+        "정릉스카이연립",
+        "봉천동 복권아파트"
+      ],
+      "id": "7417ee9c273614db"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "다주택 양도세 중과 눈앞…매물실종 대 가격조정 '기로'",
+      "link": "http://www.newstomato.com/ReadNews.aspx?no=1300016&inflow=N",
+      "pubDate": "Wed, 06 May 2026 15:08:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "def34a12f70185b0"
+    },
+    {
+      "type": "Event",
+      "name": "다주택 양도소득세 중과 유예 종료",
+      "date": "2026-05-09",
+      "id": "265b9e0753afec09"
+    },
+    {
+      "type": "Issue",
+      "name": "부동산 시장 변동성",
+      "manifestation": "매물실종 대 가격조정",
+      "id": "9eeb84a0d68aea0e"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "군의원 재산공개, 부자 1위는 김두례…재산 증가 1위는 이강세",
+      "link": "https://www.ibuan.com/news/articleView.html?idxno=55841",
+      "pubDate": "Tue, 14 Apr 2026 15:08:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "d3809814631ce0e9"
+    },
+    {
+      "type": "Location",
+      "name": "서울 관악구 봉천동",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
+      "region": "서울특별시",
+      "district": "관악구",
+      "dong": "봉천동",
+      "development_status": "개발 예정지 인근",
+      "id": "21d6e539aff7e3d0"
+    },
+    {
+      "type": "Event",
+      "name": "군의원 재산공개",
+      "date": "2026-04-14",
+      "focus": "재산 증가 현황",
+      "id": "59deac25336b0f9f"
+    },
+    {
+      "type": "Person",
+      "name": "이강세",
+      "role": "군의원",
+      "ranking": "재산 증가 1위",
+      "id": "38c436b3eef4451a"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "비강남 국평 전세도 10억…평균 보증금 1년새 7400만원 ‘쑥’",
+      "link": "https://n.news.naver.com/mnews/article/029/0003024997?sid=101",
+      "pubDate": "Tue, 05 May 2026 09:27:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "ad295cbe12165a50"
+    },
+    {
+      "type": "Asset",
+      "name": "e편한세상서울대입구",
+      "location": "관악구 봉천동",
+      "area": "59.88㎡",
+      "id": "40f2765b3b1a0c23"
+    },
+    {
+      "type": "Metric",
+      "name": "전세 보증금",
+      "value": "6억8000만원",
+      "reference_asset": "e편한세상서울대입구",
+      "period": "2026년 신규 계약",
+      "id": "082abb81ce41dfa9"
+    },
+    {
+      "type": "Metric",
+      "name": "평균 보증금 상승",
+      "change": "1년새 7400만원 증가",
+      "region": "비강남 국평",
+      "id": "ad545b3dc33c75f8"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "다주택자 운명의 날...5월 9일 이후 서울 집값 어디로",
+      "link": "https://magazine.hankyung.com/money/article/202604164573c",
+      "pubDate": "Tue, 05 May 2026 06:02:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "8be7f14db5fd1b32"
+    },
+    {
+      "type": "Issue",
+      "name": "다주택자 양도소득세 중과 유예 종료",
+      "date": "2026-05-09",
+      "impact_area": "서울 부동산 시장",
+      "id": "297809652f20901f"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "송파 이어 서초 집값도 상승 전환…“급매물 소진된 듯”",
+      "link": "https://n.news.naver.com/mnews/article/020/0003716557?sid=101",
+      "pubDate": "Thu, 30 Apr 2026 18:55:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "5acaacf27245b781"
+    },
+    {
+      "type": "Asset",
+      "name": "관악드림타운",
+      "location": "관악구 봉천동",
+      "scale": "3544채",
+      "id": "4629bcdc9329b76c"
+    },
+    {
+      "type": "Organization",
+      "name": "부동산원",
+      "id": "063c0dbfb2106d52"
+    },
+    {
+      "type": "Event",
+      "name": "4월 넷째 주 서울 아파트값 상승",
+      "period": "4월 넷째 주",
+      "scope": "서울",
+      "id": "c63b631a1f20e095"
+    },
+    {
+      "type": "Metric",
+      "name": "아파트값 상승률",
+      "value": "0.21%",
+      "comparison": "전주 대비",
+      "id": "db8910e4abe3c9a0"
+    },
+    {
+      "type": "Issue",
+      "name": "급매물 소진",
+      "location": "관악구 봉천동",
+      "id": "b2bffce36a31aa1d"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "서울 전세난에 매매가까지 들썩...일주일 새 0.15% 오르며 강세",
+      "link": "https://www.youthdaily.co.kr/news/article.html?no=218003",
+      "pubDate": "Thu, 23 Apr 2026 16:20:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "b012af24ebf64a1e"
+    },
+    {
+      "type": "Metric",
+      "name": "아파트 매매가격 상승률",
+      "value": "0.28%",
+      "period": "주간",
+      "region": "관악구 봉천동 대단지",
+      "id": "34cacf0a073f574c"
+    },
+    {
+      "type": "Event",
+      "name": "서울 전세난 및 매매가 상승",
+      "date": "2026-04-23",
+      "scope": "서울 아파트 시장",
+      "id": "d57f8edefb96204f"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "가락동 아파트 전셋값 1년여만에 2.7억 '쑥'…세입자 '비명'",
+      "link": "https://n.news.naver.com/mnews/article/015/0005278740?sid=101",
+      "pubDate": "Thu, 23 Apr 2026 14:01:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "369bc35db1080afe"
+    },
+    {
+      "type": "Asset",
+      "name": "동원낙성대",
+      "location": "관악구 봉천동",
+      "exclusive_area": "84㎡",
+      "id": "b85c59e328425c9b"
+    },
+    {
+      "type": "Metric",
+      "name": "서울 전셋값",
+      "measurement_date": "2026-04-20",
+      "id": "5b0ce238dd9baa01"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[부동산라운지-5월2주]다주택자 유예 종료 후 서울 상승세 확대…경기 ...",
+      "link": "http://www.biztribune.co.kr/news/articleView.html?idxno=353831",
+      "pubDate": "Thu, 14 May 2026 20:20:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "fb750bd93748b4e0"
+    },
+    {
+      "type": "Location",
+      "name": "관악구 봉천동 역세권",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
+      "characteristic": "역세권",
+      "id": "33bf99457c6bf0d5"
+    },
+    {
+      "type": "Event",
+      "name": "다주택자 양도소득세 중과 유예 종료",
+      "category": "정책변화",
+      "impact_scope": "서울 아파트 시장",
+      "id": "428e0ddc4604a231"
+    },
+    {
+      "type": "Metric",
+      "name": "관악구 아파트 가격 상승률",
+      "value": "0.22%",
+      "period": "5월 2주",
+      "region": "봉천동 역세권",
+      "id": "c3657ee02b61dd15"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "서울 아파트 전셋값 10년6개월만 최고 상승률…전세대란 진짜였다 [부동...",
+      "link": "https://n.news.naver.com/mnews/article/016/0002643542?sid=101",
+      "pubDate": "Thu, 14 May 2026 15:59:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "42a948d86073b0b8"
+    },
+    {
+      "type": "Event",
+      "name": "전셋값 상승",
+      "period": "10년6개월",
+      "date": "2026-04-06",
+      "id": "ccac48408a72d90f"
+    },
+    {
+      "type": "Issue",
+      "name": "전세 신규 매물 감소",
+      "cause": "집주인 실거주 의무 부여",
+      "impact": "전세 매물 감소",
+      "id": "dade90cb206f4847"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "서울 아파트값 2배 확대···강북 14개구 0.32%↑",
+      "link": "https://www.seoulfn.com/news/articleView.html?idxno=628783",
+      "pubDate": "Thu, 14 May 2026 14:10:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "06f8f88ab8201212"
+    },
+    {
+      "type": "Event",
+      "name": "5월 둘째 주 주간 아파트 가격 동향 발표",
+      "date": "2026-05-14",
+      "reference_date": "2026-05-11",
+      "id": "52b298d17e8abed4"
+    },
+    {
+      "type": "Metric",
+      "name": "아파트 가격 상승률",
+      "value": "0.22%",
+      "location": "봉천동",
+      "period": "5월 둘째 주",
+      "id": "566c4cb2da1662dd"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[아유경제_부동산] 2026년 5월 2주 아파트 가격 동향… 매매가격 0.06% 상...",
+      "link": "http://www.areyou.co.kr/news/articleView.html?idxno=93738",
+      "pubDate": "Thu, 14 May 2026 14:08:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "0ed83b8855cfbd3f"
+    },
+    {
+      "type": "Location",
+      "name": "봉천동 역세권",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
+      "characteristic": "역세권",
+      "id": "9573da6f1d9e6b7e"
+    },
+    {
+      "type": "Event",
+      "name": "주간아파트 가격동향 발표",
+      "date": "2026-05-11",
+      "period": "2026년 5월 2주",
+      "id": "29f04e73c378cc89"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "양도세 중과 시행 첫 주…서울 아파트값 0.28% ‘급등’",
+      "link": "https://n.news.naver.com/mnews/article/119/0003090434?sid=101",
+      "pubDate": "Thu, 14 May 2026 14:01:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "03d95b83c18f9b21"
+    },
+    {
+      "type": "Event",
+      "name": "양도세 중과 시행",
+      "date": "2026년 5월 중순",
+      "id": "a0d45f59259a2c37"
+    },
+    {
+      "type": "Metric",
+      "name": "관악구 주간 아파트값 상승률",
+      "value": "0.22%",
+      "period": "5월 2주(11일 기준)",
+      "category": "주간 아파트가격",
+      "id": "6c7b5c31f9a7f12e"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "서울 아파트 전셋값 10년6개월만에 최고 상승률",
+      "link": "https://n.news.naver.com/mnews/article/003/0013944951?sid=101",
+      "pubDate": "Thu, 14 May 2026 14:00:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "032f19e6ea0c2a40"
+    },
+    {
+      "type": "Metric",
+      "name": "아파트 전셋값 상승률",
+      "period": "10년6개월",
+      "status": "최고 상승률",
+      "region": "서울",
+      "id": "03f0cfa3531ca3d2"
+    },
+    {
+      "type": "Event",
+      "name": "5월 둘째 주 주간 아파트가격 동향 발표",
+      "date": "2026-05-14",
+      "base_date": "2026-05-11",
+      "id": "5ab7aea424d71c25"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "\"지금 아니면 영원히 못산다\" 서울 외곽까지 '신고가'…무주택자, 포모...",
+      "link": "https://www.thepublic.kr/news/articleView.html?idxno=300564",
+      "pubDate": "Thu, 09 Apr 2026 15:50:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "ed1b52a2adf74ed9"
+    },
+    {
+      "type": "Event",
+      "name": "부동산 신고가 기록",
+      "scope": "서울 외곽 지역",
+      "id": "98ce501cace77fff"
+    },
+    {
+      "type": "Issue",
+      "name": "매물 부족",
+      "description": "공급 제약으로 인한 시장 경색",
+      "id": "9509116f9352cf50"
+    },
+    {
+      "type": "Metric",
+      "name": "주택 가격",
+      "unit": "원",
+      "trend": "상승",
+      "id": "19006199555b91f0"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "\"두 달 만에 1.6억 뛰었어요\"…노원구 아파트서 벌어진 일",
+      "link": "https://n.news.naver.com/mnews/article/015/0005272933?sid=101",
+      "pubDate": "Thu, 09 Apr 2026 14:01:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "dc085cd43eb3736e"
+    },
+    {
+      "type": "Metric",
+      "name": "전셋값 변동률",
+      "value": "0.24%",
+      "direction": "상승",
+      "period": "최근",
+      "id": "cc9ea6f828fc4a3e"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "“양극화 대신 키 맞추기”…서울 외곽 신고가 ‘봇물’",
+      "link": "https://n.news.naver.com/mnews/article/024/0000104670?sid=101",
+      "pubDate": "Thu, 09 Apr 2026 11:34:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "a0f04b2ce974e6c2"
+    },
+    {
+      "type": "Event",
+      "name": "10·26 부동산 대책",
+      "date": "2026-10-26",
+      "id": "9f414aecdda319f2"
+    },
+    {
+      "type": "Issue",
+      "name": "대출 규제",
+      "related_policy": "10·26 부동산 대책",
+      "id": "51e1251037e8fc8c"
+    },
+    {
+      "type": "Issue",
+      "name": "양도세 중과 유예",
+      "effective_date": "2026-05-09",
+      "id": "b90fcb78638110e1"
+    },
+    {
+      "type": "Event",
+      "name": "키 맞추기 장세",
+      "market_phenomenon": "전세난 대응 거래 방식",
+      "id": "5ccf78de670e7f42"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "\"지금 아니면 못산다\"…서울 외곽은 신고가 '속출'[양도세 중과 D-30②]",
+      "link": "https://n.news.naver.com/mnews/article/003/0013876512?sid=101",
+      "pubDate": "Thu, 09 Apr 2026 06:05:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "5fc6db6a822328af"
+    },
+    {
+      "type": "Metric",
+      "name": "주간 상승률",
+      "value": "0.26%",
+      "period": "3월 다섯째 주",
+      "id": "5d9c4e6566c9c856"
+    },
+    {
+      "type": "Event",
+      "name": "양도세 중과 D-30",
+      "context": "정책 변화 임박",
+      "id": "41f4c12fee195f70"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "3500가구 대단지에 전세 '1건'뿐…갈 곳 없는 세입자들",
+      "link": "https://n.news.naver.com/mnews/article/015/0005273958?sid=101",
+      "pubDate": "Sun, 12 Apr 2026 19:01:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "6beb07286bde0bae"
+    },
+    {
+      "type": "Issue",
+      "name": "전세 물건 부족",
+      "scope": "3500가구 대단지",
+      "severity": "critical",
+      "id": "b10551b9f9dc0442"
+    },
+    {
+      "type": "Metric",
+      "name": "서울 아파트 전세 물건 수",
+      "value": 15476,
+      "unit": "개",
+      "date": "2026-04-12",
+      "id": "78043156e8129335"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "급매물 끝?…다시 오르기 시작한 송파 집값",
+      "link": "https://n.news.naver.com/mnews/article/648/0000046592?sid=101",
+      "pubDate": "Sat, 25 Apr 2026 08:00:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "661d05d833a54a40"
+    },
+    {
+      "type": "Asset",
+      "name": "보라매삼성",
+      "location": "서울특별시 관악구 봉천동",
+      "area": "84.84㎡",
+      "floor": "15층",
+      "id": "bccc00a53c11681c"
+    },
+    {
+      "type": "Organization",
+      "name": "우리은행부동산",
+      "role": "연구기관",
+      "id": "f046fe38b2d5e038"
+    },
+    {
+      "type": "Event",
+      "name": "보라매삼성 신고가 거래",
+      "transaction_price": "11억9000만원",
+      "previous_high": "11억8000만원",
+      "date": "2026-04-18",
+      "id": "2fbacc847b9ea069"
+    },
+    {
+      "type": "Metric",
+      "name": "지역 집값 상승",
+      "trend": "상승",
+      "region": "관악구 봉천동",
+      "id": "6d56e1f503ffc16d"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "\"두 달만에 1억 넘게 뛰었어요\"…짐 싸서 서울 떠나는 세입자들",
+      "link": "https://n.news.naver.com/mnews/article/374/0000503777?sid=101",
+      "pubDate": "Sat, 11 Apr 2026 05:37:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "d4d3d7cee8c6691f"
+    },
+    {
+      "type": "Metric",
+      "name": "관악구 봉천동 전셋값 상승률",
+      "value": "0.24%",
+      "period": "주간",
+      "id": "b710766327b10c2d"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "작년 전세대출 10건 중 7건이 수도권... 서울 30대 전셋집 보증금 절반은...",
+      "link": "https://n.news.naver.com/mnews/article/014/0005514002?sid=101",
+      "pubDate": "Mon, 27 Apr 2026 18:14:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "675d3c5d140d00bc"
+    },
+    {
+      "type": "Organization",
+      "name": "KB부동산",
+      "product": "KB전세대출",
+      "id": "ae942b1d360f6228"
+    },
+    {
+      "type": "Metric",
+      "name": "KB전세대출 통계",
+      "period": "지난해",
+      "seouldong_ratio": "73.7%",
+      "coverage": "수도권 전세",
+      "id": "8854efb364469ba1"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "역대 기업은행장 재산공개 내역 키워드는 ‘강남·다주택’",
+      "link": "http://www.newstomato.com/ReadNews.aspx?no=1299040&inflow=N",
+      "pubDate": "Mon, 27 Apr 2026 06:02:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "b88660cf699e5c4f"
+    },
+    {
+      "type": "Asset",
+      "name": "현대아파트",
+      "location": "서울 관악구 봉천동",
+      "area": "116.72㎡",
+      "id": "e6d8562a22414313"
+    },
+    {
+      "type": "Person",
+      "name": "기업은행장",
+      "role": "은행장",
+      "id": "c7dd6ec1eb67914b"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "에그엘로우 관리단 윤 회장, 12억 원대 장기수선충당금 횡령 의혹…시민...",
+      "link": "https://www.fntoday.co.kr/news/articleView.html?idxno=369667",
+      "pubDate": "Mon, 24 Nov 2025 17:52:00 +0900",
+      "query": "에그엘로우",
+      "id": "e26a26b06eea5d74"
+    },
+    {
+      "type": "Person",
+      "name": "윤 회장",
+      "role": "에그엘로우 관리단 회장",
+      "id": "4c685c92f2ca7724"
+    },
+    {
+      "type": "Issue",
+      "name": "장기수선충당금 횡령 의혹",
+      "amount": "약 12억 원대",
+      "id": "d22ea37820663fd6"
+    },
+    {
+      "type": "Event",
+      "name": "시민 집회",
+      "date": "2025-11-24",
+      "time": "09:00",
+      "location": "관악구청 앞, 서울대입구역 3번 출구 앞",
+      "id": "b6eb6301b197ae0a"
+    },
+    {
+      "type": "Organization",
+      "name": "관악구청",
+      "id": "dad0e99acd4e77aa"
+    },
+    {
+      "type": "Axis",
+      "name": "ESG",
+      "id": "5e774fbeec33ea7f"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[단독] 中 왕서방 '부동산 쇼핑', 샤오홍슈서 확산 … 한국 집·땅 투자...",
+      "link": "https://biz.newdaily.co.kr/site/data/html/2026/04/24/2026042400147.html",
+      "pubDate": "Fri, 24 Apr 2026 13:02:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "b3850c6e217722d7"
+    },
+    {
+      "type": "Organization",
+      "name": "샤오홍슈",
+      "id": "c68e80794712425b"
+    },
+    {
+      "type": "Person",
+      "name": "중국 투자자(왕서방)",
+      "nationality": "중국",
+      "investment_focus": "한국 부동산",
+      "id": "be5a2562c7599dc1"
+    },
+    {
+      "type": "Event",
+      "name": "중국 투자자의 한국 부동산 투자 정보 확산",
+      "platform": "샤오홍슈",
+      "date": "2026-04-24",
+      "focus": "토지 투기, 시세차익",
+      "id": "81c9cb6b08836521"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "서울 아파트, 올해도 8% 상승 전망…李대통령 실기 논란",
+      "link": "https://n.news.naver.com/mnews/article/023/0003972859?sid=101",
+      "pubDate": "Fri, 24 Apr 2026 13:01:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "df95a735b7b17966"
+    },
+    {
+      "type": "Event",
+      "name": "서울 아파트 시장 상승",
+      "period": "2026년",
+      "forecast": "8% 상승 전망",
+      "recent_performance": "0.28% (지난주)",
+      "id": "e49cc9859116f3b5"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[주요공시] 삼성전자, 삼천당제약, DL이앤씨, HD현대중공업, 세종메디칼...",
+      "link": "https://www.kdpress.co.kr/news/articleView.html?idxno=204397",
+      "pubDate": "Fri, 17 Apr 2026 23:24:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "429c0dc2135d7004"
+    },
+    {
+      "type": "Organization",
+      "name": "삼성전자",
+      "id": "6ecfbf8045e10f3f"
+    },
+    {
+      "type": "Event",
+      "name": "삼성전자 봉천동 부동산 계약",
+      "contract_amount": "3,750억 8,600만원",
+      "percentage_of_revenue": "3.01%",
+      "date": "2026-04-17",
+      "id": "b67d5f06aef9e7f0"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[산업소식] 카카오 링키지랩, 전체 임직원 65%가 장애인",
+      "link": "http://www.4th.kr/news/articleView.html?idxno=2110583",
+      "pubDate": "Fri, 17 Apr 2026 11:50:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "aa2474d7cf8217db"
+    },
+    {
+      "type": "Asset",
+      "name": "관악구 봉천동 도시개발 사업지",
+      "location": "서울시 관악구 봉천동 480번지",
+      "scale": "지하 3층~지상 28층, 9개동",
+      "id": "f6d0d5c018508a05"
+    },
+    {
+      "type": "Organization",
+      "name": "카카오 링키지랩",
+      "role": "사업 주체",
+      "id": "826e7dcd24093d0f"
+    },
+    {
+      "type": "Organization",
+      "name": "모리빌딩",
+      "country": "일본",
+      "description": "대표 부동산 디벨로퍼",
+      "id": "f1dfe40638eb26c5"
+    },
+    {
+      "type": "Organization",
+      "name": "Itochu상사",
+      "role": "협력사",
+      "id": "537f42192f5e6122"
+    },
+    {
+      "type": "Location",
+      "name": "서울시 관악구 봉천동",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
+      "id": "62d384ccdd0937b6"
+    },
+    {
+      "type": "Event",
+      "name": "도시개발 협력 논의",
+      "id": "7070beed229d509e"
+    }
+  ],
+  "links": [
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 가격이 급등하고 있으며, 같은 지역의 '관악푸르지오' 아파트가 4년 7개월 만에 약 25% 상승했다. 대상 자산 '에그엘로우'는 같은 봉천동에 위치하여 지역 시장 동향의 영향을 받을 것으로 예상된다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "8955faf4f096aaf2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동 위치",
+      "source": "fd656ea4dc4f74f9",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "polarity": "positive",
+      "strength": 4,
+      "note": "대규모 도시개발 사업으로 지역 경제 활성화 및 부동산 가치 상승 기대",
+      "article": "aa2474d7cf8217db",
+      "source": "fd656ea4dc4f74f9",
+      "target": "6fb8838c8da80e09",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "polarity": "positive",
+      "strength": 3,
+      "note": "국제 협력(일본 모리빌딩, Itochu상사)을 통한 사업 추진으로 관심도 증대",
+      "article": "aa2474d7cf8217db",
+      "source": "fd656ea4dc4f74f9",
+      "target": "7239324297247f13",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "봉천동",
+      "source": "fd656ea4dc4f74f9",
+      "target": "5885288abaa417a9",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 복권아파트 재건축 프로젝트가 조합 설립 후 2년 경과했으며, 소규모 재건축의 시공 지연 문제가 언급되고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "662b199dbfc90645",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "다주택 양도세 중과 유예 종료를 앞두고 서울 부동산 시장이 변동하고 있으며, 관악구 봉천동 일대도 상승 흐름이 계속되고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "def34a12f70185b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 다가구주택 임대보증금 채무 감소가 군의원 재산 증가의 주요 요인으로 언급되었습니다. 부동산 중심의 자산 구조 변화를 보여주는 기사입니다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "d3809814631ce0e9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 관악구 봉천동",
+      "source": "fd656ea4dc4f74f9",
+      "target": "21d6e539aff7e3d0",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "임대보증금 채무 감소",
+      "source": "fd656ea4dc4f74f9",
+      "target": "59deac25336b0f9f",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 전세 시장 동향을 다룬 기사로, 에그엘로우와 동일 지역의 인접 물건('e편한세상서울대입구')의 보증금 상승 추세를 보도하고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "ad295cbe12165a50",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "5월 9일 다주택자 양도소득세 중과 유예 종료를 앞두고 서울 부동산 시장 전망을 다룬 기사로, 관악구 봉천동의 다른 아파트(관악푸르지오)가 사례로 언급됨.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "8be7f14db5fd1b32",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동 위치, 다주택자 양도소득세 중과 유예 종료 이슈와 같은 지역",
+      "source": "fd656ea4dc4f74f9",
+      "target": "297809652f20901f",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 매매가격이 일주일 새 0.15% 상승했으며, 관악구 봉천동 대단지 중심으로 0.28% 상승률을 기록했다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "b012af24ebf64a1e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 다주택자 양도소득세 중과 유예 종료 이후 서울 아파트 시장의 상승세 확대 지역으로 언급되었다. 봉천동 역세권 위주로 0.22% 상승세를 보이고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "fb750bd93748b4e0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "에그엘로우는 관악구 봉천동에 위치",
+      "source": "fd656ea4dc4f74f9",
+      "target": "33bf99457c6bf0d5",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 역세권 지역의 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 전세 신규 매물 감소로 인한 시장 변화가 진행 중이다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "42a948d86073b0b8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트 가격이 5월 둘째 주 기준 0.22% 상승했으며, 이는 강북 지역의 전반적인 가격 상승 추세를 반영한다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "06f8f88ab8201212",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 2026년 5월 2주 기준 0.22% 상승했으며, 이는 한국부동산원의 주간아파트 가격동향 보고서에서 확인된 지역 시장 동향이다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "0ed83b8855cfbd3f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "봉천동 역세권 위주로 상승",
+      "source": "fd656ea4dc4f74f9",
+      "target": "9573da6f1d9e6b7e",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "양도세 중과 시행 첫 주에 서울 아파트값이 급등했으며, 관악구 봉천동 역세권이 0.22% 상승했다. 에그엘로우는 봉천동에 위치한 자산으로 해당 지역의 긍정적 시장 신호를 받고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "03d95b83c18f9b21",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 관악구 봉천동 역세권이 주요 상승 지역으로 언급되었다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "032f19e6ea0c2a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동에서 전셋값이 0.24% 상승했으며, 이는 노원구 등 다른 지역의 급등과 비교하면 완만한 상승세를 보이고 있다. 강남구와 달리 관악구는 전셋값 상승 지역에 포함되었다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "dc085cd43eb3736e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 대단지 아파트 지역에서 전세 물건 부족 현상이 심각하며, 세입자들이 주택 확보에 어려움을 겪고 있는 상황을 보도하는 기사다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "6beb07286bde0bae",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "661d05d833a54a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전셋값이 상승세를 보이고 있으며, 관악구 봉천동이 0.24% 상승률을 기록했다. 세입자들이 서울을 떠나는 추세가 나타나고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "d4d3d7cee8c6691f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동이 KB전세대출 통계에서 전국 2위 지역으로 선정되었으며, 상대적으로 저렴한 전셋값과 높은 수요가 특징인 것으로 분석됨.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "675d3c5d140d00bc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우 관리단 윤 회장이 약 12억 원대 장기수선충당금 횡령 혐의로 지적되고 있으며, 관악구청 앞에서 시민 집회가 열려 철저한 수사를 촉구하고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "e26a26b06eea5d74",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "에그엘로우 관리단 윤 회장",
+      "source": "fd656ea4dc4f74f9",
+      "target": "4c685c92f2ca7724",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "12억 원대 장기수선충당금 횡령 의혹",
+      "source": "fd656ea4dc4f74f9",
+      "target": "d22ea37820663fd6",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "polarity": "negative",
+      "strength": 5,
+      "note": "관리단 회장의 장기수선충당금 횡령 혐의는 투명성과 윤리 기준 위반으로 ESG 평가에 심각한 부정적 영향",
+      "article": "e26a26b06eea5d74",
+      "source": "fd656ea4dc4f74f9",
+      "target": "5e774fbeec33ea7f",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 서울 관악구 봉천동 지역이 중국 투자자들의 부동산 투자 대상으로 샤오홍슈에서 소개되고 있으며, 시세차익을 강조하는 투자 정보가 확산 중이다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "b3850c6e217722d7",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트가 지난주 0.28% 상승률을 기록했으며, 대단지 중심으로 높은 상승세를 보이고 있다. 올해 서울 아파트 시장 전반적으로 8% 상승이 전망되고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "df95a735b7b17966",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "삼성전자가 서울 관악구 봉천동에서 3,750억 원대 규모의 계약을 체결했으며, 이는 최근 매출액의 3.01% 수준이다. 대상 자산 에그엘로우가 위치한 봉천동 지역의 부동산 거래 활동을 보여주는 사례다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "429c0dc2135d7004",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 가격이 급등하고 있으며, 같은 지역의 '관악푸르지오' 아파트가 4년 7개월 만에 약 25% 상승했다. 대상 자산 '에그엘로우'는 같은 봉천동에 위치하여 지역 시장 동향의 영향을 받을 것으로 예상된다.",
+      "source": "fd33710e0b16682c",
+      "target": "8955faf4f096aaf2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동 '관악푸르지오'",
+      "source": "fd33710e0b16682c",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "5월 9일 다주택자 양도소득세 중과 유예 종료를 앞두고 서울 부동산 시장 전망을 다룬 기사로, 관악구 봉천동의 다른 아파트(관악푸르지오)가 사례로 언급됨.",
+      "source": "fd33710e0b16682c",
+      "target": "8be7f14db5fd1b32",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "fd33710e0b16682c",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "fd33710e0b16682c",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 신고가 속출 현상을 다루는 기사로, 관악구 봉천동 지역의 부동산 시장 활성화를 언급하고 있으나 대상 자산 '에그엘로우'는 직접 언급되지 않음.",
+      "source": "fd33710e0b16682c",
+      "target": "5fc6db6a822328af",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 가격이 급등하고 있으며, 같은 지역의 '관악푸르지오' 아파트가 4년 7개월 만에 약 25% 상승했다. 대상 자산 '에그엘로우'는 같은 봉천동에 위치하여 지역 시장 동향의 영향을 받을 것으로 예상된다.",
+      "source": "4b7135c8f9864c35",
+      "target": "8955faf4f096aaf2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 복권아파트 재건축 프로젝트가 조합 설립 후 2년 경과했으며, 소규모 재건축의 시공 지연 문제가 언급되고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "662b199dbfc90645",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "다주택 양도세 중과 유예 종료를 앞두고 서울 부동산 시장이 변동하고 있으며, 관악구 봉천동 일대도 상승 흐름이 계속되고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "def34a12f70185b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "다주택 양도세 중과 유예 조치가 오는 9일 종료",
+      "source": "4b7135c8f9864c35",
+      "target": "265b9e0753afec09",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "관악구 봉천동 일대도 상승 흐름이 이어지고 있다",
+      "source": "4b7135c8f9864c35",
+      "target": "9eeb84a0d68aea0e",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 전세 시장 동향을 다룬 기사로, 에그엘로우와 동일 지역의 인접 물건('e편한세상서울대입구')의 보증금 상승 추세를 보도하고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "ad295cbe12165a50",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "평균 보증금 1년새 7400만원 '쑥'",
+      "source": "4b7135c8f9864c35",
+      "target": "ad545b3dc33c75f8",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 등 6곳으로 모두 전주 대비 0.21% 올랐다",
+      "source": "4b7135c8f9864c35",
+      "target": "c63b631a1f20e095",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "급매물 소진된 듯",
+      "source": "4b7135c8f9864c35",
+      "target": "b2bffce36a31aa1d",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 매매가격이 일주일 새 0.15% 상승했으며, 관악구 봉천동 대단지 중심으로 0.28% 상승률을 기록했다.",
+      "source": "4b7135c8f9864c35",
+      "target": "b012af24ebf64a1e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.28%)는 봉천동과 신림동 대단지 위주로",
+      "source": "4b7135c8f9864c35",
+      "target": "34cacf0a073f574c",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "관악구(0.28%)는 봉천동과 신림동 대단지 위주로 큰 폭의 상승률",
+      "source": "4b7135c8f9864c35",
+      "target": "d57f8edefb96204f",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트 전셋값 상승 추세를 다룬 기사로, 동원낙성대 아파트 사례를 언급하고 있으나 대상 자산인 에그엘로우와는 직접적 관련이 없음.",
+      "source": "4b7135c8f9864c35",
+      "target": "369bc35db1080afe",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "관악구 봉천동 지역도 신고가를 기록",
+      "source": "4b7135c8f9864c35",
+      "target": "98ce501cace77fff",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "매물은 줄어들고 있다",
+      "source": "4b7135c8f9864c35",
+      "target": "9509116f9352cf50",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "10·26 부동산 대책 영향으로 관악구 봉천동 지역 거래 활발",
+      "source": "4b7135c8f9864c35",
+      "target": "9f414aecdda319f2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 신고가 속출 현상을 다루는 기사로, 관악구 봉천동 지역의 부동산 시장 활성화를 언급하고 있으나 대상 자산 '에그엘로우'는 직접 언급되지 않음.",
+      "source": "4b7135c8f9864c35",
+      "target": "5fc6db6a822328af",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "양도세 중과 D-30 임박으로 인한 신고가 속출",
+      "source": "4b7135c8f9864c35",
+      "target": "41f4c12fee195f70",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "4b7135c8f9864c35",
+      "target": "661d05d833a54a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전셋값이 상승세를 보이고 있으며, 관악구 봉천동이 0.24% 상승률을 기록했다. 세입자들이 서울을 떠나는 추세가 나타나고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "d4d3d7cee8c6691f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.24%)는 봉천동",
+      "source": "4b7135c8f9864c35",
+      "target": "b710766327b10c2d",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동이 KB전세대출 통계에서 전국 2위 지역으로 선정되었으며, 상대적으로 저렴한 전셋값과 높은 수요가 특징인 것으로 분석됨.",
+      "source": "4b7135c8f9864c35",
+      "target": "675d3c5d140d00bc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "2위는 관악구 봉천동",
+      "source": "4b7135c8f9864c35",
+      "target": "8854efb364469ba1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "기업은행장의 재산공개 내역에서 관악구 봉천동 '현대아파트' 전세권이 언급되었으나, 대상 자산인 '에그엘로우'와는 무관한 다른 건물임.",
+      "source": "4b7135c8f9864c35",
+      "target": "b88660cf699e5c4f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트가 지난주 0.28% 상승률을 기록했으며, 대단지 중심으로 높은 상승세를 보이고 있다. 올해 서울 아파트 시장 전반적으로 8% 상승이 전망되고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "df95a735b7b17966",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구(0.28%)는 봉천동·신림동 대단지 중심으로 높은 상승률",
+      "source": "4b7135c8f9864c35",
+      "target": "e49cc9859116f3b5",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 가격이 급등하고 있으며, 같은 지역의 '관악푸르지오' 아파트가 4년 7개월 만에 약 25% 상승했다. 대상 자산 '에그엘로우'는 같은 봉천동에 위치하여 지역 시장 동향의 영향을 받을 것으로 예상된다.",
+      "source": "68c724a220e5caf1",
+      "target": "8955faf4f096aaf2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원에 따르면",
+      "source": "68c724a220e5caf1",
+      "target": "98191491d8e07a2e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 매매가격이 일주일 새 0.15% 상승했으며, 관악구 봉천동 대단지 중심으로 0.28% 상승률을 기록했다.",
+      "source": "68c724a220e5caf1",
+      "target": "b012af24ebf64a1e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원이 23일 발표한 2026년 4월 3주 주간 아파트가격 동향",
+      "source": "68c724a220e5caf1",
+      "target": "d57f8edefb96204f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트 전셋값 상승 추세를 다룬 기사로, 동원낙성대 아파트 사례를 언급하고 있으나 대상 자산인 에그엘로우와는 직접적 관련이 없음.",
+      "source": "68c724a220e5caf1",
+      "target": "369bc35db1080afe",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원이 발표한 주간 아파트 가격 동향",
+      "source": "68c724a220e5caf1",
+      "target": "5b0ce238dd9baa01",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트 가격이 5월 둘째 주 기준 0.22% 상승했으며, 이는 강북 지역의 전반적인 가격 상승 추세를 반영한다.",
+      "source": "68c724a220e5caf1",
+      "target": "06f8f88ab8201212",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 2026년 5월 2주 기준 0.22% 상승했으며, 이는 한국부동산원의 주간아파트 가격동향 보고서에서 확인된 지역 시장 동향이다.",
+      "source": "68c724a220e5caf1",
+      "target": "0ed83b8855cfbd3f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "한국부동산원이 발표한 '주간아파트 가격동향'",
+      "source": "68c724a220e5caf1",
+      "target": "29f04e73c378cc89",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "양도세 중과 시행 첫 주에 서울 아파트값이 급등했으며, 관악구 봉천동 역세권이 0.22% 상승했다. 에그엘로우는 봉천동에 위치한 자산으로 해당 지역의 긍정적 시장 신호를 받고 있다.",
+      "source": "68c724a220e5caf1",
+      "target": "03d95b83c18f9b21",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원이 주간아파트가격동향 발표",
+      "source": "68c724a220e5caf1",
+      "target": "6c7b5c31f9a7f12e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 관악구 봉천동 역세권이 주요 상승 지역으로 언급되었다.",
+      "source": "68c724a220e5caf1",
+      "target": "032f19e6ea0c2a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원이 5월 둘째 주 주간 아파트가격 동향 발표",
+      "source": "68c724a220e5caf1",
+      "target": "5ab7aea424d71c25",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 신고가 속출 현상을 다루는 기사로, 관악구 봉천동 지역의 부동산 시장 활성화를 언급하고 있으나 대상 자산 '에그엘로우'는 직접 언급되지 않음.",
+      "source": "68c724a220e5caf1",
+      "target": "5fc6db6a822328af",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원에 따르면",
+      "source": "68c724a220e5caf1",
+      "target": "5d9c4e6566c9c856",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전셋값이 상승세를 보이고 있으며, 관악구 봉천동이 0.24% 상승률을 기록했다. 세입자들이 서울을 떠나는 추세가 나타나고 있다.",
+      "source": "68c724a220e5caf1",
+      "target": "d4d3d7cee8c6691f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트가 지난주 0.28% 상승률을 기록했으며, 대단지 중심으로 높은 상승세를 보이고 있다. 올해 서울 아파트 시장 전반적으로 8% 상승이 전망되고 있다.",
+      "source": "68c724a220e5caf1",
+      "target": "df95a735b7b17966",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 가격이 급등하고 있으며, 같은 지역의 '관악푸르지오' 아파트가 4년 7개월 만에 약 25% 상승했다. 대상 자산 '에그엘로우'는 같은 봉천동에 위치하여 지역 시장 동향의 영향을 받을 것으로 예상된다.",
+      "source": "98191491d8e07a2e",
+      "target": "8955faf4f096aaf2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악푸르지오 전용 84㎡ 10억5000만 원→13억1000만 원",
+      "source": "98191491d8e07a2e",
+      "target": "fd33710e0b16682c",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "5885288abaa417a9",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동",
+      "source": "5885288abaa417a9",
+      "target": "7b934daefe647299",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트 가격이 5월 둘째 주 기준 0.22% 상승했으며, 이는 강북 지역의 전반적인 가격 상승 추세를 반영한다.",
+      "source": "5885288abaa417a9",
+      "target": "06f8f88ab8201212",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.22%) 신림·봉천동이 올랐다",
+      "source": "5885288abaa417a9",
+      "target": "566c4cb2da1662dd",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동에서 전셋값이 0.24% 상승했으며, 이는 노원구 등 다른 지역의 급등과 비교하면 완만한 상승세를 보이고 있다. 강남구와 달리 관악구는 전셋값 상승 지역에 포함되었다.",
+      "source": "5885288abaa417a9",
+      "target": "dc085cd43eb3736e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "7b934daefe647299",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동에서 전셋값이 0.24% 상승했으며, 이는 노원구 등 다른 지역의 급등과 비교하면 완만한 상승세를 보이고 있다. 강남구와 달리 관악구는 전셋값 상승 지역에 포함되었다.",
+      "source": "7b934daefe647299",
+      "target": "dc085cd43eb3736e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.24%)는 봉천동과 신림동에서 전셋값이 올랐다",
+      "source": "7b934daefe647299",
+      "target": "cc9ea6f828fc4a3e",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "4d3e8c6ff12b1ed5",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "d152a4108b2f5468",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "NH농협은행 All100자문센터 부동산 전문위원",
+      "source": "d152a4108b2f5468",
+      "target": "4d3e8c6ff12b1ed5",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "0366c32fb46c9e33",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악·강서 '빨래방' 등 무인점포 확산",
+      "source": "0366c32fb46c9e33",
+      "target": "7b934daefe647299",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "4b45f5979ca050f0",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "임대료가 높고 수요자가 많은 지역",
+      "source": "4b45f5979ca050f0",
+      "target": "7b934daefe647299",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 복권아파트 재건축 프로젝트가 조합 설립 후 2년 경과했으며, 소규모 재건축의 시공 지연 문제가 언급되고 있다.",
+      "source": "34addf61c47180c9",
+      "target": "662b199dbfc90645",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동 복권아파트",
+      "source": "34addf61c47180c9",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "조합 설립 후 2년",
+      "source": "34addf61c47180c9",
+      "target": "92e176f61146868e",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "준공 0건",
+      "source": "34addf61c47180c9",
+      "target": "7417ee9c273614db",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 복권아파트 재건축 프로젝트가 조합 설립 후 2년 경과했으며, 소규모 재건축의 시공 지연 문제가 언급되고 있다.",
+      "source": "92e176f61146868e",
+      "target": "662b199dbfc90645",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 복권아파트 재건축 프로젝트가 조합 설립 후 2년 경과했으며, 소규모 재건축의 시공 지연 문제가 언급되고 있다.",
+      "source": "7417ee9c273614db",
+      "target": "662b199dbfc90645",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "다주택 양도세 중과 유예 종료를 앞두고 서울 부동산 시장이 변동하고 있으며, 관악구 봉천동 일대도 상승 흐름이 계속되고 있다.",
+      "source": "265b9e0753afec09",
+      "target": "def34a12f70185b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "다주택 양도세 중과 유예 종료를 앞두고 서울 부동산 시장이 변동하고 있으며, 관악구 봉천동 일대도 상승 흐름이 계속되고 있다.",
+      "source": "9eeb84a0d68aea0e",
+      "target": "def34a12f70185b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 다가구주택 임대보증금 채무 감소가 군의원 재산 증가의 주요 요인으로 언급되었습니다. 부동산 중심의 자산 구조 변화를 보여주는 기사입니다.",
+      "source": "21d6e539aff7e3d0",
+      "target": "d3809814631ce0e9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 대단지 아파트 지역에서 전세 물건 부족 현상이 심각하며, 세입자들이 주택 확보에 어려움을 겪고 있는 상황을 보도하는 기사다.",
+      "source": "21d6e539aff7e3d0",
+      "target": "6beb07286bde0bae",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "3500가구 대단지에 전세 '1건'뿐",
+      "source": "21d6e539aff7e3d0",
+      "target": "b10551b9f9dc0442",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "서울 아파트 전세 물건은 1만5476개",
+      "source": "21d6e539aff7e3d0",
+      "target": "78043156e8129335",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 서울 관악구 봉천동 지역이 중국 투자자들의 부동산 투자 대상으로 샤오홍슈에서 소개되고 있으며, 시세차익을 강조하는 투자 정보가 확산 중이다.",
+      "source": "21d6e539aff7e3d0",
+      "target": "b3850c6e217722d7",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "삼성전자가 서울 관악구 봉천동에서 3,750억 원대 규모의 계약을 체결했으며, 이는 최근 매출액의 3.01% 수준이다. 대상 자산 에그엘로우가 위치한 봉천동 지역의 부동산 거래 활동을 보여주는 사례다.",
+      "source": "21d6e539aff7e3d0",
+      "target": "429c0dc2135d7004",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 다가구주택 임대보증금 채무 감소가 군의원 재산 증가의 주요 요인으로 언급되었습니다. 부동산 중심의 자산 구조 변화를 보여주는 기사입니다.",
+      "source": "59deac25336b0f9f",
+      "target": "d3809814631ce0e9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 다가구주택 임대보증금 채무 감소가 군의원 재산 증가의 주요 요인으로 언급되었습니다. 부동산 중심의 자산 구조 변화를 보여주는 기사입니다.",
+      "source": "38c436b3eef4451a",
+      "target": "d3809814631ce0e9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "재산 증가 1위는 이강세",
+      "source": "38c436b3eef4451a",
+      "target": "59deac25336b0f9f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 전세 시장 동향을 다룬 기사로, 에그엘로우와 동일 지역의 인접 물건('e편한세상서울대입구')의 보증금 상승 추세를 보도하고 있다.",
+      "source": "40f2765b3b1a0c23",
+      "target": "ad295cbe12165a50",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동 'e편한세상서울대입구'",
+      "source": "40f2765b3b1a0c23",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "전용 59.88㎡는 올해 신규 계약이 모두 보증금 6억8000만원",
+      "source": "40f2765b3b1a0c23",
+      "target": "082abb81ce41dfa9",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 전세 시장 동향을 다룬 기사로, 에그엘로우와 동일 지역의 인접 물건('e편한세상서울대입구')의 보증금 상승 추세를 보도하고 있다.",
+      "source": "082abb81ce41dfa9",
+      "target": "ad295cbe12165a50",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 전세 시장 동향을 다룬 기사로, 에그엘로우와 동일 지역의 인접 물건('e편한세상서울대입구')의 보증금 상승 추세를 보도하고 있다.",
+      "source": "ad545b3dc33c75f8",
+      "target": "ad295cbe12165a50",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "5월 9일 다주택자 양도소득세 중과 유예 종료를 앞두고 서울 부동산 시장 전망을 다룬 기사로, 관악구 봉천동의 다른 아파트(관악푸르지오)가 사례로 언급됨.",
+      "source": "297809652f20901f",
+      "target": "8be7f14db5fd1b32",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "4629bcdc9329b76c",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악드림타운 인근",
+      "source": "4629bcdc9329b76c",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "063c0dbfb2106d52",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동에서 전셋값이 0.24% 상승했으며, 이는 노원구 등 다른 지역의 급등과 비교하면 완만한 상승세를 보이고 있다. 강남구와 달리 관악구는 전셋값 상승 지역에 포함되었다.",
+      "source": "063c0dbfb2106d52",
+      "target": "dc085cd43eb3736e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "c63b631a1f20e095",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "0.21% 올랐다",
+      "source": "c63b631a1f20e095",
+      "target": "db8910e4abe3c9a0",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "부동산원에 따르면",
+      "source": "c63b631a1f20e095",
+      "target": "063c0dbfb2106d52",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "db8910e4abe3c9a0",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "b2bffce36a31aa1d",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 매매가격이 일주일 새 0.15% 상승했으며, 관악구 봉천동 대단지 중심으로 0.28% 상승률을 기록했다.",
+      "source": "34cacf0a073f574c",
+      "target": "b012af24ebf64a1e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 2026년 5월 2주 기준 0.22% 상승했으며, 이는 한국부동산원의 주간아파트 가격동향 보고서에서 확인된 지역 시장 동향이다.",
+      "source": "34cacf0a073f574c",
+      "target": "0ed83b8855cfbd3f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 매매가격이 일주일 새 0.15% 상승했으며, 관악구 봉천동 대단지 중심으로 0.28% 상승률을 기록했다.",
+      "source": "d57f8edefb96204f",
+      "target": "b012af24ebf64a1e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트 전셋값 상승 추세를 다룬 기사로, 동원낙성대 아파트 사례를 언급하고 있으나 대상 자산인 에그엘로우와는 직접적 관련이 없음.",
+      "source": "b85c59e328425c9b",
+      "target": "369bc35db1080afe",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동에 있는 '동원낙성대'",
+      "source": "b85c59e328425c9b",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트 전셋값 상승 추세를 다룬 기사로, 동원낙성대 아파트 사례를 언급하고 있으나 대상 자산인 에그엘로우와는 직접적 관련이 없음.",
+      "source": "5b0ce238dd9baa01",
+      "target": "369bc35db1080afe",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 다주택자 양도소득세 중과 유예 종료 이후 서울 아파트 시장의 상승세 확대 지역으로 언급되었다. 봉천동 역세권 위주로 0.22% 상승세를 보이고 있다.",
+      "source": "33bf99457c6bf0d5",
+      "target": "fb750bd93748b4e0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.22%)는 신림·봉천동 역세권 위주로 상승세",
+      "source": "33bf99457c6bf0d5",
+      "target": "c3657ee02b61dd15",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "다주택자 유예 종료 후 봉천동 역세권 상승세 확대",
+      "source": "33bf99457c6bf0d5",
+      "target": "428e0ddc4604a231",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 역세권 지역의 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 전세 신규 매물 감소로 인한 시장 변화가 진행 중이다.",
+      "source": "33bf99457c6bf0d5",
+      "target": "42a948d86073b0b8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "관악구(0.22%)는 신림·봉천동 역세권 위주로 상승세가 나타났다",
+      "source": "33bf99457c6bf0d5",
+      "target": "ccac48408a72d90f",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "전세 신규 매물 감소와 집주인에 대한 실거주 의무가 부여되면서",
+      "source": "33bf99457c6bf0d5",
+      "target": "dade90cb206f4847",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "양도세 중과 시행 첫 주에 서울 아파트값이 급등했으며, 관악구 봉천동 역세권이 0.22% 상승했다. 에그엘로우는 봉천동에 위치한 자산으로 해당 지역의 긍정적 시장 신호를 받고 있다.",
+      "source": "33bf99457c6bf0d5",
+      "target": "03d95b83c18f9b21",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.22%)는 신림·봉천동 역세권 위주로 올랐다",
+      "source": "33bf99457c6bf0d5",
+      "target": "6c7b5c31f9a7f12e",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 관악구 봉천동 역세권이 주요 상승 지역으로 언급되었다.",
+      "source": "33bf99457c6bf0d5",
+      "target": "032f19e6ea0c2a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.14%→0.22%)는 신림·봉천동 역세권 위주로 상승",
+      "source": "33bf99457c6bf0d5",
+      "target": "03f0cfa3531ca3d2",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 다주택자 양도소득세 중과 유예 종료 이후 서울 아파트 시장의 상승세 확대 지역으로 언급되었다. 봉천동 역세권 위주로 0.22% 상승세를 보이고 있다.",
+      "source": "428e0ddc4604a231",
+      "target": "fb750bd93748b4e0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 다주택자 양도소득세 중과 유예 종료 이후 서울 아파트 시장의 상승세 확대 지역으로 언급되었다. 봉천동 역세권 위주로 0.22% 상승세를 보이고 있다.",
+      "source": "c3657ee02b61dd15",
+      "target": "fb750bd93748b4e0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 역세권 지역의 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 전세 신규 매물 감소로 인한 시장 변화가 진행 중이다.",
+      "source": "ccac48408a72d90f",
+      "target": "42a948d86073b0b8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전셋값이 상승세를 보이고 있으며, 관악구 봉천동이 0.24% 상승률을 기록했다. 세입자들이 서울을 떠나는 추세가 나타나고 있다.",
+      "source": "ccac48408a72d90f",
+      "target": "d4d3d7cee8c6691f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원에 따르면, 4월 첫째 주 서울 전셋값은 0.16% 상승",
+      "source": "ccac48408a72d90f",
+      "target": "68c724a220e5caf1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 역세권 지역의 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 전세 신규 매물 감소로 인한 시장 변화가 진행 중이다.",
+      "source": "dade90cb206f4847",
+      "target": "42a948d86073b0b8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트 가격이 5월 둘째 주 기준 0.22% 상승했으며, 이는 강북 지역의 전반적인 가격 상승 추세를 반영한다.",
+      "source": "52b298d17e8abed4",
+      "target": "06f8f88ab8201212",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원이 발표한 5월 둘째 주 주간 아파트 가격 동향",
+      "source": "52b298d17e8abed4",
+      "target": "68c724a220e5caf1",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트 가격이 5월 둘째 주 기준 0.22% 상승했으며, 이는 강북 지역의 전반적인 가격 상승 추세를 반영한다.",
+      "source": "566c4cb2da1662dd",
+      "target": "06f8f88ab8201212",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 2026년 5월 2주 기준 0.22% 상승했으며, 이는 한국부동산원의 주간아파트 가격동향 보고서에서 확인된 지역 시장 동향이다.",
+      "source": "9573da6f1d9e6b7e",
+      "target": "0ed83b8855cfbd3f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구(0.22%)는 신림ㆍ봉천동 역세권 위주로 상승",
+      "source": "9573da6f1d9e6b7e",
+      "target": "29f04e73c378cc89",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 2026년 5월 2주 기준 0.22% 상승했으며, 이는 한국부동산원의 주간아파트 가격동향 보고서에서 확인된 지역 시장 동향이다.",
+      "source": "29f04e73c378cc89",
+      "target": "0ed83b8855cfbd3f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.22%)",
+      "source": "29f04e73c378cc89",
+      "target": "34cacf0a073f574c",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "양도세 중과 시행 첫 주에 서울 아파트값이 급등했으며, 관악구 봉천동 역세권이 0.22% 상승했다. 에그엘로우는 봉천동에 위치한 자산으로 해당 지역의 긍정적 시장 신호를 받고 있다.",
+      "source": "a0d45f59259a2c37",
+      "target": "03d95b83c18f9b21",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "양도세 중과 시행 첫 주에 봉천동 역세권 아파트값이 상승",
+      "source": "a0d45f59259a2c37",
+      "target": "33bf99457c6bf0d5",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "양도세 중과 시행 첫 주에 서울 아파트값이 급등했으며, 관악구 봉천동 역세권이 0.22% 상승했다. 에그엘로우는 봉천동에 위치한 자산으로 해당 지역의 긍정적 시장 신호를 받고 있다.",
+      "source": "6c7b5c31f9a7f12e",
+      "target": "03d95b83c18f9b21",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 관악구 봉천동 역세권이 주요 상승 지역으로 언급되었다.",
+      "source": "03f0cfa3531ca3d2",
+      "target": "032f19e6ea0c2a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 관악구 봉천동 역세권이 주요 상승 지역으로 언급되었다.",
+      "source": "5ab7aea424d71c25",
+      "target": "032f19e6ea0c2a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "98ce501cace77fff",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "전용 84㎡(10억5000만원→13억1000만원)",
+      "source": "98ce501cace77fff",
+      "target": "19006199555b91f0",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "9509116f9352cf50",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "19006199555b91f0",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동에서 전셋값이 0.24% 상승했으며, 이는 노원구 등 다른 지역의 급등과 비교하면 완만한 상승세를 보이고 있다. 강남구와 달리 관악구는 전셋값 상승 지역에 포함되었다.",
+      "source": "cc9ea6f828fc4a3e",
+      "target": "dc085cd43eb3736e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "부동산원",
+      "source": "cc9ea6f828fc4a3e",
+      "target": "063c0dbfb2106d52",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "9f414aecdda319f2",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "51e1251037e8fc8c",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "대출 규제 영향 전세난",
+      "source": "51e1251037e8fc8c",
+      "target": "4b7135c8f9864c35",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "b90fcb78638110e1",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "5ccf78de670e7f42",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "관악구 봉천동에서 '키 맞추기' 장세 나타나",
+      "source": "5ccf78de670e7f42",
+      "target": "4b7135c8f9864c35",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 신고가 속출 현상을 다루는 기사로, 관악구 봉천동 지역의 부동산 시장 활성화를 언급하고 있으나 대상 자산 '에그엘로우'는 직접 언급되지 않음.",
+      "source": "5d9c4e6566c9c856",
+      "target": "5fc6db6a822328af",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.26%)",
+      "source": "5d9c4e6566c9c856",
+      "target": "4b7135c8f9864c35",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 신고가 속출 현상을 다루는 기사로, 관악구 봉천동 지역의 부동산 시장 활성화를 언급하고 있으나 대상 자산 '에그엘로우'는 직접 언급되지 않음.",
+      "source": "41f4c12fee195f70",
+      "target": "5fc6db6a822328af",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 대단지 아파트 지역에서 전세 물건 부족 현상이 심각하며, 세입자들이 주택 확보에 어려움을 겪고 있는 상황을 보도하는 기사다.",
+      "source": "b10551b9f9dc0442",
+      "target": "6beb07286bde0bae",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 대단지 아파트 지역에서 전세 물건 부족 현상이 심각하며, 세입자들이 주택 확보에 어려움을 겪고 있는 상황을 보도하는 기사다.",
+      "source": "78043156e8129335",
+      "target": "6beb07286bde0bae",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "bccc00a53c11681c",
+      "target": "661d05d833a54a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동에서는 지난 18일 '보라매삼성'",
+      "source": "bccc00a53c11681c",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "f046fe38b2d5e038",
+      "target": "661d05d833a54a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "남혁우 우리은행부동산 연구원은",
+      "source": "f046fe38b2d5e038",
+      "target": "6d56e1f503ffc16d",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "2fbacc847b9ea069",
+      "target": "661d05d833a54a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "보라매삼성 전용 84.84㎡(15층)가 11억9000만원에 거래",
+      "source": "2fbacc847b9ea069",
+      "target": "bccc00a53c11681c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "6d56e1f503ffc16d",
+      "target": "661d05d833a54a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전셋값이 상승세를 보이고 있으며, 관악구 봉천동이 0.24% 상승률을 기록했다. 세입자들이 서울을 떠나는 추세가 나타나고 있다.",
+      "source": "b710766327b10c2d",
+      "target": "d4d3d7cee8c6691f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동이 KB전세대출 통계에서 전국 2위 지역으로 선정되었으며, 상대적으로 저렴한 전셋값과 높은 수요가 특징인 것으로 분석됨.",
+      "source": "ae942b1d360f6228",
+      "target": "675d3c5d140d00bc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동이 KB전세대출 통계에서 전국 2위 지역으로 선정되었으며, 상대적으로 저렴한 전셋값과 높은 수요가 특징인 것으로 분석됨.",
+      "source": "8854efb364469ba1",
+      "target": "675d3c5d140d00bc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "KB부동산에 따르면 지난해 KB전세대출 데이터를 분석",
+      "source": "8854efb364469ba1",
+      "target": "ae942b1d360f6228",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "기업은행장의 재산공개 내역에서 관악구 봉천동 '현대아파트' 전세권이 언급되었으나, 대상 자산인 '에그엘로우'와는 무관한 다른 건물임.",
+      "source": "e6d8562a22414313",
+      "target": "b88660cf699e5c4f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 관악구 봉천동",
+      "source": "e6d8562a22414313",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "기업은행장의 재산공개 내역에서 관악구 봉천동 '현대아파트' 전세권이 언급되었으나, 대상 자산인 '에그엘로우'와는 무관한 다른 건물임.",
+      "source": "c7dd6ec1eb67914b",
+      "target": "b88660cf699e5c4f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OWNED_BY",
+      "evidence": "본인 명의 서울 관악구 봉천동 '현대아파트' 116.72㎡ 전세권을 공개",
+      "source": "c7dd6ec1eb67914b",
+      "target": "e6d8562a22414313",
+      "key": "OWNED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우 관리단 윤 회장이 약 12억 원대 장기수선충당금 횡령 혐의로 지적되고 있으며, 관악구청 앞에서 시민 집회가 열려 철저한 수사를 촉구하고 있다.",
+      "source": "4c685c92f2ca7724",
+      "target": "e26a26b06eea5d74",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우 관리단 윤 회장이 약 12억 원대 장기수선충당금 횡령 혐의로 지적되고 있으며, 관악구청 앞에서 시민 집회가 열려 철저한 수사를 촉구하고 있다.",
+      "source": "d22ea37820663fd6",
+      "target": "e26a26b06eea5d74",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "집회에서 부정 행위 수사 촉구",
+      "source": "d22ea37820663fd6",
+      "target": "b6eb6301b197ae0a",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우 관리단 윤 회장이 약 12억 원대 장기수선충당금 횡령 혐의로 지적되고 있으며, 관악구청 앞에서 시민 집회가 열려 철저한 수사를 촉구하고 있다.",
+      "source": "b6eb6301b197ae0a",
+      "target": "e26a26b06eea5d74",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구청 앞에서 개최",
+      "source": "b6eb6301b197ae0a",
+      "target": "dad0e99acd4e77aa",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우 관리단 윤 회장이 약 12억 원대 장기수선충당금 횡령 혐의로 지적되고 있으며, 관악구청 앞에서 시민 집회가 열려 철저한 수사를 촉구하고 있다.",
+      "source": "dad0e99acd4e77aa",
+      "target": "e26a26b06eea5d74",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 서울 관악구 봉천동 지역이 중국 투자자들의 부동산 투자 대상으로 샤오홍슈에서 소개되고 있으며, 시세차익을 강조하는 투자 정보가 확산 중이다.",
+      "source": "c68e80794712425b",
+      "target": "b3850c6e217722d7",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 서울 관악구 봉천동 지역이 중국 투자자들의 부동산 투자 대상으로 샤오홍슈에서 소개되고 있으며, 시세차익을 강조하는 투자 정보가 확산 중이다.",
+      "source": "be5a2562c7599dc1",
+      "target": "b3850c6e217722d7",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "중국 투자자들의 부동산 투자 대상으로 주목",
+      "source": "be5a2562c7599dc1",
+      "target": "fd656ea4dc4f74f9",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 서울 관악구 봉천동 지역이 중국 투자자들의 부동산 투자 대상으로 샤오홍슈에서 소개되고 있으며, 시세차익을 강조하는 투자 정보가 확산 중이다.",
+      "source": "81c9cb6b08836521",
+      "target": "b3850c6e217722d7",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "샤오홍슈 게시물에는 서울 관악구 봉천동 개발 예정지 인근 토지를 투자처로 소개",
+      "source": "81c9cb6b08836521",
+      "target": "c68e80794712425b",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트가 지난주 0.28% 상승률을 기록했으며, 대단지 중심으로 높은 상승세를 보이고 있다. 올해 서울 아파트 시장 전반적으로 8% 상승이 전망되고 있다.",
+      "source": "e49cc9859116f3b5",
+      "target": "df95a735b7b17966",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "지역 아파트 시장 상승세",
+      "source": "e49cc9859116f3b5",
+      "target": "fd656ea4dc4f74f9",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "삼성전자가 서울 관악구 봉천동에서 3,750억 원대 규모의 계약을 체결했으며, 이는 최근 매출액의 3.01% 수준이다. 대상 자산 에그엘로우가 위치한 봉천동 지역의 부동산 거래 활동을 보여주는 사례다.",
+      "source": "6ecfbf8045e10f3f",
+      "target": "429c0dc2135d7004",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "삼성전자, 삼천당제약, DL이앤씨... 계약금액은 3750억8600만원",
+      "source": "6ecfbf8045e10f3f",
+      "target": "b67d5f06aef9e7f0",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "삼성전자가 서울 관악구 봉천동에서 3,750억 원대 규모의 계약을 체결했으며, 이는 최근 매출액의 3.01% 수준이다. 대상 자산 에그엘로우가 위치한 봉천동 지역의 부동산 거래 활동을 보여주는 사례다.",
+      "source": "b67d5f06aef9e7f0",
+      "target": "429c0dc2135d7004",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "사업지는 서울 관악구 봉천동",
+      "source": "b67d5f06aef9e7f0",
+      "target": "fd656ea4dc4f74f9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "f6d0d5c018508a05",
+      "target": "aa2474d7cf8217db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울시 관악구 봉천동 480번지 일대",
+      "source": "f6d0d5c018508a05",
+      "target": "62d384ccdd0937b6",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "826e7dcd24093d0f",
+      "target": "aa2474d7cf8217db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "카카오 링키지랩이 사업 주체",
+      "source": "826e7dcd24093d0f",
+      "target": "f6d0d5c018508a05",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "f1dfe40638eb26c5",
+      "target": "aa2474d7cf8217db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "모리빌딩과 도시개발 협력 방안을 논의",
+      "source": "f1dfe40638eb26c5",
+      "target": "7070beed229d509e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "537f42192f5e6122",
+      "target": "aa2474d7cf8217db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "Itochu상사와는 협력",
+      "source": "537f42192f5e6122",
+      "target": "7070beed229d509e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "62d384ccdd0937b6",
+      "target": "aa2474d7cf8217db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "7070beed229d509e",
+      "target": "aa2474d7cf8217db",
+      "key": "MENTIONED_IN"
+    }
+  ]
+}

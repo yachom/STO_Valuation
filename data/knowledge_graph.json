@@ -5,65 +5,61 @@
   "nodes": [
     {
       "type": "Asset",
-      "name": "서울특별시 동작구 사당로 28 (상도동)",
-      "asset_name": "서울특별시 동작구 사당로 28 (상도동)",
-      "road": "서울특별시 동작구 사당로 28 (상도동)",
-      "jibun": "서울특별시 동작구 상도동 505-1",
-      "sigungu": "동작구",
-      "bjdong": "상도동",
-      "pnu": "1159010200105050001",
-      "location": "동작구 상도동",
-      "road_address": "사당로 28",
-      "address_type": "road_address",
-      "proximity": "7호선 상도역 인근",
-      "address": "서울특별시 동작구 상도동 505-1",
-      "district": "동작구",
-      "dong": "상도동",
-      "id": "59f775681c6ecbf5"
+      "name": "에그엘로우",
+      "asset_name": "에그엘로우",
+      "road": "서울특별시 관악구 남부순환로 1820 (봉천동)",
+      "jibun": "서울특별시 관악구 봉천동 862-1 에그엘로우",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
+      "pnu": "1162010100108620001",
+      "location": "서울특별시 관악구 봉천동",
+      "address": "남부순환로 1820",
+      "address_road": "남부순환로 1820",
+      "road_address": "서울특별시 관악구 남부순환로 1820",
+      "district": "관악구",
+      "dong": "봉천동",
+      "id": "fd656ea4dc4f74f9"
     },
     {
       "type": "NewsArticle",
-      "name": "\"전세 줄고 월세 오른다\"…서울 전월세시장 '불안', 장기임대 수요↑",
-      "link": "https://weekly.hankooki.com/news/articleView.html?idxno=7162110",
-      "pubDate": "Wed, 29 Apr 2026 16:12:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "370678925a3ffa27"
+      "name": "강남은 떨어지는데 여기만 2배 급등… 4년 7개월 만에 깨진 '집값 양극화...",
+      "link": "https://www.wikitree.co.kr/articles/1134119",
+      "pubDate": "Wed, 29 Apr 2026 10:10:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "8955faf4f096aaf2"
     },
     {
       "type": "Asset",
-      "name": "엑소디움 상도역",
-      "location": "동작구 상도동",
-      "max_lease_term": "10년",
-      "status": "계약 진행 중",
-      "project_type": "주거시설",
-      "supply_model": "10년 거주 후 분양전환",
-      "id": "f88db9097feb9562"
+      "name": "관악푸르지오",
+      "location": "서울특별시 관악구 봉천동",
+      "exclusive_area": "84㎡",
+      "pyeong": "84㎡",
+      "unit_size": "84㎡",
+      "id": "fd33710e0b16682c"
     },
     {
       "type": "Location",
-      "name": "동작구 상도동",
-      "sigungu": "동작구",
-      "bjdong": "상도동",
-      "characteristic": "역세권",
+      "name": "관악구 봉천동",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
       "region": "서울특별시",
-      "city": "서울특별시",
-      "region_type": "강남권 인접 지역",
-      "role": "여의도, 강남 등 주요 업무지구의 배후 주거지역",
-      "id": "d7d4b14f9213620a"
+      "city": "서울",
+      "region_type": "서울 외곽",
+      "rank_in_jeonse": "2위",
+      "id": "4b7135c8f9864c35"
     },
     {
-      "type": "Issue",
-      "name": "서울 전월세시장 불안",
-      "trend": "전세 감소, 월세 상승",
-      "scope": "서울 전역",
-      "id": "7c86aee11ae118c6"
+      "type": "Organization",
+      "name": "한국부동산원",
+      "role": "통계 발표 기관",
+      "id": "68c724a220e5caf1"
     },
     {
       "type": "Metric",
-      "name": "장기임대 수요",
-      "direction": "증가",
-      "context": "전월세시장 변화",
-      "id": "0ba5ac81cc5f69b7"
+      "name": "전셋값 상승률",
+      "value": "25% (10억5000만 원→13억1000만 원)",
+      "period": "4년 7개월",
+      "id": "98191491d8e07a2e"
     },
     {
       "type": "Axis",
@@ -77,45 +73,656 @@
     },
     {
       "type": "NewsArticle",
-      "name": "[전문가 칼럼] 고시촌 이미지 벗는 노량진…여의도·용산 잇는 신흥 삼...",
-      "link": "https://www.tfmedia.co.kr/news/article.html?no=204132",
-      "pubDate": "Wed, 29 Apr 2026 13:56:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "bc6653e7d67e2ad4"
+      "name": "1인가구 따라가는 무인점포...관악·강서 '빨래방', 학군지는 '스터디카...",
+      "link": "https://www.etoday.co.kr/news/view/2579857",
+      "pubDate": "Wed, 29 Apr 2026 06:02:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "b7b2866f449fbb27"
+    },
+    {
+      "type": "Location",
+      "name": "봉천동",
+      "sigungu": "관악구",
+      "characteristics": "청년 1인 가구 밀집 지역",
+      "district": "관악구",
+      "city": "서울특별시",
+      "id": "5885288abaa417a9"
+    },
+    {
+      "type": "Location",
+      "name": "관악구",
+      "characteristics": "대학생, 사회초년생 등 청년층 거주",
+      "city": "서울특별시",
+      "id": "7b934daefe647299"
+    },
+    {
+      "type": "Organization",
+      "name": "NH농협은행",
+      "department": "All100자문센터",
+      "id": "4d3e8c6ff12b1ed5"
+    },
+    {
+      "type": "Person",
+      "name": "윤수민",
+      "title": "부동산 전문위원",
+      "id": "d152a4108b2f5468"
+    },
+    {
+      "type": "Issue",
+      "name": "1인가구 증가에 따른 무인점포 확산",
+      "scope": "관악구, 강서구",
+      "id": "0366c32fb46c9e33"
+    },
+    {
+      "type": "Metric",
+      "name": "임대료 및 수익성",
+      "context": "고수요 지역의 상대적 수익성",
+      "id": "4b45f5979ca050f0"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[오늘의 ABC 뉴스룸] \"작아서 빠르다더니 준공 0건?\" 서울 소규모 재건축...",
+      "link": "https://www.ajunews.com/view/20260422180057200",
+      "pubDate": "Wed, 22 Apr 2026 18:18:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "662b199dbfc90645"
     },
     {
       "type": "Asset",
-      "name": "노량진 뉴타운",
-      "location": "노량진",
-      "id": "6ba432fb6e937d95"
-    },
-    {
-      "type": "Location",
-      "name": "동작구",
-      "sigungu": "동작구",
-      "region_type": "자치구",
-      "city": "서울특별시",
-      "region": "서울특별시",
-      "id": "1b5bdcc4ec333931"
-    },
-    {
-      "type": "Location",
-      "name": "여의도",
-      "region_type": "주요 상업지구",
-      "id": "2938cea0631ed036"
-    },
-    {
-      "type": "Location",
-      "name": "용산",
-      "region_type": "주요 상업지구",
-      "id": "06a256c114e3c3f3"
+      "name": "봉천동 복권아파트",
+      "location": "서울특별시 관악구 봉천동",
+      "project_type": "소규모 재건축",
+      "id": "34addf61c47180c9"
     },
     {
       "type": "Event",
-      "name": "노량진 뉴타운 완성",
-      "event_type": "개발 완료",
-      "impact_area": "상도동, 동작구 일대",
-      "id": "b6cecfc335f8dcc2"
+      "name": "재건축 조합 설립",
+      "status": "진행 중",
+      "duration": "2년 경과",
+      "id": "92e176f61146868e"
+    },
+    {
+      "type": "Issue",
+      "name": "시공사 선정 실패 및 준공 지연",
+      "severity": "high",
+      "affected_projects": [
+        "정릉스카이연립",
+        "봉천동 복권아파트"
+      ],
+      "id": "7417ee9c273614db"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "다주택 양도세 중과 눈앞…매물실종 대 가격조정 '기로'",
+      "link": "http://www.newstomato.com/ReadNews.aspx?no=1300016&inflow=N",
+      "pubDate": "Wed, 06 May 2026 15:08:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "def34a12f70185b0"
+    },
+    {
+      "type": "Event",
+      "name": "다주택 양도소득세 중과 유예 종료",
+      "date": "2026-05-09",
+      "id": "265b9e0753afec09"
+    },
+    {
+      "type": "Issue",
+      "name": "부동산 시장 변동성",
+      "manifestation": "매물실종 대 가격조정",
+      "id": "9eeb84a0d68aea0e"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "군의원 재산공개, 부자 1위는 김두례…재산 증가 1위는 이강세",
+      "link": "https://www.ibuan.com/news/articleView.html?idxno=55841",
+      "pubDate": "Tue, 14 Apr 2026 15:08:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "d3809814631ce0e9"
+    },
+    {
+      "type": "Location",
+      "name": "서울 관악구 봉천동",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
+      "region": "서울특별시",
+      "district": "관악구",
+      "dong": "봉천동",
+      "development_status": "개발 예정지 인근",
+      "id": "21d6e539aff7e3d0"
+    },
+    {
+      "type": "Event",
+      "name": "군의원 재산공개",
+      "date": "2026-04-14",
+      "focus": "재산 증가 현황",
+      "id": "59deac25336b0f9f"
+    },
+    {
+      "type": "Person",
+      "name": "이강세",
+      "role": "군의원",
+      "ranking": "재산 증가 1위",
+      "id": "38c436b3eef4451a"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "비강남 국평 전세도 10억…평균 보증금 1년새 7400만원 ‘쑥’",
+      "link": "https://n.news.naver.com/mnews/article/029/0003024997?sid=101",
+      "pubDate": "Tue, 05 May 2026 09:27:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "ad295cbe12165a50"
+    },
+    {
+      "type": "Asset",
+      "name": "e편한세상서울대입구",
+      "location": "관악구 봉천동",
+      "area": "59.88㎡",
+      "id": "40f2765b3b1a0c23"
+    },
+    {
+      "type": "Metric",
+      "name": "전세 보증금",
+      "value": "6억8000만원",
+      "reference_asset": "e편한세상서울대입구",
+      "period": "2026년 신규 계약",
+      "id": "082abb81ce41dfa9"
+    },
+    {
+      "type": "Metric",
+      "name": "평균 보증금 상승",
+      "change": "1년새 7400만원 증가",
+      "region": "비강남 국평",
+      "id": "ad545b3dc33c75f8"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "다주택자 운명의 날...5월 9일 이후 서울 집값 어디로",
+      "link": "https://magazine.hankyung.com/money/article/202604164573c",
+      "pubDate": "Tue, 05 May 2026 06:02:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "8be7f14db5fd1b32"
+    },
+    {
+      "type": "Issue",
+      "name": "다주택자 양도소득세 중과 유예 종료",
+      "date": "2026-05-09",
+      "impact_area": "서울 부동산 시장",
+      "id": "297809652f20901f"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "송파 이어 서초 집값도 상승 전환…“급매물 소진된 듯”",
+      "link": "https://n.news.naver.com/mnews/article/020/0003716557?sid=101",
+      "pubDate": "Thu, 30 Apr 2026 18:55:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "5acaacf27245b781"
+    },
+    {
+      "type": "Asset",
+      "name": "관악드림타운",
+      "location": "관악구 봉천동",
+      "scale": "3544채",
+      "id": "4629bcdc9329b76c"
+    },
+    {
+      "type": "Organization",
+      "name": "부동산원",
+      "id": "063c0dbfb2106d52"
+    },
+    {
+      "type": "Event",
+      "name": "4월 넷째 주 서울 아파트값 상승",
+      "period": "4월 넷째 주",
+      "scope": "서울",
+      "id": "c63b631a1f20e095"
+    },
+    {
+      "type": "Metric",
+      "name": "아파트값 상승률",
+      "value": "0.21%",
+      "comparison": "전주 대비",
+      "id": "db8910e4abe3c9a0"
+    },
+    {
+      "type": "Issue",
+      "name": "급매물 소진",
+      "location": "관악구 봉천동",
+      "id": "b2bffce36a31aa1d"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "서울 전세난에 매매가까지 들썩...일주일 새 0.15% 오르며 강세",
+      "link": "https://www.youthdaily.co.kr/news/article.html?no=218003",
+      "pubDate": "Thu, 23 Apr 2026 16:20:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "b012af24ebf64a1e"
+    },
+    {
+      "type": "Metric",
+      "name": "아파트 매매가격 상승률",
+      "value": "0.28%",
+      "period": "주간",
+      "region": "관악구 봉천동 대단지",
+      "id": "34cacf0a073f574c"
+    },
+    {
+      "type": "Event",
+      "name": "서울 전세난 및 매매가 상승",
+      "date": "2026-04-23",
+      "scope": "서울 아파트 시장",
+      "id": "d57f8edefb96204f"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "가락동 아파트 전셋값 1년여만에 2.7억 '쑥'…세입자 '비명'",
+      "link": "https://n.news.naver.com/mnews/article/015/0005278740?sid=101",
+      "pubDate": "Thu, 23 Apr 2026 14:01:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "369bc35db1080afe"
+    },
+    {
+      "type": "Asset",
+      "name": "동원낙성대",
+      "location": "관악구 봉천동",
+      "exclusive_area": "84㎡",
+      "id": "b85c59e328425c9b"
+    },
+    {
+      "type": "Metric",
+      "name": "서울 전셋값",
+      "measurement_date": "2026-04-20",
+      "id": "5b0ce238dd9baa01"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[부동산라운지-5월2주]다주택자 유예 종료 후 서울 상승세 확대…경기 ...",
+      "link": "http://www.biztribune.co.kr/news/articleView.html?idxno=353831",
+      "pubDate": "Thu, 14 May 2026 20:20:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "fb750bd93748b4e0"
+    },
+    {
+      "type": "Location",
+      "name": "관악구 봉천동 역세권",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
+      "characteristic": "역세권",
+      "id": "33bf99457c6bf0d5"
+    },
+    {
+      "type": "Event",
+      "name": "다주택자 양도소득세 중과 유예 종료",
+      "category": "정책변화",
+      "impact_scope": "서울 아파트 시장",
+      "id": "428e0ddc4604a231"
+    },
+    {
+      "type": "Metric",
+      "name": "관악구 아파트 가격 상승률",
+      "value": "0.22%",
+      "period": "5월 2주",
+      "region": "봉천동 역세권",
+      "id": "c3657ee02b61dd15"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "서울 아파트 전셋값 10년6개월만 최고 상승률…전세대란 진짜였다 [부동...",
+      "link": "https://n.news.naver.com/mnews/article/016/0002643542?sid=101",
+      "pubDate": "Thu, 14 May 2026 15:59:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "42a948d86073b0b8"
+    },
+    {
+      "type": "Event",
+      "name": "전셋값 상승",
+      "period": "10년6개월",
+      "date": "2026-04-06",
+      "id": "ccac48408a72d90f"
+    },
+    {
+      "type": "Issue",
+      "name": "전세 신규 매물 감소",
+      "cause": "집주인 실거주 의무 부여",
+      "impact": "전세 매물 감소",
+      "id": "dade90cb206f4847"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "서울 아파트값 2배 확대···강북 14개구 0.32%↑",
+      "link": "https://www.seoulfn.com/news/articleView.html?idxno=628783",
+      "pubDate": "Thu, 14 May 2026 14:10:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "06f8f88ab8201212"
+    },
+    {
+      "type": "Event",
+      "name": "5월 둘째 주 주간 아파트 가격 동향 발표",
+      "date": "2026-05-14",
+      "reference_date": "2026-05-11",
+      "id": "52b298d17e8abed4"
+    },
+    {
+      "type": "Metric",
+      "name": "아파트 가격 상승률",
+      "value": "0.22%",
+      "location": "봉천동",
+      "period": "5월 둘째 주",
+      "id": "566c4cb2da1662dd"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[아유경제_부동산] 2026년 5월 2주 아파트 가격 동향… 매매가격 0.06% 상...",
+      "link": "http://www.areyou.co.kr/news/articleView.html?idxno=93738",
+      "pubDate": "Thu, 14 May 2026 14:08:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "0ed83b8855cfbd3f"
+    },
+    {
+      "type": "Location",
+      "name": "봉천동 역세권",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
+      "characteristic": "역세권",
+      "id": "9573da6f1d9e6b7e"
+    },
+    {
+      "type": "Event",
+      "name": "주간아파트 가격동향 발표",
+      "date": "2026-05-11",
+      "period": "2026년 5월 2주",
+      "id": "29f04e73c378cc89"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "양도세 중과 시행 첫 주…서울 아파트값 0.28% ‘급등’",
+      "link": "https://n.news.naver.com/mnews/article/119/0003090434?sid=101",
+      "pubDate": "Thu, 14 May 2026 14:01:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "03d95b83c18f9b21"
+    },
+    {
+      "type": "Event",
+      "name": "양도세 중과 시행",
+      "date": "2026년 5월 중순",
+      "id": "a0d45f59259a2c37"
+    },
+    {
+      "type": "Metric",
+      "name": "관악구 주간 아파트값 상승률",
+      "value": "0.22%",
+      "period": "5월 2주(11일 기준)",
+      "category": "주간 아파트가격",
+      "id": "6c7b5c31f9a7f12e"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "서울 아파트 전셋값 10년6개월만에 최고 상승률",
+      "link": "https://n.news.naver.com/mnews/article/003/0013944951?sid=101",
+      "pubDate": "Thu, 14 May 2026 14:00:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "032f19e6ea0c2a40"
+    },
+    {
+      "type": "Metric",
+      "name": "아파트 전셋값 상승률",
+      "period": "10년6개월",
+      "status": "최고 상승률",
+      "region": "서울",
+      "id": "03f0cfa3531ca3d2"
+    },
+    {
+      "type": "Event",
+      "name": "5월 둘째 주 주간 아파트가격 동향 발표",
+      "date": "2026-05-14",
+      "base_date": "2026-05-11",
+      "id": "5ab7aea424d71c25"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "\"지금 아니면 영원히 못산다\" 서울 외곽까지 '신고가'…무주택자, 포모...",
+      "link": "https://www.thepublic.kr/news/articleView.html?idxno=300564",
+      "pubDate": "Thu, 09 Apr 2026 15:50:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "ed1b52a2adf74ed9"
+    },
+    {
+      "type": "Event",
+      "name": "부동산 신고가 기록",
+      "scope": "서울 외곽 지역",
+      "id": "98ce501cace77fff"
+    },
+    {
+      "type": "Issue",
+      "name": "매물 부족",
+      "description": "공급 제약으로 인한 시장 경색",
+      "id": "9509116f9352cf50"
+    },
+    {
+      "type": "Metric",
+      "name": "주택 가격",
+      "unit": "원",
+      "trend": "상승",
+      "id": "19006199555b91f0"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "\"두 달 만에 1.6억 뛰었어요\"…노원구 아파트서 벌어진 일",
+      "link": "https://n.news.naver.com/mnews/article/015/0005272933?sid=101",
+      "pubDate": "Thu, 09 Apr 2026 14:01:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "dc085cd43eb3736e"
+    },
+    {
+      "type": "Metric",
+      "name": "전셋값 변동률",
+      "value": "0.24%",
+      "direction": "상승",
+      "period": "최근",
+      "id": "cc9ea6f828fc4a3e"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "“양극화 대신 키 맞추기”…서울 외곽 신고가 ‘봇물’",
+      "link": "https://n.news.naver.com/mnews/article/024/0000104670?sid=101",
+      "pubDate": "Thu, 09 Apr 2026 11:34:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "a0f04b2ce974e6c2"
+    },
+    {
+      "type": "Event",
+      "name": "10·26 부동산 대책",
+      "date": "2026-10-26",
+      "id": "9f414aecdda319f2"
+    },
+    {
+      "type": "Issue",
+      "name": "대출 규제",
+      "related_policy": "10·26 부동산 대책",
+      "id": "51e1251037e8fc8c"
+    },
+    {
+      "type": "Issue",
+      "name": "양도세 중과 유예",
+      "effective_date": "2026-05-09",
+      "id": "b90fcb78638110e1"
+    },
+    {
+      "type": "Event",
+      "name": "키 맞추기 장세",
+      "market_phenomenon": "전세난 대응 거래 방식",
+      "id": "5ccf78de670e7f42"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "\"지금 아니면 못산다\"…서울 외곽은 신고가 '속출'[양도세 중과 D-30②]",
+      "link": "https://n.news.naver.com/mnews/article/003/0013876512?sid=101",
+      "pubDate": "Thu, 09 Apr 2026 06:05:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "5fc6db6a822328af"
+    },
+    {
+      "type": "Metric",
+      "name": "주간 상승률",
+      "value": "0.26%",
+      "period": "3월 다섯째 주",
+      "id": "5d9c4e6566c9c856"
+    },
+    {
+      "type": "Event",
+      "name": "양도세 중과 D-30",
+      "context": "정책 변화 임박",
+      "id": "41f4c12fee195f70"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "3500가구 대단지에 전세 '1건'뿐…갈 곳 없는 세입자들",
+      "link": "https://n.news.naver.com/mnews/article/015/0005273958?sid=101",
+      "pubDate": "Sun, 12 Apr 2026 19:01:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "6beb07286bde0bae"
+    },
+    {
+      "type": "Issue",
+      "name": "전세 물건 부족",
+      "scope": "3500가구 대단지",
+      "severity": "critical",
+      "id": "b10551b9f9dc0442"
+    },
+    {
+      "type": "Metric",
+      "name": "서울 아파트 전세 물건 수",
+      "value": 15476,
+      "unit": "개",
+      "date": "2026-04-12",
+      "id": "78043156e8129335"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "급매물 끝?…다시 오르기 시작한 송파 집값",
+      "link": "https://n.news.naver.com/mnews/article/648/0000046592?sid=101",
+      "pubDate": "Sat, 25 Apr 2026 08:00:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "661d05d833a54a40"
+    },
+    {
+      "type": "Asset",
+      "name": "보라매삼성",
+      "location": "서울특별시 관악구 봉천동",
+      "area": "84.84㎡",
+      "floor": "15층",
+      "id": "bccc00a53c11681c"
+    },
+    {
+      "type": "Organization",
+      "name": "우리은행부동산",
+      "role": "연구기관",
+      "id": "f046fe38b2d5e038"
+    },
+    {
+      "type": "Event",
+      "name": "보라매삼성 신고가 거래",
+      "transaction_price": "11억9000만원",
+      "previous_high": "11억8000만원",
+      "date": "2026-04-18",
+      "id": "2fbacc847b9ea069"
+    },
+    {
+      "type": "Metric",
+      "name": "지역 집값 상승",
+      "trend": "상승",
+      "region": "관악구 봉천동",
+      "id": "6d56e1f503ffc16d"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "\"두 달만에 1억 넘게 뛰었어요\"…짐 싸서 서울 떠나는 세입자들",
+      "link": "https://n.news.naver.com/mnews/article/374/0000503777?sid=101",
+      "pubDate": "Sat, 11 Apr 2026 05:37:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "d4d3d7cee8c6691f"
+    },
+    {
+      "type": "Metric",
+      "name": "관악구 봉천동 전셋값 상승률",
+      "value": "0.24%",
+      "period": "주간",
+      "id": "b710766327b10c2d"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "작년 전세대출 10건 중 7건이 수도권... 서울 30대 전셋집 보증금 절반은...",
+      "link": "https://n.news.naver.com/mnews/article/014/0005514002?sid=101",
+      "pubDate": "Mon, 27 Apr 2026 18:14:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "675d3c5d140d00bc"
+    },
+    {
+      "type": "Organization",
+      "name": "KB부동산",
+      "product": "KB전세대출",
+      "id": "ae942b1d360f6228"
+    },
+    {
+      "type": "Metric",
+      "name": "KB전세대출 통계",
+      "period": "지난해",
+      "seouldong_ratio": "73.7%",
+      "coverage": "수도권 전세",
+      "id": "8854efb364469ba1"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "역대 기업은행장 재산공개 내역 키워드는 ‘강남·다주택’",
+      "link": "http://www.newstomato.com/ReadNews.aspx?no=1299040&inflow=N",
+      "pubDate": "Mon, 27 Apr 2026 06:02:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "b88660cf699e5c4f"
+    },
+    {
+      "type": "Asset",
+      "name": "현대아파트",
+      "location": "서울 관악구 봉천동",
+      "area": "116.72㎡",
+      "id": "e6d8562a22414313"
+    },
+    {
+      "type": "Person",
+      "name": "기업은행장",
+      "role": "은행장",
+      "id": "c7dd6ec1eb67914b"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "에그엘로우 관리단 윤 회장, 12억 원대 장기수선충당금 횡령 의혹…시민...",
+      "link": "https://www.fntoday.co.kr/news/articleView.html?idxno=369667",
+      "pubDate": "Mon, 24 Nov 2025 17:52:00 +0900",
+      "query": "에그엘로우",
+      "id": "e26a26b06eea5d74"
+    },
+    {
+      "type": "Person",
+      "name": "윤 회장",
+      "role": "에그엘로우 관리단 회장",
+      "id": "4c685c92f2ca7724"
+    },
+    {
+      "type": "Issue",
+      "name": "장기수선충당금 횡령 의혹",
+      "amount": "약 12억 원대",
+      "id": "d22ea37820663fd6"
+    },
+    {
+      "type": "Event",
+      "name": "시민 집회",
+      "date": "2025-11-24",
+      "time": "09:00",
+      "location": "관악구청 앞, 서울대입구역 3번 출구 앞",
+      "id": "b6eb6301b197ae0a"
+    },
+    {
+      "type": "Organization",
+      "name": "관악구청",
+      "id": "dad0e99acd4e77aa"
     },
     {
       "type": "Axis",
@@ -124,945 +731,138 @@
     },
     {
       "type": "NewsArticle",
-      "name": "7억대로 반포자이, 잠실르엘 산다…미리내집, 총 441가구 모집",
-      "link": "https://realty.chosun.com/site/data/html_dir/2026/04/22/2026042201502.html",
-      "pubDate": "Wed, 22 Apr 2026 10:26:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "cfecb118cbef5afd"
-    },
-    {
-      "type": "Event",
-      "name": "미리내집 공급 프로젝트",
-      "scale": "441가구",
-      "unit_count": 85,
-      "focus": "역세권",
-      "id": "5ba80cd72252c50a"
-    },
-    {
-      "type": "Asset",
-      "name": "메이플자이",
-      "unit_size": "43㎡",
-      "recent_transaction": "10억5000만원 (2026년 4월 전세)",
-      "id": "bcb8974132ff0a89"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "상도역 인근 '상도역 엑소디움', 공급 및 청약 결과 확인",
-      "link": "https://www.etoday.co.kr/news/view/2577980",
-      "pubDate": "Wed, 22 Apr 2026 10:20:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "e6fe3a2953786598"
-    },
-    {
-      "type": "Asset",
-      "name": "상도역 엑소디움",
-      "location": "서울 동작구 상도역 인근",
-      "status": "완공",
-      "id": "c9c2dac5a47dd5aa"
-    },
-    {
-      "type": "Location",
-      "name": "상도동",
-      "sigungu": "동작구",
-      "development_status": "신속통합기획 대상지",
-      "property_type": "대학가 원룸 밀집지역",
-      "id": "f9beeaf4642c3f2f"
+      "name": "[단독] 中 왕서방 '부동산 쇼핑', 샤오홍슈서 확산 … 한국 집·땅 투자...",
+      "link": "https://biz.newdaily.co.kr/site/data/html/2026/04/24/2026042400147.html",
+      "pubDate": "Fri, 24 Apr 2026 13:02:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "b3850c6e217722d7"
     },
     {
       "type": "Organization",
-      "name": "동작구청",
-      "facility": "신청사",
-      "leader": "박일하",
-      "id": "b4ca8411a62e5c5c"
-    },
-    {
-      "type": "Organization",
-      "name": "동작구의회",
-      "id": "3d8e5a21e2b578da"
-    },
-    {
-      "type": "Organization",
-      "name": "동작구 보건소",
-      "id": "a63f2ad49fcc24e3"
-    },
-    {
-      "type": "Metric",
-      "name": "지하철 접근성",
-      "impact": "주거 여건 및 가격 형성에 영향",
-      "id": "e3a2536aa87fb703"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "서울 반포 분상제ㆍ노량진 비분상제 아파트 청약경쟁률 30배차",
-      "link": "https://www.dnews.co.kr/uhtml/view.jsp?idxno=202604151453418860390",
-      "pubDate": "Wed, 15 Apr 2026 15:42:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "39d182a43916536a"
-    },
-    {
-      "type": "Asset",
-      "name": "상도파크자이",
-      "location": "서울특별시 동작구 상도동",
-      "completion_year": 2016,
-      "unit_type": "전용 84㎡",
-      "recent_transaction_price": "21억5000만원",
-      "recent_transaction_floor": "25층",
-      "recent_transaction_date": "2026-03-30",
-      "id": "fb41ba056aabf6bc"
-    },
-    {
-      "type": "Asset",
-      "name": "라클라체 자이 드파인",
-      "location": "동작구 노량진동",
-      "project_type": "신규 분양",
-      "district_type": "비분상제",
-      "id": "d5b6b4d31123b5ae"
-    },
-    {
-      "type": "Event",
-      "name": "청약경쟁률 비교",
-      "context": "반포 분상제 vs 노량진 비분상제 아파트",
-      "competition_rate_gap": "약 30배",
-      "id": "e4ca6cee7ad85380"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "공급 없는데 매물 잠겨…\"입지 좋은 곳 청약이 탈출구\"",
-      "link": "https://n.news.naver.com/mnews/article/015/0005283673?sid=101",
-      "pubDate": "Wed, 06 May 2026 15:52:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "8a3ef4c8df2904a8"
-    },
-    {
-      "type": "Asset",
-      "name": "동작 센트럴 동문 디 이스트",
-      "location": "서울특별시 동작구 상도동",
-      "unit_count": 301,
-      "status": "분양예정",
-      "id": "4d19907aa9f10a51"
-    },
-    {
-      "type": "Organization",
-      "name": "동문건설",
-      "role": "시공사",
-      "id": "15efe9f721319095"
-    },
-    {
-      "type": "Organization",
-      "name": "아실",
-      "role": "부동산 빅데이터 업체",
-      "business": "부동산 빅데이터 업체",
-      "id": "15c29e9d625795b9"
-    },
-    {
-      "type": "Event",
-      "name": "신규 분양",
-      "timing": "2026년 5월",
-      "period_analyzed": "2026년 3월 31일~4월 30일",
-      "id": "f1f7291392214f11"
-    },
-    {
-      "type": "Issue",
-      "name": "매물 부족",
-      "scope": "서울 아파트 시장",
-      "description": "공급 없는 상황에서 매물 잠김",
-      "id": "9509116f9352cf50"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "[아유경제_부동산] 서울시, 신혼부부 '미리내집' 441가구 입주자 모집",
-      "link": "http://www.areyou.co.kr/news/articleView.html?idxno=93463",
-      "pubDate": "Tue, 21 Apr 2026 11:40:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "37ad5d89d416a9db"
-    },
-    {
-      "type": "Asset",
-      "name": "힐스테이트동작시그니처",
-      "location": "동작구 상도동",
-      "unit_count": 91,
-      "project_type": "신규 공급 단지",
-      "id": "0fc38e3a6ac0df01"
-    },
-    {
-      "type": "Organization",
-      "name": "서울시",
-      "role": "공급자",
-      "id": "ce1c470c17738e5c"
-    },
-    {
-      "type": "Event",
-      "name": "미리내집 입주자 모집",
-      "total_units": 441,
-      "total_complexes": 85,
-      "target_demographic": "신혼부부",
-      "date": "2026-04-21",
-      "scope": "85개 단지",
-      "id": "58f0953b18b98370"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "[#부동산 나들이] GS '인도 재생에너지 공략'·'미리내집' 441세대 모집·...",
-      "link": "https://www.newsworks.co.kr/news/articleView.html?idxno=838441",
-      "pubDate": "Tue, 21 Apr 2026 11:32:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "1a1a47e0b4b3126a"
-    },
-    {
-      "type": "Asset",
-      "name": "힐스테이트 동작시그니처",
-      "location": "동작구 상도동",
-      "units": 91,
-      "program": "미리내집",
-      "unit_count": 91,
-      "status": "신규",
-      "supply_units": 91,
-      "target_market": "신혼부부",
-      "nearby_stations": [
-        "상도역(7호선)",
-        "장승배기역(7호선)"
-      ],
-      "id": "0c1df407ae4f2ee0"
-    },
-    {
-      "type": "Organization",
-      "name": "GS건설",
-      "role": "개발사/시행사",
-      "id": "59832c4084c6e82e"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "엑소디움 상도역, 평균 3.76대 1 경쟁률…계약 진행 중",
-      "link": "https://n.news.naver.com/mnews/article/015/0005277575?sid=101",
-      "pubDate": "Tue, 21 Apr 2026 11:12:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "af0cb4645a7002f6"
-    },
-    {
-      "type": "Location",
-      "name": "서울 동작구 상도동",
-      "sigungu": "동작구",
-      "bjdong": "상도동",
-      "id": "332ecc1d4e957cb5"
-    },
-    {
-      "type": "Event",
-      "name": "엑소디움 상도역 당첨자 발표",
-      "date": "2026-04-18",
-      "competition_rate": "3.76:1",
-      "id": "42b72ed900fc8972"
-    },
-    {
-      "type": "Event",
-      "name": "상도동 신속통합기획 재개발",
-      "method": "신속통합기획",
-      "id": "0c986a824a280aca"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "동문건설, 서울 동작구 일원 ‘동작 센트럴 동문 디 이스트’ 분양 예정",
-      "link": "https://n.news.naver.com/mnews/article/215/0001249687?sid=101",
-      "pubDate": "Tue, 21 Apr 2026 10:46:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "f2c402a988d3425c"
-    },
-    {
-      "type": "Location",
-      "name": "동작구청 종합행정타운",
-      "facilities": [
-        "동작구청",
-        "구의회",
-        "보건소"
-      ],
-      "proximity": "도보 생활권",
-      "id": "0977f8fd533ccc5f"
-    },
-    {
-      "type": "Event",
-      "name": "노량진뉴타운 개발",
-      "location": "동작구",
-      "id": "3d2908a4b7bd3fbb"
-    },
-    {
-      "type": "Event",
-      "name": "복합문화센터 신설",
-      "location": "동작구",
-      "id": "e76bc604daa18ca4"
-    },
-    {
-      "type": "Event",
-      "name": "상도동 재개발",
-      "location": "상도동",
-      "id": "a85a09ca061072b8"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "잠실르엘 전세를 5억원에…보증금 70%만 내도 되는 미리내집 441세대 모...",
-      "link": "https://n.news.naver.com/mnews/article/016/0002632605?sid=101",
-      "pubDate": "Tue, 21 Apr 2026 06:01:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "865cc842f10f6317"
-    },
-    {
-      "type": "Location",
-      "name": "상도역",
-      "distance_from_asset": "도보 10분 내",
-      "line": "지하철 7호선",
-      "description": "초역세권",
-      "id": "2336210e35f24b53"
-    },
-    {
-      "type": "Event",
-      "name": "미리내집 모집",
-      "program_type": "전세 보증금 경감 프로그램",
-      "deposit_ratio": "70%",
-      "scale": "441세대",
-      "id": "48b0d21f31002d1d"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "'재개발 대어' 상도15구역 건설사 6곳 눈독",
-      "link": "https://n.news.naver.com/mnews/article/014/0005507652?sid=101",
-      "pubDate": "Tue, 14 Apr 2026 18:22:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "32bc213cbaf3edf0"
-    },
-    {
-      "type": "Asset",
-      "name": "상도15구역",
-      "location": "동작구 상도동 279번지 일대",
-      "area_sqm": 141286.8,
-      "basement_floors": 8,
-      "id": "3f988d57a4aee089"
-    },
-    {
-      "type": "Event",
-      "name": "상도15구역 재개발 사업",
-      "status": "ongoing",
-      "id": "d01e7549a53f06ef"
-    },
-    {
-      "type": "Asset",
-      "name": "상도동 성대빌라",
-      "location": "상도15구역 내",
-      "measurement_basis": "전용면적",
-      "id": "4f861cf5566c3db3"
-    },
-    {
-      "type": "Organization",
-      "name": "건설사 6곳",
-      "count": 6,
-      "interest": "상도15구역 재개발",
-      "id": "6360fad15539b208"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "[부동산 현장탐방] 동작구, 16억원 호가 형성…추가 대책 주시",
-      "link": "https://news.einfomax.co.kr/news/articleView.html?idxno=4414368",
-      "pubDate": "Tue, 12 May 2026 14:50:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "3d7909cde8b20369"
-    },
-    {
-      "type": "Metric",
-      "name": "구축 아파트 매매 호가",
-      "value": "16억원대",
-      "asset_type": "구축 아파트",
-      "location": "동작구 상도동",
-      "id": "dd01e33010fbb629"
-    },
-    {
-      "type": "Issue",
-      "name": "다주택자 양도소득세 중과",
-      "policy_type": "세제 정책",
-      "impact_area": "동작구",
-      "id": "be3975cb2c4a72d0"
-    },
-    {
-      "type": "Metric",
-      "name": "동작구 아파트 매물 수",
-      "value": "2천건 이상",
-      "date": "2026년 3월말",
-      "trend": "감소",
-      "id": "328a9d452e7ca3e8"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "3억 저렴한데 구성은 동일 \"큰 집 필요한가요\"…84㎡ 분양 공급 넘어선...",
-      "link": "https://n.news.naver.com/mnews/article/277/0005756850?sid=101",
-      "pubDate": "Thu, 30 Apr 2026 07:00:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "c23d55f45a1503bc"
-    },
-    {
-      "type": "Asset",
-      "name": "상도 푸르지오 클라베뉴",
-      "location": "서울특별시 동작구 상도동",
-      "general_units": 771,
-      "unit_59sqm": 261,
-      "unit_84sqm": "미상",
-      "id": "352fedf0fc15e4c0"
-    },
-    {
-      "type": "Organization",
-      "name": "우리은행 부동산연구원",
-      "role": "시장분석기관",
-      "id": "51cbb43d26b2b4fd"
+      "name": "샤오홍슈",
+      "id": "c68e80794712425b"
     },
     {
       "type": "Person",
-      "name": "남혁우",
-      "affiliation": "우리은행 부동산연구원",
-      "id": "8b48dce43a9153d9"
+      "name": "중국 투자자(왕서방)",
+      "nationality": "중국",
+      "investment_focus": "한국 부동산",
+      "id": "be5a2562c7599dc1"
     },
     {
-      "type": "Issue",
-      "name": "건축비 상승에 따른 분양가 경쟁력 변화",
-      "category": "시장가격",
-      "impact": "소형평면 공급 증가",
-      "id": "e9f160a69f4d05a9"
+      "type": "Event",
+      "name": "중국 투자자의 한국 부동산 투자 정보 확산",
+      "platform": "샤오홍슈",
+      "date": "2026-04-24",
+      "focus": "토지 투기, 시세차익",
+      "id": "81c9cb6b08836521"
     },
     {
       "type": "NewsArticle",
-      "name": "금호건설 올해 아테라 첫 분양 돌입, 조완석 유상증자 뒤 LH 발주 사업서...",
-      "link": "https://www.businesspost.co.kr/BP?command=article_view&num=436371",
-      "pubDate": "Thu, 23 Apr 2026 14:52:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "b5dfa923d8e8ce02"
+      "name": "서울 아파트, 올해도 8% 상승 전망…李대통령 실기 논란",
+      "link": "https://n.news.naver.com/mnews/article/023/0003972859?sid=101",
+      "pubDate": "Fri, 24 Apr 2026 13:01:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "df95a735b7b17966"
     },
     {
-      "type": "Asset",
-      "name": "서울특별시 동작구 상도동 주택사업",
-      "location": "서울특별시 동작구 상도동",
-      "status": "좌초(중단)",
-      "id": "ff06bdff70f11b31"
+      "type": "Event",
+      "name": "서울 아파트 시장 상승",
+      "period": "2026년",
+      "forecast": "8% 상승 전망",
+      "recent_performance": "0.28% (지난주)",
+      "id": "e49cc9859116f3b5"
+    },
+    {
+      "type": "NewsArticle",
+      "name": "[주요공시] 삼성전자, 삼천당제약, DL이앤씨, HD현대중공업, 세종메디칼...",
+      "link": "https://www.kdpress.co.kr/news/articleView.html?idxno=204397",
+      "pubDate": "Fri, 17 Apr 2026 23:24:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "429c0dc2135d7004"
     },
     {
       "type": "Organization",
-      "name": "금호건설",
-      "role": "개발사",
-      "id": "a2dd0d178ebd871f"
-    },
-    {
-      "type": "Person",
-      "name": "조완석",
-      "title": "금호건설 사장",
-      "id": "d8eca413e9965254"
-    },
-    {
-      "type": "Issue",
-      "name": "우발부채",
-      "resolution_method": "출자전환",
-      "id": "1238ee6932e5832f"
+      "name": "삼성전자",
+      "id": "6ecfbf8045e10f3f"
     },
     {
       "type": "Event",
-      "name": "유상증자",
-      "related_person": "조완석",
-      "id": "4eab2e86c2e5c57c"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "7호선 상도역 인근 ‘상도역 대우 엑소디움’ 공급… 역세권 민간임대 ...",
-      "link": "https://n.news.naver.com/mnews/article/243/0000096438?sid=101",
-      "pubDate": "Thu, 16 Apr 2026 11:25:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "7a86f7ce3f868ae9"
-    },
-    {
-      "type": "Asset",
-      "name": "상도역 대우 엑소디움",
-      "location": "상도역 인근",
-      "developer": "대우건설",
-      "status": "청약 진행 중",
-      "id": "5354f6c3660deae1"
-    },
-    {
-      "type": "Location",
-      "name": "7호선 상도역",
-      "line": "7호선",
-      "id": "4b6dd7d1222df49b"
-    },
-    {
-      "type": "Event",
-      "name": "장승배기 종합행정타운 완공",
-      "date": "2025년 3월",
-      "location": "동작구",
-      "facilities": [
-        "동작구청 신청사",
-        "구의회",
-        "보건소"
-      ],
-      "id": "5147641168e21629"
-    },
-    {
-      "type": "Metric",
-      "name": "역세권 접근성",
-      "impact": "주거 편의성 및 자산 가치 향상",
-      "id": "f3fe7cd978435058"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "반토막 난 아파트 입주물량 … 노도강 넘어 서울 전역서 전세대란 폭탄...",
-      "link": "https://biz.newdaily.co.kr/site/data/html/2026/04/16/2026041600115.html",
-      "pubDate": "Thu, 16 Apr 2026 11:22:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "2e31e5995c7e5b92"
-    },
-    {
-      "type": "Asset",
-      "name": "상도더샵1차",
-      "location": "서울특별시 동작구 상도동",
-      "asset_type": "아파트",
-      "id": "3fedb168da548993"
-    },
-    {
-      "type": "Issue",
-      "name": "전세대란",
-      "severity": "심각",
-      "scope": "서울 전역",
-      "id": "e6950df4c62abf4d"
-    },
-    {
-      "type": "Metric",
-      "name": "서울 아파트 임대차 매물 감소",
-      "baseline_date": "2023-04-01",
-      "baseline_value": "7만74건",
-      "current_date": "2026-04-13",
-      "current_value": "2만9726건",
-      "decline_rate": "57.6%",
-      "id": "d152f0465e06ce49"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "“실거주하며 재개발 기다리자”…서울 빌라 거래량 61% 급증",
-      "link": "https://n.news.naver.com/mnews/article/011/0004617068?sid=101",
-      "pubDate": "Sun, 03 May 2026 21:06:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "a45f8fb8c10ed45c"
-    },
-    {
-      "type": "Asset",
-      "name": "다인캐슬2차",
-      "address": "동작구 상도동 244-29",
-      "exclusive_area": "27㎡",
-      "transaction_price_ratio": "123% (감정가 대비)",
-      "id": "f89eae94166a9ff2"
-    },
-    {
-      "type": "Event",
-      "name": "동작구 상도동 재개발 수요 증가",
-      "date": "2026년 4월~5월",
-      "region": "동작구 상도동",
-      "indicator": "빌라 거래량 61% 급증",
-      "id": "5523e2bc9fc22425"
-    },
-    {
-      "type": "Issue",
-      "name": "재개발 기대감에 따른 가격 상승",
-      "nature": "시장 심리",
-      "manifestation": "감정가 초과 낙찰",
-      "id": "55c83b961b547d3c"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "신고가 찍었는데 거래는 달랑 한 건 … 규제 탓 집값 '외톨이 상승' 빈번...",
-      "link": "https://biz.newdaily.co.kr/site/data/html/2026/04/30/2026043000208.html",
-      "pubDate": "Sun, 03 May 2026 06:00:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "a3726b43d67ad95d"
-    },
-    {
-      "type": "Asset",
-      "name": "상도두산위브",
-      "location": "서울특별시 동작구 상도동",
-      "unit_type": "전용 84㎡ A타입",
-      "transaction_date": "2026-04-04",
-      "transaction_price": "16억9000만원",
-      "id": "4212450a9c198fc6"
-    },
-    {
-      "type": "Organization",
-      "name": "한국부동산원",
-      "id": "68c724a220e5caf1"
-    },
-    {
-      "type": "Metric",
-      "name": "전국 아파트 매매거래",
-      "period": "2026년 3월",
-      "value": "5만6604가구",
-      "id": "7d7062d00d143e4e"
-    },
-    {
-      "type": "Issue",
-      "name": "규제로 인한 가격-거래량 불일치",
-      "description": "신고가 기록에도 불구하고 거래량 부진",
-      "id": "cf55c58c7ce092dc"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "반포자이가 7억?···신혼부부 위한 '강남행 막차' 떴다",
-      "link": "https://www.sisajournal-e.com/news/articleView.html?idxno=420710",
-      "pubDate": "Sat, 25 Apr 2026 09:00:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "07ceb4353a3ea314"
-    },
-    {
-      "type": "Location",
-      "name": "장승배기역",
-      "line": "지하철 7호선",
-      "id": "27e3bc996c8840f1"
-    },
-    {
-      "type": "Issue",
-      "name": "분할납부제 구조적 한계",
-      "description": "분할납부제는 부담을 뒤로 미루는 방식일 뿐 총액을 줄여주지 않음",
-      "id": "e8ffc6942d492341"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "“이주대란, 공공이 직접 해결” 동작구 ‘이주단지’ 실험 통할까 [부...",
-      "link": "https://n.news.naver.com/mnews/article/016/0002638328?sid=101",
-      "pubDate": "Sat, 02 May 2026 11:01:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "458d661aed1fd39f"
-    },
-    {
-      "type": "Event",
-      "name": "노량진뉴타운 재건축·재개발 사업",
-      "location": "동작구 노량진 일대",
-      "status": "관리처분 및 이주·철거 단계",
-      "id": "03c6e143e1625ffc"
-    },
-    {
-      "type": "Asset",
-      "name": "공공 이주단지",
-      "scale": "지하1층~지상 5층",
-      "purpose": "이주 대책",
-      "operator_type": "공공",
-      "id": "b2dc4f36022888f8"
-    },
-    {
-      "type": "Issue",
-      "name": "이주대란",
-      "category": "주거·이주 문제",
-      "scope": "서울 재건축·재개발 사업지",
-      "id": "3a5835fd59acd4c6"
-    },
-    {
-      "type": "Organization",
-      "name": "부동산R114",
-      "role": "부동산 정보 제공",
-      "id": "5138976a5b2a2efc"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "[주택뉴스] 삼성물산 홈플랫폼 홈닉, 서해종합건설과 스마트 주거 기술...",
-      "link": "https://www.ibabynews.com/news/articleView.html?idxno=150868",
-      "pubDate": "Mon, 27 Apr 2026 15:46:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "a2388e784ebfb805"
-    },
-    {
-      "type": "Asset",
-      "name": "서울특별시 동작구 상도동 재개발·재건축 단지",
-      "location": "동작구 상도동",
-      "pnu": "1159010200105050001",
-      "project_type": "재개발·재건축",
-      "id": "b33272e81fd5d1a3"
-    },
-    {
-      "type": "Organization",
-      "name": "삼성물산",
-      "role": "홈플랫폼 홈닉 제공",
-      "business": "정비사업(재개발)",
-      "target_region": "강남권",
-      "id": "36c85131f1f796f0"
-    },
-    {
-      "type": "Organization",
-      "name": "서해종합건설",
-      "role": "스마트 주거 기술 협력",
-      "id": "8e2a4e6117f86748"
-    },
-    {
-      "type": "Event",
-      "name": "냉·난방비 제로화 프로젝트",
-      "description": "세계 최초 재개발·재건축 단지 냉·난방비 제로화 실현",
-      "location": "상도동",
-      "id": "65746660a3f2e59e"
-    },
-    {
-      "type": "Issue",
-      "name": "에너지 효율화",
-      "focus": "스마트 주거 기술을 통한 냉난방비 절감",
-      "id": "b420ce4c91668344"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "동작구 '엑소디움 상도역' 공급… 10년 거주 후 분양전환 방식 적용",
-      "link": "https://www.newspim.com/news/view/20260427000763",
-      "pubDate": "Mon, 27 Apr 2026 13:15:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "5058940fe0f136cc"
-    },
-    {
-      "type": "Event",
-      "name": "엑소디움 상도역 청약 접수",
-      "date_start": "2026-04-11",
-      "date_end": "2026-04-16",
-      "id": "ff3031b6b7291175"
-    },
-    {
-      "type": "Issue",
-      "name": "전세 물량 축소 및 월세 부담 증가",
-      "category": "주거시장",
-      "impact": "주거 선택 기준 변화",
-      "id": "60be71237041e1ad"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "[르포] 고분양가 논란에도 노량진뉴타운 청약 선전…후속타자 '아크로 ...",
-      "link": "https://www.asiatoday.co.kr/view.php?key=20260420010005912",
-      "pubDate": "Mon, 20 Apr 2026 19:00:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "165dfa2666d49328"
-    },
-    {
-      "type": "Asset",
-      "name": "e편한세상 상도 노빌리티",
-      "location": "동작구 상도동",
-      "unit_size": "84㎡",
-      "total_units": 893,
-      "completion_year": 2018,
-      "id": "f6d26dce50cea0b8"
-    },
-    {
-      "type": "Event",
-      "name": "노량진뉴타운 청약",
-      "location": "동작구 노량진",
-      "id": "8661c3ed16887848"
-    },
-    {
-      "type": "Issue",
-      "name": "고분양가 논란",
-      "location": "동작구 노량진뉴타운",
-      "nature": "가격 논쟁",
-      "id": "d76668fb8ba7d8f7"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "재개발 기대에 서울 빌라 거래 활발…성북동은 1년 새 8배[집슐랭]",
-      "link": "https://n.news.naver.com/mnews/article/011/0004617230?sid=101",
-      "pubDate": "Mon, 04 May 2026 11:36:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "3975843354a36cb6"
-    },
-    {
-      "type": "Asset",
-      "name": "다인캐슐2차",
-      "location": "동작구 상도동 244-29",
-      "unit_size": "27㎡",
-      "transaction_date": "2026년 4월",
-      "id": "c65e18d90e9aede7"
-    },
-    {
-      "type": "Organization",
-      "name": "NH농협은행",
-      "role": "부동산 전문 평가기관",
-      "id": "4d3e8c6ff12b1ed5"
-    },
-    {
-      "type": "Person",
-      "name": "윤수민",
-      "title": "NH농협은행 부동산 전문위원",
-      "id": "d152a4108b2f5468"
-    },
-    {
-      "type": "Event",
-      "name": "재개발 기대감",
-      "region": "동작구 상도동",
-      "impact": "빌라 거래 활발화",
-      "id": "ea45ebd78c496de4"
-    },
-    {
-      "type": "Metric",
-      "name": "낙찰가 대비 감정가 비율",
-      "value": "123%",
-      "asset": "다인캐슐2차",
-      "interpretation": "감정가 초과 낙찰",
-      "id": "0630f6105ca3d588"
-    },
-    {
-      "type": "Issue",
-      "name": "서울 신축 아파트 공급 제약",
-      "scope": "서울 전역",
-      "consequence": "기존 주택 재건축 수요 증가",
-      "id": "aee2786d58dc5862"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "삼성물산, 정비사업 수주 10조 청신호…강남권 핵심단지 무혈입성 예고",
-      "link": "https://n.news.naver.com/mnews/article/011/0004617136?sid=101",
-      "pubDate": "Mon, 04 May 2026 07:32:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "3d0a651efcc6648a"
-    },
-    {
-      "type": "Asset",
-      "name": "동작구 상도동 다세대 주택",
-      "location": "서울특별시 동작구 상도동",
-      "market_signal": "경매 낙찰가 감정가 대비 123%",
-      "id": "9338a94b002ea279"
-    },
-    {
-      "type": "Event",
-      "name": "재개발 정비사업 수주 확대",
-      "scale": "10조 규모",
-      "actor": "삼성물산",
-      "impact_region": "강남권",
-      "id": "c0e3725116c50e67"
-    },
-    {
-      "type": "Metric",
-      "name": "경매 낙찰가율",
-      "value": "123%",
-      "base": "감정가",
-      "asset_type": "다세대 주택",
-      "id": "7700a341735b2747"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "대학가 덮친 월세 상승…청춘은 더 좁은 방으로[르포]",
-      "link": "https://n.news.naver.com/mnews/article/003/0013906966?sid=101",
-      "pubDate": "Fri, 24 Apr 2026 04:30:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "52444e9e4e52e6b0"
-    },
-    {
-      "type": "Issue",
-      "name": "월세 상승",
-      "category": "주거비 부담",
-      "affected_demographic": "청년층/대학생",
-      "id": "97afb262fe0edbae"
-    },
-    {
-      "type": "Metric",
-      "name": "상도동 원룸 월세",
-      "deposit": "1000만원",
-      "monthly_rent": "약 65만원",
-      "additional_costs": "평균 10만원 이상",
-      "id": "5ecb2328ed7f2dc5"
-    },
-    {
-      "type": "Metric",
-      "name": "동작구 평균 월세",
-      "value": "62만원",
-      "comparison": "서울 평균보다 낮음",
-      "id": "23335b1831175bdd"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "국평 25억 노량진뉴타운 청약 흥행 증명…'동작 센트럴 동문 디 이스트...",
-      "link": "https://www.joongangenews.com/news/articleView.html?idxno=512616",
-      "pubDate": "Fri, 17 Apr 2026 10:40:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "aeed3650b35d0445"
-    },
-    {
-      "type": "Asset",
-      "name": "동문 디 이스트",
-      "location": "서울시 동작구 상도동 363-10번지",
-      "floors": "지하 8층~지상 29층",
-      "buildings": 3,
-      "units": 301,
-      "area_range": "46~62㎡",
-      "id": "fb6b0edf8c63127b"
-    },
-    {
-      "type": "Asset",
-      "name": "노량진뉴타운",
-      "location": "동작구",
-      "id": "da231ef785b51352"
-    },
-    {
-      "type": "Event",
-      "name": "청약 흥행",
-      "date": "2026-04-14",
-      "id": "62ecde712f864d2c"
-    },
-    {
-      "type": "NewsArticle",
-      "name": "상도역 초역세권 민간임대 아파트 청약 완료",
-      "link": "https://edu.donga.com/news/articleView.html?idxno=106439",
-      "pubDate": "Fri, 17 Apr 2026 10:28:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "090775e395269739"
-    },
-    {
-      "type": "Event",
-      "name": "상도역 대우 엑소디움 청약",
+      "name": "삼성전자 봉천동 부동산 계약",
+      "contract_amount": "3,750억 8,600만원",
+      "percentage_of_revenue": "3.01%",
       "date": "2026-04-17",
-      "id": "f17e3ec439cea1e5"
-    },
-    {
-      "type": "Issue",
-      "name": "서울 주택시장 주거 환경 변화",
-      "scope": "서울 전역",
-      "id": "661c1784d79c1775"
+      "id": "b67d5f06aef9e7f0"
     },
     {
       "type": "NewsArticle",
-      "name": "상도동 7500가구 ‘친환경 주거타운’ 탈바꿈",
-      "link": "https://www.dnews.co.kr/uhtml/view.jsp?idxno=202604161439435700557",
-      "pubDate": "Fri, 17 Apr 2026 09:20:00 +0900",
-      "query": "동작구 상도동 부동산",
-      "id": "ebb68b6c743a2605"
+      "name": "[산업소식] 카카오 링키지랩, 전체 임직원 65%가 장애인",
+      "link": "http://www.4th.kr/news/articleView.html?idxno=2110583",
+      "pubDate": "Fri, 17 Apr 2026 11:50:00 +0900",
+      "query": "관악구 봉천동 부동산",
+      "id": "aa2474d7cf8217db"
     },
     {
       "type": "Asset",
-      "name": "상도동 친환경 주거타운",
-      "location": "서울특별시 동작구 상도동",
-      "scale": "7500가구",
-      "characteristic": "친환경",
-      "id": "1c98c85732dbece3"
+      "name": "관악구 봉천동 도시개발 사업지",
+      "location": "서울시 관악구 봉천동 480번지",
+      "scale": "지하 3층~지상 28층, 9개동",
+      "id": "f6d0d5c018508a05"
+    },
+    {
+      "type": "Organization",
+      "name": "카카오 링키지랩",
+      "role": "사업 주체",
+      "id": "826e7dcd24093d0f"
+    },
+    {
+      "type": "Organization",
+      "name": "모리빌딩",
+      "country": "일본",
+      "description": "대표 부동산 디벨로퍼",
+      "id": "f1dfe40638eb26c5"
+    },
+    {
+      "type": "Organization",
+      "name": "Itochu상사",
+      "role": "협력사",
+      "id": "537f42192f5e6122"
+    },
+    {
+      "type": "Location",
+      "name": "서울시 관악구 봉천동",
+      "sigungu": "관악구",
+      "bjdong": "봉천동",
+      "id": "62d384ccdd0937b6"
     },
     {
       "type": "Event",
-      "name": "상도동 정비사업",
-      "status": "본격화",
-      "scale": "7500가구",
-      "id": "0c1eb798f2f561d4"
-    },
-    {
-      "type": "Issue",
-      "name": "지역 가치 상승",
-      "driver": "정비사업 본격화",
-      "id": "521ef7fe9851e5ef"
+      "name": "도시개발 협력 논의",
+      "id": "7070beed229d509e"
     }
   ],
   "links": [
     {
       "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 동작구 상도동에서 공급 중인 장기 민간임대 아파트 '엑소디움 상도역'이 언급되며, 서울 전월세시장의 전세 감소와 월세 상승 추세 속에서 장기임대 수요 증가를 보여주는 사례로 제시됨.",
-      "source": "59f775681c6ecbf5",
-      "target": "370678925a3ffa27",
+      "evidence": "관악구 봉천동 지역의 부동산 가격이 급등하고 있으며, 같은 지역의 '관악푸르지오' 아파트가 4년 7개월 만에 약 25% 상승했다. 대상 자산 '에그엘로우'는 같은 봉천동에 위치하여 지역 시장 동향의 영향을 받을 것으로 예상된다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "8955faf4f096aaf2",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "LOCATED_IN",
-      "evidence": "서울특별시 동작구 상도동",
-      "source": "59f775681c6ecbf5",
-      "target": "d7d4b14f9213620a",
+      "evidence": "관악구 봉천동 위치",
+      "source": "fd656ea4dc4f74f9",
+      "target": "4b7135c8f9864c35",
       "key": "LOCATED_IN"
     },
     {
       "rel": "AFFECTS_AXIS",
       "polarity": "positive",
       "strength": 4,
-      "note": "7500가구 규모 정비사업으로 지역 활성화 및 주거 수요 창출",
-      "article": "ebb68b6c743a2605",
-      "source": "59f775681c6ecbf5",
+      "note": "대규모 도시개발 사업으로 지역 경제 활성화 및 부동산 가치 상승 기대",
+      "article": "aa2474d7cf8217db",
+      "source": "fd656ea4dc4f74f9",
       "target": "6fb8838c8da80e09",
       "key": "AFFECTS_AXIS"
     },
@@ -1070,1798 +870,1609 @@
       "rel": "AFFECTS_AXIS",
       "polarity": "positive",
       "strength": 3,
-      "note": "여의도, 강남 등 주요 업무지구 배후지로서의 위치 가치 인식 제고",
-      "article": "ebb68b6c743a2605",
-      "source": "59f775681c6ecbf5",
+      "note": "국제 협력(일본 모리빌딩, Itochu상사)을 통한 사업 추진으로 관심도 증대",
+      "article": "aa2474d7cf8217db",
+      "source": "fd656ea4dc4f74f9",
       "target": "7239324297247f13",
       "key": "AFFECTS_AXIS"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
-      "source": "59f775681c6ecbf5",
-      "target": "bc6653e7d67e2ad4",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "b7b2866f449fbb27",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "LOCATED_IN",
-      "evidence": "서울특별시 동작구 상도동",
-      "source": "59f775681c6ecbf5",
-      "target": "1b5bdcc4ec333931",
+      "evidence": "봉천동",
+      "source": "fd656ea4dc4f74f9",
+      "target": "5885288abaa417a9",
       "key": "LOCATED_IN"
     },
     {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 복권아파트 재건축 프로젝트가 조합 설립 후 2년 경과했으며, 소규모 재건축의 시공 지연 문제가 언급되고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "662b199dbfc90645",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "다주택 양도세 중과 유예 종료를 앞두고 서울 부동산 시장이 변동하고 있으며, 관악구 봉천동 일대도 상승 흐름이 계속되고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "def34a12f70185b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 다가구주택 임대보증금 채무 감소가 군의원 재산 증가의 주요 요인으로 언급되었습니다. 부동산 중심의 자산 구조 변화를 보여주는 기사입니다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "d3809814631ce0e9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울 관악구 봉천동",
+      "source": "fd656ea4dc4f74f9",
+      "target": "21d6e539aff7e3d0",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "임대보증금 채무 감소",
+      "source": "fd656ea4dc4f74f9",
+      "target": "59deac25336b0f9f",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 전세 시장 동향을 다룬 기사로, 에그엘로우와 동일 지역의 인접 물건('e편한세상서울대입구')의 보증금 상승 추세를 보도하고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "ad295cbe12165a50",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "5월 9일 다주택자 양도소득세 중과 유예 종료를 앞두고 서울 부동산 시장 전망을 다룬 기사로, 관악구 봉천동의 다른 아파트(관악푸르지오)가 사례로 언급됨.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "8be7f14db5fd1b32",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동 위치, 다주택자 양도소득세 중과 유예 종료 이슈와 같은 지역",
+      "source": "fd656ea4dc4f74f9",
+      "target": "297809652f20901f",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 매매가격이 일주일 새 0.15% 상승했으며, 관악구 봉천동 대단지 중심으로 0.28% 상승률을 기록했다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "b012af24ebf64a1e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 다주택자 양도소득세 중과 유예 종료 이후 서울 아파트 시장의 상승세 확대 지역으로 언급되었다. 봉천동 역세권 위주로 0.22% 상승세를 보이고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "fb750bd93748b4e0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "에그엘로우는 관악구 봉천동에 위치",
+      "source": "fd656ea4dc4f74f9",
+      "target": "33bf99457c6bf0d5",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 역세권 지역의 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 전세 신규 매물 감소로 인한 시장 변화가 진행 중이다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "42a948d86073b0b8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트 가격이 5월 둘째 주 기준 0.22% 상승했으며, 이는 강북 지역의 전반적인 가격 상승 추세를 반영한다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "06f8f88ab8201212",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 2026년 5월 2주 기준 0.22% 상승했으며, 이는 한국부동산원의 주간아파트 가격동향 보고서에서 확인된 지역 시장 동향이다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "0ed83b8855cfbd3f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "봉천동 역세권 위주로 상승",
+      "source": "fd656ea4dc4f74f9",
+      "target": "9573da6f1d9e6b7e",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "양도세 중과 시행 첫 주에 서울 아파트값이 급등했으며, 관악구 봉천동 역세권이 0.22% 상승했다. 에그엘로우는 봉천동에 위치한 자산으로 해당 지역의 긍정적 시장 신호를 받고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "03d95b83c18f9b21",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 관악구 봉천동 역세권이 주요 상승 지역으로 언급되었다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "032f19e6ea0c2a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동에서 전셋값이 0.24% 상승했으며, 이는 노원구 등 다른 지역의 급등과 비교하면 완만한 상승세를 보이고 있다. 강남구와 달리 관악구는 전셋값 상승 지역에 포함되었다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "dc085cd43eb3736e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 대단지 아파트 지역에서 전세 물건 부족 현상이 심각하며, 세입자들이 주택 확보에 어려움을 겪고 있는 상황을 보도하는 기사다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "6beb07286bde0bae",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "661d05d833a54a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전셋값이 상승세를 보이고 있으며, 관악구 봉천동이 0.24% 상승률을 기록했다. 세입자들이 서울을 떠나는 추세가 나타나고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "d4d3d7cee8c6691f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동이 KB전세대출 통계에서 전국 2위 지역으로 선정되었으며, 상대적으로 저렴한 전셋값과 높은 수요가 특징인 것으로 분석됨.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "675d3c5d140d00bc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우 관리단 윤 회장이 약 12억 원대 장기수선충당금 횡령 혐의로 지적되고 있으며, 관악구청 앞에서 시민 집회가 열려 철저한 수사를 촉구하고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "e26a26b06eea5d74",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "에그엘로우 관리단 윤 회장",
+      "source": "fd656ea4dc4f74f9",
+      "target": "4c685c92f2ca7724",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "12억 원대 장기수선충당금 횡령 의혹",
+      "source": "fd656ea4dc4f74f9",
+      "target": "d22ea37820663fd6",
+      "key": "HAS_ISSUE"
+    },
+    {
       "rel": "AFFECTS_AXIS",
-      "polarity": "positive",
-      "strength": 4,
-      "note": "친환경 주거타운 개발로 환경 친화적 특성 강조",
-      "article": "ebb68b6c743a2605",
-      "source": "59f775681c6ecbf5",
+      "polarity": "negative",
+      "strength": 5,
+      "note": "관리단 회장의 장기수선충당금 횡령 혐의는 투명성과 윤리 기준 위반으로 ESG 평가에 심각한 부정적 영향",
+      "article": "e26a26b06eea5d74",
+      "source": "fd656ea4dc4f74f9",
       "target": "5e774fbeec33ea7f",
       "key": "AFFECTS_AXIS"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동을 포함한 역세권 중심의 미리내집 공급 프로젝트에서 총 441가구가 모집되며, 해당 지역의 부동산 시장 활성화를 반영하고 있다.",
-      "source": "59f775681c6ecbf5",
-      "target": "cfecb118cbef5afd",
+      "evidence": "에그엘로우가 위치한 서울 관악구 봉천동 지역이 중국 투자자들의 부동산 투자 대상으로 샤오홍슈에서 소개되고 있으며, 시세차익을 강조하는 투자 정보가 확산 중이다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "b3850c6e217722d7",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동과 신대방동, 강북구 미아동 등 역세권을 중심으로 총 85개 단지",
-      "source": "59f775681c6ecbf5",
-      "target": "5ba80cd72252c50a",
+      "evidence": "서울 관악구 봉천동 지역의 아파트가 지난주 0.28% 상승률을 기록했으며, 대단지 중심으로 높은 상승세를 보이고 있다. 올해 서울 아파트 시장 전반적으로 8% 상승이 전망되고 있다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "df95a735b7b17966",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "서울시가 신혼부부 대상 '미리내집' 사업으로 동작구 상도동을 포함한 85개 아파트 단지 441가구를 모집 중이며, 신규 단지 '힐스테이트동작시그니처' 91가구가 포함됨.",
-      "source": "59f775681c6ecbf5",
-      "target": "37ad5d89d416a9db",
+      "evidence": "삼성전자가 서울 관악구 봉천동에서 3,750억 원대 규모의 계약을 체결했으며, 이는 최근 매출액의 3.01% 수준이다. 대상 자산 에그엘로우가 위치한 봉천동 지역의 부동산 거래 활동을 보여주는 사례다.",
+      "source": "fd656ea4dc4f74f9",
+      "target": "429c0dc2135d7004",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 상도동에서 상도15구역 재개발 사업이 진행 중이며, 이로 인해 인근 부동산 가격이 상승 추세를 보이고 있다. 건설사 6곳이 이 재개발 사업에 관심을 보이고 있다.",
-      "source": "59f775681c6ecbf5",
-      "target": "32bc213cbaf3edf0",
+      "evidence": "관악구 봉천동 지역의 부동산 가격이 급등하고 있으며, 같은 지역의 '관악푸르지오' 아파트가 4년 7개월 만에 약 25% 상승했다. 대상 자산 '에그엘로우'는 같은 봉천동에 위치하여 지역 시장 동향의 영향을 받을 것으로 예상된다.",
+      "source": "fd33710e0b16682c",
+      "target": "8955faf4f096aaf2",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "LOCATED_IN",
-      "evidence": "상도동에서 상도15구역 재개발은 동작구 상도동 279번지 일대에 진행",
-      "source": "59f775681c6ecbf5",
-      "target": "3f988d57a4aee089",
+      "evidence": "관악구 봉천동 '관악푸르지오'",
+      "source": "fd33710e0b16682c",
+      "target": "4b7135c8f9864c35",
       "key": "LOCATED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
-      "source": "59f775681c6ecbf5",
-      "target": "3d7909cde8b20369",
+      "evidence": "5월 9일 다주택자 양도소득세 중과 유예 종료를 앞두고 서울 부동산 시장 전망을 다룬 기사로, 관악구 봉천동의 다른 아파트(관악푸르지오)가 사례로 언급됨.",
+      "source": "fd33710e0b16682c",
+      "target": "8be7f14db5fd1b32",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
-      "source": "59f775681c6ecbf5",
-      "target": "7a86f7ce3f868ae9",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "fd33710e0b16682c",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "fd33710e0b16682c",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 신고가 속출 현상을 다루는 기사로, 관악구 봉천동 지역의 부동산 시장 활성화를 언급하고 있으나 대상 자산 '에그엘로우'는 직접 언급되지 않음.",
+      "source": "fd33710e0b16682c",
+      "target": "5fc6db6a822328af",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 가격이 급등하고 있으며, 같은 지역의 '관악푸르지오' 아파트가 4년 7개월 만에 약 25% 상승했다. 대상 자산 '에그엘로우'는 같은 봉천동에 위치하여 지역 시장 동향의 영향을 받을 것으로 예상된다.",
+      "source": "4b7135c8f9864c35",
+      "target": "8955faf4f096aaf2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 복권아파트 재건축 프로젝트가 조합 설립 후 2년 경과했으며, 소규모 재건축의 시공 지연 문제가 언급되고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "662b199dbfc90645",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "다주택 양도세 중과 유예 종료를 앞두고 서울 부동산 시장이 변동하고 있으며, 관악구 봉천동 일대도 상승 흐름이 계속되고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "def34a12f70185b0",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "HAS_EVENT",
-      "evidence": "장승배기 종합행정타운이 지난 2025년 3월 완공돼 동작구청 신청사와 구의회, 보건소 등이 입주",
-      "source": "59f775681c6ecbf5",
-      "target": "5147641168e21629",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "HAS_METRIC",
-      "evidence": "지하철역 접근성이 주거 편의성과 자산 가치에 영향을 미치는 요소",
-      "source": "59f775681c6ecbf5",
-      "target": "f3fe7cd978435058",
-      "key": "HAS_METRIC"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 재개발 수요 증가로 빌라 거래량이 61% 급증했으며, 해당 지역 다세대 주택이 감정가 대비 123%의 높은 가격으로 낙찰되는 현상이 나타나고 있다.",
-      "source": "59f775681c6ecbf5",
-      "target": "a45f8fb8c10ed45c",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 일대에서 진행 중인 노량진뉴타운 재건축·재개발 사업과 관련하여 공공이 주도하는 이주단지 조성 실험이 추진되고 있다. 이주단지는 지하1층~지상 5층 규모로 계획되어 있다.",
-      "source": "59f775681c6ecbf5",
-      "target": "458d661aed1fd39f",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 노량진뉴타운 일대 모습... 상도동",
-      "source": "59f775681c6ecbf5",
-      "target": "03c6e143e1625ffc",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 사당로 인근에서 '엑소디움 상도역' 프로젝트가 공급되었으며, 10년 거주 후 분양전환 방식을 적용하는 임차인 친화적 모델을 제시하고 있다.",
-      "source": "59f775681c6ecbf5",
-      "target": "5058940fe0f136cc",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 노량진뉴타운 개발 관련 기사에서 대상 자산 인근의 상도동 'e편한세상 상도 노빌리티' 아파트(2018년 입주, 893가구, 84㎡형)가 비교 사례로 언급되었다. 노량진뉴타운의 고분양가 논란과 청약 선전 현황을 다루고 있다.",
-      "source": "59f775681c6ecbf5",
-      "target": "165dfa2666d49328",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "인근에서 893가구 규모로 2018년 입주한 상도동 'e편한세상 상도 노빌리티'",
-      "source": "59f775681c6ecbf5",
-      "target": "f6d26dce50cea0b8",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
-      "source": "59f775681c6ecbf5",
-      "target": "3975843354a36cb6",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "동작구 상도동 지역의 재개발 기대감",
-      "source": "59f775681c6ecbf5",
-      "target": "ea45ebd78c496de4",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 상도동 일대의 월세 상승 현황을 다룬 기사로, 원룸 월세가 보증금 1000만원 기준 약 65만원 수준임을 보도하고 있다. 청년층의 주거비 부담 증가 추세를 반영하는 시장 뉴스다.",
-      "source": "59f775681c6ecbf5",
-      "target": "52444e9e4e52e6b0",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "상도동 일대 원룸 월세는 보증금 1000만원 기준 약 65만원 수준",
-      "source": "59f775681c6ecbf5",
-      "target": "f9beeaf4642c3f2f",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
-      "source": "59f775681c6ecbf5",
-      "target": "aeed3650b35d0445",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 사당로 일대에서 '상도역 대우 엑소디움' 민간임대 아파트 청약이 진행 중이며, 이는 서울 주택시장의 주거 환경 변화를 반영하는 것으로 분석되고 있다.",
-      "source": "59f775681c6ecbf5",
-      "target": "090775e395269739",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 동작구 상도동에서 공급 중인 장기 민간임대 아파트 '엑소디움 상도역'이 언급되며, 서울 전월세시장의 전세 감소와 월세 상승 추세 속에서 장기임대 수요 증가를 보여주는 사례로 제시됨.",
-      "source": "f88db9097feb9562",
-      "target": "370678925a3ffa27",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "동작구 상도동에서 공급 중인 장기 민간임대 아파트인 '엑소디움 상도역'",
-      "source": "f88db9097feb9562",
-      "target": "d7d4b14f9213620a",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "최근 동작구 상도동에서 공급 중인 장기 민간임대 아파트인 '엑소디움 상도역'의 해당 단지는 최대 10년까지",
-      "source": "f88db9097feb9562",
-      "target": "7c86aee11ae118c6",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동의 장기 일반민간임대주택 '엑소디움 상도역'이 평균 3.76대 1의 높은 경쟁률로 당첨자 발표를 완료했으며, 현재 계약 진행 중이다. 상도동 일대에서는 신속통합기획을 통한 재개발도 동시에 진행 중이다.",
-      "source": "f88db9097feb9562",
-      "target": "af0cb4645a7002f6",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "서울 동작구 상도동에 공급되는 장기 일반민간임대주택 '엑소디움 상도역'",
-      "source": "f88db9097feb9562",
-      "target": "332ecc1d4e957cb5",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "지난 18일 당첨자 발표",
-      "source": "f88db9097feb9562",
-      "target": "42b72ed900fc8972",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 사당로 인근에서 '엑소디움 상도역' 프로젝트가 공급되었으며, 10년 거주 후 분양전환 방식을 적용하는 임차인 친화적 모델을 제시하고 있다.",
-      "source": "f88db9097feb9562",
-      "target": "5058940fe0f136cc",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "서울 동작구 상도동에서 공급된 '엑소디움 상도역'",
-      "source": "f88db9097feb9562",
-      "target": "59f775681c6ecbf5",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "서울 동작구 상도동",
-      "source": "f88db9097feb9562",
-      "target": "1b5bdcc4ec333931",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "지난 11일부터 16일까지 진행된 청약 접수",
-      "source": "f88db9097feb9562",
-      "target": "ff3031b6b7291175",
+      "evidence": "다주택 양도세 중과 유예 조치가 오는 9일 종료",
+      "source": "4b7135c8f9864c35",
+      "target": "265b9e0753afec09",
       "key": "HAS_EVENT"
     },
     {
       "rel": "HAS_ISSUE",
-      "evidence": "전세 물량 축소와 월세 부담 증가가 맞물리면서",
-      "source": "f88db9097feb9562",
-      "target": "60be71237041e1ad",
+      "evidence": "관악구 봉천동 일대도 상승 흐름이 이어지고 있다",
+      "source": "4b7135c8f9864c35",
+      "target": "9eeb84a0d68aea0e",
       "key": "HAS_ISSUE"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 동작구 상도동에서 공급 중인 장기 민간임대 아파트 '엑소디움 상도역'이 언급되며, 서울 전월세시장의 전세 감소와 월세 상승 추세 속에서 장기임대 수요 증가를 보여주는 사례로 제시됨.",
-      "source": "d7d4b14f9213620a",
-      "target": "370678925a3ffa27",
+      "evidence": "관악구 봉천동 지역의 전세 시장 동향을 다룬 기사로, 에그엘로우와 동일 지역의 인접 물건('e편한세상서울대입구')의 보증금 상승 추세를 보도하고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "ad295cbe12165a50",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "평균 보증금 1년새 7400만원 '쑥'",
+      "source": "4b7135c8f9864c35",
+      "target": "ad545b3dc33c75f8",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "5acaacf27245b781",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동을 포함한 역세권 중심의 미리내집 공급 프로젝트에서 총 441가구가 모집되며, 해당 지역의 부동산 시장 활성화를 반영하고 있다.",
-      "source": "d7d4b14f9213620a",
-      "target": "cfecb118cbef5afd",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 '상도파크자이' 아파트가 전용 84㎡ 기준 21억5000만원에 거래되었으며, 인근 노량진동 신규 분양 아파트와의 청약경쟁률 격차를 보여주는 사례로 언급되었다.",
-      "source": "d7d4b14f9213620a",
-      "target": "39d182a43916536a",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
-      "source": "d7d4b14f9213620a",
-      "target": "8a3ef4c8df2904a8",
+      "evidence": "관악구 등 6곳으로 모두 전주 대비 0.21% 올랐다",
+      "source": "4b7135c8f9864c35",
+      "target": "c63b631a1f20e095",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "HAS_ISSUE",
-      "evidence": "서울에서 아파트 매물이 가장 크게",
-      "source": "d7d4b14f9213620a",
+      "evidence": "급매물 소진된 듯",
+      "source": "4b7135c8f9864c35",
+      "target": "b2bffce36a31aa1d",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 매매가격이 일주일 새 0.15% 상승했으며, 관악구 봉천동 대단지 중심으로 0.28% 상승률을 기록했다.",
+      "source": "4b7135c8f9864c35",
+      "target": "b012af24ebf64a1e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.28%)는 봉천동과 신림동 대단지 위주로",
+      "source": "4b7135c8f9864c35",
+      "target": "34cacf0a073f574c",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "관악구(0.28%)는 봉천동과 신림동 대단지 위주로 큰 폭의 상승률",
+      "source": "4b7135c8f9864c35",
+      "target": "d57f8edefb96204f",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트 전셋값 상승 추세를 다룬 기사로, 동원낙성대 아파트 사례를 언급하고 있으나 대상 자산인 에그엘로우와는 직접적 관련이 없음.",
+      "source": "4b7135c8f9864c35",
+      "target": "369bc35db1080afe",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "관악구 봉천동 지역도 신고가를 기록",
+      "source": "4b7135c8f9864c35",
+      "target": "98ce501cace77fff",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "매물은 줄어들고 있다",
+      "source": "4b7135c8f9864c35",
       "target": "9509116f9352cf50",
       "key": "HAS_ISSUE"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "GS건설의 '미리내집' 프로젝트에서 동작구 상도동 힐스테이트 동작시그니처 91세대가 입주자 모집 대상으로 선정되었다. 상도동을 포함한 85개 단지에서 모집이 진행 중이다.",
-      "source": "d7d4b14f9213620a",
-      "target": "1a1a47e0b4b3126a",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "a0f04b2ce974e6c2",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 힐스테이트 동작시그니처가 미리내집 프로그램으로 91세대를 모집 중이며, 보증금 70% 수준으로 전세 진입이 가능한 신규 단지로 주목받고 있다.",
-      "source": "d7d4b14f9213620a",
-      "target": "865cc842f10f6317",
+      "evidence": "10·26 부동산 대책 영향으로 관악구 봉천동 지역 거래 활발",
+      "source": "4b7135c8f9864c35",
+      "target": "9f414aecdda319f2",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
-      "source": "d7d4b14f9213620a",
-      "target": "3d7909cde8b20369",
+      "evidence": "서울 외곽 지역의 신고가 속출 현상을 다루는 기사로, 관악구 봉천동 지역의 부동산 시장 활성화를 언급하고 있으나 대상 자산 '에그엘로우'는 직접 언급되지 않음.",
+      "source": "4b7135c8f9864c35",
+      "target": "5fc6db6a822328af",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "양도세 중과 D-30 임박으로 인한 신고가 속출",
+      "source": "4b7135c8f9864c35",
+      "target": "41f4c12fee195f70",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "4b7135c8f9864c35",
+      "target": "661d05d833a54a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전셋값이 상승세를 보이고 있으며, 관악구 봉천동이 0.24% 상승률을 기록했다. 세입자들이 서울을 떠나는 추세가 나타나고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "d4d3d7cee8c6691f",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "HAS_METRIC",
-      "evidence": "동작구 상도동 일대. 구축도 16억원대로 매매 호가",
-      "source": "d7d4b14f9213620a",
-      "target": "dd01e33010fbb629",
-      "key": "HAS_METRIC"
-    },
-    {
-      "rel": "HAS_ISSUE",
-      "evidence": "다주택자 양도소득세 중과 시행",
-      "source": "d7d4b14f9213620a",
-      "target": "be3975cb2c4a72d0",
-      "key": "HAS_ISSUE"
-    },
-    {
-      "rel": "HAS_METRIC",
-      "evidence": "동작구 아파트 매물은 전날 기준",
-      "source": "d7d4b14f9213620a",
-      "target": "328a9d452e7ca3e8",
+      "evidence": "관악구(0.24%)는 봉천동",
+      "source": "4b7135c8f9864c35",
+      "target": "b710766327b10c2d",
       "key": "HAS_METRIC"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 '상도 푸르지오 클라베뉴' 분양 프로젝트에서 84㎡ 소형 평면의 공급이 59㎡ 대비 증가하는 추세를 보이고 있으며, 이는 건축비 상승에 따른 가격 경쟁력 변화를 반영하고 있다.",
-      "source": "d7d4b14f9213620a",
-      "target": "c23d55f45a1503bc",
+      "evidence": "관악구 봉천동이 KB전세대출 통계에서 전국 2위 지역으로 선정되었으며, 상대적으로 저렴한 전셋값과 높은 수요가 특징인 것으로 분석됨.",
+      "source": "4b7135c8f9864c35",
+      "target": "675d3c5d140d00bc",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "서울 전역의 아파트 전세 매물이 급감하면서 전세대란이 심화되고 있으며, 동작구 상도동의 상도더샵1차도 전세 매물 1건에 불과한 상황이다.",
-      "source": "d7d4b14f9213620a",
-      "target": "2e31e5995c7e5b92",
+      "evidence": "2위는 관악구 봉천동",
+      "source": "4b7135c8f9864c35",
+      "target": "8854efb364469ba1",
       "key": "MENTIONED_IN"
     },
     {
-      "rel": "HAS_ISSUE",
-      "evidence": "동작구에서도 상도동 상도더샵1차는 전세 1건",
-      "source": "d7d4b14f9213620a",
-      "target": "e6950df4c62abf4d",
-      "key": "HAS_ISSUE"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 재개발 수요 증가로 빌라 거래량이 61% 급증했으며, 해당 지역 다세대 주택이 감정가 대비 123%의 높은 가격으로 낙찰되는 현상이 나타나고 있다.",
-      "source": "d7d4b14f9213620a",
-      "target": "a45f8fb8c10ed45c",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "동작구 상도동 지역의 재개발 수요 증가",
-      "source": "d7d4b14f9213620a",
-      "target": "5523e2bc9fc22425",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "HAS_ISSUE",
-      "evidence": "재개발 기대감에 따른 가격 상승",
-      "source": "d7d4b14f9213620a",
-      "target": "55c83b961b547d3c",
-      "key": "HAS_ISSUE"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 '상도두산위브' 아파트가 신고가를 기록했으나 실제 거래량은 제한적인 상황을 보이고 있다. 규제로 인한 가격 상승과 거래 부진의 불일치 현상이 나타나고 있다.",
-      "source": "d7d4b14f9213620a",
-      "target": "a3726b43d67ad95d",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 재개발 수요가 높아지고 있으며, 경매 시장에서 다세대 주택이 감정가의 123%에 낙찰되어 강세를 보이고 있다. 삼성물산의 정비사업 수주 확대가 강남권 핵심단지 개발을 촉진할 것으로 예상된다.",
-      "source": "d7d4b14f9213620a",
-      "target": "3d0a651efcc6648a",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 일대가 7500가구 규모의 친환경 주거타운으로 재개발되며 여의도, 강남 등 주요 업무지구의 배후 주거지역으로 거듭나고 있다. 지역 부동산 업계는 정비사업 본격화에 따른 가치 상승을 예상하고 있다.",
-      "source": "d7d4b14f9213620a",
-      "target": "ebb68b6c743a2605",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 동작구 상도동에서 공급 중인 장기 민간임대 아파트 '엑소디움 상도역'이 언급되며, 서울 전월세시장의 전세 감소와 월세 상승 추세 속에서 장기임대 수요 증가를 보여주는 사례로 제시됨.",
-      "source": "7c86aee11ae118c6",
-      "target": "370678925a3ffa27",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_METRIC",
-      "evidence": "장기임대 수요↑",
-      "source": "7c86aee11ae118c6",
-      "target": "0ba5ac81cc5f69b7",
-      "key": "HAS_METRIC"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 동작구 상도동에서 공급 중인 장기 민간임대 아파트 '엑소디움 상도역'이 언급되며, 서울 전월세시장의 전세 감소와 월세 상승 추세 속에서 장기임대 수요 증가를 보여주는 사례로 제시됨.",
-      "source": "0ba5ac81cc5f69b7",
-      "target": "370678925a3ffa27",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
-      "source": "6ba432fb6e937d95",
-      "target": "bc6653e7d67e2ad4",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "AFFECTS_AXIS",
-      "evidence": "노량진 뉴타운이 완성되면 주변 상도동이나 동작구 일대 주거 환경도 함께 개선",
-      "source": "6ba432fb6e937d95",
-      "target": "59f775681c6ecbf5",
-      "key": "AFFECTS_AXIS"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
-      "source": "1b5bdcc4ec333931",
-      "target": "bc6653e7d67e2ad4",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
-      "source": "1b5bdcc4ec333931",
-      "target": "7a86f7ce3f868ae9",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 사당로 인근에서 '엑소디움 상도역' 프로젝트가 공급되었으며, 10년 거주 후 분양전환 방식을 적용하는 임차인 친화적 모델을 제시하고 있다.",
-      "source": "1b5bdcc4ec333931",
-      "target": "5058940fe0f136cc",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
-      "source": "1b5bdcc4ec333931",
-      "target": "aeed3650b35d0445",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
-      "source": "2938cea0631ed036",
-      "target": "bc6653e7d67e2ad4",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
-      "source": "06a256c114e3c3f3",
-      "target": "bc6653e7d67e2ad4",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "노량진 뉴타운 개발로 인해 인접한 상도동과 동작구 일대의 주거 환경이 함께 개선될 것으로 예상되며, 저평가받던 지역이 여의도·용산을 잇는 신흥 주거지로 주목받고 있다.",
-      "source": "b6cecfc335f8dcc2",
-      "target": "bc6653e7d67e2ad4",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "노량진 뉴타운이 완성되면 주변 상도동...주거 환경도 함께 개선",
-      "source": "b6cecfc335f8dcc2",
-      "target": "59f775681c6ecbf5",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동을 포함한 역세권 중심의 미리내집 공급 프로젝트에서 총 441가구가 모집되며, 해당 지역의 부동산 시장 활성화를 반영하고 있다.",
-      "source": "5ba80cd72252c50a",
-      "target": "cfecb118cbef5afd",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동을 포함한 역세권 중심의 미리내집 공급 프로젝트에서 총 441가구가 모집되며, 해당 지역의 부동산 시장 활성화를 반영하고 있다.",
-      "source": "bcb8974132ff0a89",
-      "target": "cfecb118cbef5afd",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "메이플자이 전용 43㎡는 올해 4월 체결된 전세 실거래가",
-      "source": "bcb8974132ff0a89",
-      "target": "5ba80cd72252c50a",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
-      "source": "c9c2dac5a47dd5aa",
-      "target": "e6fe3a2953786598",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "상도역 인근 '상도역 엑소디움'",
-      "source": "c9c2dac5a47dd5aa",
-      "target": "f9beeaf4642c3f2f",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
-      "source": "f9beeaf4642c3f2f",
-      "target": "e6fe3a2953786598",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 상도동 일대의 월세 상승 현황을 다룬 기사로, 원룸 월세가 보증금 1000만원 기준 약 65만원 수준임을 보도하고 있다. 청년층의 주거비 부담 증가 추세를 반영하는 시장 뉴스다.",
-      "source": "f9beeaf4642c3f2f",
-      "target": "52444e9e4e52e6b0",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_ISSUE",
-      "evidence": "대학가 덮친 월세 상승",
-      "source": "f9beeaf4642c3f2f",
-      "target": "97afb262fe0edbae",
-      "key": "HAS_ISSUE"
-    },
-    {
-      "rel": "HAS_METRIC",
-      "evidence": "상도동 일대 원룸 월세는 보증금 1000만원 기준 약 65만원 수준",
-      "source": "f9beeaf4642c3f2f",
-      "target": "5ecb2328ed7f2dc5",
-      "key": "HAS_METRIC"
-    },
-    {
-      "rel": "HAS_METRIC",
-      "evidence": "동작구는 평균 월세가 62만원으로 서울 평균보단 낮은 편",
-      "source": "f9beeaf4642c3f2f",
-      "target": "23335b1831175bdd",
-      "key": "HAS_METRIC"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
-      "source": "b4ca8411a62e5c5c",
-      "target": "e6fe3a2953786598",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "완공되면서 동작구청 신청사와 구의회, 보건소 등이 입주",
-      "source": "b4ca8411a62e5c5c",
-      "target": "c9c2dac5a47dd5aa",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
-      "source": "b4ca8411a62e5c5c",
-      "target": "a2388e784ebfb805",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
-      "source": "3d8e5a21e2b578da",
-      "target": "e6fe3a2953786598",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "완공되면서 동작구청 신청사와 구의회, 보건소 등이 입주",
-      "source": "3d8e5a21e2b578da",
-      "target": "c9c2dac5a47dd5aa",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
-      "source": "a63f2ad49fcc24e3",
-      "target": "e6fe3a2953786598",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "완공되면서 동작구청 신청사와 구의회, 보건소 등이 입주",
-      "source": "a63f2ad49fcc24e3",
-      "target": "c9c2dac5a47dd5aa",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "상도역 인근 '상도역 엑소디움' 프로젝트 관련 기사로, 동작구 상도동 일대의 지하철 접근성과 도시개발 현황을 다룸. 대상 자산이 위치한 상도동 지역의 개발 맥락을 제공.",
-      "source": "e3a2536aa87fb703",
-      "target": "e6fe3a2953786598",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "AFFECTS_AXIS",
-      "evidence": "지하철 접근성이 주거 여건과 가격 형성에 영향",
-      "source": "e3a2536aa87fb703",
-      "target": "f9beeaf4642c3f2f",
-      "key": "AFFECTS_AXIS"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 '상도파크자이' 아파트가 전용 84㎡ 기준 21억5000만원에 거래되었으며, 인근 노량진동 신규 분양 아파트와의 청약경쟁률 격차를 보여주는 사례로 언급되었다.",
-      "source": "fb41ba056aabf6bc",
-      "target": "39d182a43916536a",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "인근 상도동 '상도파크자이(2016년 입주)'",
-      "source": "fb41ba056aabf6bc",
-      "target": "d7d4b14f9213620a",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "상도동 '상도파크자이(2016년 입주)' 전용 84㎡가 지난달 30일 21억5000만원에 거래된 바 있다",
-      "source": "fb41ba056aabf6bc",
-      "target": "e4ca6cee7ad85380",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 '상도파크자이' 아파트가 전용 84㎡ 기준 21억5000만원에 거래되었으며, 인근 노량진동 신규 분양 아파트와의 청약경쟁률 격차를 보여주는 사례로 언급되었다.",
-      "source": "d5b6b4d31123b5ae",
-      "target": "39d182a43916536a",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 노량진동 '라클라체 자이 드파인'(노량진6구역... 청약경쟁률",
-      "source": "d5b6b4d31123b5ae",
-      "target": "e4ca6cee7ad85380",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 '상도파크자이' 아파트가 전용 84㎡ 기준 21억5000만원에 거래되었으며, 인근 노량진동 신규 분양 아파트와의 청약경쟁률 격차를 보여주는 사례로 언급되었다.",
-      "source": "e4ca6cee7ad85380",
-      "target": "39d182a43916536a",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
-      "source": "4d19907aa9f10a51",
-      "target": "8a3ef4c8df2904a8",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "동작구 상도동 '동작 센트럴 동문 디 이스트'",
-      "source": "4d19907aa9f10a51",
-      "target": "d7d4b14f9213620a",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "OPERATED_BY",
-      "evidence": "동문건설, 서울 동작구 일원 '동작 센트럴 동문 디 이스트' 분양 예정",
-      "source": "4d19907aa9f10a51",
-      "target": "15efe9f721319095",
-      "key": "OPERATED_BY"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "이달 분양",
-      "source": "4d19907aa9f10a51",
-      "target": "f1f7291392214f11",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
-      "source": "4d19907aa9f10a51",
-      "target": "f2c402a988d3425c",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "동작구청 종합행정타운이 도보 생활권에 있어 행정 편의도 뛰어나다",
-      "source": "4d19907aa9f10a51",
-      "target": "0977f8fd533ccc5f",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "노량진뉴타운 개발...풍부한 개발 호재",
-      "source": "4d19907aa9f10a51",
-      "target": "3d2908a4b7bd3fbb",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "복합문화센터 신설...풍부한 개발 호재",
-      "source": "4d19907aa9f10a51",
-      "target": "e76bc604daa18ca4",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "상도동 재개발...풍부한 개발 호재",
-      "source": "4d19907aa9f10a51",
-      "target": "a85a09ca061072b8",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
-      "source": "15efe9f721319095",
-      "target": "8a3ef4c8df2904a8",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
-      "source": "15efe9f721319095",
-      "target": "f2c402a988d3425c",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
-      "source": "15c29e9d625795b9",
-      "target": "8a3ef4c8df2904a8",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "부동산 빅데이터 업체 아실에 따르면",
-      "source": "15c29e9d625795b9",
-      "target": "f1f7291392214f11",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
-      "source": "15c29e9d625795b9",
-      "target": "3d7909cde8b20369",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "부동산 빅데이터 업체 아실에 따르면",
-      "source": "15c29e9d625795b9",
-      "target": "328a9d452e7ca3e8",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
-      "source": "f1f7291392214f11",
-      "target": "8a3ef4c8df2904a8",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 지역의 아파트 매물 부족 현상 속에서 동문건설이 시공하는 '동작 센트럴 동문 디 이스트' 신규 분양이 주목받고 있으며, 입지 좋은 지역의 청약이 수급 불균형 해소의 대안으로 평가되고 있다.",
-      "source": "9509116f9352cf50",
-      "target": "8a3ef4c8df2904a8",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울시가 신혼부부 대상 '미리내집' 사업으로 동작구 상도동을 포함한 85개 아파트 단지 441가구를 모집 중이며, 신규 단지 '힐스테이트동작시그니처' 91가구가 포함됨.",
-      "source": "0fc38e3a6ac0df01",
-      "target": "37ad5d89d416a9db",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "동작구 상도동 신규 단지 '힐스테이트동작시그니처' 91가구",
-      "source": "0fc38e3a6ac0df01",
-      "target": "59f775681c6ecbf5",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "OPERATED_BY",
-      "evidence": "서울시... 신규 공급 단지는 '힐스테이트동작시그니처'",
-      "source": "0fc38e3a6ac0df01",
-      "target": "ce1c470c17738e5c",
-      "key": "OPERATED_BY"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울시가 신혼부부 대상 '미리내집' 사업으로 동작구 상도동을 포함한 85개 아파트 단지 441가구를 모집 중이며, 신규 단지 '힐스테이트동작시그니처' 91가구가 포함됨.",
-      "source": "ce1c470c17738e5c",
-      "target": "37ad5d89d416a9db",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울시가 신혼부부 대상 '미리내집' 사업으로 동작구 상도동을 포함한 85개 아파트 단지 441가구를 모집 중이며, 신규 단지 '힐스테이트동작시그니처' 91가구가 포함됨.",
-      "source": "58f0953b18b98370",
-      "target": "37ad5d89d416a9db",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동ㆍ신대방동... 신규 단지 124가구를 포함해 총 85개 아파트 단지에서 441가구",
-      "source": "58f0953b18b98370",
-      "target": "59f775681c6ecbf5",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "GS건설의 '미리내집' 프로젝트에서 동작구 상도동 힐스테이트 동작시그니처 91세대가 입주자 모집 대상으로 선정되었다. 상도동을 포함한 85개 단지에서 모집이 진행 중이다.",
-      "source": "58f0953b18b98370",
-      "target": "1a1a47e0b4b3126a",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "GS건설의 '미리내집' 프로젝트에서 동작구 상도동 힐스테이트 동작시그니처 91세대가 입주자 모집 대상으로 선정되었다. 상도동을 포함한 85개 단지에서 모집이 진행 중이다.",
-      "source": "0c1df407ae4f2ee0",
-      "target": "1a1a47e0b4b3126a",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "OPERATED_BY",
-      "evidence": "GS건설이... 모집은 동작구 상도동·신대방동... 상도동 힐스테이트 동작시그니처 91세대",
-      "source": "0c1df407ae4f2ee0",
-      "target": "59832c4084c6e82e",
-      "key": "OPERATED_BY"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "신규 단지인 힐스테이트 동작시그니처(동작구 상도동)",
-      "source": "0c1df407ae4f2ee0",
-      "target": "d7d4b14f9213620a",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "상도동 힐스테이트 동작시그니처 91세대 등이... 모집",
-      "source": "0c1df407ae4f2ee0",
-      "target": "58f0953b18b98370",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 힐스테이트 동작시그니처가 미리내집 프로그램으로 91세대를 모집 중이며, 보증금 70% 수준으로 전세 진입이 가능한 신규 단지로 주목받고 있다.",
-      "source": "0c1df407ae4f2ee0",
-      "target": "865cc842f10f6317",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "힐스테이트 동작시그니처(동작구 상도동)는 91세대를 모집한다",
-      "source": "0c1df407ae4f2ee0",
-      "target": "48b0d21f31002d1d",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "도보 10분 내 상도역",
-      "source": "0c1df407ae4f2ee0",
-      "target": "2336210e35f24b53",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "지하철 7호선 상도역과 장승배기역과...",
-      "source": "0c1df407ae4f2ee0",
-      "target": "2336210e35f24b53",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동에 위치한 '힐스테이트 동작시그니처' 신규 아파트 단지가 91가구 공급되며, 지하철 7호선 접근성을 갖춘 신혼부부 대상 프로젝트로 소개됨. 분할납부제 등 구매 방식에 대한 전문가 의견 포함.",
-      "source": "0c1df407ae4f2ee0",
-      "target": "07ceb4353a3ea314",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_ISSUE",
-      "evidence": "분할납부제는 구조적으로 부담을 뒤로 미루는 방식",
-      "source": "0c1df407ae4f2ee0",
-      "target": "e8ffc6942d492341",
-      "key": "HAS_ISSUE"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "GS건설의 '미리내집' 프로젝트에서 동작구 상도동 힐스테이트 동작시그니처 91세대가 입주자 모집 대상으로 선정되었다. 상도동을 포함한 85개 단지에서 모집이 진행 중이다.",
-      "source": "59832c4084c6e82e",
-      "target": "1a1a47e0b4b3126a",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동의 장기 일반민간임대주택 '엑소디움 상도역'이 평균 3.76대 1의 높은 경쟁률로 당첨자 발표를 완료했으며, 현재 계약 진행 중이다. 상도동 일대에서는 신속통합기획을 통한 재개발도 동시에 진행 중이다.",
-      "source": "332ecc1d4e957cb5",
-      "target": "af0cb4645a7002f6",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "상도동 일대에서는 신속통합기획을 통한 재개발도 진행 중",
-      "source": "332ecc1d4e957cb5",
-      "target": "0c986a824a280aca",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동의 장기 일반민간임대주택 '엑소디움 상도역'이 평균 3.76대 1의 높은 경쟁률로 당첨자 발표를 완료했으며, 현재 계약 진행 중이다. 상도동 일대에서는 신속통합기획을 통한 재개발도 동시에 진행 중이다.",
-      "source": "42b72ed900fc8972",
-      "target": "af0cb4645a7002f6",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동의 장기 일반민간임대주택 '엑소디움 상도역'이 평균 3.76대 1의 높은 경쟁률로 당첨자 발표를 완료했으며, 현재 계약 진행 중이다. 상도동 일대에서는 신속통합기획을 통한 재개발도 동시에 진행 중이다.",
-      "source": "0c986a824a280aca",
-      "target": "af0cb4645a7002f6",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
-      "source": "0977f8fd533ccc5f",
-      "target": "f2c402a988d3425c",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
-      "source": "3d2908a4b7bd3fbb",
-      "target": "f2c402a988d3425c",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
-      "source": "e76bc604daa18ca4",
-      "target": "f2c402a988d3425c",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동문건설이 서울 동작구 상도동 일원에서 '동작 센트럴 동문 디 이스트' 프로젝트를 분양 예정하며, 동작구청 종합행정타운과 노량진뉴타운 개발 등 주변 개발 호재를 배경으로 하고 있다.",
-      "source": "a85a09ca061072b8",
-      "target": "f2c402a988d3425c",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 힐스테이트 동작시그니처가 미리내집 프로그램으로 91세대를 모집 중이며, 보증금 70% 수준으로 전세 진입이 가능한 신규 단지로 주목받고 있다.",
-      "source": "2336210e35f24b53",
-      "target": "865cc842f10f6317",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동에 위치한 '힐스테이트 동작시그니처' 신규 아파트 단지가 91가구 공급되며, 지하철 7호선 접근성을 갖춘 신혼부부 대상 프로젝트로 소개됨. 분할납부제 등 구매 방식에 대한 전문가 의견 포함.",
-      "source": "2336210e35f24b53",
-      "target": "07ceb4353a3ea314",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 사당로 일대에서 '상도역 대우 엑소디움' 민간임대 아파트 청약이 진행 중이며, 이는 서울 주택시장의 주거 환경 변화를 반영하는 것으로 분석되고 있다.",
-      "source": "2336210e35f24b53",
-      "target": "090775e395269739",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 힐스테이트 동작시그니처가 미리내집 프로그램으로 91세대를 모집 중이며, 보증금 70% 수준으로 전세 진입이 가능한 신규 단지로 주목받고 있다.",
-      "source": "48b0d21f31002d1d",
-      "target": "865cc842f10f6317",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 상도동에서 상도15구역 재개발 사업이 진행 중이며, 이로 인해 인근 부동산 가격이 상승 추세를 보이고 있다. 건설사 6곳이 이 재개발 사업에 관심을 보이고 있다.",
-      "source": "3f988d57a4aee089",
-      "target": "32bc213cbaf3edf0",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "상도15구역 재개발은 동작구 상도동 279번지 일대에 진행되는 사업",
-      "source": "3f988d57a4aee089",
-      "target": "d01e7549a53f06ef",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 상도동에서 상도15구역 재개발 사업이 진행 중이며, 이로 인해 인근 부동산 가격이 상승 추세를 보이고 있다. 건설사 6곳이 이 재개발 사업에 관심을 보이고 있다.",
-      "source": "d01e7549a53f06ef",
-      "target": "32bc213cbaf3edf0",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 상도동에서 상도15구역 재개발 사업이 진행 중이며, 이로 인해 인근 부동산 가격이 상승 추세를 보이고 있다. 건설사 6곳이 이 재개발 사업에 관심을 보이고 있다.",
-      "source": "4f861cf5566c3db3",
-      "target": "32bc213cbaf3edf0",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "상도15구역 내 상도동 성대빌라",
-      "source": "4f861cf5566c3db3",
-      "target": "3f988d57a4aee089",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 상도동에서 상도15구역 재개발 사업이 진행 중이며, 이로 인해 인근 부동산 가격이 상승 추세를 보이고 있다. 건설사 6곳이 이 재개발 사업에 관심을 보이고 있다.",
-      "source": "6360fad15539b208",
-      "target": "32bc213cbaf3edf0",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "상도15구역 재개발은 동작구 상도도 279번지 일대에 진행되는 사업으로 구역면적 약 14만1286.8㎡에 지하 8층... 재개발 기대감으로 인근 부동산 가격은 상승 추세다",
-      "source": "6360fad15539b208",
-      "target": "d01e7549a53f06ef",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
-      "source": "dd01e33010fbb629",
-      "target": "3d7909cde8b20369",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
-      "source": "be3975cb2c4a72d0",
-      "target": "3d7909cde8b20369",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 동작구 상도동 일대에서 구축 아파트의 매매 호가가 16억원대로 형성되어 있으며, 다주택자 양도소득세 중과 정책의 영향을 받고 있는 상황이다.",
-      "source": "328a9d452e7ca3e8",
-      "target": "3d7909cde8b20369",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 '상도 푸르지오 클라베뉴' 분양 프로젝트에서 84㎡ 소형 평면의 공급이 59㎡ 대비 증가하는 추세를 보이고 있으며, 이는 건축비 상승에 따른 가격 경쟁력 변화를 반영하고 있다.",
-      "source": "352fedf0fc15e4c0",
-      "target": "c23d55f45a1503bc",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "동작구 상도동 '상도 푸르지오 클라베뉴'",
-      "source": "352fedf0fc15e4c0",
-      "target": "d7d4b14f9213620a",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "HAS_ISSUE",
-      "evidence": "건축비 상승에 따른 분양가 경쟁력 변화로 84㎡ 공급 증가",
-      "source": "352fedf0fc15e4c0",
-      "target": "e9f160a69f4d05a9",
-      "key": "HAS_ISSUE"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 '상도 푸르지오 클라베뉴' 분양 프로젝트에서 84㎡ 소형 평면의 공급이 59㎡ 대비 증가하는 추세를 보이고 있으며, 이는 건축비 상승에 따른 가격 경쟁력 변화를 반영하고 있다.",
-      "source": "51cbb43d26b2b4fd",
-      "target": "c23d55f45a1503bc",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 '상도 푸르지오 클라베뉴' 분양 프로젝트에서 84㎡ 소형 평면의 공급이 59㎡ 대비 증가하는 추세를 보이고 있으며, 이는 건축비 상승에 따른 가격 경쟁력 변화를 반영하고 있다.",
-      "source": "8b48dce43a9153d9",
-      "target": "c23d55f45a1503bc",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "남혁우 우리은행 부동산연구원은 청약자가 원하는 입지에 분양받을 수 있는 물건 가격이 건축비 상승...",
-      "source": "8b48dce43a9153d9",
-      "target": "e9f160a69f4d05a9",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동의 '상도 푸르지오 클라베뉴' 분양 프로젝트에서 84㎡ 소형 평면의 공급이 59㎡ 대비 증가하는 추세를 보이고 있으며, 이는 건축비 상승에 따른 가격 경쟁력 변화를 반영하고 있다.",
-      "source": "e9f160a69f4d05a9",
-      "target": "c23d55f45a1503bc",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "금호건설이 서울 동작구 상도동의 과거 주택사업 좌초로 인한 우발부채를 출자전환 형태로 정리했으며, 이는 조완석 회장의 유상증자 과정에서 처리된 것으로 보도됨.",
-      "source": "ff06bdff70f11b31",
-      "target": "b5dfa923d8e8ce02",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "OWNED_BY",
-      "evidence": "금호건설은 오는 27일 특별공급부터... 과거 서울 동작구 상도동 주택사업이 좌초",
-      "source": "ff06bdff70f11b31",
-      "target": "a2dd0d178ebd871f",
-      "key": "OWNED_BY"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "금호건설이 서울 동작구 상도동의 과거 주택사업 좌초로 인한 우발부채를 출자전환 형태로 정리했으며, 이는 조완석 회장의 유상증자 과정에서 처리된 것으로 보도됨.",
-      "source": "a2dd0d178ebd871f",
-      "target": "b5dfa923d8e8ce02",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "금호건설이 서울 동작구 상도동의 과거 주택사업 좌초로 인한 우발부채를 출자전환 형태로 정리했으며, 이는 조완석 회장의 유상증자 과정에서 처리된 것으로 보도됨.",
-      "source": "d8eca413e9965254",
-      "target": "b5dfa923d8e8ce02",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "금호건설이 서울 동작구 상도동의 과거 주택사업 좌초로 인한 우발부채를 출자전환 형태로 정리했으며, 이는 조완석 회장의 유상증자 과정에서 처리된 것으로 보도됨.",
-      "source": "1238ee6932e5832f",
-      "target": "b5dfa923d8e8ce02",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "과거 서울 동작구 상도동 주택사업이 좌초하면서 안게 된 우발부채",
-      "source": "1238ee6932e5832f",
-      "target": "ff06bdff70f11b31",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "AFFECTS_AXIS",
-      "evidence": "우발부채를 출자전환 형태로 털어낸 것",
-      "source": "1238ee6932e5832f",
-      "target": "4eab2e86c2e5c57c",
-      "key": "AFFECTS_AXIS"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "금호건설이 서울 동작구 상도동의 과거 주택사업 좌초로 인한 우발부채를 출자전환 형태로 정리했으며, 이는 조완석 회장의 유상증자 과정에서 처리된 것으로 보도됨.",
-      "source": "4eab2e86c2e5c57c",
-      "target": "b5dfa923d8e8ce02",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
-      "source": "5354f6c3660deae1",
-      "target": "7a86f7ce3f868ae9",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "7호선 상도역 인근 '상도역 대우 엑소디움' 공급",
-      "source": "5354f6c3660deae1",
-      "target": "4b6dd7d1222df49b",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 사당로 일대에서 '상도역 대우 엑소디움' 민간임대 아파트 청약이 진행 중이며, 이는 서울 주택시장의 주거 환경 변화를 반영하는 것으로 분석되고 있다.",
-      "source": "5354f6c3660deae1",
-      "target": "090775e395269739",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "서울 동작구 상도동 일대에서 공급된 '상도역 대우 엑소디움'",
-      "source": "5354f6c3660deae1",
-      "target": "59f775681c6ecbf5",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "상도역 초역세권 민간임대 아파트",
-      "source": "5354f6c3660deae1",
-      "target": "2336210e35f24b53",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "HAS_EVENT",
-      "evidence": "청약 일정을 진행하며",
-      "source": "5354f6c3660deae1",
-      "target": "f17e3ec439cea1e5",
-      "key": "HAS_EVENT"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
-      "source": "4b6dd7d1222df49b",
-      "target": "7a86f7ce3f868ae9",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
-      "source": "5147641168e21629",
-      "target": "7a86f7ce3f868ae9",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 7호선 상도역 인근에 '상도역 대우 엑소디움' 민간임대 아파트가 공급되며, 동작구 장승배기 종합행정타운 완공으로 지역 인프라가 강화되고 있다. 역세권 접근성이 주거 편의성과 자산 가치 향상에 긍정적 영향을 미치고 있다.",
-      "source": "f3fe7cd978435058",
-      "target": "7a86f7ce3f868ae9",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 전역의 아파트 전세 매물이 급감하면서 전세대란이 심화되고 있으며, 동작구 상도동의 상도더샵1차도 전세 매물 1건에 불과한 상황이다.",
-      "source": "3fedb168da548993",
-      "target": "2e31e5995c7e5b92",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "동작구에서도 상도동 상도더샵1차는",
-      "source": "3fedb168da548993",
-      "target": "d7d4b14f9213620a",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "HAS_ISSUE",
-      "evidence": "상도더샵1차는 전세 1건에 머물렀다",
-      "source": "3fedb168da548993",
-      "target": "e6950df4c62abf4d",
-      "key": "HAS_ISSUE"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 전역의 아파트 전세 매물이 급감하면서 전세대란이 심화되고 있으며, 동작구 상도동의 상도더샵1차도 전세 매물 1건에 불과한 상황이다.",
-      "source": "e6950df4c62abf4d",
-      "target": "2e31e5995c7e5b92",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_METRIC",
-      "evidence": "서울 아파트 임대차 매물은 2023년 4월 1일 7만74건에서 지난 13일 2만9726건으로 57.6%",
-      "source": "e6950df4c62abf4d",
-      "target": "d152f0465e06ce49",
-      "key": "HAS_METRIC"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 전역의 아파트 전세 매물이 급감하면서 전세대란이 심화되고 있으며, 동작구 상도동의 상도더샵1차도 전세 매물 1건에 불과한 상황이다.",
-      "source": "d152f0465e06ce49",
-      "target": "2e31e5995c7e5b92",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 재개발 수요 증가로 빌라 거래량이 61% 급증했으며, 해당 지역 다세대 주택이 감정가 대비 123%의 높은 가격으로 낙찰되는 현상이 나타나고 있다.",
-      "source": "f89eae94166a9ff2",
-      "target": "a45f8fb8c10ed45c",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "동작구 상도동 244-29",
-      "source": "f89eae94166a9ff2",
-      "target": "d7d4b14f9213620a",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "지난 4월 동작구 상도동 244-29의 다세대 주택 '다인캐슬2차' 전용 27㎡ 매물은 감정가의 123%에 낙찰",
-      "source": "f89eae94166a9ff2",
-      "target": "5523e2bc9fc22425",
-      "key": "MENTIONED_IN"
-    },
-    {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 재개발 수요 증가로 빌라 거래량이 61% 급증했으며, 해당 지역 다세대 주택이 감정가 대비 123%의 높은 가격으로 낙찰되는 현상이 나타나고 있다.",
-      "source": "5523e2bc9fc22425",
-      "target": "a45f8fb8c10ed45c",
+      "evidence": "기업은행장의 재산공개 내역에서 관악구 봉천동 '현대아파트' 전세권이 언급되었으나, 대상 자산인 '에그엘로우'와는 무관한 다른 건물임.",
+      "source": "4b7135c8f9864c35",
+      "target": "b88660cf699e5c4f",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 재개발 수요 증가로 빌라 거래량이 61% 급증했으며, 해당 지역 다세대 주택이 감정가 대비 123%의 높은 가격으로 낙찰되는 현상이 나타나고 있다.",
-      "source": "55c83b961b547d3c",
-      "target": "a45f8fb8c10ed45c",
+      "evidence": "서울 관악구 봉천동 지역의 아파트가 지난주 0.28% 상승률을 기록했으며, 대단지 중심으로 높은 상승세를 보이고 있다. 올해 서울 아파트 시장 전반적으로 8% 상승이 전망되고 있다.",
+      "source": "4b7135c8f9864c35",
+      "target": "df95a735b7b17966",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 '상도두산위브' 아파트가 신고가를 기록했으나 실제 거래량은 제한적인 상황을 보이고 있다. 규제로 인한 가격 상승과 거래 부진의 불일치 현상이 나타나고 있다.",
-      "source": "4212450a9c198fc6",
-      "target": "a3726b43d67ad95d",
+      "evidence": "관악구(0.28%)는 봉천동·신림동 대단지 중심으로 높은 상승률",
+      "source": "4b7135c8f9864c35",
+      "target": "e49cc9859116f3b5",
       "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "동작구 상도동 '상도두산위브'",
-      "source": "4212450a9c198fc6",
-      "target": "d7d4b14f9213620a",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "HAS_METRIC",
-      "evidence": "전용 84㎡ A타입은 지난 4월 4일 16억9000만원에 거래",
-      "source": "4212450a9c198fc6",
-      "target": "7d7062d00d143e4e",
-      "key": "HAS_METRIC"
-    },
-    {
-      "rel": "HAS_ISSUE",
-      "evidence": "신고가 찍었는데 거래는 달랑 한 건",
-      "source": "4212450a9c198fc6",
-      "target": "cf55c58c7ce092dc",
-      "key": "HAS_ISSUE"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 '상도두산위브' 아파트가 신고가를 기록했으나 실제 거래량은 제한적인 상황을 보이고 있다. 규제로 인한 가격 상승과 거래 부진의 불일치 현상이 나타나고 있다.",
+      "evidence": "관악구 봉천동 지역의 부동산 가격이 급등하고 있으며, 같은 지역의 '관악푸르지오' 아파트가 4년 7개월 만에 약 25% 상승했다. 대상 자산 '에그엘로우'는 같은 봉천동에 위치하여 지역 시장 동향의 영향을 받을 것으로 예상된다.",
       "source": "68c724a220e5caf1",
-      "target": "a3726b43d67ad95d",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
-      "source": "68c724a220e5caf1",
-      "target": "aeed3650b35d0445",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "한국부동산원 청약홈에 따르면",
-      "source": "68c724a220e5caf1",
-      "target": "62ecde712f864d2c",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 '상도두산위브' 아파트가 신고가를 기록했으나 실제 거래량은 제한적인 상황을 보이고 있다. 규제로 인한 가격 상승과 거래 부진의 불일치 현상이 나타나고 있다.",
-      "source": "7d7062d00d143e4e",
-      "target": "a3726b43d67ad95d",
+      "target": "8955faf4f096aaf2",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
       "evidence": "한국부동산원에 따르면",
-      "source": "7d7062d00d143e4e",
+      "source": "68c724a220e5caf1",
+      "target": "98191491d8e07a2e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 매매가격이 일주일 새 0.15% 상승했으며, 관악구 봉천동 대단지 중심으로 0.28% 상승률을 기록했다.",
+      "source": "68c724a220e5caf1",
+      "target": "b012af24ebf64a1e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원이 23일 발표한 2026년 4월 3주 주간 아파트가격 동향",
+      "source": "68c724a220e5caf1",
+      "target": "d57f8edefb96204f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트 전셋값 상승 추세를 다룬 기사로, 동원낙성대 아파트 사례를 언급하고 있으나 대상 자산인 에그엘로우와는 직접적 관련이 없음.",
+      "source": "68c724a220e5caf1",
+      "target": "369bc35db1080afe",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원이 발표한 주간 아파트 가격 동향",
+      "source": "68c724a220e5caf1",
+      "target": "5b0ce238dd9baa01",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트 가격이 5월 둘째 주 기준 0.22% 상승했으며, 이는 강북 지역의 전반적인 가격 상승 추세를 반영한다.",
+      "source": "68c724a220e5caf1",
+      "target": "06f8f88ab8201212",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 2026년 5월 2주 기준 0.22% 상승했으며, 이는 한국부동산원의 주간아파트 가격동향 보고서에서 확인된 지역 시장 동향이다.",
+      "source": "68c724a220e5caf1",
+      "target": "0ed83b8855cfbd3f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "한국부동산원이 발표한 '주간아파트 가격동향'",
+      "source": "68c724a220e5caf1",
+      "target": "29f04e73c378cc89",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "양도세 중과 시행 첫 주에 서울 아파트값이 급등했으며, 관악구 봉천동 역세권이 0.22% 상승했다. 에그엘로우는 봉천동에 위치한 자산으로 해당 지역의 긍정적 시장 신호를 받고 있다.",
+      "source": "68c724a220e5caf1",
+      "target": "03d95b83c18f9b21",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원이 주간아파트가격동향 발표",
+      "source": "68c724a220e5caf1",
+      "target": "6c7b5c31f9a7f12e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 관악구 봉천동 역세권이 주요 상승 지역으로 언급되었다.",
+      "source": "68c724a220e5caf1",
+      "target": "032f19e6ea0c2a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원이 5월 둘째 주 주간 아파트가격 동향 발표",
+      "source": "68c724a220e5caf1",
+      "target": "5ab7aea424d71c25",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 신고가 속출 현상을 다루는 기사로, 관악구 봉천동 지역의 부동산 시장 활성화를 언급하고 있으나 대상 자산 '에그엘로우'는 직접 언급되지 않음.",
+      "source": "68c724a220e5caf1",
+      "target": "5fc6db6a822328af",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원에 따르면",
+      "source": "68c724a220e5caf1",
+      "target": "5d9c4e6566c9c856",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전셋값이 상승세를 보이고 있으며, 관악구 봉천동이 0.24% 상승률을 기록했다. 세입자들이 서울을 떠나는 추세가 나타나고 있다.",
+      "source": "68c724a220e5caf1",
+      "target": "d4d3d7cee8c6691f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트가 지난주 0.28% 상승률을 기록했으며, 대단지 중심으로 높은 상승세를 보이고 있다. 올해 서울 아파트 시장 전반적으로 8% 상승이 전망되고 있다.",
+      "source": "68c724a220e5caf1",
+      "target": "df95a735b7b17966",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 가격이 급등하고 있으며, 같은 지역의 '관악푸르지오' 아파트가 4년 7개월 만에 약 25% 상승했다. 대상 자산 '에그엘로우'는 같은 봉천동에 위치하여 지역 시장 동향의 영향을 받을 것으로 예상된다.",
+      "source": "98191491d8e07a2e",
+      "target": "8955faf4f096aaf2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악푸르지오 전용 84㎡ 10억5000만 원→13억1000만 원",
+      "source": "98191491d8e07a2e",
+      "target": "fd33710e0b16682c",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "5885288abaa417a9",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동",
+      "source": "5885288abaa417a9",
+      "target": "7b934daefe647299",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 지역의 아파트 가격이 5월 둘째 주 기준 0.22% 상승했으며, 이는 강북 지역의 전반적인 가격 상승 추세를 반영한다.",
+      "source": "5885288abaa417a9",
+      "target": "06f8f88ab8201212",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.22%) 신림·봉천동이 올랐다",
+      "source": "5885288abaa417a9",
+      "target": "566c4cb2da1662dd",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동에서 전셋값이 0.24% 상승했으며, 이는 노원구 등 다른 지역의 급등과 비교하면 완만한 상승세를 보이고 있다. 강남구와 달리 관악구는 전셋값 상승 지역에 포함되었다.",
+      "source": "5885288abaa417a9",
+      "target": "dc085cd43eb3736e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "7b934daefe647299",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동에서 전셋값이 0.24% 상승했으며, 이는 노원구 등 다른 지역의 급등과 비교하면 완만한 상승세를 보이고 있다. 강남구와 달리 관악구는 전셋값 상승 지역에 포함되었다.",
+      "source": "7b934daefe647299",
+      "target": "dc085cd43eb3736e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.24%)는 봉천동과 신림동에서 전셋값이 올랐다",
+      "source": "7b934daefe647299",
+      "target": "cc9ea6f828fc4a3e",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "4d3e8c6ff12b1ed5",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "d152a4108b2f5468",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "NH농협은행 All100자문센터 부동산 전문위원",
+      "source": "d152a4108b2f5468",
+      "target": "4d3e8c6ff12b1ed5",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "0366c32fb46c9e33",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악·강서 '빨래방' 등 무인점포 확산",
+      "source": "0366c32fb46c9e33",
+      "target": "7b934daefe647299",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 일대는 청년 1인 가구 밀집 지역으로, 무인점포와 편의시설 수요가 높은 지역으로 분석됨. 임대료와 수익성에 대한 부동산 전문가 의견이 제시됨.",
+      "source": "4b45f5979ca050f0",
+      "target": "b7b2866f449fbb27",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "임대료가 높고 수요자가 많은 지역",
+      "source": "4b45f5979ca050f0",
+      "target": "7b934daefe647299",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 복권아파트 재건축 프로젝트가 조합 설립 후 2년 경과했으며, 소규모 재건축의 시공 지연 문제가 언급되고 있다.",
+      "source": "34addf61c47180c9",
+      "target": "662b199dbfc90645",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동 복권아파트",
+      "source": "34addf61c47180c9",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "조합 설립 후 2년",
+      "source": "34addf61c47180c9",
+      "target": "92e176f61146868e",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "준공 0건",
+      "source": "34addf61c47180c9",
+      "target": "7417ee9c273614db",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 복권아파트 재건축 프로젝트가 조합 설립 후 2년 경과했으며, 소규모 재건축의 시공 지연 문제가 언급되고 있다.",
+      "source": "92e176f61146868e",
+      "target": "662b199dbfc90645",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 복권아파트 재건축 프로젝트가 조합 설립 후 2년 경과했으며, 소규모 재건축의 시공 지연 문제가 언급되고 있다.",
+      "source": "7417ee9c273614db",
+      "target": "662b199dbfc90645",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "다주택 양도세 중과 유예 종료를 앞두고 서울 부동산 시장이 변동하고 있으며, 관악구 봉천동 일대도 상승 흐름이 계속되고 있다.",
+      "source": "265b9e0753afec09",
+      "target": "def34a12f70185b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "다주택 양도세 중과 유예 종료를 앞두고 서울 부동산 시장이 변동하고 있으며, 관악구 봉천동 일대도 상승 흐름이 계속되고 있다.",
+      "source": "9eeb84a0d68aea0e",
+      "target": "def34a12f70185b0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 다가구주택 임대보증금 채무 감소가 군의원 재산 증가의 주요 요인으로 언급되었습니다. 부동산 중심의 자산 구조 변화를 보여주는 기사입니다.",
+      "source": "21d6e539aff7e3d0",
+      "target": "d3809814631ce0e9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 대단지 아파트 지역에서 전세 물건 부족 현상이 심각하며, 세입자들이 주택 확보에 어려움을 겪고 있는 상황을 보도하는 기사다.",
+      "source": "21d6e539aff7e3d0",
+      "target": "6beb07286bde0bae",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "3500가구 대단지에 전세 '1건'뿐",
+      "source": "21d6e539aff7e3d0",
+      "target": "b10551b9f9dc0442",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "서울 아파트 전세 물건은 1만5476개",
+      "source": "21d6e539aff7e3d0",
+      "target": "78043156e8129335",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 서울 관악구 봉천동 지역이 중국 투자자들의 부동산 투자 대상으로 샤오홍슈에서 소개되고 있으며, 시세차익을 강조하는 투자 정보가 확산 중이다.",
+      "source": "21d6e539aff7e3d0",
+      "target": "b3850c6e217722d7",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "삼성전자가 서울 관악구 봉천동에서 3,750억 원대 규모의 계약을 체결했으며, 이는 최근 매출액의 3.01% 수준이다. 대상 자산 에그엘로우가 위치한 봉천동 지역의 부동산 거래 활동을 보여주는 사례다.",
+      "source": "21d6e539aff7e3d0",
+      "target": "429c0dc2135d7004",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 다가구주택 임대보증금 채무 감소가 군의원 재산 증가의 주요 요인으로 언급되었습니다. 부동산 중심의 자산 구조 변화를 보여주는 기사입니다.",
+      "source": "59deac25336b0f9f",
+      "target": "d3809814631ce0e9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동의 다가구주택 임대보증금 채무 감소가 군의원 재산 증가의 주요 요인으로 언급되었습니다. 부동산 중심의 자산 구조 변화를 보여주는 기사입니다.",
+      "source": "38c436b3eef4451a",
+      "target": "d3809814631ce0e9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "재산 증가 1위는 이강세",
+      "source": "38c436b3eef4451a",
+      "target": "59deac25336b0f9f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 전세 시장 동향을 다룬 기사로, 에그엘로우와 동일 지역의 인접 물건('e편한세상서울대입구')의 보증금 상승 추세를 보도하고 있다.",
+      "source": "40f2765b3b1a0c23",
+      "target": "ad295cbe12165a50",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동 'e편한세상서울대입구'",
+      "source": "40f2765b3b1a0c23",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "전용 59.88㎡는 올해 신규 계약이 모두 보증금 6억8000만원",
+      "source": "40f2765b3b1a0c23",
+      "target": "082abb81ce41dfa9",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 전세 시장 동향을 다룬 기사로, 에그엘로우와 동일 지역의 인접 물건('e편한세상서울대입구')의 보증금 상승 추세를 보도하고 있다.",
+      "source": "082abb81ce41dfa9",
+      "target": "ad295cbe12165a50",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 전세 시장 동향을 다룬 기사로, 에그엘로우와 동일 지역의 인접 물건('e편한세상서울대입구')의 보증금 상승 추세를 보도하고 있다.",
+      "source": "ad545b3dc33c75f8",
+      "target": "ad295cbe12165a50",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "5월 9일 다주택자 양도소득세 중과 유예 종료를 앞두고 서울 부동산 시장 전망을 다룬 기사로, 관악구 봉천동의 다른 아파트(관악푸르지오)가 사례로 언급됨.",
+      "source": "297809652f20901f",
+      "target": "8be7f14db5fd1b32",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "4629bcdc9329b76c",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악드림타운 인근",
+      "source": "4629bcdc9329b76c",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "063c0dbfb2106d52",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동에서 전셋값이 0.24% 상승했으며, 이는 노원구 등 다른 지역의 급등과 비교하면 완만한 상승세를 보이고 있다. 강남구와 달리 관악구는 전셋값 상승 지역에 포함되었다.",
+      "source": "063c0dbfb2106d52",
+      "target": "dc085cd43eb3736e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "c63b631a1f20e095",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "0.21% 올랐다",
+      "source": "c63b631a1f20e095",
+      "target": "db8910e4abe3c9a0",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "부동산원에 따르면",
+      "source": "c63b631a1f20e095",
+      "target": "063c0dbfb2106d52",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "db8910e4abe3c9a0",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트값이 전주 대비 0.21% 상승했으며, 관악드림타운 인근에서 급매물 소진으로 인한 가격 상승이 관찰되고 있다.",
+      "source": "b2bffce36a31aa1d",
+      "target": "5acaacf27245b781",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 매매가격이 일주일 새 0.15% 상승했으며, 관악구 봉천동 대단지 중심으로 0.28% 상승률을 기록했다.",
+      "source": "34cacf0a073f574c",
+      "target": "b012af24ebf64a1e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 2026년 5월 2주 기준 0.22% 상승했으며, 이는 한국부동산원의 주간아파트 가격동향 보고서에서 확인된 지역 시장 동향이다.",
+      "source": "34cacf0a073f574c",
+      "target": "0ed83b8855cfbd3f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 매매가격이 일주일 새 0.15% 상승했으며, 관악구 봉천동 대단지 중심으로 0.28% 상승률을 기록했다.",
+      "source": "d57f8edefb96204f",
+      "target": "b012af24ebf64a1e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트 전셋값 상승 추세를 다룬 기사로, 동원낙성대 아파트 사례를 언급하고 있으나 대상 자산인 에그엘로우와는 직접적 관련이 없음.",
+      "source": "b85c59e328425c9b",
+      "target": "369bc35db1080afe",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동에 있는 '동원낙성대'",
+      "source": "b85c59e328425c9b",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 아파트 전셋값 상승 추세를 다룬 기사로, 동원낙성대 아파트 사례를 언급하고 있으나 대상 자산인 에그엘로우와는 직접적 관련이 없음.",
+      "source": "5b0ce238dd9baa01",
+      "target": "369bc35db1080afe",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 다주택자 양도소득세 중과 유예 종료 이후 서울 아파트 시장의 상승세 확대 지역으로 언급되었다. 봉천동 역세권 위주로 0.22% 상승세를 보이고 있다.",
+      "source": "33bf99457c6bf0d5",
+      "target": "fb750bd93748b4e0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.22%)는 신림·봉천동 역세권 위주로 상승세",
+      "source": "33bf99457c6bf0d5",
+      "target": "c3657ee02b61dd15",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "다주택자 유예 종료 후 봉천동 역세권 상승세 확대",
+      "source": "33bf99457c6bf0d5",
+      "target": "428e0ddc4604a231",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 역세권 지역의 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 전세 신규 매물 감소로 인한 시장 변화가 진행 중이다.",
+      "source": "33bf99457c6bf0d5",
+      "target": "42a948d86073b0b8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_EVENT",
+      "evidence": "관악구(0.22%)는 신림·봉천동 역세권 위주로 상승세가 나타났다",
+      "source": "33bf99457c6bf0d5",
+      "target": "ccac48408a72d90f",
+      "key": "HAS_EVENT"
+    },
+    {
+      "rel": "HAS_ISSUE",
+      "evidence": "전세 신규 매물 감소와 집주인에 대한 실거주 의무가 부여되면서",
+      "source": "33bf99457c6bf0d5",
+      "target": "dade90cb206f4847",
+      "key": "HAS_ISSUE"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "양도세 중과 시행 첫 주에 서울 아파트값이 급등했으며, 관악구 봉천동 역세권이 0.22% 상승했다. 에그엘로우는 봉천동에 위치한 자산으로 해당 지역의 긍정적 시장 신호를 받고 있다.",
+      "source": "33bf99457c6bf0d5",
+      "target": "03d95b83c18f9b21",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.22%)는 신림·봉천동 역세권 위주로 올랐다",
+      "source": "33bf99457c6bf0d5",
+      "target": "6c7b5c31f9a7f12e",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 아파트 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 관악구 봉천동 역세권이 주요 상승 지역으로 언급되었다.",
+      "source": "33bf99457c6bf0d5",
+      "target": "032f19e6ea0c2a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.14%→0.22%)는 신림·봉천동 역세권 위주로 상승",
+      "source": "33bf99457c6bf0d5",
+      "target": "03f0cfa3531ca3d2",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 다주택자 양도소득세 중과 유예 종료 이후 서울 아파트 시장의 상승세 확대 지역으로 언급되었다. 봉천동 역세권 위주로 0.22% 상승세를 보이고 있다.",
+      "source": "428e0ddc4604a231",
+      "target": "fb750bd93748b4e0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 다주택자 양도소득세 중과 유예 종료 이후 서울 아파트 시장의 상승세 확대 지역으로 언급되었다. 봉천동 역세권 위주로 0.22% 상승세를 보이고 있다.",
+      "source": "c3657ee02b61dd15",
+      "target": "fb750bd93748b4e0",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 관악구 봉천동 역세권 지역의 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 전세 신규 매물 감소로 인한 시장 변화가 진행 중이다.",
+      "source": "ccac48408a72d90f",
+      "target": "42a948d86073b0b8",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전셋값이 상승세를 보이고 있으며, 관악구 봉천동이 0.24% 상승률을 기록했다. 세입자들이 서울을 떠나는 추세가 나타나고 있다.",
+      "source": "ccac48408a72d90f",
+      "target": "d4d3d7cee8c6691f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "한국부동산원에 따르면, 4월 첫째 주 서울 전셋값은 0.16% 상승",
+      "source": "ccac48408a72d90f",
       "target": "68c724a220e5caf1",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 '상도두산위브' 아파트가 신고가를 기록했으나 실제 거래량은 제한적인 상황을 보이고 있다. 규제로 인한 가격 상승과 거래 부진의 불일치 현상이 나타나고 있다.",
-      "source": "cf55c58c7ce092dc",
-      "target": "a3726b43d67ad95d",
+      "evidence": "서울 관악구 봉천동 역세권 지역의 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 전세 신규 매물 감소로 인한 시장 변화가 진행 중이다.",
+      "source": "dade90cb206f4847",
+      "target": "42a948d86073b0b8",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동에 위치한 '힐스테이트 동작시그니처' 신규 아파트 단지가 91가구 공급되며, 지하철 7호선 접근성을 갖춘 신혼부부 대상 프로젝트로 소개됨. 분할납부제 등 구매 방식에 대한 전문가 의견 포함.",
-      "source": "27e3bc996c8840f1",
-      "target": "07ceb4353a3ea314",
+      "evidence": "서울 관악구 봉천동 지역의 아파트 가격이 5월 둘째 주 기준 0.22% 상승했으며, 이는 강북 지역의 전반적인 가격 상승 추세를 반영한다.",
+      "source": "52b298d17e8abed4",
+      "target": "06f8f88ab8201212",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동에 위치한 '힐스테이트 동작시그니처' 신규 아파트 단지가 91가구 공급되며, 지하철 7호선 접근성을 갖춘 신혼부부 대상 프로젝트로 소개됨. 분할납부제 등 구매 방식에 대한 전문가 의견 포함.",
-      "source": "e8ffc6942d492341",
-      "target": "07ceb4353a3ea314",
+      "evidence": "한국부동산원이 발표한 5월 둘째 주 주간 아파트 가격 동향",
+      "source": "52b298d17e8abed4",
+      "target": "68c724a220e5caf1",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 일대에서 진행 중인 노량진뉴타운 재건축·재개발 사업과 관련하여 공공이 주도하는 이주단지 조성 실험이 추진되고 있다. 이주단지는 지하1층~지상 5층 규모로 계획되어 있다.",
-      "source": "03c6e143e1625ffc",
-      "target": "458d661aed1fd39f",
+      "evidence": "서울 관악구 봉천동 지역의 아파트 가격이 5월 둘째 주 기준 0.22% 상승했으며, 이는 강북 지역의 전반적인 가격 상승 추세를 반영한다.",
+      "source": "566c4cb2da1662dd",
+      "target": "06f8f88ab8201212",
       "key": "MENTIONED_IN"
     },
     {
-      "rel": "HAS_ISSUE",
-      "evidence": "이주단지는 지하1층~지상 5층 규모로 상도동... 이주·철거 단계",
-      "source": "03c6e143e1625ffc",
-      "target": "3a5835fd59acd4c6",
-      "key": "HAS_ISSUE"
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 2026년 5월 2주 기준 0.22% 상승했으며, 이는 한국부동산원의 주간아파트 가격동향 보고서에서 확인된 지역 시장 동향이다.",
+      "source": "9573da6f1d9e6b7e",
+      "target": "0ed83b8855cfbd3f",
+      "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 일대에서 진행 중인 노량진뉴타운 재건축·재개발 사업과 관련하여 공공이 주도하는 이주단지 조성 실험이 추진되고 있다. 이주단지는 지하1층~지상 5층 규모로 계획되어 있다.",
-      "source": "b2dc4f36022888f8",
-      "target": "458d661aed1fd39f",
+      "evidence": "관악구(0.22%)는 신림ㆍ봉천동 역세권 위주로 상승",
+      "source": "9573da6f1d9e6b7e",
+      "target": "29f04e73c378cc89",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 관악구 봉천동 역세권이 2026년 5월 2주 기준 0.22% 상승했으며, 이는 한국부동산원의 주간아파트 가격동향 보고서에서 확인된 지역 시장 동향이다.",
+      "source": "29f04e73c378cc89",
+      "target": "0ed83b8855cfbd3f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.22%)",
+      "source": "29f04e73c378cc89",
+      "target": "34cacf0a073f574c",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "양도세 중과 시행 첫 주에 서울 아파트값이 급등했으며, 관악구 봉천동 역세권이 0.22% 상승했다. 에그엘로우는 봉천동에 위치한 자산으로 해당 지역의 긍정적 시장 신호를 받고 있다.",
+      "source": "a0d45f59259a2c37",
+      "target": "03d95b83c18f9b21",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "AFFECTS_AXIS",
-      "evidence": "공공이 직접 해결... 이주단지 실험",
-      "source": "b2dc4f36022888f8",
-      "target": "3a5835fd59acd4c6",
+      "evidence": "양도세 중과 시행 첫 주에 봉천동 역세권 아파트값이 상승",
+      "source": "a0d45f59259a2c37",
+      "target": "33bf99457c6bf0d5",
       "key": "AFFECTS_AXIS"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 일대에서 진행 중인 노량진뉴타운 재건축·재개발 사업과 관련하여 공공이 주도하는 이주단지 조성 실험이 추진되고 있다. 이주단지는 지하1층~지상 5층 규모로 계획되어 있다.",
-      "source": "3a5835fd59acd4c6",
-      "target": "458d661aed1fd39f",
+      "evidence": "양도세 중과 시행 첫 주에 서울 아파트값이 급등했으며, 관악구 봉천동 역세권이 0.22% 상승했다. 에그엘로우는 봉천동에 위치한 자산으로 해당 지역의 긍정적 시장 신호를 받고 있다.",
+      "source": "6c7b5c31f9a7f12e",
+      "target": "03d95b83c18f9b21",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 일대에서 진행 중인 노량진뉴타운 재건축·재개발 사업과 관련하여 공공이 주도하는 이주단지 조성 실험이 추진되고 있다. 이주단지는 지하1층~지상 5층 규모로 계획되어 있다.",
-      "source": "5138976a5b2a2efc",
-      "target": "458d661aed1fd39f",
+      "evidence": "서울 아파트 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 관악구 봉천동 역세권이 주요 상승 지역으로 언급되었다.",
+      "source": "03f0cfa3531ca3d2",
+      "target": "032f19e6ea0c2a40",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "부동산R114에 따르면 올해 1분기 기준으로 관리처분 및 이주·철거 단계",
-      "source": "5138976a5b2a2efc",
-      "target": "03c6e143e1625ffc",
+      "evidence": "서울 아파트 전셋값이 10년6개월만에 최고 상승률을 기록했으며, 관악구 봉천동 역세권이 주요 상승 지역으로 언급되었다.",
+      "source": "5ab7aea424d71c25",
+      "target": "032f19e6ea0c2a40",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
-      "source": "b33272e81fd5d1a3",
-      "target": "a2388e784ebfb805",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "98ce501cace77fff",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "전용 84㎡(10억5000만원→13억1000만원)",
+      "source": "98ce501cace77fff",
+      "target": "19006199555b91f0",
+      "key": "HAS_METRIC"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "9509116f9352cf50",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 가격이 신고가를 기록하고 있으며, 관악구 봉천동 지역도 가격 상승 추세에 포함되어 있다. 매물 부족으로 인한 공급 제약이 시장을 주도하고 있다.",
+      "source": "19006199555b91f0",
+      "target": "ed1b52a2adf74ed9",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동에서 전셋값이 0.24% 상승했으며, 이는 노원구 등 다른 지역의 급등과 비교하면 완만한 상승세를 보이고 있다. 강남구와 달리 관악구는 전셋값 상승 지역에 포함되었다.",
+      "source": "cc9ea6f828fc4a3e",
+      "target": "dc085cd43eb3736e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "부동산원",
+      "source": "cc9ea6f828fc4a3e",
+      "target": "063c0dbfb2106d52",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "9f414aecdda319f2",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "51e1251037e8fc8c",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "AFFECTS_AXIS",
+      "evidence": "대출 규제 영향 전세난",
+      "source": "51e1251037e8fc8c",
+      "target": "4b7135c8f9864c35",
+      "key": "AFFECTS_AXIS"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "b90fcb78638110e1",
+      "target": "a0f04b2ce974e6c2",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 부동산 시장에서 '키 맞추기' 장세가 나타나고 있으며, 관악구 봉천동 지역의 아파트 거래가 활발해지고 있다. 대출 규제와 양도세 정책이 시장에 영향을 미치고 있다.",
+      "source": "5ccf78de670e7f42",
+      "target": "a0f04b2ce974e6c2",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "HAS_EVENT",
-      "evidence": "상도동... 냉·난방비 제로화를 실현하고자",
-      "source": "b33272e81fd5d1a3",
-      "target": "65746660a3f2e59e",
+      "evidence": "관악구 봉천동에서 '키 맞추기' 장세 나타나",
+      "source": "5ccf78de670e7f42",
+      "target": "4b7135c8f9864c35",
       "key": "HAS_EVENT"
     },
     {
-      "rel": "HAS_ISSUE",
-      "evidence": "스마트 주거 기술",
-      "source": "b33272e81fd5d1a3",
-      "target": "b420ce4c91668344",
-      "key": "HAS_ISSUE"
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 외곽 지역의 신고가 속출 현상을 다루는 기사로, 관악구 봉천동 지역의 부동산 시장 활성화를 언급하고 있으나 대상 자산 '에그엘로우'는 직접 언급되지 않음.",
+      "source": "5d9c4e6566c9c856",
+      "target": "5fc6db6a822328af",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "HAS_METRIC",
+      "evidence": "관악구(0.26%)",
+      "source": "5d9c4e6566c9c856",
+      "target": "4b7135c8f9864c35",
+      "key": "HAS_METRIC"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
-      "source": "36c85131f1f796f0",
-      "target": "a2388e784ebfb805",
+      "evidence": "서울 외곽 지역의 신고가 속출 현상을 다루는 기사로, 관악구 봉천동 지역의 부동산 시장 활성화를 언급하고 있으나 대상 자산 '에그엘로우'는 직접 언급되지 않음.",
+      "source": "41f4c12fee195f70",
+      "target": "5fc6db6a822328af",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 재개발 수요가 높아지고 있으며, 경매 시장에서 다세대 주택이 감정가의 123%에 낙찰되어 강세를 보이고 있다. 삼성물산의 정비사업 수주 확대가 강남권 핵심단지 개발을 촉진할 것으로 예상된다.",
-      "source": "36c85131f1f796f0",
-      "target": "3d0a651efcc6648a",
+      "evidence": "서울 관악구 봉천동의 대단지 아파트 지역에서 전세 물건 부족 현상이 심각하며, 세입자들이 주택 확보에 어려움을 겪고 있는 상황을 보도하는 기사다.",
+      "source": "b10551b9f9dc0442",
+      "target": "6beb07286bde0bae",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "삼성물산, 정비사업 수주 10조 정조준",
-      "source": "36c85131f1f796f0",
-      "target": "c0e3725116c50e67",
+      "evidence": "서울 관악구 봉천동의 대단지 아파트 지역에서 전세 물건 부족 현상이 심각하며, 세입자들이 주택 확보에 어려움을 겪고 있는 상황을 보도하는 기사다.",
+      "source": "78043156e8129335",
+      "target": "6beb07286bde0bae",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
-      "source": "8e2a4e6117f86748",
-      "target": "a2388e784ebfb805",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "bccc00a53c11681c",
+      "target": "661d05d833a54a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "관악구 봉천동에서는 지난 18일 '보라매삼성'",
+      "source": "bccc00a53c11681c",
+      "target": "4b7135c8f9864c35",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "f046fe38b2d5e038",
+      "target": "661d05d833a54a40",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
-      "source": "65746660a3f2e59e",
-      "target": "a2388e784ebfb805",
+      "evidence": "남혁우 우리은행부동산 연구원은",
+      "source": "f046fe38b2d5e038",
+      "target": "6d56e1f503ffc16d",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "2fbacc847b9ea069",
+      "target": "661d05d833a54a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "보라매삼성 전용 84.84㎡(15층)가 11억9000만원에 거래",
+      "source": "2fbacc847b9ea069",
+      "target": "bccc00a53c11681c",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동 지역의 부동산 시장이 회복세를 보이고 있으며, 보라매삼성 아파트에서 신고가 거래가 발생했다. 대상 자산인 에그엘로우와 동일 지역의 시장 동향을 반영하는 기사다.",
+      "source": "6d56e1f503ffc16d",
+      "target": "661d05d833a54a40",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "서울 전셋값이 상승세를 보이고 있으며, 관악구 봉천동이 0.24% 상승률을 기록했다. 세입자들이 서울을 떠나는 추세가 나타나고 있다.",
+      "source": "b710766327b10c2d",
+      "target": "d4d3d7cee8c6691f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동이 KB전세대출 통계에서 전국 2위 지역으로 선정되었으며, 상대적으로 저렴한 전셋값과 높은 수요가 특징인 것으로 분석됨.",
+      "source": "ae942b1d360f6228",
+      "target": "675d3c5d140d00bc",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "관악구 봉천동이 KB전세대출 통계에서 전국 2위 지역으로 선정되었으며, 상대적으로 저렴한 전셋값과 높은 수요가 특징인 것으로 분석됨.",
+      "source": "8854efb364469ba1",
+      "target": "675d3c5d140d00bc",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "OPERATED_BY",
-      "evidence": "동작구(구청장 박일하)가 세계최초로 재개발·재건축 단지의 냉·난방비 제로화를 실현하고자",
-      "source": "65746660a3f2e59e",
-      "target": "b4ca8411a62e5c5c",
+      "evidence": "KB부동산에 따르면 지난해 KB전세대출 데이터를 분석",
+      "source": "8854efb364469ba1",
+      "target": "ae942b1d360f6228",
       "key": "OPERATED_BY"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "삼성물산 홈플랫폼 홈닉",
-      "source": "65746660a3f2e59e",
-      "target": "36c85131f1f796f0",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서해종합건설과 스마트 주거 기술",
-      "source": "65746660a3f2e59e",
-      "target": "8e2a4e6117f86748",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구청이 상도동 재개발·재건축 단지에서 세계 최초로 냉·난방비 제로화를 실현하는 스마트 주거 기술 프로젝트를 추진 중이다. 삼성물산 홈플랫폼과 서해종합건설이 협력하여 에너지 효율화 기술을 적용한다.",
-      "source": "b420ce4c91668344",
-      "target": "a2388e784ebfb805",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 사당로 인근에서 '엑소디움 상도역' 프로젝트가 공급되었으며, 10년 거주 후 분양전환 방식을 적용하는 임차인 친화적 모델을 제시하고 있다.",
-      "source": "ff3031b6b7291175",
-      "target": "5058940fe0f136cc",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 사당로 인근에서 '엑소디움 상도역' 프로젝트가 공급되었으며, 10년 거주 후 분양전환 방식을 적용하는 임차인 친화적 모델을 제시하고 있다.",
-      "source": "60be71237041e1ad",
-      "target": "5058940fe0f136cc",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 노량진뉴타운 개발 관련 기사에서 대상 자산 인근의 상도동 'e편한세상 상도 노빌리티' 아파트(2018년 입주, 893가구, 84㎡형)가 비교 사례로 언급되었다. 노량진뉴타운의 고분양가 논란과 청약 선전 현황을 다루고 있다.",
-      "source": "f6d26dce50cea0b8",
-      "target": "165dfa2666d49328",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 노량진뉴타운 개발 관련 기사에서 대상 자산 인근의 상도동 'e편한세상 상도 노빌리티' 아파트(2018년 입주, 893가구, 84㎡형)가 비교 사례로 언급되었다. 노량진뉴타운의 고분양가 논란과 청약 선전 현황을 다루고 있다.",
-      "source": "8661c3ed16887848",
-      "target": "165dfa2666d49328",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_ISSUE",
-      "evidence": "고분양가 논란에도 불구하고",
-      "source": "8661c3ed16887848",
-      "target": "d76668fb8ba7d8f7",
-      "key": "HAS_ISSUE"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 노량진뉴타운 개발 관련 기사에서 대상 자산 인근의 상도동 'e편한세상 상도 노빌리티' 아파트(2018년 입주, 893가구, 84㎡형)가 비교 사례로 언급되었다. 노량진뉴타운의 고분양가 논란과 청약 선전 현황을 다루고 있다.",
-      "source": "d76668fb8ba7d8f7",
-      "target": "165dfa2666d49328",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
-      "source": "c65e18d90e9aede7",
-      "target": "3975843354a36cb6",
+      "evidence": "기업은행장의 재산공개 내역에서 관악구 봉천동 '현대아파트' 전세권이 언급되었으나, 대상 자산인 '에그엘로우'와는 무관한 다른 건물임.",
+      "source": "e6d8562a22414313",
+      "target": "b88660cf699e5c4f",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "LOCATED_IN",
-      "evidence": "동작구 상도동 244-29의 다세대 주택",
-      "source": "c65e18d90e9aede7",
-      "target": "59f775681c6ecbf5",
+      "evidence": "서울 관악구 봉천동",
+      "source": "e6d8562a22414313",
+      "target": "4b7135c8f9864c35",
       "key": "LOCATED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
-      "source": "4d3e8c6ff12b1ed5",
-      "target": "3975843354a36cb6",
+      "evidence": "기업은행장의 재산공개 내역에서 관악구 봉천동 '현대아파트' 전세권이 언급되었으나, 대상 자산인 '에그엘로우'와는 무관한 다른 건물임.",
+      "source": "c7dd6ec1eb67914b",
+      "target": "b88660cf699e5c4f",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OWNED_BY",
+      "evidence": "본인 명의 서울 관악구 봉천동 '현대아파트' 116.72㎡ 전세권을 공개",
+      "source": "c7dd6ec1eb67914b",
+      "target": "e6d8562a22414313",
+      "key": "OWNED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우 관리단 윤 회장이 약 12억 원대 장기수선충당금 횡령 혐의로 지적되고 있으며, 관악구청 앞에서 시민 집회가 열려 철저한 수사를 촉구하고 있다.",
+      "source": "4c685c92f2ca7724",
+      "target": "e26a26b06eea5d74",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
-      "source": "d152a4108b2f5468",
-      "target": "3975843354a36cb6",
+      "evidence": "에그엘로우 관리단 윤 회장이 약 12억 원대 장기수선충당금 횡령 혐의로 지적되고 있으며, 관악구청 앞에서 시민 집회가 열려 철저한 수사를 촉구하고 있다.",
+      "source": "d22ea37820663fd6",
+      "target": "e26a26b06eea5d74",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "윤수민 NH농협은행 부동산 전문위원은 '서울 신축 아파트 공급이 제한적인 상황에서'",
-      "source": "d152a4108b2f5468",
-      "target": "aee2786d58dc5862",
+      "evidence": "집회에서 부정 행위 수사 촉구",
+      "source": "d22ea37820663fd6",
+      "target": "b6eb6301b197ae0a",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
-      "source": "ea45ebd78c496de4",
-      "target": "3975843354a36cb6",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "HAS_METRIC",
-      "evidence": "감정가의 123%에 낙찰됐다",
-      "source": "ea45ebd78c496de4",
-      "target": "0630f6105ca3d588",
-      "key": "HAS_METRIC"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
-      "source": "0630f6105ca3d588",
-      "target": "3975843354a36cb6",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 다세대 주택이 재개발 기대감으로 활발한 거래를 보이고 있으며, 감정가 대비 높은 낙찰가를 기록했다. 서울 신축 아파트 공급 제약 속에서 기존 주택의 재건축 수요가 증가하는 추세다.",
-      "source": "aee2786d58dc5862",
-      "target": "3975843354a36cb6",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 재개발 수요가 높아지고 있으며, 경매 시장에서 다세대 주택이 감정가의 123%에 낙찰되어 강세를 보이고 있다. 삼성물산의 정비사업 수주 확대가 강남권 핵심단지 개발을 촉진할 것으로 예상된다.",
-      "source": "9338a94b002ea279",
-      "target": "3d0a651efcc6648a",
+      "evidence": "에그엘로우 관리단 윤 회장이 약 12억 원대 장기수선충당금 횡령 혐의로 지적되고 있으며, 관악구청 앞에서 시민 집회가 열려 철저한 수사를 촉구하고 있다.",
+      "source": "b6eb6301b197ae0a",
+      "target": "e26a26b06eea5d74",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "LOCATED_IN",
-      "evidence": "동작구 상도동 다세대 주택",
-      "source": "9338a94b002ea279",
-      "target": "d7d4b14f9213620a",
+      "evidence": "관악구청 앞에서 개최",
+      "source": "b6eb6301b197ae0a",
+      "target": "dad0e99acd4e77aa",
       "key": "LOCATED_IN"
     },
     {
-      "rel": "HAS_METRIC",
-      "evidence": "동작구 상도동 다세대 주택이 감정가의 123%에 낙찰",
-      "source": "9338a94b002ea279",
-      "target": "7700a341735b2747",
-      "key": "HAS_METRIC"
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우 관리단 윤 회장이 약 12억 원대 장기수선충당금 횡령 혐의로 지적되고 있으며, 관악구청 앞에서 시민 집회가 열려 철저한 수사를 촉구하고 있다.",
+      "source": "dad0e99acd4e77aa",
+      "target": "e26a26b06eea5d74",
+      "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 재개발 수요가 높아지고 있으며, 경매 시장에서 다세대 주택이 감정가의 123%에 낙찰되어 강세를 보이고 있다. 삼성물산의 정비사업 수주 확대가 강남권 핵심단지 개발을 촉진할 것으로 예상된다.",
-      "source": "c0e3725116c50e67",
-      "target": "3d0a651efcc6648a",
+      "evidence": "에그엘로우가 위치한 서울 관악구 봉천동 지역이 중국 투자자들의 부동산 투자 대상으로 샤오홍슈에서 소개되고 있으며, 시세차익을 강조하는 투자 정보가 확산 중이다.",
+      "source": "c68e80794712425b",
+      "target": "b3850c6e217722d7",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "에그엘로우가 위치한 서울 관악구 봉천동 지역이 중국 투자자들의 부동산 투자 대상으로 샤오홍슈에서 소개되고 있으며, 시세차익을 강조하는 투자 정보가 확산 중이다.",
+      "source": "be5a2562c7599dc1",
+      "target": "b3850c6e217722d7",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "AFFECTS_AXIS",
-      "evidence": "정비사업 수주 확대가 강남권 핵심단지 개발을 촉진",
-      "source": "c0e3725116c50e67",
-      "target": "d7d4b14f9213620a",
+      "evidence": "중국 투자자들의 부동산 투자 대상으로 주목",
+      "source": "be5a2562c7599dc1",
+      "target": "fd656ea4dc4f74f9",
       "key": "AFFECTS_AXIS"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 재개발 수요가 높아지고 있으며, 경매 시장에서 다세대 주택이 감정가의 123%에 낙찰되어 강세를 보이고 있다. 삼성물산의 정비사업 수주 확대가 강남권 핵심단지 개발을 촉진할 것으로 예상된다.",
-      "source": "7700a341735b2747",
-      "target": "3d0a651efcc6648a",
+      "evidence": "에그엘로우가 위치한 서울 관악구 봉천동 지역이 중국 투자자들의 부동산 투자 대상으로 샤오홍슈에서 소개되고 있으며, 시세차익을 강조하는 투자 정보가 확산 중이다.",
+      "source": "81c9cb6b08836521",
+      "target": "b3850c6e217722d7",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 상도동 일대의 월세 상승 현황을 다룬 기사로, 원룸 월세가 보증금 1000만원 기준 약 65만원 수준임을 보도하고 있다. 청년층의 주거비 부담 증가 추세를 반영하는 시장 뉴스다.",
-      "source": "97afb262fe0edbae",
-      "target": "52444e9e4e52e6b0",
+      "evidence": "샤오홍슈 게시물에는 서울 관악구 봉천동 개발 예정지 인근 토지를 투자처로 소개",
+      "source": "81c9cb6b08836521",
+      "target": "c68e80794712425b",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 상도동 일대의 월세 상승 현황을 다룬 기사로, 원룸 월세가 보증금 1000만원 기준 약 65만원 수준임을 보도하고 있다. 청년층의 주거비 부담 증가 추세를 반영하는 시장 뉴스다.",
-      "source": "5ecb2328ed7f2dc5",
-      "target": "52444e9e4e52e6b0",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "대상 자산이 위치한 상도동 일대의 월세 상승 현황을 다룬 기사로, 원룸 월세가 보증금 1000만원 기준 약 65만원 수준임을 보도하고 있다. 청년층의 주거비 부담 증가 추세를 반영하는 시장 뉴스다.",
-      "source": "23335b1831175bdd",
-      "target": "52444e9e4e52e6b0",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
-      "source": "fb6b0edf8c63127b",
-      "target": "aeed3650b35d0445",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "서울시 동작구 상도동 363-10번지 일원에 들어서며",
-      "source": "fb6b0edf8c63127b",
-      "target": "1b5bdcc4ec333931",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
-      "source": "da231ef785b51352",
-      "target": "aeed3650b35d0445",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "동작구에서",
-      "source": "da231ef785b51352",
-      "target": "1b5bdcc4ec333931",
-      "key": "LOCATED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동작구 상도동 지역의 신규 아파트 단지(동문 디 이스트) 청약이 호조를 보이고 있으며, 노량진뉴타운 청약 흥행과 함께 동작구의 부동산 수요가 증가하고 있는 상황을 보도하고 있다.",
-      "source": "62ecde712f864d2c",
-      "target": "aeed3650b35d0445",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "동문 디 이스트 청약",
-      "source": "62ecde712f864d2c",
-      "target": "fb6b0edf8c63127b",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 사당로 일대에서 '상도역 대우 엑소디움' 민간임대 아파트 청약이 진행 중이며, 이는 서울 주택시장의 주거 환경 변화를 반영하는 것으로 분석되고 있다.",
-      "source": "f17e3ec439cea1e5",
-      "target": "090775e395269739",
+      "evidence": "서울 관악구 봉천동 지역의 아파트가 지난주 0.28% 상승률을 기록했으며, 대단지 중심으로 높은 상승세를 보이고 있다. 올해 서울 아파트 시장 전반적으로 8% 상승이 전망되고 있다.",
+      "source": "e49cc9859116f3b5",
+      "target": "df95a735b7b17966",
       "key": "MENTIONED_IN"
     },
     {
       "rel": "AFFECTS_AXIS",
-      "evidence": "서울 주택시장 주거 환경 변화와 연계된 흐름",
-      "source": "f17e3ec439cea1e5",
-      "target": "661c1784d79c1775",
+      "evidence": "지역 아파트 시장 상승세",
+      "source": "e49cc9859116f3b5",
+      "target": "fd656ea4dc4f74f9",
       "key": "AFFECTS_AXIS"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 사당로 일대에서 '상도역 대우 엑소디움' 민간임대 아파트 청약이 진행 중이며, 이는 서울 주택시장의 주거 환경 변화를 반영하는 것으로 분석되고 있다.",
-      "source": "661c1784d79c1775",
-      "target": "090775e395269739",
+      "evidence": "삼성전자가 서울 관악구 봉천동에서 3,750억 원대 규모의 계약을 체결했으며, 이는 최근 매출액의 3.01% 수준이다. 대상 자산 에그엘로우가 위치한 봉천동 지역의 부동산 거래 활동을 보여주는 사례다.",
+      "source": "6ecfbf8045e10f3f",
+      "target": "429c0dc2135d7004",
       "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 일대가 7500가구 규모의 친환경 주거타운으로 재개발되며 여의도, 강남 등 주요 업무지구의 배후 주거지역으로 거듭나고 있다. 지역 부동산 업계는 정비사업 본격화에 따른 가치 상승을 예상하고 있다.",
-      "source": "1c98c85732dbece3",
-      "target": "ebb68b6c743a2605",
-      "key": "MENTIONED_IN"
-    },
-    {
-      "rel": "LOCATED_IN",
-      "evidence": "서울 동작구 상도동 일대가 7500가구 '친환경 주거타운' 탈바꿈",
-      "source": "1c98c85732dbece3",
-      "target": "d7d4b14f9213620a",
-      "key": "LOCATED_IN"
     },
     {
       "rel": "HAS_EVENT",
-      "evidence": "상도동 일대가 7500가구 친환경 주거타운으로 탈바꿈",
-      "source": "1c98c85732dbece3",
-      "target": "0c1eb798f2f561d4",
+      "evidence": "삼성전자, 삼천당제약, DL이앤씨... 계약금액은 3750억8600만원",
+      "source": "6ecfbf8045e10f3f",
+      "target": "b67d5f06aef9e7f0",
       "key": "HAS_EVENT"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 일대가 7500가구 규모의 친환경 주거타운으로 재개발되며 여의도, 강남 등 주요 업무지구의 배후 주거지역으로 거듭나고 있다. 지역 부동산 업계는 정비사업 본격화에 따른 가치 상승을 예상하고 있다.",
-      "source": "0c1eb798f2f561d4",
-      "target": "ebb68b6c743a2605",
+      "evidence": "삼성전자가 서울 관악구 봉천동에서 3,750억 원대 규모의 계약을 체결했으며, 이는 최근 매출액의 3.01% 수준이다. 대상 자산 에그엘로우가 위치한 봉천동 지역의 부동산 거래 활동을 보여주는 사례다.",
+      "source": "b67d5f06aef9e7f0",
+      "target": "429c0dc2135d7004",
       "key": "MENTIONED_IN"
     },
     {
-      "rel": "HAS_ISSUE",
-      "evidence": "상도동 일대 정비사업이 본격화하며 가치 상승이 닻을 올렸다",
-      "source": "0c1eb798f2f561d4",
-      "target": "521ef7fe9851e5ef",
-      "key": "HAS_ISSUE"
+      "rel": "MENTIONED_IN",
+      "evidence": "사업지는 서울 관악구 봉천동",
+      "source": "b67d5f06aef9e7f0",
+      "target": "fd656ea4dc4f74f9",
+      "key": "MENTIONED_IN"
     },
     {
       "rel": "MENTIONED_IN",
-      "evidence": "서울 동작구 상도동 일대가 7500가구 규모의 친환경 주거타운으로 재개발되며 여의도, 강남 등 주요 업무지구의 배후 주거지역으로 거듭나고 있다. 지역 부동산 업계는 정비사업 본격화에 따른 가치 상승을 예상하고 있다.",
-      "source": "521ef7fe9851e5ef",
-      "target": "ebb68b6c743a2605",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "f6d0d5c018508a05",
+      "target": "aa2474d7cf8217db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "LOCATED_IN",
+      "evidence": "서울시 관악구 봉천동 480번지 일대",
+      "source": "f6d0d5c018508a05",
+      "target": "62d384ccdd0937b6",
+      "key": "LOCATED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "826e7dcd24093d0f",
+      "target": "aa2474d7cf8217db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "OPERATED_BY",
+      "evidence": "카카오 링키지랩이 사업 주체",
+      "source": "826e7dcd24093d0f",
+      "target": "f6d0d5c018508a05",
+      "key": "OPERATED_BY"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "f1dfe40638eb26c5",
+      "target": "aa2474d7cf8217db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "모리빌딩과 도시개발 협력 방안을 논의",
+      "source": "f1dfe40638eb26c5",
+      "target": "7070beed229d509e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "537f42192f5e6122",
+      "target": "aa2474d7cf8217db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "Itochu상사와는 협력",
+      "source": "537f42192f5e6122",
+      "target": "7070beed229d509e",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "62d384ccdd0937b6",
+      "target": "aa2474d7cf8217db",
+      "key": "MENTIONED_IN"
+    },
+    {
+      "rel": "MENTIONED_IN",
+      "evidence": "카카오 링키지랩이 모리빌딩, Itochu상사와 협력하여 서울시 관악구 봉천동 480번지 일대에 지하 3층~지상 28층, 9개동 규모의 도시개발 사업을 추진 중이다.",
+      "source": "7070beed229d509e",
+      "target": "aa2474d7cf8217db",
       "key": "MENTIONED_IN"
     }
   ]
