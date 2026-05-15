@@ -13,6 +13,7 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, Tool
 from langgraph.prebuilt import create_react_agent
 
 from .. import config
+from .. import trace_logger
 from ..kg.graph_store import KnowledgeGraph
 from ._llm import make_llm
 from .tools_lc import build_tools
@@ -112,7 +113,16 @@ def _planner(axis_label: str, metadata: dict[str, Any], kg_summary: dict[str, An
         config={"callbacks": callbacks or []},
     )
     text = resp.content if isinstance(resp.content, str) else str(resp.content)
-    return _parse_json(text) or {"axis": axis_label, "must_check": []}
+    plan = _parse_json(text) or {"axis": axis_label, "must_check": []}
+    trace_logger.log_event(
+        "planner",
+        agent=f"planner:{axis_label}",
+        axis=axis_label,
+        kg_summary=kg_summary,
+        raw_response=text[:4000],
+        plan=plan,
+    )
+    return plan
 
 
 def _retriever(axis_label: str, plan: dict[str, Any], tools, callbacks: list[Any] | None, max_iterations: int = 8) -> dict[str, Any]:
@@ -141,12 +151,36 @@ def _retriever(axis_label: str, plan: dict[str, Any], tools, callbacks: list[Any
     tool_calls: list[dict[str, Any]] = []
     final_text: str = ""
 
+    # Build map: tool_call_id -> (tool_name, args, reasoning_text_from_ai)
+    pending: dict[str, dict[str, Any]] = {}
     for msg in final_messages:
-        if isinstance(msg, ToolMessage):
-            tool_calls.append({"tool": msg.name, "content": str(msg.content)[:4000]})
-        elif isinstance(msg, AIMessage):
-            if isinstance(msg.content, str):
+        if isinstance(msg, AIMessage):
+            ai_reasoning = msg.content if isinstance(msg.content, str) else ""
+            tcs = getattr(msg, "tool_calls", None) or []
+            for tc in tcs:
+                tc_id = tc.get("id") or tc.get("tool_call_id") or ""
+                pending[tc_id] = {
+                    "tool": tc.get("name"),
+                    "args": tc.get("args") or {},
+                    "reasoning": ai_reasoning,
+                }
+            if not tcs and isinstance(msg.content, str):
                 final_text = msg.content
+        elif isinstance(msg, ToolMessage):
+            tc_id = getattr(msg, "tool_call_id", "") or ""
+            info = pending.get(tc_id, {})
+            tool_name = msg.name or info.get("tool") or "unknown"
+            args = info.get("args") or {}
+            content = str(msg.content)
+            tool_calls.append({"tool": tool_name, "args": args, "content": content[:4000]})
+            trace_logger.log_tool_call(
+                agent=f"retriever:{axis_label}",
+                tool=tool_name,
+                args=args,
+                output=content,
+                reasoning=info.get("reasoning"),
+                tool_call_id=tc_id or None,
+            )
 
     return {"tool_calls": tool_calls, "final_text": final_text, "iterations": len([m for m in final_messages if isinstance(m, ToolMessage)])}
 
@@ -165,7 +199,7 @@ def _scorer(axis_label: str, plan: dict[str, Any], retrieved: dict[str, Any], ca
         config={"callbacks": callbacks or []},
     )
     text = resp.content if isinstance(resp.content, str) else str(resp.content)
-    return _parse_json(text) or {
+    scored = _parse_json(text) or {
         "score": None,
         "grade": "N/A",
         "strengths": [],
@@ -173,6 +207,15 @@ def _scorer(axis_label: str, plan: dict[str, Any], retrieved: dict[str, Any], ca
         "risks": ["스코어 파싱 실패"],
         "rationale": text[:2000],
     }
+    trace_logger.log_event(
+        "scorer",
+        agent=f"scorer:{axis_label}",
+        axis=axis_label,
+        tool_call_count=len(retrieved.get("tool_calls", [])),
+        raw_response=text[:4000],
+        scored=scored,
+    )
+    return scored
 
 
 def run_axis(
@@ -184,9 +227,18 @@ def run_axis(
 ) -> dict[str, Any]:
     tools = build_tools(metadata, kg)
     kg_summary = kg.summary() if kg else {"nodes": 0, "edges": 0}
+    trace_logger.log_event("axis_start", axis=axis, axis_label=axis_label)
     plan = _planner(axis_label, metadata, kg_summary, callbacks)
     retrieved = _retriever(axis_label, plan, tools, callbacks)
     scored = _scorer(axis_label, plan, retrieved, callbacks)
+    trace_logger.log_event(
+        "axis_end",
+        axis=axis,
+        axis_label=axis_label,
+        score=scored.get("score"),
+        grade=scored.get("grade"),
+        tool_call_count=len(retrieved.get("tool_calls", [])),
+    )
     return {
         "axis": axis,
         "axis_label": axis_label,

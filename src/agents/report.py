@@ -9,6 +9,7 @@ from typing import Any
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from .. import config
+from .. import trace_logger
 from . import _llm
 
 SYSTEM = """당신은 부동산 STO(증권형 토큰) 발행 자문 시 사회적 가치 평가 리포트를 작성하는 시니어 애널리스트다.
@@ -81,4 +82,11 @@ def run(state: dict[str, Any], callbacks: list[Any] | None = None) -> dict[str, 
         config={"callbacks": callbacks or []},
     )
     text = resp.content if isinstance(resp.content, str) else str(resp.content)
+    trace_logger.log_event(
+        "report",
+        agent="report",
+        composite=composite,
+        markdown_length=len(text),
+        markdown_preview=text[:1500],
+    )
     return {"composite": composite, "report_markdown": text}
