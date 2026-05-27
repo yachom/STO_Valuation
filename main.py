@@ -6,13 +6,13 @@
     3. 결과(LocationInfo)를 화면에 출력한다.
 
 실행:
-    프로젝트 루트의 .env 파일에 KAKAO_API_KEY, JUSO_API_KEY를 적어두고
+    $ export KAKAO_API_KEY=발급받은_카카오_키
+    $ export JUSO_API_KEY=발급받은_juso_키
     $ python -m sto_valuation.main
 """
 
 import os
 
-from STO_Valuation.infra.env import load_env
 from STO_Valuation.real_estate.location import LocationResolver
 
 
@@ -25,11 +25,13 @@ def main():
         3. LocationResolver를 만들어 resolve()를 호출한다.
         4. 결과를 출력한다.
     """
-    # 1. .env 파일을 로드한 뒤 환경변수에서 API 키를 읽는다.
-    # 코드에 키를 박지 않고 .env로 분리하는 것이 보안의 기본.
-    load_env()
-    kakao_api_key = os.environ.get("KAKAO_API_KEY")
-    juso_api_key = os.environ.get("JUSO_API_KEY")
+    # 1. 환경변수에서 API 키들을 읽는다.
+    # 코드에 키를 박지 않고 환경변수로 분리하는 것이 보안의 기본.
+    #kakao_api_key = os.environ.get("KAKAO_API_KEY")
+    kakao_api_key = '발급코드 입력'
+
+    #juso_api_key = os.environ.get("JUSO_API_KEY")
+    juso_api_key = "발급코드 입력"
 
     if kakao_api_key is None:
         print("에러: KAKAO_API_KEY 환경변수를 설정해주세요.")
