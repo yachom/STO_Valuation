@@ -46,8 +46,7 @@ def main():
     print("컬럼:", df.columns.tolist())
     print(df.head())
 
-    NOTEBOOK_DIR = "/Users/jyo/Desktop/git_practice/FN"
-    DB_PATH = os.path.join(NOTEBOOK_DIR, "seoul_cleanup.db")
+    DB_PATH = os.path.join("../raw_data", "seoul_cleanup.db")
     TABLE = "bsns_sttus"
 
     print("현재 작업 디렉토리(cwd):", os.getcwd())
