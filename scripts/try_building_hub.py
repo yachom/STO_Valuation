@@ -15,11 +15,11 @@ import os
 import sys
 
 from infra.env import load_env
-from infra.external.building_hub import API_NAME, BuildingRegisterRepository
 from infra.external.public_data_portal import (
     PublicDataPortalClient,
     PublicDataPortalError,
 )
+from real_estate.external.building_hub import API_NAME, BuildingRegisterRepository
 from real_estate.location import LocationResolver
 
 
