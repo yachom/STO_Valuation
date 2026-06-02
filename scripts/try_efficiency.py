@@ -23,7 +23,7 @@ from infra.env import load_env
 from real_estate.location import LocationResolver
 from real_estate.repository.efficiency import EnergyEfficiencyGradeRepository
 
-DB_PATH = Path("real_estate/database/DB/efficiency.db")
+DB_PATH = Path("real_estate/database/DB/building_certifications.db")
 
 
 def main() -> None:
@@ -37,7 +37,10 @@ def main() -> None:
     if missing:
         sys.exit(f"필요한 env가 비어 있습니다: {', '.join(missing)}")
     if not DB_PATH.exists():
-        sys.exit(f"{DB_PATH} 가 없습니다. efficiency_pipeline로 먼저 빌드하세요.")
+        sys.exit(
+            f"{DB_PATH} 가 없습니다. "
+            "real_estate/database/db_builder/efficiency_pipeline.py로 먼저 빌드하세요."
+        )
 
     raw = " ".join(sys.argv[1:]).strip() or input("주소: ")
     if not raw:

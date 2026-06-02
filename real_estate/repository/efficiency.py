@@ -1,7 +1,7 @@
 """건축물 에너지효율등급 인증 DB의 SQLite 기반 구현.
 
 LocationInfo를 입력으로 받아 해당 건물의 에너지효율등급(BEEC) 인증 정보를
-efficiency.db에서 조회해 dict로 반환한다.
+building_certifications.db에서 조회해 dict로 반환한다.
 """
 
 import logging
@@ -16,7 +16,7 @@ class EnergyEfficiencyGradeRepository:
     """건축물 에너지효율등급 인증 DB의 SQLite 기반 구현.
 
     다음을 가정한다:
-        - efficiency.db에 building_energy_grade 테이블이 있다.
+        - building_certifications.db에 building_energy_grade 테이블이 있다.
         - jibun_addr (TEXT, 정규화된 지번 주소)를 조회 키로 쓴다.
         - 같은 지번에 인증이 여러 건이면 최신 1건을 고른다
           (본인증 > 예비인증 순, 같으면 인증일자 내림차순).
@@ -38,7 +38,7 @@ class EnergyEfficiencyGradeRepository:
         """구현체별 자원을 생성자에서 받는다.
 
         Args:
-            db_path: SQLite DB 파일 경로 (efficiency.db).
+            db_path: SQLite DB 파일 경로 (building_certifications.db).
         """
         self._db_path = db_path
 

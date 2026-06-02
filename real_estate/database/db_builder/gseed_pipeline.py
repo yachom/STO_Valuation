@@ -51,7 +51,7 @@ from dotenv import load_dotenv
 SCRIPT_DIR = Path(__file__).resolve().parent
 load_dotenv(SCRIPT_DIR / ".env")
 
-DB_PATH = SCRIPT_DIR / "gseed.db"
+DB_PATH = SCRIPT_DIR.parent / "DB" / "building_certifications.db"
 
 GSEED_API_KEY = os.getenv("GSEED_API_KEY")
 KAKAO_KEY = os.getenv("KAKAO_API_KEY")
@@ -811,9 +811,13 @@ class GseedPipeline:
         skip_juso=False,
         skip_recovery=False,
     ):
+        # building_certifications.db는 efficiency 파이프라인과 공유하므로 파일 자체는
+        # 지우지 않고 자기 테이블(gseed_certifications)만 비운다.
+        self.db_path.parent.mkdir(parents=True, exist_ok=True)
         if fresh and self.db_path.exists():
-            print(f"[0] 기존 DB 삭제: {self.db_path.name}")
-            self.db_path.unlink()
+            print(f"[0] 기존 gseed_certifications 테이블 삭제")
+            with sqlite3.connect(self.db_path) as conn:
+                conn.execute("DROP TABLE IF EXISTS gseed_certifications")
 
         db = GseedDB(self.db_path)
         db.create_schema()

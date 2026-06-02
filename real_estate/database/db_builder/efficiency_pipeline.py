@@ -51,7 +51,7 @@ from dotenv import load_dotenv
 SCRIPT_DIR = Path(__file__).resolve().parent
 load_dotenv(SCRIPT_DIR / ".env")
 
-DB_PATH = SCRIPT_DIR / "efficiency.db"
+DB_PATH = SCRIPT_DIR.parent / "DB" / "building_certifications.db"
 
 BEEC_KEY = os.getenv("BEEC_API_KEY")
 KAKAO_KEY = os.getenv("KAKAO_API_KEY")
@@ -865,10 +865,14 @@ class EfficiencyPipeline:
         skip_juso=False,
         skip_recovery=False,
     ):
-        # 0) 깨끗하게 다시 만들 거면 DB 삭제
+        # 0) 깨끗하게 다시 만들 거면 building_energy_grade 테이블만 비운다.
+        # building_certifications.db는 gseed_certifications도 공유하므로 파일 자체는
+        # 지우지 않는다.
+        self.db_path.parent.mkdir(parents=True, exist_ok=True)
         if fresh and self.db_path.exists():
-            print(f"[0] 기존 DB 삭제: {self.db_path.name}")
-            self.db_path.unlink()
+            print(f"[0] 기존 building_energy_grade 테이블 삭제")
+            with sqlite3.connect(self.db_path) as conn:
+                conn.execute("DROP TABLE IF EXISTS building_energy_grade")
 
         db = EfficiencyDB(self.db_path)
         db.create_schema()
