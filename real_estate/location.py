@@ -12,7 +12,7 @@
        - 호출하는 API:
             (a) 카카오 주소 검색  → 정규화된 도로명/지번 주소 + 좌표
             (b) 카카오 좌표→행정구역 → 시도·시군구·행정동·법정동 정보
-            (c) Juso 도로명주소 API → 건물관리번호(bdMgtSn)
+            (c) Juso 도로명주소 API → 건물관리번호 + 본번/부번
 
 설계 의도:
     - 데이터를 담는 책임(LocationInfo)과 만드는 책임(LocationResolver)을 분리.
@@ -20,7 +20,8 @@
     - API 호출 세부사항(URL, 헤더, 응답 파싱)은 LocationResolver 내부에
       캡슐화되어 외부로 새지 않는다.
     - 다운스트림 데이터 소스들이 자기에게 필요한 필드(주소/좌표/행정동/법정동/
-      구/건물관리번호 등)를 LocationInfo에서 골라 쓰도록 풍부한 필드를 제공한다.
+      구/건물관리번호/본번·부번 등)를 LocationInfo에서 골라 쓰도록 풍부한
+      필드를 제공한다.
 """
 
 import os
@@ -51,6 +52,10 @@ class LocationInfo:
         bname:           법정동 이름 (예: "미아동")
         bd_mgt_sn:       건물관리번호 (25자리 문자열, 건물 단위 영구 유일 ID)
                          Juso API 조회 실패 시 None
+        bun:             지번 본번 (문자열, 예: "21")
+                         Juso API 조회 실패 시 None
+        ji:              지번 부번 (문자열, 예: "15". 부번이 없으면 "0")
+                         Juso API 조회 실패 시 None
 
     행정동과 법정동:
         - 행정동(H): 행정 편의를 위한 구분. 숫자 접미사가 붙음(미아1동, 미아2동).
@@ -62,7 +67,13 @@ class LocationInfo:
     건물관리번호(bd_mgt_sn):
         - 한 건물 = 한 번호 (1:1, 영구 고정).
         - 건물 단위 데이터를 매칭할 때 가장 신뢰할 수 있는 키.
-        - 단, Juso API 조회가 실패하면 None일 수 있으므로 사용 전 None 체크.
+        - Juso API 조회 실패 시 None이므로 사용 전 None 체크.
+
+    본번/부번(bun, ji):
+        - 건축HUB 건축물대장 API 호출에 필요하다 (시군구코드+법정동코드+본번+부번).
+        - bcode(법정동코드 10자리)와 함께 쓴다.
+          bcode 앞 5자리 = 시군구코드, 뒤 5자리 = 법정동코드.
+        - Juso API 조회 실패 시 None.
     """
 
     def __init__(
@@ -79,6 +90,8 @@ class LocationInfo:
         bcode,
         bname,
         bd_mgt_sn,
+        bun,
+        ji,
     ):
         """객체 생성 시 모든 필드를 한 번에 받아 저장한다.
 
@@ -95,6 +108,8 @@ class LocationInfo:
             bcode:         법정동 코드
             bname:         법정동 이름
             bd_mgt_sn:     건물관리번호 (25자리) 또는 None
+            bun:           지번 본번 또는 None
+            ji:            지번 부번 또는 None
         """
         self.raw_address = raw_address
         self.road_address = road_address
@@ -108,6 +123,8 @@ class LocationInfo:
         self.bcode = bcode
         self.bname = bname
         self.bd_mgt_sn = bd_mgt_sn
+        self.bun = bun
+        self.ji = ji
 
     def __repr__(self):
         """객체를 출력했을 때 사람이 읽기 쉬운 형태로 보여준다.
@@ -128,7 +145,9 @@ class LocationInfo:
             "hname=" + repr(self.hname) + ", "
             "bcode=" + repr(self.bcode) + ", "
             "bname=" + repr(self.bname) + ", "
-            "bd_mgt_sn=" + repr(self.bd_mgt_sn) + ")"
+            "bd_mgt_sn=" + repr(self.bd_mgt_sn) + ", "
+            "bun=" + repr(self.bun) + ", "
+            "ji=" + repr(self.ji) + ")"
         )
 
 
@@ -150,9 +169,9 @@ class LocationResolver:
             좌표로 시도·시군구·행정동·법정동 정보를 얻는다.
 
         3. Juso 도로명주소 API
-            건물관리번호(bdMgtSn)를 얻는다.
+            건물관리번호(bdMgtSn)와 지번 본번/부번을 얻는다.
             지번 주소로 먼저 시도하고, 실패하면 도로명 주소로 재시도한다.
-            둘 다 실패하면 bd_mgt_sn은 None으로 둔다 (예외를 던지지 않음).
+            둘 다 실패하면 bd_mgt_sn·bun·ji는 None으로 둔다 (예외 안 던짐).
     """
 
     # 클래스 상수: API 엔드포인트 URL.
@@ -180,8 +199,8 @@ class LocationResolver:
 
         Returns:
             LocationInfo 객체.
-            bd_mgt_sn을 제외한 모든 필드는 채워진 상태로 반환된다.
-            bd_mgt_sn은 Juso 조회 실패 시 None일 수 있다.
+            카카오 관련 필드는 항상 채워진다.
+            bd_mgt_sn·bun·ji는 Juso 조회 실패 시 None일 수 있다.
 
         Raises:
             LookupError: 주소를 카카오에서 찾지 못한 경우.
@@ -197,9 +216,9 @@ class LocationResolver:
             latitude, longitude
         )
 
-        # 3단계: Juso API — 건물관리번호.
+        # 3단계: Juso API — 건물관리번호 + 본번/부번.
         #   지번 주소로 먼저 시도하고, 실패하면 도로명 주소로 재시도.
-        bd_mgt_sn = self._resolve_building_no(jibun_address, road_address)
+        bd_mgt_sn, bun, ji = self._resolve_juso(jibun_address, road_address)
 
         # 4단계: 모은 정보로 LocationInfo 객체를 만들어 반환한다.
         return LocationInfo(
@@ -215,6 +234,8 @@ class LocationResolver:
             bcode=bcode,
             bname=bname,
             bd_mgt_sn=bd_mgt_sn,
+            bun=bun,
+            ji=ji,
         )
 
     def _search_address(self, raw_address):
@@ -337,39 +358,41 @@ class LocationResolver:
 
         return sido, sigungu, hcode, hname, bcode, bname
 
-    def _resolve_building_no(self, jibun_address, road_address):
-        """건물관리번호를 조회한다 (내부 메서드).
+    def _resolve_juso(self, jibun_address, road_address):
+        """건물관리번호와 본번/부번을 조회한다 (내부 메서드).
 
         지번 주소로 먼저 Juso API를 시도하고, 결과가 없으면 도로명 주소로
-        재시도한다. 둘 다 실패하면 None을 반환한다 (예외를 던지지 않는다).
+        재시도한다. 둘 다 실패하면 (None, None, None)을 반환한다
+        (예외를 던지지 않는다).
 
-        건물관리번호는 없어도 시스템이 동작하므로, 조회 실패를 치명적 에러로
-        취급하지 않는다. 다운스트림에서 None 체크로 처리하면 된다.
+        Juso 정보(건물관리번호·본번·부번)는 없어도 시스템의 다른 부분이
+        동작할 수 있으므로, 조회 실패를 치명적 에러로 취급하지 않는다.
+        다운스트림에서 None 체크로 처리하면 된다.
 
         Args:
             jibun_address: 카카오가 정규화한 지번 주소 (또는 None).
             road_address:  카카오가 정규화한 도로명 주소 (또는 None).
 
         Returns:
-            건물관리번호 문자열 (25자리). 조회 실패 시 None.
+            (건물관리번호, 본번, 부번) 튜플. 조회 실패 시 해당 자리는 None.
         """
         # 1순위: 지번 주소로 시도.
         if jibun_address is not None:
-            result = self._fetch_building_no(jibun_address)
+            result = self._fetch_juso(jibun_address)
             if result is not None:
                 return result
 
         # 2순위: 지번이 없거나 실패하면 도로명 주소로 재시도.
         if road_address is not None:
-            result = self._fetch_building_no(road_address)
+            result = self._fetch_juso(road_address)
             if result is not None:
                 return result
 
-        # 둘 다 실패. 건물관리번호 없이 진행.
-        return None
+        # 둘 다 실패. Juso 정보 없이 진행.
+        return None, None, None
 
-    def _fetch_building_no(self, address):
-        """Juso API를 한 번 호출하여 건물관리번호를 얻는다 (내부 메서드).
+    def _fetch_juso(self, address):
+        """Juso API를 한 번 호출하여 건물관리번호·본번·부번을 얻는다 (내부 메서드).
 
         검색 결과가 여러 건일 수 있으므로, 입력 주소의 마지막 토큰(번지)을
         응답의 본번/부번과 대조하여 정확히 일치하는 건을 고른다. 일치하는
@@ -379,8 +402,8 @@ class LocationResolver:
             address: 조회할 주소 문자열 (지번 또는 도로명).
 
         Returns:
-            건물관리번호 문자열. 조회 실패(주소 못 찾음, API 오류,
-            네트워크 오류 등) 시 None.
+            (건물관리번호, 본번, 부번) 튜플.
+            조회 실패(주소 못 찾음, API 오류, 네트워크 오류 등) 시 None.
         """
         # Juso API 요청 파라미터 구성.
         params = urllib.parse.urlencode({
@@ -428,8 +451,23 @@ class LocationResolver:
             jibun_num = lnbr_main if lnbr_sub == "0" else lnbr_main + "-" + lnbr_sub
 
             if last_token == road_num or last_token == jibun_num:
-                return juso.get("bdMgtSn")
+                return self._extract_juso_fields(juso)
 
         # 정확히 일치하는 번지를 못 찾았으면, Juso가 1순위로 준 결과를 쓴다.
         # (건물명으로 검색했거나 번지 표기가 다른 경우)
-        return juso_list[0].get("bdMgtSn")
+        return self._extract_juso_fields(juso_list[0])
+
+    def _extract_juso_fields(self, juso):
+        """Juso 결과 한 건에서 (건물관리번호, 본번, 부번)을 뽑는다 (내부 메서드).
+
+        Args:
+            juso: Juso API 응답의 juso 리스트 항목 하나 (dict).
+
+        Returns:
+            (건물관리번호, 본번, 부번) 튜플. 본번/부번은 지번 기준
+            (lnbrMnnm, lnbrSlno).
+        """
+        bd_mgt_sn = juso.get("bdMgtSn")
+        bun = juso.get("lnbrMnnm")     # 지번 본번
+        ji = juso.get("lnbrSlno")      # 지번 부번 (없으면 보통 "0")
+        return bd_mgt_sn, bun, ji
