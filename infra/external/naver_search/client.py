@@ -19,8 +19,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from infra.repository.external.naver_search.credentials import NaverCredentials
-from infra.repository.external.naver_search.exceptions import (
+from infra.external.naver_search.credentials import NaverCredentials
+from infra.external.naver_search.exceptions import (
     NaverAPIError,
     NaverAuthError,
     NaverBadRequest,

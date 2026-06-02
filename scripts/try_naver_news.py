@@ -13,11 +13,11 @@ import logging
 import sys
 
 from infra.env import load_env
-from infra.repository.external.naver_news_scraper import (
+from infra.external.naver_news_scraper import (
     NewsScrapeError,
     fetch_news_article,
 )
-from infra.repository.external.naver_search import (
+from infra.external.naver_search import (
     NaverSearchClient,
     fetch_news_metadata,
     load_credentials,
