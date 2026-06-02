@@ -77,9 +77,9 @@ EPSILON_REVIEW = 0.03  # 동점 차순위 가까우면 needs_review=1
 
 # ---- Kakao API ----
 load_dotenv()
-KAKAO_REST_API_KEY = os.getenv("KAKAO_REST_API_KEY")
-if not KAKAO_REST_API_KEY:
-    raise ValueError(".env 파일에 KAKAO_REST_API_KEY가 설정되어 있지 않습니다.")
+KAKAO_API_KEY = os.getenv("KAKAO_API_KEY")
+if not KAKAO_API_KEY:
+    raise ValueError(".env 파일에 KAKAO_API_KEY가 설정되어 있지 않습니다.")
 
 BUILT_AT = datetime.now().isoformat(timespec="seconds")
 
@@ -97,7 +97,7 @@ def table_exists(conn, name):
 # ---- Kakao Local API ----
 KAKAO_ADDRESS_URL = "https://dapi.kakao.com/v2/local/search/address.json"
 KAKAO_KEYWORD_URL = "https://dapi.kakao.com/v2/local/search/keyword.json"
-KAKAO_HEADERS = {"Authorization": f"KakaoAK {KAKAO_REST_API_KEY}"}
+KAKAO_HEADERS = {"Authorization": f"KakaoAK {KAKAO_API_KEY}"}
 _kakao_cache = {}
 
 
