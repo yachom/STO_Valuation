@@ -20,15 +20,18 @@ API 키:
     BuildingHubClient 생성자에서 받는다.
 """
 
-from infra.external.building_hub.client import BuildingHubClient
+from infra.external.public_data_portal import PublicDataPortalClient
 from real_estate.location import LocationInfo
+
+# 게이트웨이 rate-limit 키와 일치시킨다 (infra/gateway/rate_limits.json 참조).
+API_NAME = "building_hub"
 
 
 class BuildingRegisterRepository:
     """건축HUB 건축물대장 조회 데이터 소스.
 
     사용법:
-        client = BuildingHubClient(service_key="공공데이터포털_Decoding_키")
+        client = PublicDataPortalClient(service_key="공공데이터포털_Decoding_키", api_name=API_NAME)
         repo = BuildingRegisterRepository(client=client)
         facts = repo.fetch(location)
 
@@ -185,15 +188,15 @@ class BuildingRegisterRepository:
         "구분", "명칭", "기타지역지구구역",
     }
 
-    def __init__(self, client: BuildingHubClient):
+    def __init__(self, client: PublicDataPortalClient):
         self._client = client
 
     def fetch(self, location: LocationInfo) -> dict:
         """LocationInfo를 받아 건축물대장 정보를 dict로 반환한다.
 
         Raises:
-            ValueError:        location에 bcode 또는 bun이 없는 경우.
-            BuildingHubError:  API 호출/응답이 비정상인 경우.
+            ValueError:             location에 bcode 또는 bun이 없는 경우.
+            PublicDataPortalError:  API 호출/응답이 비정상인 경우.
         """
         if location.bcode is None or location.bun is None:
             raise ValueError(
@@ -206,15 +209,15 @@ class BuildingRegisterRepository:
         bun = str(location.bun).zfill(4)
         ji = str(location.ji).zfill(4) if location.ji is not None else "0000"
 
-        title_items = self._client.get_items(
-            self.ENDPOINT_TITLE, sigungu_code, bdong_code, bun, ji
-        )
-        floor_items = self._client.get_items(
-            self.ENDPOINT_FLOOR, sigungu_code, bdong_code, bun, ji
-        )
-        zone_items = self._client.get_items(
-            self.ENDPOINT_ZONE, sigungu_code, bdong_code, bun, ji
-        )
+        params = {
+            "sigunguCd": sigungu_code,
+            "bjdongCd": bdong_code,
+            "bun": bun,
+            "ji": ji,
+        }
+        title_items = self._client.get_items(self.ENDPOINT_TITLE, params=params)
+        floor_items = self._client.get_items(self.ENDPOINT_FLOOR, params=params)
+        zone_items = self._client.get_items(self.ENDPOINT_ZONE, params=params)
 
         return {
             "표제부": self._build_title(title_items),

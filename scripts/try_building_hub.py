@@ -15,10 +15,10 @@ import os
 import sys
 
 from infra.env import load_env
-from infra.external.building_hub import (
-    BuildingHubClient,
-    BuildingHubError,
-    BuildingRegisterRepository,
+from infra.external.building_hub import API_NAME, BuildingRegisterRepository
+from infra.external.public_data_portal import (
+    PublicDataPortalClient,
+    PublicDataPortalError,
 )
 from real_estate.location import LocationResolver
 
@@ -50,12 +50,12 @@ def main() -> None:
     print("\n=== 위치 정규화 ===")
     print(location)
 
-    client = BuildingHubClient(service_key=bhub)
+    client = PublicDataPortalClient(service_key=bhub, api_name=API_NAME)
     repo = BuildingRegisterRepository(client=client)
 
     try:
         facts = repo.fetch(location)
-    except BuildingHubError as exc:
+    except PublicDataPortalError as exc:
         sys.exit(f"건축HUB 호출 실패: {exc}")
 
     print("\n=== 표제부 (일부) ===")
