@@ -18,6 +18,7 @@ import urllib.request
 from dataclasses import asdict, dataclass
 
 from infra.external.naver_news_scraper.exceptions import NewsScrapeError
+from infra.gateway import APIGateway, get_default
 
 try:
     from bs4 import BeautifulSoup
@@ -26,6 +27,8 @@ except ImportError:
     _HAS_BS4 = False
 
 logger = logging.getLogger("external.naver_news_scraper")
+
+API_NAME = "naver_news_scraper"
 
 _DEFAULT_HEADERS = {
     "User-Agent": (
@@ -82,7 +85,8 @@ def _is_naver_news(url: str) -> bool:
     return host in _ALLOWED_HOSTS
 
 
-def _fetch(url: str, timeout: float) -> str:
+def _fetch(url: str, timeout: float, gateway: APIGateway) -> str:
+    gateway.wait(API_NAME)
     req = urllib.request.Request(url, headers=_DEFAULT_HEADERS)
     started_at = time.monotonic()
     try:
@@ -168,7 +172,12 @@ def _parse_with_regex(html_text: str) -> tuple[str, str, str, str]:
     return title, "", published_at, body_text
 
 
-def fetch_news_article(url: str, *, timeout: float = 10.0) -> NewsArticle:
+def fetch_news_article(
+    url: str,
+    *,
+    timeout: float = 10.0,
+    gateway: APIGateway | None = None,
+) -> NewsArticle:
     """네이버 뉴스 URL에서 본문 등을 크롤링.
 
     Raises:
@@ -181,7 +190,7 @@ def fetch_news_article(url: str, *, timeout: float = 10.0) -> NewsArticle:
             url=url,
         )
 
-    html_text = _fetch(url, timeout=timeout)
+    html_text = _fetch(url, timeout=timeout, gateway=gateway or get_default())
 
     hint = _block_hint(html_text)
     if hint:
