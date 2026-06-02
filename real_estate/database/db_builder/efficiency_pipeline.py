@@ -9,6 +9,7 @@
     4. 도로명주소(Juso) API → 건물관리번호(bdmgt_sn) 채움
     5. [회수] bdmgt_sn → jibun_addr 역추출 (jibun 누락이지만 bdmgt는 있는 행)
     6. [회수] 건물명+구 필터로 bdmgt_sn 단일+동일치 매칭 (이름검색 거짓양성 차단)
+    7. [회수] 건물명 키워드검색 → jibun_addr (구 일치 + 이름/지번 검증)
 
 실행:
     1) .env에 세 API 키가 있어야 한다.
@@ -59,6 +60,7 @@ JUSO_KEY = os.getenv("JUSO_API_KEY")
 # 엔드포인트
 BEEC_URL = "http://apis.data.go.kr/B553530/BEEC/BEEC_01_LIST"
 KAKAO_GEOCODE_URL = "https://dapi.kakao.com/v2/local/search/address.json"
+KAKAO_KEYWORD_URL = "https://dapi.kakao.com/v2/local/search/keyword.json"
 JUSO_URL = "https://business.juso.go.kr/addrlink/addrLinkApi.do"
 
 # 적재 필터
@@ -289,6 +291,23 @@ class AddressEnricher:
         addr = first.get("address") or {}
         return addr.get("address_name") or None
 
+    def search_keyword(self, query):
+        """카카오 키워드(장소)검색 → 후보 목록. 실패 시 []."""
+        if not query or not self.kakao_key:
+            return []
+        try:
+            r = requests.get(
+                KAKAO_KEYWORD_URL,
+                params={"query": query, "size": 15},
+                headers={"Authorization": f"KakaoAK {self.kakao_key}"},
+                timeout=REQUEST_TIMEOUT,
+            )
+            r.raise_for_status()
+            data = r.json()
+        except (requests.RequestException, ValueError):
+            return []
+        return data.get("documents") or []
+
     # ---------- Juso ----------
     def fetch_bdmgt_sn(self, keyword):
         """Juso API → 25자리 건물관리번호.
@@ -496,6 +515,16 @@ class EfficiencyDB:
               FROM building_energy_grade
              WHERE (jibun_addr IS NULL OR jibun_addr = '')
                AND bdmgt_sn IS NOT NULL AND length(bdmgt_sn) = 25
+             ORDER BY rqid
+        """).fetchall()
+
+    def select_missing_jibun_by_name(self):
+        """jibun 빈 행 중 건물명 있는 행 (단계 7 키워드검색 대상)."""
+        return self.conn.execute("""
+            SELECT rqid, bld_nm, loc_addr, full_addr
+              FROM building_energy_grade
+             WHERE (jibun_addr IS NULL OR jibun_addr = '')
+               AND TRIM(COALESCE(bld_nm,'')) <> ''
              ORDER BY rqid
         """).fetchall()
 
@@ -716,6 +745,108 @@ class NameLookup:
 
 
 # ============================================================
+# 회수 단계 7: 건물명 키워드검색 → jibun_addr
+# ============================================================
+class NameJibunLookup:
+    """jibun이 빈 행을 building_name(bld_nm)으로 카카오 키워드검색.
+
+    카카오 주소검색(단계 3)·bdmgt 역추출(단계 5)·이름 bdmgt 매칭(단계 6)으로도
+    못 채운 행을 장소(키워드)검색으로 회수한다. bdmgt 유무와 무관하게
+    건물명만 있으면 대상으로 삼는다(정비사업·신축 등 bdmgt 없는 행이 다수).
+
+    거짓양성 차단: 구(區) 일치 전제로 (a) 장소명이 건물명과 겹치거나
+    (b) 결과 지번이 원문(full_addr) 지번과 일치할 때만 채택. 건물명에 박힌
+    지번과 결과가 어긋나면 거부한다.
+    """
+
+    def __init__(self, db, enricher):
+        self.db = db
+        self.enricher = enricher
+
+    @staticmethod
+    def _gu(text):
+        for t in (text or "").split():
+            if t.endswith(("구", "군")):
+                return t
+        return ""
+
+    @staticmethod
+    def _core_tokens(name):
+        name = re.sub(r"[\(\[].*?[\)\]]", " ", name)
+        name = re.sub(r"[ⅠⅡⅢ()\[\]·,/]", " ", name)
+        return [t for t in name.split() if len(t) >= 2]
+
+    @staticmethod
+    def _real_jibun(text):
+        # '12-3' 하이픈형 또는 '123번지'만 진짜 지번으로 인정
+        m = re.search(r"\d+-\d+|\d+(?=번지)", text or "")
+        return m.group() if m else None
+
+    def _pick(self, docs, gu, bname):
+        toks = self._core_tokens(bname)
+        best = None
+        for d in docs:
+            addr = d.get("address_name", "")
+            place = d.get("place_name", "")
+            if not (gu and gu in addr and "서울" in addr):
+                continue
+            if (any(t in place for t in toks)
+                    or any(t in bname for t in self._core_tokens(place))):
+                return addr, True
+            if best is None:
+                best = (addr, False)
+        return best if best else (None, None)
+
+    def run(self):
+        rows = self.db.select_missing_jibun_by_name()
+        print(f"  이름검색 대상: {len(rows)}건")
+
+        stop = {"v": False}
+        signal.signal(signal.SIGINT, lambda *_: stop.update(v=True) or print("\n중단 요청"))
+
+        stat = Counter()
+        applied = 0
+        for i, r in enumerate(rows, 1):
+            bname = r["bld_nm"].strip()
+            loc, full = r["loc_addr"] or "", r["full_addr"] or ""
+            gu = self._gu(loc) or self._gu(full)
+
+            result = confident = None
+            for q in (bname, f"{gu} {bname}".strip()):
+                docs = self.enricher.search_keyword(q)
+                time.sleep(KAKAO_SLEEP)
+                result, confident = self._pick(docs, gu, bname)
+                if confident:
+                    break
+
+            name_jibun = self._real_jibun(bname)
+            addr_jibun = self._real_jibun(full) or self._real_jibun(loc)
+            tail = re.search(r"\d+-\d+|\d+$", result or "")
+            tail = tail.group() if tail else None
+            conflict = bool(name_jibun and tail and name_jibun != tail)
+            jibun_ok = bool(tail and tail in (name_jibun, addr_jibun))
+
+            if result and not conflict and (confident or jibun_ok):
+                self.db.update_jibun(r["rqid"], result)
+                applied += 1
+                stat["match"] += 1
+            elif result:
+                stat["review"] += 1
+            else:
+                stat["miss"] += 1
+
+            if i % BATCH_COMMIT_EVERY == 0:
+                self.db.commit()
+                print(f"    {i}/{len(rows)} | applied={applied}")
+            if stop["v"]:
+                break
+
+        self.db.commit()
+        print(f"  분포: {dict(stat)}")
+        print(f"  반영: {applied}건")
+
+
+# ============================================================
 # 파이프라인 조립
 # ============================================================
 class EfficiencyPipeline:
@@ -776,6 +907,10 @@ class EfficiencyPipeline:
             # 6) 회수: 건물명+구 매칭
             print("[6] 회수: 건물명 + 구 필터로 bdmgt_sn 단일+동일치 매칭")
             NameLookup(db, self.enricher).run()
+
+            # 7) 회수: 건물명 키워드검색 → jibun
+            print("[7] 회수: 건물명 키워드검색 → jibun_addr")
+            NameJibunLookup(db, self.enricher).run()
 
         # 최종 통계
         s = db.stats()
