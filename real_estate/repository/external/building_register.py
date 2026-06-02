@@ -24,11 +24,10 @@ import json
 
 import requests
 
-from STO_Valuation.real_estate.location import LocationInfo
-from STO_Valuation.real_estate.repository.base import BaseRepository
+from real_estate.location import LocationInfo
 
 
-class BuildingRegisterRepository(BaseRepository):
+class BuildingRegisterRepository:
     """건축HUB 건축물대장 조회 데이터 소스.
 
     사용법:
