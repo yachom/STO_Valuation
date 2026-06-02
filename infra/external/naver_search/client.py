@@ -27,6 +27,7 @@ from infra.external.naver_search.exceptions import (
     NaverQuotaExceeded,
     NaverRateLimited,
 )
+from infra.gateway import APIGateway, get_default
 
 logger = logging.getLogger("external.naver_search")
 
@@ -42,11 +43,20 @@ _ERROR_CODE_MAP = {
 
 
 class NaverSearchClient:
-    """thin urllib wrapper: 인증 + 에러처리 + 호출 로깅."""
+    """thin urllib wrapper: 인증 + 에러처리 + 호출 로깅 + 게이트웨이 통과."""
 
-    def __init__(self, credentials: NaverCredentials, *, timeout: float = 10.0):
+    API_NAME = "naver_search"
+
+    def __init__(
+        self,
+        credentials: NaverCredentials,
+        *,
+        timeout: float = 10.0,
+        gateway: APIGateway | None = None,
+    ):
         self.credentials = credentials
         self.timeout = timeout
+        self._gateway = gateway if gateway is not None else get_default()
 
     def get(self, url: str, params: dict | None = None) -> dict:
         full_url = url
@@ -66,6 +76,7 @@ class NaverSearchClient:
         return self._send(request, data=data, label=f"POST {url}")
 
     def _send(self, request, *, data: bytes | None = None, label: str) -> dict:
+        self._gateway.wait(self.API_NAME)
         started_at = time.monotonic()
         try:
             with urllib.request.urlopen(request, data=data, timeout=self.timeout) as resp:
