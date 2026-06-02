@@ -1,5 +1,5 @@
-from infra.repository.external.naver_news_scraper.exceptions import NewsScrapeError
-from infra.repository.external.naver_news_scraper.scraper import (
+from infra.external.naver_news_scraper.exceptions import NewsScrapeError
+from infra.external.naver_news_scraper.scraper import (
     NewsArticle,
     fetch_news_article,
 )

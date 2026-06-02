@@ -7,7 +7,7 @@ import re
 from dataclasses import asdict, dataclass
 from email.utils import parsedate_to_datetime
 
-from infra.repository.external.naver_search.client import NaverSearchClient
+from infra.external.naver_search.client import NaverSearchClient
 
 _NEWS_API_URL = "https://openapi.naver.com/v1/search/news.json"
 

@@ -15,7 +15,7 @@ import os
 import re
 from dataclasses import dataclass
 
-from infra.repository.external.naver_search.exceptions import NaverAuthError
+from infra.external.naver_search.exceptions import NaverAuthError
 
 # Naver client id/secret 의 형식은 공개돼 있지 않지만,
 # 실제 발급값은 영문자/숫자 조합이며 길이가 안정적이라 형식 sanity check만 둔다.
