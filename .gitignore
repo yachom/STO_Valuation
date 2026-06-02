@@ -215,3 +215,7 @@ real_estate/database/raw_data/*
 !real_estate/database/raw_data/.gitkeep
 real_estate/database/DB/*.db
 real_estate/database/DB/*.sqlite
+
+# 에너지효율등급 빌더 작업 산출물 (intermediate Excel/CSV 등)
+real_estate/database/db_builder/*.xlsx
+real_estate/database/db_builder/*.xls
