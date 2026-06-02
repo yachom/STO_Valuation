@@ -41,6 +41,26 @@ _ALLOWED_HOSTS = {"news.naver.com", "n.news.naver.com", "m.news.naver.com"}
 
 _TAG_RE = re.compile(r"<[^>]+>")
 
+# 200 OK여도 차단/스로틀일 때 본문에 자주 등장하는 신호. 차단 자체 대응은
+# 상위 gateway 책임이고, 여기서는 신호만 warning으로 발신한다.
+_BLOCK_HINT_PHRASES = (
+    "비정상적인 접근",
+    "잠시 후 다시 시도",
+    "접근이 차단",
+    "captcha",
+)
+_BLOCK_HINT_MIN_LEN = 500
+
+
+def _block_hint(html_text: str) -> str | None:
+    if len(html_text) < _BLOCK_HINT_MIN_LEN:
+        return f"응답 본문 길이 비정상({len(html_text)}B)"
+    lowered = html_text.lower()
+    for phrase in _BLOCK_HINT_PHRASES:
+        if phrase.lower() in lowered:
+            return f"차단 의심 문구: {phrase}"
+    return None
+
 
 @dataclass(frozen=True)
 class NewsArticle:
@@ -155,6 +175,7 @@ def fetch_news_article(url: str, *, timeout: float = 10.0) -> NewsArticle:
         NewsScrapeError: 네이버 뉴스 호스트가 아니거나, 네트워크/파싱 실패 시.
     """
     if not _is_naver_news(url):
+        logger.warning("지원하지 않는 호스트 거부: %s", url)
         raise NewsScrapeError(
             f"지원하지 않는 호스트입니다 (네이버 뉴스 URL만 지원): {url}",
             url=url,
@@ -162,12 +183,19 @@ def fetch_news_article(url: str, *, timeout: float = 10.0) -> NewsArticle:
 
     html_text = _fetch(url, timeout=timeout)
 
+    hint = _block_hint(html_text)
+    if hint:
+        logger.warning("차단 의심 응답: %s (url=%s)", hint, url)
+
     if _HAS_BS4:
+        logger.debug("BS4 파서 사용 (url=%s)", url)
         title, press, published_at, body = _parse_with_bs4(html_text)
     else:
+        logger.debug("regex 파서 사용 (url=%s)", url)
         title, press, published_at, body = _parse_with_regex(html_text)
 
     if not body:
+        logger.warning("본문 미발견 (url=%s, html_len=%d)", url, len(html_text))
         raise NewsScrapeError("본문을 찾지 못했습니다.", url=url)
 
     return NewsArticle(
