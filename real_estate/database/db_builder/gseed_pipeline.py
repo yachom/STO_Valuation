@@ -9,6 +9,7 @@
     4. 도로명주소(Juso) API → 건물관리번호(bdmgt_sn) 채움
     5. [회수] bdmgt_sn → jibun_addr 역추출 (jibun 누락이지만 bdmgt는 있는 행)
     6. [회수] 건물명+구 필터로 bdmgt_sn 단일+동일치 매칭
+    7. [회수] 건물명 키워드검색 → jibun_addr (자동 매칭 + 확인된 건 override)
 
 실행:
     1) .env에 세 API 키가 있어야 한다.
@@ -59,6 +60,7 @@ JUSO_KEY = os.getenv("JUSO_API_KEY")
 # 엔드포인트
 GSEED_URL = "https://api.odcloud.kr/api/15003214/v1/uddi:590f870b-8aef-4ac0-a08e-a36bbbdb01ec"
 KAKAO_GEOCODE_URL = "https://dapi.kakao.com/v2/local/search/address.json"
+KAKAO_KEYWORD_URL = "https://dapi.kakao.com/v2/local/search/keyword.json"
 JUSO_URL = "https://business.juso.go.kr/addrlink/addrLinkApi.do"
 
 # 적재 필터 — 서울 + 비주거(주거·학교 카테고리 제외)
@@ -271,6 +273,23 @@ class AddressEnricher:
             return None
         addr = (docs[0].get("address") or {})
         return addr.get("address_name") or None
+
+    def search_keyword(self, query):
+        """카카오 키워드(장소)검색 → 후보 목록. 실패 시 []."""
+        if not query or not self.kakao_key:
+            return []
+        try:
+            r = requests.get(
+                KAKAO_KEYWORD_URL,
+                params={"query": query, "size": 15},
+                headers={"Authorization": f"KakaoAK {self.kakao_key}"},
+                timeout=REQUEST_TIMEOUT,
+            )
+            r.raise_for_status()
+            data = r.json()
+        except (requests.RequestException, ValueError):
+            return []
+        return data.get("documents") or []
 
     def fetch_bdmgt_sn(self, keyword):
         """Juso API → 25자리 건물관리번호. 마지막 토큰(지번) 정확매칭만 채택."""
@@ -648,6 +667,132 @@ class NameLookup:
 
 
 # ============================================================
+# 회수 단계 7: 건물명 키워드검색 → jibun_addr
+# ============================================================
+class NameJibunLookup:
+    """bdmgt는 있으나 jibun이 빈 행을 building_name으로 카카오 키워드검색.
+
+    카카오 주소검색(단계 3)·bdmgt 역추출(단계 5)로도 못 채운 행을
+    장소(키워드)검색으로 회수한다. 거짓양성을 막기 위해 구(區) 일치를
+    전제로, (a) 장소명이 건물명과 겹치거나 (b) 결과 지번이 원문 지번과
+    일치할 때만 채택한다. 건물명에 박힌 지번과 결과가 어긋나면 거부한다.
+
+    OVERRIDE: 자동 규칙으로는 이름이 어긋나 못 잡지만 사람이 확인한 건.
+    재빌드 시 id가 바뀌므로 영구 유일키인 bdmgt_sn으로 키잉한다.
+    """
+
+    OVERRIDE = {
+        "1150010500100000000000008": "서울 강서구 마곡동 745",   # 서울남부출입국관리사무소
+        "1150010100102800015028362": "서울 강서구 염창동 310",   # 염창아네스트
+        "1111017500114200000000822": "서울 종로구 숭인동 1420",  # 숭인동 1420
+    }
+
+    def __init__(self, db, enricher):
+        self.db = db
+        self.enricher = enricher
+
+    @staticmethod
+    def _gu(address):
+        for t in address.split():
+            if t.endswith(("구", "군")):
+                return t
+        return ""
+
+    @staticmethod
+    def _sido(address):
+        toks = address.split()
+        return toks[0] if toks else ""
+
+    @staticmethod
+    def _core_tokens(name):
+        # 매칭용 핵심 토큰 (괄호·로마숫자·구분기호 제거)
+        name = re.sub(r"[\(\[].*?[\)\]]", " ", name)
+        name = re.sub(r"[ⅠⅡⅢ()\[\]·,/]", " ", name)
+        return [t for t in name.split() if len(t) >= 2]
+
+    @staticmethod
+    def _real_jibun(text):
+        # '12-3' 하이픈형 또는 '123번지'만 진짜 지번으로 인정 (3차·D16 등 제외)
+        m = re.search(r"\d+-\d+|\d+(?=번지)", text)
+        return m.group() if m else None
+
+    def _pick(self, docs, sido, gu, bname):
+        # 구 일치 후보 중 이름이 겹치면 확신, 아니면 첫 후보를 검토용으로 보관
+        toks = self._core_tokens(bname)
+        best = None
+        for d in docs:
+            addr = d.get("address_name", "")
+            place = d.get("place_name", "")
+            if not (gu and gu in addr and (not sido or sido[:2] in addr)):
+                continue
+            overlap = (any(t in place for t in toks)
+                       or any(t in bname for t in self._core_tokens(place)))
+            if overlap:
+                return addr, True
+            if best is None:
+                best = (addr, False)
+        return best if best else (None, None)
+
+    def run(self):
+        rows = self.db.select_with_bdmgt_no_jibun()
+        targets = [r for r in rows
+                   if r["building_name"] and len(r["building_name"].strip()) >= 3]
+        print(f"  이름검색 대상: {len(targets)}건")
+
+        stop = {"v": False}
+        signal.signal(signal.SIGINT, lambda *_: stop.update(v=True) or print("\n중단 요청"))
+
+        stat = Counter()
+        applied = 0
+        for i, r in enumerate(targets, 1):
+            pk = r["bdmgt_sn"]
+            if pk in self.OVERRIDE:
+                self.db.update_jibun(r["id"], self.OVERRIDE[pk])
+                applied += 1
+                stat["override"] += 1
+                continue
+
+            bname = r["building_name"].strip()
+            address = r["address"] or ""
+            sido, gu = self._sido(address), self._gu(address)
+
+            result = confident = None
+            for q in (bname, f"{gu} {bname}".strip()):
+                docs = self.enricher.search_keyword(q)
+                time.sleep(KAKAO_SLEEP)
+                result, confident = self._pick(docs, sido, gu, bname)
+                if confident:
+                    break
+
+            # 건물명 지번이 결과와 어긋나면 오매칭 → 거부, 일치하면 확신 승격
+            name_jibun = self._real_jibun(bname)
+            addr_jibun = self._real_jibun(address)
+            tail = re.search(r"\d+-\d+|\d+$", result or "")
+            tail = tail.group() if tail else None
+            conflict = bool(name_jibun and tail and name_jibun != tail)
+            jibun_ok = bool(tail and tail in (name_jibun, addr_jibun))
+
+            if result and not conflict and (confident or jibun_ok):
+                self.db.update_jibun(r["id"], result)
+                applied += 1
+                stat["match"] += 1
+            elif result:
+                stat["review"] += 1
+            else:
+                stat["miss"] += 1
+
+            if i % BATCH_COMMIT_EVERY == 0:
+                self.db.commit()
+                print(f"    {i}/{len(targets)} | applied={applied}")
+            if stop["v"]:
+                break
+
+        self.db.commit()
+        print(f"  분포: {dict(stat)}")
+        print(f"  반영: {applied}건")
+
+
+# ============================================================
 # 파이프라인 조립
 # ============================================================
 class GseedPipeline:
@@ -702,6 +847,9 @@ class GseedPipeline:
 
             print("[6] 회수: 건물명 + 구 필터로 bdmgt_sn 단일+동일치 매칭")
             NameLookup(db, self.enricher).run()
+
+            print("[7] 회수: 건물명 키워드검색 → jibun_addr")
+            NameJibunLookup(db, self.enricher).run()
 
         s = db.stats()
         print("\n=== 최종 상태 ===")
