@@ -208,3 +208,10 @@ __marimo__/
 
 #mac
 .DS_Store
+
+# Large datasets — 빌더가 외부 원천에서 받아 사용하고 결과 DB는 로컬에 둔다.
+# 커밋 대상 아님.
+real_estate/database/raw_data/*
+!real_estate/database/raw_data/.gitkeep
+real_estate/database/DB/*.db
+real_estate/database/DB/*.sqlite
