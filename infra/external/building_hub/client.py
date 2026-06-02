@@ -18,16 +18,26 @@ import time
 import requests
 
 from infra.external.building_hub.exceptions import BuildingHubError
+from infra.gateway import APIGateway, get_default
 
 logger = logging.getLogger("external.building_hub")
 
 
 class BuildingHubClient:
-    """thin requests wrapper: 인증 + 결과코드 + item 추출 + 호출 로깅."""
+    """thin requests wrapper: 인증 + 결과코드 + item 추출 + 호출 로깅 + 게이트웨이 통과."""
 
-    def __init__(self, service_key: str, *, timeout: float = 10.0):
+    API_NAME = "building_hub"
+
+    def __init__(
+        self,
+        service_key: str,
+        *,
+        timeout: float = 10.0,
+        gateway: APIGateway | None = None,
+    ):
         self._service_key = service_key
         self._timeout = timeout
+        self._gateway = gateway if gateway is not None else get_default()
 
     def get_items(
         self,
@@ -48,6 +58,7 @@ class BuildingHubClient:
             "_type": "json",
         }
 
+        self._gateway.wait(self.API_NAME)
         started_at = time.monotonic()
         try:
             response = requests.get(endpoint, params=params, timeout=self._timeout)
