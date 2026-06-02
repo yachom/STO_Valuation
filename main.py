@@ -12,8 +12,8 @@
 
 import os
 
-from STO_Valuation.infra.env import load_env
-from STO_Valuation.real_estate.location import LocationResolver
+from infra.env import load_env
+from real_estate.location import LocationResolver
 
 
 def main():

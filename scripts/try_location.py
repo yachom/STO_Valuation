@@ -4,15 +4,15 @@
 같은 패턴으로 컴포넌트별 scripts/try_xxx.py를 추가해 쓰면 된다.
 
 사용:
-    python -m STO_Valuation.scripts.try_location "서울특별시 강남구 테헤란로 152"
-    python -m STO_Valuation.scripts.try_location   # 인자 없으면 stdin으로 입력
+    python -m scripts.try_location "서울특별시 강남구 테헤란로 152"
+    python -m scripts.try_location   # 인자 없으면 stdin으로 입력
 """
 
 import os
 import sys
 
-from STO_Valuation.infra.env import load_env
-from STO_Valuation.real_estate.location import LocationResolver
+from infra.env import load_env
+from real_estate.location import LocationResolver
 
 
 def main():
