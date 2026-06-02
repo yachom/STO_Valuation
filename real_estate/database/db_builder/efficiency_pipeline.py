@@ -13,8 +13,8 @@
 
 실행:
     1) .env에 세 API 키가 있어야 한다.
-       DATA_GO_KR_API_KEY  공공데이터포털 BEEC 활용신청 키
-       KAKAO_REST_API_KEY  카카오 디벨로퍼스 REST 키
+       BEEC_API_KEY  공공데이터포털 BEEC 활용신청 키
+       KAKAO_API_KEY  카카오 디벨로퍼스 REST 키
        JUSO_API_KEY        도로명주소 안내시스템 confmKey
 
     2) python efficiency_pipeline.py            전체 빌드
@@ -53,8 +53,8 @@ load_dotenv(SCRIPT_DIR / ".env")
 
 DB_PATH = SCRIPT_DIR / "efficiency.db"
 
-DATA_GO_KR_KEY = os.getenv("DATA_GO_KR_API_KEY")
-KAKAO_KEY = os.getenv("KAKAO_REST_API_KEY")
+BEEC_KEY = os.getenv("BEEC_API_KEY")
+KAKAO_KEY = os.getenv("KAKAO_API_KEY")
 JUSO_KEY = os.getenv("JUSO_API_KEY")
 
 # 엔드포인트
@@ -113,7 +113,7 @@ class BeecApiClient:
 
     def __init__(self, api_key, page_size=BEEC_PAGE_SIZE):
         if not api_key:
-            raise SystemExit("DATA_GO_KR_API_KEY가 .env에 없습니다.")
+            raise SystemExit("BEEC_API_KEY가 .env에 없습니다.")
         self.api_key = api_key
         self.page_size = page_size
 
@@ -854,7 +854,7 @@ class EfficiencyPipeline:
 
     def __init__(self, db_path=DB_PATH):
         self.db_path = Path(db_path)
-        self.client = BeecApiClient(DATA_GO_KR_KEY)
+        self.client = BeecApiClient(BEEC_KEY)
         self.enricher = AddressEnricher(KAKAO_KEY, JUSO_KEY)
 
     def run(
@@ -994,10 +994,10 @@ def main():
     args = parser.parse_args()
 
     # 키 누락은 즉시 알려준다
-    if not DATA_GO_KR_KEY:
-        print("[경고] DATA_GO_KR_API_KEY가 없습니다. 1·2단계는 실패합니다.", file=sys.stderr)
+    if not BEEC_KEY:
+        print("[경고] BEEC_API_KEY가 없습니다. 1·2단계는 실패합니다.", file=sys.stderr)
     if not KAKAO_KEY and not args.skip_kakao:
-        print("[경고] KAKAO_REST_API_KEY가 없습니다. 3단계는 건너뛰는 것을 권장합니다.", file=sys.stderr)
+        print("[경고] KAKAO_API_KEY가 없습니다. 3단계는 건너뛰는 것을 권장합니다.", file=sys.stderr)
     if not JUSO_KEY and not (args.skip_juso and args.skip_recovery):
         print("[경고] JUSO_API_KEY가 없습니다. 4·6단계는 건너뛰는 것을 권장합니다.", file=sys.stderr)
 
