@@ -38,8 +38,10 @@ import math
 import os
 import re
 import sqlite3
+import sys
 import time
 from datetime import datetime
+from pathlib import Path
 
 import pandas as pd
 import requests
@@ -48,10 +50,19 @@ from rapidfuzz import fuzz
 
 # ---- 경로 (스크립트 위치 기준 절대경로) ----
 SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = str(Path(SCRIPT_DIR).resolve().parent.parent.parent)
 DB_DIR       = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "DB"))
 RAW_DATA_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "raw_data"))
 OUT_DB       = os.path.join(DB_DIR, "complex_unified.db")
 EXCEL_PATH   = os.path.join(RAW_DATA_DIR, "20260508_단지_기본정보.xlsx")
+
+# infra.gateway import를 위해 프로젝트 루트를 sys.path에 추가
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+from infra.gateway import get_default as _get_gateway  # noqa: E402
+
+_GW = _get_gateway()
 
 # ---- 증분 빌드 토글 ----
 REBUILD_SEOUL     = False
@@ -74,9 +85,10 @@ THRESHOLDS = [
     (150, 0.75, "coord_name_attr", 1),
 ]
 EPSILON_REVIEW = 0.03  # 동점 차순위 가까우면 needs_review=1
+KAKAO_WORKERS = 8  # 게이트웨이가 직렬화 → worker 늘려도 quota 보호
 
 # ---- Kakao API ----
-load_dotenv()
+load_dotenv(Path(PROJECT_ROOT) / ".env")
 KAKAO_API_KEY = os.getenv("KAKAO_API_KEY")
 if not KAKAO_API_KEY:
     raise ValueError(".env 파일에 KAKAO_API_KEY가 설정되어 있지 않습니다.")
@@ -108,6 +120,7 @@ def _kakao_search(url, query):
     if cache_key in _kakao_cache:
         return _kakao_cache[cache_key]
     try:
+        _GW.wait("kakao_local")
         resp = requests.get(url, headers=KAKAO_HEADERS,
                             params={"query": query}, timeout=5)
         resp.raise_for_status()
@@ -323,17 +336,22 @@ def build_seoul_complex_raw(conn):
     print(f"  서울특별시 단지 수: {len(seoul_df)}")
     seoul_df = seoul_df[list(SEOUL_RENAME.keys())].rename(columns=SEOUL_RENAME)
 
-    lats, lngs, queries, statuses = [], [], [], []
+    from concurrent.futures import ThreadPoolExecutor
+
     total = len(seoul_df)
-    for i, row in enumerate(seoul_df.itertuples(index=False), start=1):
-        lat, lng, query, status = _geocode_seoul_row(
-            row.road_address, row.legal_address, row.complex_name,
-        )
-        lats.append(lat); lngs.append(lng)
-        queries.append(query); statuses.append(status)
-        if i % 100 == 0 or i == total:
-            print(f"  geocoding 진행 {i}/{total}")
-        time.sleep(0.05)
+    inputs = [
+        (row.road_address, row.legal_address, row.complex_name)
+        for row in seoul_df.itertuples(index=False)
+    ]
+    lats, lngs, queries, statuses = [], [], [], []
+    with ThreadPoolExecutor(max_workers=KAKAO_WORKERS) as ex:
+        for i, (lat, lng, query, status) in enumerate(
+            ex.map(lambda args: _geocode_seoul_row(*args), inputs), start=1
+        ):
+            lats.append(lat); lngs.append(lng)
+            queries.append(query); statuses.append(status)
+            if i % 100 == 0 or i == total:
+                print(f"  geocoding 진행 {i}/{total}")
 
     seoul_df["latitude"]         = lats
     seoul_df["longitude"]        = lngs
@@ -393,6 +411,7 @@ INVESTMENT_JEUNGGAM_RENAME = {
 
 def _fetch_seoul_dongs():
     """서울 25개 구의 모든 법정동 목록."""
+    _GW.wait("kb_land")
     resp = requests.get(KB_GU_URL, params={"법정동코드": "1100000000"},
                         headers=KB_DATA_HEADERS, timeout=20)
     resp.raise_for_status()
@@ -400,6 +419,7 @@ def _fetch_seoul_dongs():
 
     all_dong = []
     for _, gu in gu_df.iterrows():
+        _GW.wait("kb_land")
         resp = requests.get(KB_DONG_URL,
                             params={"법정동코드": gu["법정동코드"]},
                             headers=KB_DATA_HEADERS, timeout=20)
@@ -407,7 +427,6 @@ def _fetch_seoul_dongs():
         tmp = pd.json_normalize(resp.json()["dataBody"]["data"])
         tmp["구명"] = gu["시군구명"]
         all_dong.append(tmp)
-        time.sleep(0.2)
     return pd.concat(all_dong, ignore_index=True)
 
 
@@ -427,6 +446,7 @@ def build_kb_investment_raw(conn):
             dong_code = row["법정동코드"]
             dong_name = row["법정동명"]
             try:
+                _GW.wait("kb_land")
                 resp = requests.get(
                     KB_PRICE_URL,
                     params={"기간코드": period_code, "지역리스트": dong_code},
@@ -445,7 +465,6 @@ def build_kb_investment_raw(conn):
                     df["동명"] = dong_name
                     df["동코드"] = dong_code
                     all_data.append(df)
-                time.sleep(0.3)
             except Exception as e:
                 print(f"  에러 [{period_label}] {dong_name}: {e}")
         period_df = pd.concat(all_data, ignore_index=True)
@@ -565,6 +584,7 @@ KB_TEXT_COLS = ["단지명", "매물종별구분", "매물종별구분명",
 def fetch_kb_complex_detail(complex_id):
     """KB 상세 API. (data_dict, error_str)."""
     try:
+        _GW.wait("kb_land")
         resp = requests.get(KB_DETAIL_URL,
                             params={"단지기본일련번호": complex_id},
                             headers=KB_DETAIL_HEADERS, timeout=10)
@@ -575,7 +595,6 @@ def fetch_kb_complex_detail(complex_id):
         data = body.get("dataBody", {}).get("data")
         if not data:
             return None, "empty data"
-        time.sleep(0.2)
         return data, None
     except Exception as e:
         return None, str(e)

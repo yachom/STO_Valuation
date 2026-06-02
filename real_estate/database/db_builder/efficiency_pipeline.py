@@ -49,7 +49,16 @@ from dotenv import load_dotenv
 # 설정·상수
 # ============================================================
 SCRIPT_DIR = Path(__file__).resolve().parent
-load_dotenv(SCRIPT_DIR / ".env")
+PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent
+# 프로젝트 루트의 .env에서 키 로드
+load_dotenv(PROJECT_ROOT / ".env")
+# infra.gateway import를 위해 프로젝트 루트를 sys.path에 추가 (스크립트 직접 실행 호환)
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from infra.gateway import get_default as _get_gateway  # noqa: E402
+
+_GW = _get_gateway()
 
 DB_PATH = SCRIPT_DIR.parent / "DB" / "building_certifications.db"
 
@@ -80,12 +89,14 @@ GRADE_MAP = {
 }
 
 # 호출 조절
+# 호출 간격은 infra/gateway/rate_limits.json이 중앙 관리 (kakao_local, juso_addr_link, beec).
+# ThreadPool 동시 호출 수: 게이트웨이가 직렬화하므로 worker가 늘어도 quota는 보호됨.
 BEEC_PAGE_SIZE = 100
-KAKAO_SLEEP = 0.1
-JUSO_SLEEP = 0.2
 REQUEST_TIMEOUT = 30
 MAX_RETRIES = 3
 BATCH_COMMIT_EVERY = 50
+KAKAO_WORKERS = 8
+JUSO_WORKERS = 4
 
 # 공백 정규화
 WS_RE = re.compile(r"\s+")
@@ -140,7 +151,6 @@ class BeecApiClient:
                 rows.append(it)
             if page % 20 == 0 or page == pages:
                 print(f"    page {page}/{pages} → 누적 {len(rows):,}건")
-            time.sleep(0.2)
         return rows
 
     def _fetch_page(self, page_no, num_of_rows=None):
@@ -152,6 +162,7 @@ class BeecApiClient:
         }
         for attempt in range(1, MAX_RETRIES + 1):
             try:
+                _GW.wait("beec")
                 r = requests.get(BEEC_URL, params=params, timeout=REQUEST_TIMEOUT)
                 r.raise_for_status()
                 return r.json()
@@ -273,6 +284,7 @@ class AddressEnricher:
         if not raw_addr or not self.kakao_key:
             return None
         try:
+            _GW.wait("kakao_local")
             r = requests.get(
                 KAKAO_GEOCODE_URL,
                 params={"query": raw_addr},
@@ -296,6 +308,7 @@ class AddressEnricher:
         if not query or not self.kakao_key:
             return []
         try:
+            _GW.wait("kakao_local")
             r = requests.get(
                 KAKAO_KEYWORD_URL,
                 params={"query": query, "size": 15},
@@ -318,6 +331,7 @@ class AddressEnricher:
         if not keyword or not self.juso_key:
             return None
         try:
+            _GW.wait("juso_addr_link")
             r = requests.get(
                 JUSO_URL,
                 params={
@@ -368,6 +382,7 @@ class AddressEnricher:
         if not keyword or not self.juso_key:
             return []
         try:
+            _GW.wait("juso_addr_link")
             r = requests.get(
                 JUSO_URL,
                 params={
@@ -708,7 +723,6 @@ class NameLookup:
                 stat["no_gu"] += 1
                 continue
             juso_results = self.enricher.search_juso_by_name(r["bld_nm"].strip())
-            time.sleep(JUSO_SLEEP)
             if not juso_results:
                 stat["no_result"] += 1
                 continue
@@ -814,7 +828,6 @@ class NameJibunLookup:
             result = confident = None
             for q in (bname, f"{gu} {bname}".strip()):
                 docs = self.enricher.search_keyword(q)
-                time.sleep(KAKAO_SLEEP)
                 result, confident = self._pick(docs, gu, bname)
                 if confident:
                     break
@@ -924,58 +937,65 @@ class EfficiencyPipeline:
         print(f"  no_bdmgt   : {s['no_bdmgt']:,}")
         db.close()
 
-    # ---- 단계 3 본체: 카카오 호출 루프 ----
+    # ---- 단계 3 본체: 카카오 호출 루프 (게이트웨이 + ThreadPool) ----
     def _fill_jibun(self, db):
+        from concurrent.futures import ThreadPoolExecutor
+
         rows = db.select_missing_jibun()
         print(f"  카카오 대상: {len(rows)}건")
         stop = {"v": False}
         signal.signal(signal.SIGINT, lambda *_: stop.update(v=True) or print("\n중단 요청"))
-        ok = miss = 0
-        for i, r in enumerate(rows, 1):
+
+        def lookup(r):
             keyword = r["full_addr"] or r["loc_addr"]
-            if not keyword:
-                miss += 1
-                continue
-            jibun = self.enricher.fetch_jibun_addr(keyword)
-            time.sleep(KAKAO_SLEEP)
-            if jibun:
-                db.update_jibun(r["rqid"], jibun)
-                ok += 1
-            else:
-                miss += 1
-            if i % BATCH_COMMIT_EVERY == 0:
-                db.commit()
-                print(f"    {i}/{len(rows)} | ok={ok} miss={miss}")
-            if stop["v"]:
-                break
+            if not keyword or stop["v"]:
+                return r["rqid"], None
+            return r["rqid"], self.enricher.fetch_jibun_addr(keyword)
+
+        ok = miss = 0
+        with ThreadPoolExecutor(max_workers=KAKAO_WORKERS) as ex:
+            for i, (rqid, jibun) in enumerate(ex.map(lookup, rows), 1):
+                if jibun:
+                    db.update_jibun(rqid, jibun)
+                    ok += 1
+                else:
+                    miss += 1
+                if i % BATCH_COMMIT_EVERY == 0:
+                    db.commit()
+                    print(f"    {i}/{len(rows)} | ok={ok} miss={miss}")
+                if stop["v"]:
+                    break
         db.commit()
         print(f"  완료: ok={ok}, miss={miss}")
 
-    # ---- 단계 4 본체: Juso 호출 루프 ----
+    # ---- 단계 4 본체: Juso 호출 루프 (게이트웨이 + ThreadPool) ----
     def _fill_bdmgt(self, db):
+        from concurrent.futures import ThreadPoolExecutor
+
         rows = db.select_missing_bdmgt()
         print(f"  Juso 대상: {len(rows)}건")
         stop = {"v": False}
         signal.signal(signal.SIGINT, lambda *_: stop.update(v=True) or print("\n중단 요청"))
-        ok = miss = 0
-        for i, r in enumerate(rows, 1):
-            # 1순위 jibun_addr, 2순위 loc_addr (전자가 정확)
+
+        def lookup(r):
             keyword = r["jibun_addr"] or r["loc_addr"]
-            if not keyword:
-                miss += 1
-                continue
-            pk = self.enricher.fetch_bdmgt_sn(keyword)
-            time.sleep(JUSO_SLEEP)
-            if pk:
-                db.update_bdmgt(r["rqid"], pk)
-                ok += 1
-            else:
-                miss += 1
-            if i % BATCH_COMMIT_EVERY == 0:
-                db.commit()
-                print(f"    {i}/{len(rows)} | ok={ok} miss={miss}")
-            if stop["v"]:
-                break
+            if not keyword or stop["v"]:
+                return r["rqid"], None
+            return r["rqid"], self.enricher.fetch_bdmgt_sn(keyword)
+
+        ok = miss = 0
+        with ThreadPoolExecutor(max_workers=JUSO_WORKERS) as ex:
+            for i, (rqid, pk) in enumerate(ex.map(lookup, rows), 1):
+                if pk:
+                    db.update_bdmgt(rqid, pk)
+                    ok += 1
+                else:
+                    miss += 1
+                if i % BATCH_COMMIT_EVERY == 0:
+                    db.commit()
+                    print(f"    {i}/{len(rows)} | ok={ok} miss={miss}")
+                if stop["v"]:
+                    break
         db.commit()
         print(f"  완료: ok={ok}, miss={miss}")
 
