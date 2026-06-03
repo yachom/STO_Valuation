@@ -410,6 +410,33 @@ APT_RENT_TRANSACTION_INDEXES = [
 ]
 
 
+# LH 공공임대주택. apt 거래와 보완 — 같은 bcode 안에 LH 단지가 있으면
+# 그 지역의 임대 시장 구성을 더 정확히 파악할 수 있다 (테넌트 가치).
+PUBLIC_LEASE_COMPLEX = """
+CREATE TABLE IF NOT EXISTS public_lease_complex (
+    lh_complex_id     TEXT PRIMARY KEY,        -- LH 단지 고유번호
+    complex_name      TEXT NOT NULL,
+    lease_type        TEXT,                    -- 영구임대/국민임대/장기전세/행복주택 등
+    region_name       TEXT,                    -- 시도 + 시군구
+    bcode             TEXT,                    -- 법정동 코드 10자리 (가능한 경우)
+    sigungu_cd        TEXT,                    -- 시군구 5자리
+    road_address      TEXT,
+    legal_address     TEXT,
+    latitude          REAL,
+    longitude         REAL,
+    household_count   INTEGER,
+    completion_date   TEXT,
+    raw_payload       TEXT,
+    fetched_at        TEXT NOT NULL DEFAULT (datetime('now'))
+)
+"""
+PUBLIC_LEASE_COMPLEX_INDEXES = [
+    "CREATE INDEX IF NOT EXISTS idx_public_lease_sigungu ON public_lease_complex(sigungu_cd)",
+    "CREATE INDEX IF NOT EXISTS idx_public_lease_bcode   ON public_lease_complex(bcode)",
+    "CREATE INDEX IF NOT EXISTS idx_public_lease_type    ON public_lease_complex(lease_type)",
+]
+
+
 # ───────────────────────────────────────────────────────────
 # 일괄 적용
 # ───────────────────────────────────────────────────────────
@@ -428,6 +455,7 @@ ALL_DDL = [
     ("development_project", DEVELOPMENT_PROJECT, DEVELOPMENT_PROJECT_INDEXES),
     ("apt_sale_transaction", APT_SALE_TRANSACTION, APT_SALE_TRANSACTION_INDEXES),
     ("apt_rent_transaction", APT_RENT_TRANSACTION, APT_RENT_TRANSACTION_INDEXES),
+    ("public_lease_complex", PUBLIC_LEASE_COMPLEX, PUBLIC_LEASE_COMPLEX_INDEXES),
 ]
 
 

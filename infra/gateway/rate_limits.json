@@ -8,5 +8,6 @@
   "beec": { "min_interval_seconds": 0.2 },
   "gseed": { "min_interval_seconds": 0.2 },
   "molit_real_transaction": { "min_interval_seconds": 0.2 },
-  "molit_rent": { "min_interval_seconds": 0.2 }
+  "molit_rent": { "min_interval_seconds": 0.2 },
+  "lh_public_housing": { "min_interval_seconds": 0.5 }
 }
