@@ -1,6 +1,6 @@
 """주소 → 반경 내 아파트 세대수 조회 end-to-end 시험.
 
-전제: real_estate/database/DB/complex_unified.db 빌드 완료.
+전제: real_estate/database/DB/real_estate.db 빌드 완료.
 빌드: real_estate/database/db_builder/build_master_db.py
 
 필요 env: KAKAO_API_KEY, JUSO_API_KEY
@@ -19,7 +19,7 @@ from infra.env import load_env
 from real_estate.location import LocationResolver
 from real_estate.repository.nearby_apartment import NearbyApartmentRepository
 
-DB_PATH = Path("real_estate/database/DB/complex_unified.db")
+DB_PATH = Path("real_estate/database/DB/real_estate.db")
 
 
 def main() -> None:

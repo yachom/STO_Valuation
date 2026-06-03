@@ -23,7 +23,7 @@ from infra.env import load_env
 from real_estate.location import LocationResolver
 from real_estate.repository.efficiency import EnergyEfficiencyGradeRepository
 
-DB_PATH = Path("real_estate/database/DB/building_certifications.db")
+DB_PATH = Path("real_estate/database/DB/real_estate.db")
 
 
 def main() -> None:

@@ -1,6 +1,6 @@
 """반경 내 배후 아파트 세대수 조회 (간단 버전).
 
-complex_unified.db의 complex_master 테이블을 읽어, 건물 주변(반경 내)
+real_estate.db의 complex_master 테이블을 읽어, 건물 주변(반경 내)
 아파트 단지 수와 총 세대수를 조회한다. 시세는 보지 않고 세대수만 본다.
 
 용도:
@@ -22,7 +22,7 @@ class NearbyApartmentRepository:
 
     사용법:
         repo = NearbyApartmentRepository(
-            db_path="db/complex_unified.db",
+            db_path="db/real_estate.db",
             radius_m=500,
         )
         result = repo.fetch(location)
@@ -46,7 +46,7 @@ class NearbyApartmentRepository:
         """데이터 소스 인스턴스를 만든다.
 
         Args:
-            db_path:  complex_unified.db 파일 경로.
+            db_path:  real_estate.db 파일 경로.
             radius_m: 배후 단지를 모을 반경(미터). 기본 500m.
         """
         self._db_path = db_path
@@ -109,7 +109,7 @@ class NearbyApartmentRepository:
 
         cur.execute("""
             SELECT canonical_name, latitude, longitude, household_count
-            FROM complex_master
+            FROM apartment_complex
             WHERE latitude  BETWEEN ? AND ?
               AND longitude BETWEEN ? AND ?
         """, (lat - delta_lat, lat + delta_lat,

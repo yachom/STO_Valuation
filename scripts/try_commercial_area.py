@@ -6,7 +6,7 @@
     3) 매칭수준 + 상권 수 + 첫 상권의 분기별 유동/거주 인구 일부 출력
 
 전제:
-    real_estate/database/DB/commercial_area.db 가 빌드돼 있어야 한다.
+    real_estate/database/DB/real_estate.db 가 빌드돼 있어야 한다.
     빌드 방법:
         real_estate/database/raw_data/ 에 서울시 상권분석서비스 원본
         파일들을 넣은 뒤,
@@ -28,7 +28,7 @@ from infra.env import load_env
 from real_estate.location import LocationResolver
 from real_estate.repository.commercial_area import CommercialAreaRepository
 
-DB_PATH = Path("real_estate/database/DB/commercial_area.db")
+DB_PATH = Path("real_estate/database/DB/real_estate.db")
 
 
 def main() -> None:

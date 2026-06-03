@@ -1,6 +1,6 @@
 """상권 기반 인구 정보 조회.
 
-서울시 상권분석서비스 데이터로 만든 commercial_area.db를 읽어,
+서울시 상권분석서비스 데이터로 만든 real_estate.db를 읽어,
 건물이 속한 상권의 유동인구·거주인구를 조회한다.
 
 조회 방식:
@@ -16,7 +16,7 @@
     추정임을 인식할 수 있다.
 
 데이터 출처:
-    commercial_area.db — build_commercial_area_db.ipynb로 미리 만들어 둔
+    real_estate.db — build_commercial_area_db.ipynb로 미리 만들어 둔
     SQLite DB. 다섯 테이블로 구성:
         - commercial_area          : 상권 영역(경계 다각형)
         - floating_population      : 분기별 유동인구 (상권 단위)
@@ -42,7 +42,7 @@ class CommercialAreaRepository:
     """상권 기반 유동인구·거주인구 조회 데이터 소스.
 
     사용법:
-        repo = CommercialAreaRepository(db_path="db/commercial_area.db")
+        repo = CommercialAreaRepository(db_path="db/real_estate.db")
         result = repo.fetch(location)
 
     fetch() 반환 dict 스키마:
@@ -157,7 +157,7 @@ class CommercialAreaRepository:
         """데이터 소스 인스턴스를 만든다.
 
         Args:
-            db_path: commercial_area.db 파일 경로.
+            db_path: real_estate.db 파일 경로.
         """
         self._db_path = db_path
 
@@ -192,11 +192,11 @@ class CommercialAreaRepository:
             for area in matched_areas:
                 trdar_cd = area["상권코드"]
                 area["유동인구"] = self._fetch_population(
-                    conn, "floating_population", self._FLOATING_MAP,
+                    conn, "commercial_floating_population", self._FLOATING_MAP,
                     "trdar_cd", trdar_cd
                 )
                 area["거주인구"] = self._fetch_population(
-                    conn, "resident_population", self._RESIDENT_MAP,
+                    conn, "commercial_resident_population", self._RESIDENT_MAP,
                     "trdar_cd", trdar_cd
                 )
                 area_list.append(area)
@@ -250,11 +250,11 @@ class CommercialAreaRepository:
         dong_code = location.hcode[:8]
 
         floating = self._fetch_population(
-            conn, "floating_population_dong", self._FLOATING_MAP,
+            conn, "admin_dong_floating_population", self._FLOATING_MAP,
             "adstrd_cd", dong_code
         )
         resident = self._fetch_population(
-            conn, "resident_population_dong", self._RESIDENT_MAP,
+            conn, "admin_dong_resident_population", self._RESIDENT_MAP,
             "adstrd_cd", dong_code
         )
 

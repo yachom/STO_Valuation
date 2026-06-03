@@ -1,7 +1,7 @@
 """G-SEED 녹색건축 인증 DB의 SQLite 기반 구현.
 
 LocationInfo를 입력으로 받아 해당 건물의 G-SEED(녹색건축) 인증 정보를
-building_certifications.db에서 조회해 dict로 반환한다.
+real_estate.db에서 조회해 dict로 반환한다.
 """
 
 import logging
@@ -16,7 +16,7 @@ class GseedCertificationRepository:
     """G-SEED 녹색건축 인증 DB의 SQLite 기반 구현.
 
     다음을 가정한다:
-        - building_certifications.db에 gseed_certifications 테이블이 있다.
+        - real_estate.db에 green_cert 테이블이 있다.
         - jibun_addr (TEXT, 정규화된 지번 주소)를 조회 키로 쓴다.
         - 같은 지번에 인증이 여러 건이면 최신 1건을 고른다
           (유효기간연장 > 본인증 > 예비인증 순, 같으면 인증일자 내림차순).
@@ -37,7 +37,7 @@ class GseedCertificationRepository:
         """구현체별 자원을 생성자에서 받는다.
 
         Args:
-            db_path: SQLite DB 파일 경로 (building_certifications.db).
+            db_path: SQLite DB 파일 경로 (real_estate.db).
         """
         self._db_path = db_path
 
@@ -70,7 +70,7 @@ class GseedCertificationRepository:
                 """
                 SELECT cert_grade, cert_standard, cert_type, cert_date,
                        building_name, building_category, bdmgt_sn
-                  FROM gseed_certifications
+                  FROM green_cert
                  WHERE jibun_addr = ?
                  ORDER BY
                      CASE cert_type
