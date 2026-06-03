@@ -392,7 +392,7 @@ class GseedDB:
 
     def __init__(self, db_path=DB_PATH):
         self.db_path = Path(db_path)
-        self.conn = sqlite3.connect(self.db_path)
+        self.conn = sqlite3.connect(self.db_path, timeout=60)
         self.conn.row_factory = sqlite3.Row
 
     def close(self):

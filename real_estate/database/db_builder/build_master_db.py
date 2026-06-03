@@ -1106,7 +1106,9 @@ def main():
     print(f"BUILT_AT   = {BUILT_AT}")
     print(f"REBUILD    = SEOUL:{REBUILD_SEOUL} / KB_PRICE:{REBUILD_KB_PRICE} / KB_DETAIL:{REBUILD_KB_DETAIL}")
 
-    with sqlite3.connect(OUT_DB) as conn:
+    # timeout=60: 다른 빌더(efficiency 등)와 같은 DB를 공유할 때 락 대기 60초.
+    # (WAL 모드 전환은 다른 connection 활성 시 즉시 실패하므로 사용 안 함)
+    with sqlite3.connect(OUT_DB, timeout=60) as conn:
         seoul_df = build_seoul_complex_raw(conn)
         inv_df   = build_kb_investment_raw(conn)
         kb_df    = build_kb_complex_raw(conn, inv_df)

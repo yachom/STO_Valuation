@@ -415,7 +415,8 @@ class EfficiencyDB:
 
     def __init__(self, db_path=DB_PATH):
         self.db_path = Path(db_path)
-        self.conn = sqlite3.connect(self.db_path)
+        # timeout=60: 다른 빌더와 같은 DB를 공유할 때 락 대기 60초.
+        self.conn = sqlite3.connect(self.db_path, timeout=60)
         self.conn.row_factory = sqlite3.Row
 
     def close(self):
