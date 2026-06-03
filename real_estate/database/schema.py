@@ -339,6 +339,42 @@ DEVELOPMENT_PROJECT_INDEXES = [
 
 
 # ───────────────────────────────────────────────────────────
+# 임대차/거래 이벤트 (테넌트 가치 평가용)
+# MOLIT RTMS 아파트 매매 실거래가가 첫 소스. 단지명은 자유 텍스트이므로
+# bcode 범위 내 fuzzy 매칭 후 master_complex_id를 보강한다 (실패 시 NULL).
+# ───────────────────────────────────────────────────────────
+APT_SALE_TRANSACTION = """
+CREATE TABLE IF NOT EXISTS apt_sale_transaction (
+    transaction_id     INTEGER PRIMARY KEY AUTOINCREMENT,
+    deal_year_month    TEXT NOT NULL,         -- YYYYMM
+    deal_day           INTEGER,
+    deal_amount        INTEGER,               -- 거래금액 (만원 단위)
+    lawd_cd            TEXT NOT NULL,         -- 시군구 LAWD_CD (5자리)
+    legal_dong         TEXT,                  -- 법정동명
+    bcode              TEXT,                  -- 법정동 10자리 (시군구+읍면동), 가능한 경우
+    jibun              TEXT,                  -- 지번
+    road_name          TEXT,                  -- 도로명 (있을 경우)
+    apt_name           TEXT NOT NULL,         -- 단지명 (free text)
+    area_sqm           REAL,                  -- 전용면적
+    floor              INTEGER,
+    build_year         INTEGER,
+    is_canceled        INTEGER DEFAULT 0,     -- 해제여부 (Y=1, N=0)
+    cancel_date        TEXT,                  -- 해제사유발생일 (YYYYMMDD)
+    master_complex_id  INTEGER,               -- nullable, fuzzy 매칭 결과
+    raw_payload        TEXT,                  -- 원본 dict JSON dump (audit)
+    fetched_at         TEXT NOT NULL DEFAULT (datetime('now')),
+    UNIQUE (lawd_cd, deal_year_month, deal_day, apt_name, area_sqm, floor, deal_amount, jibun)
+)
+"""
+APT_SALE_TRANSACTION_INDEXES = [
+    "CREATE INDEX IF NOT EXISTS idx_apt_sale_lawd_ymd   ON apt_sale_transaction(lawd_cd, deal_year_month)",
+    "CREATE INDEX IF NOT EXISTS idx_apt_sale_apt_name   ON apt_sale_transaction(apt_name)",
+    "CREATE INDEX IF NOT EXISTS idx_apt_sale_complex_id ON apt_sale_transaction(master_complex_id)",
+    "CREATE INDEX IF NOT EXISTS idx_apt_sale_bcode      ON apt_sale_transaction(bcode)",
+]
+
+
+# ───────────────────────────────────────────────────────────
 # 일괄 적용
 # ───────────────────────────────────────────────────────────
 ALL_DDL = [
@@ -354,6 +390,7 @@ ALL_DDL = [
     ("admin_dong_estimated_sales", ADMIN_DONG_ESTIMATED_SALES, []),
     ("complex_match_log", COMPLEX_MATCH_LOG, COMPLEX_MATCH_LOG_INDEXES),
     ("development_project", DEVELOPMENT_PROJECT, DEVELOPMENT_PROJECT_INDEXES),
+    ("apt_sale_transaction", APT_SALE_TRANSACTION, APT_SALE_TRANSACTION_INDEXES),
 ]
 
 

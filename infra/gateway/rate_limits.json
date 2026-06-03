@@ -6,5 +6,6 @@
   "juso_addr_link": { "min_interval_seconds": 0.2 },
   "kb_land": { "min_interval_seconds": 0.3 },
   "beec": { "min_interval_seconds": 0.2 },
-  "gseed": { "min_interval_seconds": 0.2 }
+  "gseed": { "min_interval_seconds": 0.2 },
+  "molit_real_transaction": { "min_interval_seconds": 0.2 }
 }
