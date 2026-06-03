@@ -208,3 +208,6 @@ __marimo__/
 
 #mac
 .DS_Store
+
+# Neo4j local docker volumes (mounted by docker-compose.yml)
+neo4j/

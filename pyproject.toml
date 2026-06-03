@@ -1,0 +1,46 @@
+[project]
+name = "sto-valuation"
+version = "0.1.0"
+description = "STO 기초자산 가치평가 시스템 (1차: 부동산 사회적 가치 평가)"
+requires-python = ">=3.11"
+
+dependencies = [
+  # core
+  "requests>=2.32",
+  "pandas>=2.2",
+  "openpyxl>=3.1",
+  "python-dotenv>=1.0",
+  # LLM / agent stack (Anthropic Claude only)
+  "anthropic>=0.40",
+  "langchain-anthropic>=0.3",
+  "langchain-core>=0.3",
+  "langgraph>=0.2.50",
+  "langgraph-checkpoint-sqlite>=2.0",
+  # Graph DB + Graph RAG
+  "neo4j>=5.20",
+  "graphrag>=0.5",
+  "networkx>=3.2",
+  # Embeddings (local bge-m3 via sentence-transformers; Anthropic doesn't provide an embedding API)
+  "sentence-transformers>=3.0",
+  "torch>=2.2",
+  # UI
+  "streamlit>=1.36",
+  "streamlit-extras>=0.4",
+  "markdown-it-py>=3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "pytest-asyncio>=0.23",
+  "ruff>=0.5",
+  "pyright>=1.1.370",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "basic"
