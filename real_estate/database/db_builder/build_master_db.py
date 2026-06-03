@@ -6,7 +6,7 @@
     ├── seoul_complex_raw    (Excel → Seoul 단지 + Kakao geocoding)
     ├── kb_complex_raw       (KB 단지 상세 + Kakao fallback)
     ├── kb_investment_raw    (KB 시세 multi-period merged)
-    ├── complex_master       (매칭 결과 통합 마스터)
+    ├── apartment_complex       (매칭 결과 통합 마스터)
     └── complex_match_log    (매칭 의사결정 감사로그)
 
 증분 캐싱: 토글이 False(기본)면 DB에 이미 있는 raw 테이블은 재호출하지 않고
@@ -53,7 +53,6 @@ SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = str(Path(SCRIPT_DIR).resolve().parent.parent.parent)
 DB_DIR       = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "DB"))
 RAW_DATA_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "raw_data"))
-OUT_DB       = os.path.join(DB_DIR, "complex_unified.db")
 EXCEL_PATH   = os.path.join(RAW_DATA_DIR, "20260508_단지_기본정보.xlsx")
 
 # infra.gateway import를 위해 프로젝트 루트를 sys.path에 추가
@@ -61,8 +60,10 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 from infra.gateway import get_default as _get_gateway  # noqa: E402
+from real_estate.database import schema  # noqa: E402
 
 _GW = _get_gateway()
+OUT_DB = os.path.join(DB_DIR, schema.DB_FILENAME)
 
 # ---- 증분 빌드 토글 ----
 REBUILD_SEOUL     = False
@@ -833,10 +834,10 @@ def run_matching(seoul_df, kb_df):
 
 
 # ===========================================================================
-# Section 5: complex_master 빌드 + 저장
+# Section 5: apartment_complex 빌드 + 저장
 # ===========================================================================
 COMPLEX_MASTER_DDL = """
-CREATE TABLE complex_master (
+CREATE TABLE apartment_complex (
     master_complex_id   INTEGER PRIMARY KEY AUTOINCREMENT,
     canonical_name      TEXT NOT NULL,
     road_address        TEXT,
@@ -861,7 +862,7 @@ MASTER_COLS = [
 ]
 
 
-def build_complex_master(conn, matched_df, kb_only_df, seoul_only_df, kb_idx, seoul_idx):
+def build_apartment_complex(conn, matched_df, kb_only_df, seoul_only_df, kb_idx, seoul_idx):
     rows = []
 
     # matched: canonical_name 서울시 우선, household 큰 값, 그 외 KB 우선
@@ -926,7 +927,7 @@ def build_complex_master(conn, matched_df, kb_only_df, seoul_only_df, kb_idx, se
         })
 
     master_df = pd.DataFrame(rows)
-    print(f"[Section 5] complex_master 행: {len(master_df)}")
+    print(f"[Section 5] apartment_complex 행: {len(master_df)}")
     print(f"  data_source: {dict(master_df['data_source'].value_counts())}")
 
     rows_for_insert = []
@@ -947,17 +948,17 @@ def build_complex_master(conn, matched_df, kb_only_df, seoul_only_df, kb_idx, se
         ))
 
     cur = conn.cursor()
-    cur.execute("DROP TABLE IF EXISTS complex_master")
+    cur.execute("DROP TABLE IF EXISTS apartment_complex")
     cur.execute(COMPLEX_MASTER_DDL)
     placeholders = ",".join(["?"] * len(MASTER_COLS))
     cur.executemany(
-        f"INSERT INTO complex_master ({','.join(MASTER_COLS)}) VALUES ({placeholders})",
+        f"INSERT INTO apartment_complex ({','.join(MASTER_COLS)}) VALUES ({placeholders})",
         rows_for_insert,
     )
     conn.commit()
     master_with_id = pd.read_sql(
         "SELECT master_complex_id, seoul_complex_code, kb_complex_id, data_source "
-        "FROM complex_master", conn,
+        "FROM apartment_complex", conn,
     )
     return master_df, master_with_id
 
@@ -968,7 +969,7 @@ def build_complex_master(conn, matched_df, kb_only_df, seoul_only_df, kb_idx, se
 COMPLEX_MATCH_LOG_DDL = """
 CREATE TABLE complex_match_log (
     log_id                  INTEGER PRIMARY KEY AUTOINCREMENT,
-    master_complex_id       INTEGER REFERENCES complex_master(master_complex_id),
+    master_complex_id       INTEGER REFERENCES apartment_complex(master_complex_id),
     seoul_complex_code      TEXT,
     kb_complex_id           INTEGER,
     match_score             REAL,
@@ -1043,10 +1044,10 @@ def build_complex_match_log(conn, matched_df, master_with_id):
 # Section 7: 인덱스
 # ===========================================================================
 INDEX_STMTS = [
-    "CREATE INDEX IF NOT EXISTS idx_master_lat        ON complex_master(latitude)",
-    "CREATE INDEX IF NOT EXISTS idx_master_lng        ON complex_master(longitude)",
-    "CREATE INDEX IF NOT EXISTS idx_master_seoul_code ON complex_master(seoul_complex_code)",
-    "CREATE INDEX IF NOT EXISTS idx_master_kb_id      ON complex_master(kb_complex_id)",
+    "CREATE INDEX IF NOT EXISTS idx_master_lat        ON apartment_complex(latitude)",
+    "CREATE INDEX IF NOT EXISTS idx_master_lng        ON apartment_complex(longitude)",
+    "CREATE INDEX IF NOT EXISTS idx_master_seoul_code ON apartment_complex(seoul_complex_code)",
+    "CREATE INDEX IF NOT EXISTS idx_master_kb_id      ON apartment_complex(kb_complex_id)",
     "CREATE INDEX IF NOT EXISTS idx_inv_kb_id         ON kb_investment_raw(단지기본일련번호)",
     "CREATE INDEX IF NOT EXISTS idx_log_master        ON complex_match_log(master_complex_id)",
     "CREATE INDEX IF NOT EXISTS idx_log_review        ON complex_match_log(needs_review) WHERE needs_review = 1",
@@ -1067,13 +1068,13 @@ def create_indexes(conn):
 def verify(conn):
     print("\n=== 테이블 행 수 ===")
     for tbl in ["seoul_complex_raw", "kb_complex_raw", "kb_investment_raw",
-                "complex_master", "complex_match_log"]:
+                "apartment_complex", "complex_match_log"]:
         n = pd.read_sql(f"SELECT COUNT(*) AS n FROM {tbl}", conn)["n"].iloc[0]
         print(f"  {tbl}: {n}")
 
     print("\n=== data_source 분포 ===")
     print(pd.read_sql(
-        "SELECT data_source, COUNT(*) AS n FROM complex_master GROUP BY data_source",
+        "SELECT data_source, COUNT(*) AS n FROM apartment_complex GROUP BY data_source",
         conn,
     ).to_string(index=False))
 
@@ -1088,7 +1089,7 @@ def verify(conn):
     print("\n=== JOIN sanity (시세 행 수 상위 5) ===")
     print(pd.read_sql("""
         SELECT m.canonical_name, COUNT(i.면적일련번호) AS price_rows
-          FROM complex_master m
+          FROM apartment_complex m
           JOIN kb_investment_raw i ON i.단지기본일련번호 = m.kb_complex_id
          WHERE m.kb_complex_id IS NOT NULL
          GROUP BY m.master_complex_id
@@ -1111,7 +1112,7 @@ def main():
         kb_df    = build_kb_complex_raw(conn, inv_df)
 
         matched_df, kb_only_df, seoul_only_df, kb_idx, seoul_idx = run_matching(seoul_df, kb_df)
-        master_df, master_with_id = build_complex_master(
+        master_df, master_with_id = build_apartment_complex(
             conn, matched_df, kb_only_df, seoul_only_df, kb_idx, seoul_idx,
         )
         build_complex_match_log(conn, matched_df, master_with_id)
