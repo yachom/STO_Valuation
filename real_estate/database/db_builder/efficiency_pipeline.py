@@ -57,10 +57,11 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from infra.gateway import get_default as _get_gateway  # noqa: E402
+from real_estate.database import schema  # noqa: E402
 
 _GW = _get_gateway()
 
-DB_PATH = SCRIPT_DIR.parent / "DB" / "building_certifications.db"
+DB_PATH = SCRIPT_DIR.parent / "DB" / schema.DB_FILENAME
 
 BEEC_KEY = os.getenv("BEEC_API_KEY")
 KAKAO_KEY = os.getenv("KAKAO_API_KEY")
@@ -422,61 +423,11 @@ class EfficiencyDB:
 
     # ---------- 스키마 ----------
     def create_schema(self):
-        c = self.conn
-        c.execute("""
-            CREATE TABLE IF NOT EXISTS building_energy_grade (
-                rqid                INTEGER  PRIMARY KEY,
-                crtif_no            TEXT,
-                bld_nm              TEXT     NOT NULL,
-                loc_addr            TEXT,
-                rgn_sct_name        TEXT,
-                full_addr           TEXT,
-                jibun_addr          TEXT,
-                bdmgt_sn            TEXT,
-                purpose_kind_name   TEXT,
-                bld_scale           TEXT,
-                hshld_numb          INTEGER,
-                exus_area_m2        REAL,
-                real_area_m2        REAL,
-                crtif_kind          TEXT,
-                grd_name            TEXT,
-                grade_code          TEXT,
-                grade_rank          INTEGER,
-                crtif_isu_dd        TEXT,
-                app_rcpt_org_name   TEXT,
-                ente_nm             TEXT,
-                primary_energy_req  REAL,
-                energy_reduce_rate  REAL,
-                src_reg_dt          TEXT,
-                fetched_at          TEXT,
-                ingested_at         TEXT     NOT NULL DEFAULT (datetime('now')),
-                updated_at          TEXT     NOT NULL DEFAULT (datetime('now'))
-            )
-        """)
-        for stmt in (
-            "CREATE INDEX IF NOT EXISTS idx_beg_crtif_no     ON building_energy_grade (crtif_no)",
-            "CREATE INDEX IF NOT EXISTS idx_beg_region       ON building_energy_grade (rgn_sct_name)",
-            "CREATE INDEX IF NOT EXISTS idx_beg_grade_rank   ON building_energy_grade (grade_rank)",
-            "CREATE INDEX IF NOT EXISTS idx_beg_isu_dd       ON building_energy_grade (crtif_isu_dd)",
-            "CREATE INDEX IF NOT EXISTS idx_beg_purpose_kind ON building_energy_grade (purpose_kind_name, crtif_kind)",
-            "CREATE INDEX IF NOT EXISTS idx_beg_bld_nm       ON building_energy_grade (bld_nm)",
-        ):
-            c.execute(stmt)
-        c.execute("""
-            CREATE TRIGGER IF NOT EXISTS trg_beg_updated_at
-            AFTER UPDATE ON building_energy_grade
-            FOR EACH ROW
-            BEGIN
-                UPDATE building_energy_grade
-                   SET updated_at = datetime('now')
-                 WHERE rqid = OLD.rqid;
-            END
-        """)
-        c.commit()
+        schema.ensure_schema(self.conn)
 
     # ---------- 적재 ----------
     UPSERT_SQL = """
-        INSERT INTO building_energy_grade (
+        INSERT INTO energy_efficiency_cert (
             rqid, crtif_no, bld_nm, loc_addr, rgn_sct_name, full_addr,
             purpose_kind_name, bld_scale, hshld_numb, exus_area_m2, real_area_m2,
             crtif_kind, grd_name, grade_code, grade_rank, crtif_isu_dd,
@@ -511,7 +462,7 @@ class EfficiencyDB:
     def select_missing_jibun(self):
         return self.conn.execute("""
             SELECT rqid, full_addr, loc_addr
-              FROM building_energy_grade
+              FROM energy_efficiency_cert
              WHERE (jibun_addr IS NULL OR jibun_addr = '')
              ORDER BY rqid
         """).fetchall()
@@ -519,7 +470,7 @@ class EfficiencyDB:
     def select_missing_bdmgt(self):
         return self.conn.execute("""
             SELECT rqid, bld_nm, loc_addr, jibun_addr
-              FROM building_energy_grade
+              FROM energy_efficiency_cert
              WHERE (bdmgt_sn IS NULL OR bdmgt_sn = '')
              ORDER BY rqid
         """).fetchall()
@@ -527,7 +478,7 @@ class EfficiencyDB:
     def select_with_bdmgt_no_jibun(self):
         return self.conn.execute("""
             SELECT rqid, bld_nm, loc_addr, bdmgt_sn
-              FROM building_energy_grade
+              FROM energy_efficiency_cert
              WHERE (jibun_addr IS NULL OR jibun_addr = '')
                AND bdmgt_sn IS NOT NULL AND length(bdmgt_sn) = 25
              ORDER BY rqid
@@ -537,7 +488,7 @@ class EfficiencyDB:
         """jibun 빈 행 중 건물명 있는 행 (단계 7 키워드검색 대상)."""
         return self.conn.execute("""
             SELECT rqid, bld_nm, loc_addr, full_addr
-              FROM building_energy_grade
+              FROM energy_efficiency_cert
              WHERE (jibun_addr IS NULL OR jibun_addr = '')
                AND TRIM(COALESCE(bld_nm,'')) <> ''
              ORDER BY rqid
@@ -547,21 +498,21 @@ class EfficiencyDB:
         """이미 채워진 행에서 (시군구코드, 법정동코드) → (구, 동) 매핑 후보 수집."""
         return self.conn.execute("""
             SELECT jibun_addr, bdmgt_sn
-              FROM building_energy_grade
+              FROM energy_efficiency_cert
              WHERE bdmgt_sn IS NOT NULL AND length(bdmgt_sn) = 25
                AND jibun_addr IS NOT NULL AND jibun_addr <> ''
         """).fetchall()
 
     def update_jibun(self, rqid, jibun):
         self.conn.execute(
-            "UPDATE building_energy_grade SET jibun_addr=? WHERE rqid=? "
+            "UPDATE energy_efficiency_cert SET jibun_addr=? WHERE rqid=? "
             "AND (jibun_addr IS NULL OR jibun_addr='')",
             (jibun, rqid),
         )
 
     def update_bdmgt(self, rqid, bdmgt):
         self.conn.execute(
-            "UPDATE building_energy_grade SET bdmgt_sn=? WHERE rqid=? "
+            "UPDATE energy_efficiency_cert SET bdmgt_sn=? WHERE rqid=? "
             "AND (bdmgt_sn IS NULL OR bdmgt_sn='')",
             (bdmgt, rqid),
         )
@@ -576,7 +527,7 @@ class EfficiencyDB:
                             THEN 1 ELSE 0 END) AS no_jibun,
                    SUM(CASE WHEN bdmgt_sn IS NULL OR bdmgt_sn=''
                             THEN 1 ELSE 0 END) AS no_bdmgt
-              FROM building_energy_grade
+              FROM energy_efficiency_cert
         """).fetchone()
         return dict(row)
 
@@ -878,14 +829,14 @@ class EfficiencyPipeline:
         skip_juso=False,
         skip_recovery=False,
     ):
-        # 0) 깨끗하게 다시 만들 거면 building_energy_grade 테이블만 비운다.
+        # 0) 깨끗하게 다시 만들 거면 energy_efficiency_cert 테이블만 비운다.
         # building_certifications.db는 gseed_certifications도 공유하므로 파일 자체는
         # 지우지 않는다.
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         if fresh and self.db_path.exists():
-            print(f"[0] 기존 building_energy_grade 테이블 삭제")
+            print(f"[0] 기존 energy_efficiency_cert 테이블 삭제")
             with sqlite3.connect(self.db_path) as conn:
-                conn.execute("DROP TABLE IF EXISTS building_energy_grade")
+                conn.execute("DROP TABLE IF EXISTS energy_efficiency_cert")
 
         db = EfficiencyDB(self.db_path)
         db.create_schema()

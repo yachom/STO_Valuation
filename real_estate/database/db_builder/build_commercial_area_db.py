@@ -1,23 +1,21 @@
 """상권 분석 DB 빌더.
 
-서울시 상권분석서비스 데이터(영역·인구·매출)를 읽어 commercial_area.db를
-만든다. 한 번 실행하면 7개 테이블이 생성된다:
+서울시 상권분석서비스 데이터(영역·인구·매출)를 real_estate.db의
+다음 7개 테이블에 적재:
 
-    commercial_area          상권 영역(경계 다각형)
-    floating_population      유동인구 (상권 단위)
-    resident_population      거주인구 (상권 단위)
-    floating_population_dong 유동인구 (행정동 단위, 폴백용)
-    resident_population_dong 거주인구 (행정동 단위, 폴백용)
-    estimated_sales          추정매출 (상권 단위)
-    estimated_sales_dong     추정매출 (행정동 단위, 폴백용)
+    commercial_area                  상권 영역(경계 다각형)
+    commercial_floating_population   유동인구 (상권 단위)
+    commercial_resident_population   거주인구 (상권 단위)
+    admin_dong_floating_population   유동인구 (행정동 단위, 폴백용)
+    admin_dong_resident_population   거주인구 (행정동 단위, 폴백용)
+    commercial_estimated_sales       추정매출 (상권 단위)
+    admin_dong_estimated_sales       추정매출 (행정동 단위, 폴백용)
 
 외부 라이브러리 없이 표준 라이브러리만 사용한다(Shapefile 직접 파싱,
 좌표 변환 직접 구현).
 
 실행:
-    db_builder 폴더에서
         python build_commercial_area_db.py
-    경로는 아래 PATHS 상수에서 조정한다.
 """
 
 import csv
@@ -26,14 +24,23 @@ import math
 import os
 import sqlite3
 import struct
+import sys
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from real_estate.database import schema  # noqa: E402
 
 
 # ─────────────────────────────────────────────────────────────────
-# 경로 설정 (db_builder 폴더에서 실행 기준). 환경에 맞게 수정.
+# 경로 설정 (db_builder 폴더에서 실행 기준).
 # ─────────────────────────────────────────────────────────────────
 PATHS = {
     "shp_base":      "../raw_data/서울시 상권분석서비스(영역-상권)",
-    "db":            "../DB/commercial_area.db",
+    "db":            f"../DB/{schema.DB_FILENAME}",
     "floating":      "../raw_data/서울시 상권분석서비스(길단위인구-상권).csv",
     "resident":      "../raw_data/서울시 상권분석서비스(상주인구-상권).csv",
     "floating_dong": "../raw_data/서울시 상권분석서비스(길단위인구-행정동).csv",
@@ -206,25 +213,7 @@ def build_area_table(conn, shp_base):
         polygons_wgs84.append(converted_parts)
 
     cur = conn.cursor()
-    cur.execute("DROP TABLE IF EXISTS commercial_area")
-    cur.execute("""
-        CREATE TABLE commercial_area (
-            trdar_cd       TEXT PRIMARY KEY,
-            trdar_se_name  TEXT,
-            trdar_name     TEXT,
-            signgu_cd      TEXT,
-            adstrd_cd      TEXT,
-            adstrd_name    TEXT,
-            area_sqm       REAL,
-            center_lon     REAL,
-            center_lat     REAL,
-            bbox_min_lon   REAL,
-            bbox_min_lat   REAL,
-            bbox_max_lon   REAL,
-            bbox_max_lat   REAL,
-            polygon_json   TEXT
-        )
-    """)
+    cur.execute("DELETE FROM commercial_area")
 
     rows = 0
     for rec, parts in zip(dbf_records, polygons_wgs84):
@@ -248,7 +237,14 @@ def build_area_table(conn, shp_base):
             area = None
 
         cur.execute(
-            "INSERT OR REPLACE INTO commercial_area VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            """
+            INSERT OR REPLACE INTO commercial_area
+                (trdar_cd, trdar_se_name, trdar_name, signgu_cd, adstrd_cd, adstrd_name,
+                 area_sqm, center_lon, center_lat,
+                 bbox_min_lon, bbox_min_lat, bbox_max_lon, bbox_max_lat,
+                 polygon_json)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            """,
             (rec["TRDAR_CD"], rec["TRDAR_SE_1"], rec["TRDAR_CD_N"],
              rec["SIGNGU_CD"], rec["ADSTRD_CD"], rec["ADSTRD_CD_"],
              area, center_lon, center_lat,
@@ -256,8 +252,6 @@ def build_area_table(conn, shp_base):
              json.dumps(parts)))
         rows += 1
 
-    cur.execute("CREATE INDEX idx_bbox ON commercial_area"
-                "(bbox_min_lon, bbox_max_lon, bbox_min_lat, bbox_max_lat)")
     conn.commit()
     print(f"commercial_area: {rows}개 상권")
 
@@ -266,49 +260,36 @@ def build_area_table(conn, shp_base):
 # 4. CSV 적재 공통 함수
 # ═════════════════════════════════════════════════════════════════
 
-def load_csv_table(conn, csv_path, table, columns, text_columns,
-                   primary_key, index_col=None, encoding="cp949"):
-    """CSV를 읽어 테이블 하나를 만들고 적재하는 공통 함수.
+def load_csv_table(conn, csv_path, table, columns, encoding="cp949"):
+    """CSV → 이미 존재하는 스키마 테이블에 INSERT OR REPLACE.
 
     Args:
-        conn:        DB 연결.
+        conn:        DB 연결 (스키마는 이미 ensure_schema로 생성됨).
         csv_path:    CSV 파일 경로.
-        table:       만들 테이블 이름.
-        columns:     CSV 컬럼 순서에 대응하는 DB 영문 컬럼명 리스트.
-        text_columns: TEXT로 둘 컬럼 집합(나머지는 INTEGER).
-        primary_key: PRIMARY KEY 컬럼명 리스트.
-        index_col:   인덱스를 걸 컬럼명(선택).
+        table:       대상 테이블 이름 (schema.py에 정의된 이름).
+        columns:     CSV 컬럼 순서에 대응하는 DB 영문 컬럼명 리스트
+                     (테이블의 CREATE 컬럼 순서와 일치해야 함).
         encoding:    CSV 인코딩.
     """
-    col_defs = []
-    for c in columns:
-        ctype = "TEXT" if c in text_columns else "INTEGER"
-        col_defs.append(f"{c} {ctype}")
-
     cur = conn.cursor()
-    cur.execute(f"DROP TABLE IF EXISTS {table}")
-    cur.execute(f"""
-        CREATE TABLE {table} (
-            {", ".join(col_defs)},
-            PRIMARY KEY ({", ".join(primary_key)})
-        )
-    """)
+    cur.execute(f"DELETE FROM {table}")
+
+    col_list = ", ".join(columns)
+    placeholders = ",".join("?" * len(columns))
+    insert_sql = (
+        f"INSERT OR REPLACE INTO {table} ({col_list}) VALUES ({placeholders})"
+    )
 
     with open(csv_path, encoding=encoding) as f:
         reader = csv.reader(f)
         header = next(reader)
         assert len(header) == len(columns), (
             f"{table} 컬럼 수 불일치: CSV {len(header)} vs 정의 {len(columns)}")
-
-        placeholders = ",".join("?" * len(columns))
         count = 0
         for row in reader:
-            cur.execute(
-                f"INSERT OR REPLACE INTO {table} VALUES ({placeholders})", row)
+            cur.execute(insert_sql, row)
             count += 1
 
-    if index_col:
-        cur.execute(f"CREATE INDEX idx_{table} ON {table}({index_col})")
     conn.commit()
     print(f"{table}: {count}행")
 
@@ -374,65 +355,38 @@ SALES_DONG_COLS = ["quarter_code", "adstrd_cd", "adstrd_name",
 # ═════════════════════════════════════════════════════════════════
 
 def build(paths=PATHS):
-    """commercial_area.db 전체를 만든다 (7개 테이블)."""
-    # 출력 폴더 보장, 기존 DB 제거
+    """real_estate.db 안의 상권 7개 테이블을 채운다."""
     db_dir = os.path.dirname(paths["db"])
     if db_dir:
         os.makedirs(db_dir, exist_ok=True)
-    if os.path.exists(paths["db"]):
-        os.remove(paths["db"])
 
     conn = sqlite3.connect(paths["db"])
     try:
+        schema.ensure_schema(conn)
+
         # 1) 상권 영역
         build_area_table(conn, paths["shp_base"])
 
         # 2) 인구 (상권 단위)
-        load_csv_table(
-            conn, paths["floating"], "floating_population",
-            FLOATING_COLS,
-            {"quarter_code", "trdar_se_code", "trdar_se_name",
-             "trdar_cd", "trdar_name"},
-            ["trdar_cd", "quarter_code"], index_col="trdar_cd")
-        load_csv_table(
-            conn, paths["resident"], "resident_population",
-            RESIDENT_COLS,
-            {"quarter_code", "trdar_se_code", "trdar_se_name",
-             "trdar_cd", "trdar_name"},
-            ["trdar_cd", "quarter_code"], index_col="trdar_cd")
+        load_csv_table(conn, paths["floating"],
+                       "commercial_floating_population", FLOATING_COLS)
+        load_csv_table(conn, paths["resident"],
+                       "commercial_resident_population", RESIDENT_COLS)
 
         # 3) 인구 (행정동 단위, 폴백용)
-        load_csv_table(
-            conn, paths["floating_dong"], "floating_population_dong",
-            FLOATING_DONG_COLS,
-            {"quarter_code", "adstrd_cd", "adstrd_name"},
-            ["adstrd_cd", "quarter_code"], index_col="adstrd_cd")
-        load_csv_table(
-            conn, paths["resident_dong"], "resident_population_dong",
-            RESIDENT_DONG_COLS,
-            {"quarter_code", "adstrd_cd", "adstrd_name"},
-            ["adstrd_cd", "quarter_code"], index_col="adstrd_cd")
+        load_csv_table(conn, paths["floating_dong"],
+                       "admin_dong_floating_population", FLOATING_DONG_COLS)
+        load_csv_table(conn, paths["resident_dong"],
+                       "admin_dong_resident_population", RESIDENT_DONG_COLS)
 
-        # 4) 추정매출 (상권 단위)
-        load_csv_table(
-            conn, paths["sales"], "estimated_sales",
-            SALES_COLS,
-            {"quarter_code", "trdar_se_code", "trdar_se_name",
-             "trdar_cd", "trdar_name", "industry_code", "industry_name"},
-            ["trdar_cd", "industry_code", "quarter_code"],
-            index_col="trdar_cd")
-
-        # 5) 추정매출 (행정동 단위, 폴백용)
-        load_csv_table(
-            conn, paths["sales_dong"], "estimated_sales_dong",
-            SALES_DONG_COLS,
-            {"quarter_code", "adstrd_cd", "adstrd_name",
-             "industry_code", "industry_name"},
-            ["adstrd_cd", "industry_code", "quarter_code"],
-            index_col="adstrd_cd")
+        # 4·5) 추정매출
+        load_csv_table(conn, paths["sales"],
+                       "commercial_estimated_sales", SALES_COLS)
+        load_csv_table(conn, paths["sales_dong"],
+                       "admin_dong_estimated_sales", SALES_DONG_COLS)
 
         print()
-        print("=> commercial_area.db 완성: 7개 테이블")
+        print(f"=> {schema.DB_FILENAME} 상권 영역: 7개 테이블 적재 완료")
     finally:
         conn.close()
 

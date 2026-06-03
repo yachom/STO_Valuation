@@ -57,10 +57,11 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from infra.gateway import get_default as _get_gateway  # noqa: E402
+from real_estate.database import schema  # noqa: E402
 
 _GW = _get_gateway()
 
-DB_PATH = SCRIPT_DIR.parent / "DB" / "building_certifications.db"
+DB_PATH = SCRIPT_DIR.parent / "DB" / schema.DB_FILENAME
 
 GSEED_API_KEY = os.getenv("GSEED_API_KEY")
 KAKAO_KEY = os.getenv("KAKAO_API_KEY")
@@ -398,31 +399,9 @@ class GseedDB:
         self.conn.close()
 
     def create_schema(self):
-        c = self.conn
-        c.executescript("""
-            CREATE TABLE IF NOT EXISTS gseed_certifications (
-                id                INTEGER PRIMARY KEY AUTOINCREMENT,
-                cert_no           TEXT NOT NULL,
-                province          TEXT NOT NULL,
-                cert_standard     TEXT NOT NULL,
-                cert_type         TEXT NOT NULL,
-                building_name     TEXT NOT NULL,
-                building_category TEXT NOT NULL,
-                cert_grade        TEXT NOT NULL,
-                cert_date         TEXT NOT NULL,
-                address           TEXT NOT NULL,
-                total_floor_area  REAL,
-                floors_above      INTEGER,
-                floors_below      INTEGER,
-                jibun_addr        TEXT,
-                bdmgt_sn          TEXT
-            );
-
-            CREATE INDEX IF NOT EXISTS idx_address       ON gseed_certifications(address);
-            CREATE INDEX IF NOT EXISTS idx_building_name ON gseed_certifications(building_name);
-            CREATE INDEX IF NOT EXISTS idx_cert_no       ON gseed_certifications(cert_no);
-
-            CREATE VIEW IF NOT EXISTS v_latest_cert AS
+        schema.ensure_schema(self.conn)
+        self.conn.executescript("""
+            CREATE VIEW IF NOT EXISTS v_latest_green_cert AS
             WITH ranked AS (
                 SELECT *,
                     ROW_NUMBER() OVER (
@@ -436,7 +415,7 @@ class GseedDB:
                             END,
                             cert_date DESC
                     ) AS rn
-                FROM gseed_certifications
+                FROM green_cert
             )
             SELECT id, cert_no, province, cert_standard, cert_type, building_name,
                    building_category, cert_grade, cert_date, address,
@@ -447,9 +426,9 @@ class GseedDB:
 
     def replace_all(self, rows):
         """기존 전체 삭제 후 일괄 INSERT (재실행 시 깨끗하게 다시 적재)."""
-        self.conn.execute("DELETE FROM gseed_certifications")
+        self.conn.execute("DELETE FROM green_cert")
         self.conn.executemany("""
-            INSERT INTO gseed_certifications
+            INSERT INTO green_cert
                 (cert_no, province, cert_standard, cert_type, building_name,
                  building_category, cert_grade, cert_date, address,
                  total_floor_area, floors_above, floors_below)
@@ -461,21 +440,21 @@ class GseedDB:
 
     def select_missing_jibun(self):
         return self.conn.execute("""
-            SELECT id, address FROM gseed_certifications
+            SELECT id, address FROM green_cert
              WHERE (jibun_addr IS NULL OR jibun_addr = '')
              ORDER BY id
         """).fetchall()
 
     def select_missing_bdmgt(self):
         return self.conn.execute("""
-            SELECT id, building_name, address, jibun_addr FROM gseed_certifications
+            SELECT id, building_name, address, jibun_addr FROM green_cert
              WHERE (bdmgt_sn IS NULL OR bdmgt_sn = '')
              ORDER BY id
         """).fetchall()
 
     def select_with_bdmgt_no_jibun(self):
         return self.conn.execute("""
-            SELECT id, building_name, address, bdmgt_sn FROM gseed_certifications
+            SELECT id, building_name, address, bdmgt_sn FROM green_cert
              WHERE (jibun_addr IS NULL OR jibun_addr = '')
                AND bdmgt_sn IS NOT NULL AND length(bdmgt_sn) = 25
              ORDER BY id
@@ -483,21 +462,21 @@ class GseedDB:
 
     def select_code_to_loc(self):
         return self.conn.execute("""
-            SELECT jibun_addr, bdmgt_sn FROM gseed_certifications
+            SELECT jibun_addr, bdmgt_sn FROM green_cert
              WHERE bdmgt_sn IS NOT NULL AND length(bdmgt_sn) = 25
                AND jibun_addr IS NOT NULL AND jibun_addr <> ''
         """).fetchall()
 
     def update_jibun(self, row_id, jibun):
         self.conn.execute(
-            "UPDATE gseed_certifications SET jibun_addr=? WHERE id=? "
+            "UPDATE green_cert SET jibun_addr=? WHERE id=? "
             "AND (jibun_addr IS NULL OR jibun_addr='')",
             (jibun, row_id),
         )
 
     def update_bdmgt(self, row_id, bdmgt):
         self.conn.execute(
-            "UPDATE gseed_certifications SET bdmgt_sn=? WHERE id=? "
+            "UPDATE green_cert SET bdmgt_sn=? WHERE id=? "
             "AND (bdmgt_sn IS NULL OR bdmgt_sn='')",
             (bdmgt, row_id),
         )
@@ -512,7 +491,7 @@ class GseedDB:
                             THEN 1 ELSE 0 END) AS no_jibun,
                    SUM(CASE WHEN bdmgt_sn IS NULL OR bdmgt_sn=''
                             THEN 1 ELSE 0 END) AS no_bdmgt
-              FROM gseed_certifications
+              FROM green_cert
         """).fetchone()
         return dict(row)
 
@@ -825,12 +804,12 @@ class GseedPipeline:
         skip_recovery=False,
     ):
         # building_certifications.db는 efficiency 파이프라인과 공유하므로 파일 자체는
-        # 지우지 않고 자기 테이블(gseed_certifications)만 비운다.
+        # 지우지 않고 자기 테이블(green_cert)만 비운다.
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         if fresh and self.db_path.exists():
-            print(f"[0] 기존 gseed_certifications 테이블 삭제")
+            print(f"[0] 기존 green_cert 테이블 삭제")
             with sqlite3.connect(self.db_path) as conn:
-                conn.execute("DROP TABLE IF EXISTS gseed_certifications")
+                conn.execute("DROP TABLE IF EXISTS green_cert")
 
         db = GseedDB(self.db_path)
         db.create_schema()
