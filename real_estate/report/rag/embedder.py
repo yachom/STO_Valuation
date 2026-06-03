@@ -14,7 +14,9 @@ from typing import Iterable
 
 logger = logging.getLogger("infra.embed")
 
-_MODEL_NAME = "BAAI/bge-m3"
+# bge-m3가 첫 다운로드 2GB+로 무거워서 multilingual-e5-large(이미 캐시됨, 동일 1024-dim,
+# 한국어 품질 비슷)로 시작. 향후 bge-m3 사용 가능 시 환경변수로 swap.
+_MODEL_NAME = "intfloat/multilingual-e5-large"
 _DIM = 1024
 
 _model = None

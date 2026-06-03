@@ -68,10 +68,14 @@ def reviser_v2_node(state: dict) -> dict:
           "수정하지 않을 섹션은 결과에 포함하지 마세요 (issue가 없으면 그대로)."
     )
     llm = build_llm(ModelTier.SONNET).with_structured_output(ReviserOutput)
-    out: ReviserOutput = llm.invoke([
-        {"role": "system", "content": _SYSTEM},
-        {"role": "user", "content": user},
-    ])
+    try:
+        out: ReviserOutput = llm.invoke([
+            {"role": "system", "content": _SYSTEM},
+            {"role": "user", "content": user},
+        ])
+    except Exception as exc:
+        logger.warning("reviser_v2 LLM 실패 — 섹션 변경 없이 패스: %s", exc)
+        return {}
 
     new_sections = dict(sections)
     for rs in out.sections:

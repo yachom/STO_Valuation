@@ -32,11 +32,15 @@ _TIER_MODEL_ID = {
     ModelTier.HAIKU: "claude-haiku-4-5-20251001",
 }
 
-# 기본 sampling/budget. 호출자가 override 가능.
+# 기본 budget. 호출자가 override 가능.
+# 주의: Claude 4.7 (Opus)에선 temperature 파라미터가 deprecated이라
+# 기본값에서 temperature 제거. 필요 시 호출자가 override.
+# structured output(JSON)에 토큰을 너무 적게 주면 잘려서 ValidationError가 나므로
+# Sonnet/Opus 모두 8000으로 충분히 잡는다.
 _TIER_DEFAULTS = {
-    ModelTier.OPUS: {"max_tokens": 4096, "temperature": 0.3},
-    ModelTier.SONNET: {"max_tokens": 3072, "temperature": 0.3},
-    ModelTier.HAIKU: {"max_tokens": 1024, "temperature": 0.2},
+    ModelTier.OPUS: {"max_tokens": 8000},
+    ModelTier.SONNET: {"max_tokens": 8000},
+    ModelTier.HAIKU: {"max_tokens": 2048},
 }
 
 
