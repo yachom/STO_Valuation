@@ -374,6 +374,42 @@ APT_SALE_TRANSACTION_INDEXES = [
 ]
 
 
+# MOLIT 아파트 전월세 실거래가. contract_type='전세' 면 monthly_rent=0.
+APT_RENT_TRANSACTION = """
+CREATE TABLE IF NOT EXISTS apt_rent_transaction (
+    rent_id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    deal_year_month    TEXT NOT NULL,         -- YYYYMM
+    deal_day           INTEGER,
+    deposit            INTEGER,               -- 보증금 (만원 단위)
+    monthly_rent       INTEGER,               -- 월세 (만원 단위, 전세는 0)
+    contract_type      TEXT,                  -- 전세 / 월세 (deposit/monthly_rent 기반 산출)
+    contract_period    TEXT,                  -- 계약기간 (yymm~yymm, 가능한 경우)
+    use_renewal_right  INTEGER DEFAULT 0,     -- 갱신요구권 사용 여부 (Y=1, N=0)
+    previous_deposit   INTEGER,               -- 종전계약 보증금 (갱신만)
+    previous_monthly_rent INTEGER,            -- 종전계약 월세 (갱신만)
+    lawd_cd            TEXT NOT NULL,
+    legal_dong         TEXT,
+    bcode              TEXT,
+    jibun              TEXT,
+    apt_name           TEXT NOT NULL,
+    area_sqm           REAL,
+    floor              INTEGER,
+    build_year         INTEGER,
+    master_complex_id  INTEGER,
+    raw_payload        TEXT,
+    fetched_at         TEXT NOT NULL DEFAULT (datetime('now')),
+    UNIQUE (lawd_cd, deal_year_month, deal_day, apt_name, area_sqm, floor, deposit, monthly_rent, jibun)
+)
+"""
+APT_RENT_TRANSACTION_INDEXES = [
+    "CREATE INDEX IF NOT EXISTS idx_apt_rent_lawd_ymd    ON apt_rent_transaction(lawd_cd, deal_year_month)",
+    "CREATE INDEX IF NOT EXISTS idx_apt_rent_apt_name    ON apt_rent_transaction(apt_name)",
+    "CREATE INDEX IF NOT EXISTS idx_apt_rent_complex_id  ON apt_rent_transaction(master_complex_id)",
+    "CREATE INDEX IF NOT EXISTS idx_apt_rent_bcode       ON apt_rent_transaction(bcode)",
+    "CREATE INDEX IF NOT EXISTS idx_apt_rent_contract    ON apt_rent_transaction(contract_type)",
+]
+
+
 # ───────────────────────────────────────────────────────────
 # 일괄 적용
 # ───────────────────────────────────────────────────────────
@@ -391,6 +427,7 @@ ALL_DDL = [
     ("complex_match_log", COMPLEX_MATCH_LOG, COMPLEX_MATCH_LOG_INDEXES),
     ("development_project", DEVELOPMENT_PROJECT, DEVELOPMENT_PROJECT_INDEXES),
     ("apt_sale_transaction", APT_SALE_TRANSACTION, APT_SALE_TRANSACTION_INDEXES),
+    ("apt_rent_transaction", APT_RENT_TRANSACTION, APT_RENT_TRANSACTION_INDEXES),
 ]
 
 
