@@ -438,6 +438,134 @@ PUBLIC_LEASE_COMPLEX_INDEXES = [
 
 
 # ───────────────────────────────────────────────────────────
+# 상가 부동산 평가용 (PR-12~16에서 적재될 테이블들)
+# 평가 대상은 상가 건물(주소 단위). 본 테이블들은 그 평가에 직접 evidence를 제공.
+# 위 apt_*/public_lease_complex는 **배후수요 컨텍스트**로 retain.
+# ───────────────────────────────────────────────────────────
+
+# MOLIT RTMS 상업·업무용 부동산 실거래가. property_type=상가/오피스텔/사무실/...
+COMMERCIAL_SALE_TRANSACTION = """
+CREATE TABLE IF NOT EXISTS commercial_sale_transaction (
+    nrg_id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    deal_year_month    TEXT NOT NULL,         -- YYYYMM
+    deal_day           INTEGER,
+    deal_amount        INTEGER,               -- 거래금액 (만원)
+    lawd_cd            TEXT NOT NULL,         -- 시군구 LAWD_CD (5자리)
+    legal_dong         TEXT,                  -- 법정동명
+    bcode              TEXT,                  -- 법정동 10자리
+    jibun              TEXT,                  -- 지번
+    road_name          TEXT,                  -- 도로명
+    building_name      TEXT,                  -- 건물명 (free text, 매칭용)
+    property_type      TEXT,                  -- 부동산 유형 (상가/오피스텔/사무실 등)
+    floor_total_sqm    REAL,                  -- 거래 층(혹은 호) 면적
+    floor              INTEGER,
+    build_year         INTEGER,
+    bd_mgt_sn          TEXT,                  -- JUSO 보강 가능한 경우 (건물관리번호 25자리)
+    is_canceled        INTEGER DEFAULT 0,
+    cancel_date        TEXT,
+    raw_payload        TEXT,
+    fetched_at         TEXT NOT NULL DEFAULT (datetime('now')),
+    UNIQUE (lawd_cd, deal_year_month, deal_day, building_name, jibun, floor, floor_total_sqm, deal_amount)
+)
+"""
+COMMERCIAL_SALE_TRANSACTION_INDEXES = [
+    "CREATE INDEX IF NOT EXISTS idx_cst_lawd_ymd   ON commercial_sale_transaction(lawd_cd, deal_year_month)",
+    "CREATE INDEX IF NOT EXISTS idx_cst_bdmgt      ON commercial_sale_transaction(bd_mgt_sn)",
+    "CREATE INDEX IF NOT EXISTS idx_cst_bldg_name  ON commercial_sale_transaction(building_name)",
+    "CREATE INDEX IF NOT EXISTS idx_cst_bcode      ON commercial_sale_transaction(bcode)",
+    "CREATE INDEX IF NOT EXISTS idx_cst_proptype   ON commercial_sale_transaction(property_type)",
+]
+
+
+# 한국부동산원 상업용부동산 임대동향 — 시군구·건물유형 분기 단위.
+# 공실률·임대료·투자수익률·자본수익률·소득수익률.
+COMMERCIAL_LEASE_MARKET = """
+CREATE TABLE IF NOT EXISTS commercial_lease_market_quarterly (
+    sigungu_cd         TEXT NOT NULL,
+    sigungu_name       TEXT,
+    quarter_code       TEXT NOT NULL,         -- YYYYQ (예: 20254)
+    building_type      TEXT NOT NULL,         -- 오피스/중대형상가/소규모상가/집합상가
+    vacancy_rate       REAL,                  -- 공실률 (%)
+    rent_per_sqm       REAL,                  -- 임대료 (원/㎡)
+    yield_rate         REAL,                  -- 투자수익률 (%)
+    capital_gain_rate  REAL,                  -- 자본수익률 (%)
+    income_return      REAL,                  -- 소득수익률 (%)
+    raw_payload        TEXT,
+    fetched_at         TEXT NOT NULL DEFAULT (datetime('now')),
+    PRIMARY KEY (sigungu_cd, quarter_code, building_type)
+)
+"""
+COMMERCIAL_LEASE_MARKET_INDEXES = [
+    "CREATE INDEX IF NOT EXISTS idx_clm_quarter      ON commercial_lease_market_quarterly(quarter_code)",
+    "CREATE INDEX IF NOT EXISTS idx_clm_building_type ON commercial_lease_market_quarterly(building_type)",
+]
+
+
+# 국세청 사업자등록 통계 — 행정구역·업종 분기 단위.
+# 신규등록·폐업·생존 사업자수 → 업종별 회전율 / 상권 건강도.
+BUSINESS_REGISTRY_STATS = """
+CREATE TABLE IF NOT EXISTS business_registry_stats_quarterly (
+    region_cd          TEXT NOT NULL,         -- 자치구(sigungu_cd 5자리) 또는 행정동(adstrd_cd)
+    region_level       TEXT NOT NULL,         -- 'sigungu' / 'adstrd'
+    region_name        TEXT,
+    quarter_code       TEXT NOT NULL,
+    industry_code      TEXT NOT NULL,
+    industry_name      TEXT,
+    new_count          INTEGER,               -- 신규 등록 수
+    closed_count       INTEGER,               -- 폐업 수
+    surviving_count    INTEGER,               -- 생존 사업자 수
+    raw_payload        TEXT,
+    fetched_at         TEXT NOT NULL DEFAULT (datetime('now')),
+    PRIMARY KEY (region_cd, region_level, quarter_code, industry_code)
+)
+"""
+BUSINESS_REGISTRY_STATS_INDEXES = [
+    "CREATE INDEX IF NOT EXISTS idx_brs_quarter   ON business_registry_stats_quarterly(quarter_code)",
+    "CREATE INDEX IF NOT EXISTS idx_brs_industry  ON business_registry_stats_quarterly(industry_code)",
+    "CREATE INDEX IF NOT EXISTS idx_brs_region    ON business_registry_stats_quarterly(region_cd, region_level)",
+]
+
+
+# 서울 지하철역 마스터 — 좌표·노선·일평균 승하차 (가능 시).
+TRANSIT_STATION = """
+CREATE TABLE IF NOT EXISTS transit_station (
+    station_id         TEXT PRIMARY KEY,      -- 합성: 'subway:{호선}:{역명}' 등
+    station_name       TEXT NOT NULL,
+    line_name          TEXT,                  -- 호선/노선명
+    operator           TEXT,                  -- 운영기관 (서울교통공사/공항철도 등)
+    latitude           REAL NOT NULL,
+    longitude          REAL NOT NULL,
+    daily_boardings    INTEGER,               -- 일평균 승하차 (있는 경우)
+    raw_payload        TEXT,
+    fetched_at         TEXT NOT NULL DEFAULT (datetime('now'))
+)
+"""
+TRANSIT_STATION_INDEXES = [
+    "CREATE INDEX IF NOT EXISTS idx_ts_lat   ON transit_station(latitude)",
+    "CREATE INDEX IF NOT EXISTS idx_ts_lng   ON transit_station(longitude)",
+    "CREATE INDEX IF NOT EXISTS idx_ts_line  ON transit_station(line_name)",
+]
+
+
+# 서울 버스정류소 마스터 — 좌표 only (지하철 대비 운영 정보 가벼움).
+BUS_STOP = """
+CREATE TABLE IF NOT EXISTS bus_stop (
+    stop_id            TEXT PRIMARY KEY,      -- 정류장 고유번호
+    stop_name          TEXT NOT NULL,
+    latitude           REAL NOT NULL,
+    longitude          REAL NOT NULL,
+    stop_kind          TEXT,                  -- 가로변/중앙차로/마을버스 등 (있을 경우)
+    raw_payload        TEXT,
+    fetched_at         TEXT NOT NULL DEFAULT (datetime('now'))
+)
+"""
+BUS_STOP_INDEXES = [
+    "CREATE INDEX IF NOT EXISTS idx_bs_lat   ON bus_stop(latitude)",
+    "CREATE INDEX IF NOT EXISTS idx_bs_lng   ON bus_stop(longitude)",
+]
+
+
+# ───────────────────────────────────────────────────────────
 # 일괄 적용
 # ───────────────────────────────────────────────────────────
 ALL_DDL = [
@@ -456,6 +584,12 @@ ALL_DDL = [
     ("apt_sale_transaction", APT_SALE_TRANSACTION, APT_SALE_TRANSACTION_INDEXES),
     ("apt_rent_transaction", APT_RENT_TRANSACTION, APT_RENT_TRANSACTION_INDEXES),
     ("public_lease_complex", PUBLIC_LEASE_COMPLEX, PUBLIC_LEASE_COMPLEX_INDEXES),
+    # 상가 평가 직접 evidence (PR-13~16)
+    ("commercial_sale_transaction", COMMERCIAL_SALE_TRANSACTION, COMMERCIAL_SALE_TRANSACTION_INDEXES),
+    ("commercial_lease_market_quarterly", COMMERCIAL_LEASE_MARKET, COMMERCIAL_LEASE_MARKET_INDEXES),
+    ("business_registry_stats_quarterly", BUSINESS_REGISTRY_STATS, BUSINESS_REGISTRY_STATS_INDEXES),
+    ("transit_station", TRANSIT_STATION, TRANSIT_STATION_INDEXES),
+    ("bus_stop", BUS_STOP, BUS_STOP_INDEXES),
 ]
 
 

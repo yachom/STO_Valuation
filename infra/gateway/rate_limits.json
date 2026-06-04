@@ -9,5 +9,9 @@
   "gseed": { "min_interval_seconds": 0.2 },
   "molit_real_transaction": { "min_interval_seconds": 0.2 },
   "molit_rent": { "min_interval_seconds": 0.2 },
-  "lh_public_housing": { "min_interval_seconds": 0.5 }
+  "lh_public_housing": { "min_interval_seconds": 0.5 },
+  "molit_nrg_trade": { "min_interval_seconds": 0.2 },
+  "reb_lease_market": { "min_interval_seconds": 0.5 },
+  "nts_business_registry": { "min_interval_seconds": 0.5 },
+  "seoul_open_data": { "min_interval_seconds": 0.2 }
 }
