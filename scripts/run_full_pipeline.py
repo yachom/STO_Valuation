@@ -1,17 +1,21 @@
-"""다중 에이전트 v2 파이프라인 실행 — Neo4j 없이 SQLite retriever + Claude.
+"""다중 에이전트 v2 파이프라인 실행 (상가 부동산 평가 모드).
+
+입력: **상가 건물 주소** (Kakao+Juso 해결 → 좌표 + bd_mgt_sn + sigungu).
+운영: SQLite retriever + Claude. Neo4j 불필요.
 
 흐름:
     planner (Opus)
-      → tenant/esg/commercial v2 analyst (각 Sonnet x2 + Python scout)
+      → tenant/esg/commercial v2 analyst (각 Sonnet x2 + Python scout, 인자 검증)
       → synthesizer (Opus)
-      → risk_critic (Sonnet) → 루프 가능
+      → risk_critic (Sonnet, severity gate)
+      → 조건부 reviser_v2 (high+medium만)
       → final_editor (Opus)
-      → validator (Sonnet)
+      → validator
       → END
 
 사용:
-    python -m scripts.run_full_pipeline                  # 단지 id=13 (양재SK허브프리모)
-    python -m scripts.run_full_pipeline --complex-id 42
+    python -m scripts.run_full_pipeline "서울특별시 강남구 강남대로 252"
+    python -m scripts.run_full_pipeline --building "양재타워" "서울특별시 ..."
 """
 
 from __future__ import annotations
@@ -20,7 +24,6 @@ import argparse
 import json
 import logging
 import os
-import sqlite3
 import sys
 import time
 import uuid
@@ -31,6 +34,7 @@ if str(_PROJ) not in sys.path:
     sys.path.insert(0, str(_PROJ))
 
 from infra.env import load_env
+from real_estate.location import LocationResolver
 from real_estate.report.agents.base import AgentContext
 from real_estate.report.domain import Report, ReportSection
 from real_estate.report.rag.sqlite_retriever import AssetContext, SqliteRetriever
@@ -45,37 +49,42 @@ DB_PATH = _PROJ / "real_estate" / "database" / "DB" / "real_estate.db"
 logger = logging.getLogger("pipeline")
 
 
-def build_asset_context(complex_id: int) -> tuple[AssetContext, str]:
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.row_factory = sqlite3.Row
-    r = conn.execute(
-        "SELECT * FROM apartment_complex WHERE master_complex_id=?",
-        (complex_id,),
-    ).fetchone()
-    conn.close()
-    if r is None:
-        raise RuntimeError(f"단지 {complex_id} 없음.")
+def build_asset_context(address: str, building_name: str | None = None) -> tuple[AssetContext, str]:
+    """주소 → LocationResolver → AssetContext + asset_summary 문자열."""
+    resolver = LocationResolver(
+        kakao_api_key=os.environ["KAKAO_API_KEY"],
+        juso_api_key=os.environ["JUSO_API_KEY"],
+    )
+    loc = resolver.resolve(address)
 
-    addr = r["road_address"] or r["legal_address"] or ""
-    tokens = addr.split()
-    sigungu = tokens[1] if len(tokens) >= 2 else None
+    # bcode 10자리 → 앞 5자리 = sigungu_cd (LAWD_CD)
+    sigungu_cd = (loc.bcode or "")[:5] if loc.bcode else None
+    asset_id = f"store_{uuid.uuid4().hex[:10]}"
 
     ctx = AssetContext(
-        asset_id=f"re_complex_{complex_id}",
-        master_complex_id=complex_id,
-        latitude=r["latitude"],
-        longitude=r["longitude"],
-        legal_address=r["legal_address"],
-        road_address=r["road_address"],
-        sigungu=sigungu,
+        asset_id=asset_id,
+        latitude=loc.latitude,
+        longitude=loc.longitude,
+        bd_mgt_sn=loc.bd_mgt_sn,
+        building_name=building_name,
+        legal_address=loc.jibun_address,
+        road_address=loc.road_address,
+        sigungu=loc.sigungu,
+        sigungu_cd=sigungu_cd,
+        nearby_radius_m=800,
     )
-    summary = (
-        f"{r['canonical_name']} ({addr})\n"
-        f"좌표: ({r['latitude']}, {r['longitude']})\n"
-        f"준공: {r['completion_date']}, 세대수: {r['household_count']}, 동수: {r['total_buildings']}\n"
-        f"data_source: {r['data_source']}, 자치구: {sigungu}"
-    )
-    return ctx, summary
+    summary_parts = [f"평가 대상 상가 건물: {address}"]
+    if building_name:
+        summary_parts.append(f"건물명: {building_name}")
+    summary_parts.extend([
+        f"도로명: {loc.road_address}",
+        f"지번: {loc.jibun_address}",
+        f"좌표: ({loc.latitude}, {loc.longitude})",
+        f"sido/sigungu/bname: {loc.sido} / {loc.sigungu} / {loc.bname}",
+        f"sigungu_cd(LAWD_CD): {sigungu_cd}",
+        f"건물관리번호(bd_mgt_sn): {loc.bd_mgt_sn or '미확인'}",
+    ])
+    return ctx, "\n".join(summary_parts)
 
 
 def main() -> None:
@@ -84,25 +93,31 @@ def main() -> None:
         format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
     )
     load_env()
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        sys.exit("ANTHROPIC_API_KEY 필요 (.env)")
+    missing = [k for k in (
+        "ANTHROPIC_API_KEY", "KAKAO_API_KEY", "JUSO_API_KEY",
+    ) if not os.environ.get(k)]
+    if missing:
+        sys.exit(f"env 누락: {', '.join(missing)}")
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--complex-id", type=int, default=13)
+    parser.add_argument("address", nargs="+",
+                        help="상가 건물 주소 (자유 형식)")
+    parser.add_argument("--building", default=None,
+                        help="건물명 (선택)")
     args = parser.parse_args()
+    address = " ".join(args.address).strip()
 
-    logger.info("=== 파이프라인 시작 — complex_id=%d ===", args.complex_id)
+    logger.info("=== 파이프라인 시작 — address=%s ===", address)
     t0 = time.monotonic()
 
-    # 1) AssetContext + summary
-    asset_ctx, asset_summary = build_asset_context(args.complex_id)
-    logger.info("asset: %s", asset_summary.splitlines()[0])
+    asset_ctx, asset_summary = build_asset_context(address, args.building)
+    logger.info("asset_id=%s, sigungu=%s, sigungu_cd=%s, bd_mgt_sn=%s",
+                asset_ctx.asset_id, asset_ctx.sigungu, asset_ctx.sigungu_cd,
+                asset_ctx.bd_mgt_sn)
 
-    # 2) SqliteRetriever (Neo4j 대체) — bge-m3 임베딩 로드는 한 번
-    logger.info("retriever 준비 (bge-m3 임베딩 로드)...")
+    logger.info("retriever 준비 (배후수요·인접상권·인증 candidate 수집 + 임베딩)...")
     retriever = SqliteRetriever(str(DB_PATH), asset_ctx)
 
-    # 3) Build graph + invoke
     ctx = AgentContext(retriever=retriever)
     app = build_draft_graph_v2(ctx, db_path=str(DB_PATH))
     logger.info("LangGraph v2 컴파일 완료. invoke 시작...")
@@ -116,7 +131,7 @@ def main() -> None:
     elapsed = time.monotonic() - t0
     logger.info("=== 파이프라인 종료 — %.1fs ===", elapsed)
 
-    # 4) Report 저장
+    # Report 저장
     sections_data = state_to_report_sections_v2(final_state)
     sections = [ReportSection(
         section_id=f"sec_{uuid.uuid4().hex[:8]}",
@@ -127,44 +142,36 @@ def main() -> None:
         evidence_snippets=s.get("evidence_snippets", []),
     ) for s in sections_data]
     report = Report.new(asset_id=asset_ctx.asset_id, asset_summary=asset_summary)
-    report.append_version(sections, notes=f"v2 pipeline ({elapsed:.1f}s)")
+    report.append_version(sections, notes=f"v2 commercial pipeline ({elapsed:.1f}s)")
     ReportRepository(DB_PATH).save(report)
     logger.info("Report 저장: %s", report.report_id)
 
-    # 5) 출력
     print("\n" + "=" * 70)
     print(f"Report {report.report_id} (status={report.status})")
-    print(f"asset: {asset_ctx.asset_id}")
     print(asset_summary)
     print("=" * 70)
     for section in report.latest().sections:
         print(f"\n## [{section.axis}] {section.title}\n")
         print(section.body_markdown)
-        print(f"\n— evidence refs: {len(section.evidence_node_refs)}개, "
-              f"snippets: {len(section.evidence_snippets)}개")
+        print(f"\n— refs: {len(section.evidence_node_refs)}, snippets: {len(section.evidence_snippets)}")
 
-    # 6) Trace summary (debug)
     print("\n" + "=" * 70)
     print("=== 에이전트 흐름 요약 ===")
     critic = final_state.get("critic_output", {})
     print(f"  critic_iter: {final_state.get('critic_iter', 0)}")
     print(f"  critic_overall_pass: {critic.get('overall_pass')}")
     print(f"  critic_issues_count: {len(critic.get('issues', []))}")
-    if critic.get("issues"):
-        for it in critic["issues"]:
-            print(f"    - [{it.get('severity')}/{it.get('kind')}] "
-                  f"{it.get('location')}: {it.get('description')[:80]}")
-    validation = final_state.get("validation_issues", [])
-    print(f"  validator_issues: {len(validation)}")
-    for sec_data in sections_data:
-        if sec_data.get("axis") != "overview":
-            c1 = sec_data.get("confidence_step1")
-            c2 = sec_data.get("confidence_final")
-            c1_s = f"{c1:.2f}" if isinstance(c1, (int, float)) else "N/A"
-            c2_s = f"{c2:.2f}" if isinstance(c2, (int, float)) else "N/A"
-            scouts = sec_data.get("scout_calls_made", [])
-            print(f"  [{sec_data['axis']}] conf_step1={c1_s}, conf_final={c2_s}, scouts={scouts}")
-
+    for it in critic.get("issues", []):
+        print(f"    - [{it.get('severity')}/{it.get('kind')}] "
+              f"{it.get('location')}: {(it.get('description') or '')[:80]}")
+    for sec in sections_data:
+        if sec.get("axis") != "overview":
+            c1 = sec.get("confidence_step1")
+            c2 = sec.get("confidence_final")
+            c1s = f"{c1:.2f}" if isinstance(c1, (int, float)) else "N/A"
+            c2s = f"{c2:.2f}" if isinstance(c2, (int, float)) else "N/A"
+            print(f"  [{sec['axis']}] conf_step1={c1s} conf_final={c2s} "
+                  f"scouts={sec.get('scout_calls_made')}")
     print(f"\n총 소요: {elapsed:.1f}s")
     print(f"sidecar md: real_estate/database/DB/reports/{report.report_id}/")
 
