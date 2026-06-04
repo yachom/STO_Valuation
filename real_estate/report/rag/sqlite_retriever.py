@@ -1,16 +1,17 @@
-"""SQLite-only Retriever — Neo4j 없이도 동작하는 우회 구현.
+"""SQLite-only Retriever (상가 부동산 평가 버전).
 
-운영(Neo4j) 환경 미구성 시 fallback. 같은 Retriever Protocol을 만족하므로
-에이전트는 변화 없이 동작.
+평가 대상은 상가 건물(주소 단위). AssetContext가 좌표·sigungu·bd_mgt_sn을
+담고, 그 위치 기준으로 3축 candidate를 모은다:
 
-전략:
-    1. real_estate.db에서 단지/인증/상권 등 축별 관련 row를 SQL로 추출
-    2. 각 row → 한국어 facts text 변환 (template-based)
-    3. bge-m3로 query 임베딩 → row 텍스트 임베딩 cosine 정렬
-    4. top-k GroundedSnippet 반환
+- tenant: 임차 사업자 안정성. 시군구 REB 공실률/임대료, NTS 업종 churn,
+  인접 commercial_area의 업종별 매출.
+- esg: 본 건물 직접 BEEC/GSEED (bd_mgt_sn 매칭), 자치구 인증 분포로 상대 위치,
+  건물 노후도 메타.
+- commercial: 인접 commercial_area + 시계열, 반경 N m 안 아파트 단지 세대수
+  (배후수요), admin_dong 상주 인구, 가장 가까운 지하철역/버스정류장, 자치구
+  정비사업 + MOLIT 상가 매매 추이.
 
-asset_context (lat/lng/legal_address)가 있으면 그것으로 좁힌 검색을 한다.
-없으면 axis 일반 stats만 반환.
+같은 Retriever Protocol을 만족하므로 에이전트 코드는 unchanged.
 """
 
 from __future__ import annotations
@@ -28,14 +29,17 @@ logger = logging.getLogger("rag.sqlite_retriever")
 
 @dataclass
 class AssetContext:
-    """retriever가 자산 위치/식별을 알아야 axis 안에서 의미 있는 후보를 모은다."""
+    """상가 건물 평가 컨텍스트."""
     asset_id: str
     latitude: float | None = None
     longitude: float | None = None
+    bd_mgt_sn: str | None = None
+    building_name: str | None = None
     legal_address: str | None = None
     road_address: str | None = None
-    master_complex_id: int | None = None
-    sigungu: str | None = None     # 자치구명 ('강남구')
+    sigungu: str | None = None
+    sigungu_cd: str | None = None    # LAWD_CD 5자리, 우선 사용
+    nearby_radius_m: int = 800       # 배후수요 반경
 
 
 def _haversine_m(lat1, lon1, lat2, lon2):
@@ -47,242 +51,352 @@ def _haversine_m(lat1, lon1, lat2, lon2):
     return 2 * R * math.asin(math.sqrt(a))
 
 
+def _table_exists(conn, name: str) -> bool:
+    cur = conn.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (name,)
+    )
+    return cur.fetchone() is not None
+
+
 # ───────────────────────────────────────────────────────────
-# axis별 candidate 수집
+# axis별 candidate 수집 — 상가 평가 관점
 # ───────────────────────────────────────────────────────────
 def _candidates_tenant(conn, ctx: AssetContext) -> list[dict]:
     out: list[dict] = []
-    if ctx.master_complex_id is not None:
-        r = conn.execute(
-            "SELECT * FROM apartment_complex WHERE master_complex_id=?",
-            (ctx.master_complex_id,),
-        ).fetchone()
-        if r:
-            addr = r["road_address"] or r["legal_address"] or ""
+
+    # REB 시군구·분기 시장 (공실률/임대료/수익률)
+    if _table_exists(conn, "commercial_lease_market_quarterly") and ctx.sigungu_cd:
+        cur = conn.execute(
+            "SELECT quarter_code, building_type, vacancy_rate, rent_per_sqm, yield_rate "
+            "FROM commercial_lease_market_quarterly "
+            "WHERE sigungu_cd=? ORDER BY quarter_code DESC LIMIT 8",
+            (ctx.sigungu_cd,),
+        ).fetchall()
+        for r in cur:
             out.append({
                 "text": (
-                    f"본 단지 {r['canonical_name']} ({addr}): "
-                    f"{r['completion_date'] or '준공일미상'} 준공, "
-                    f"{r['household_count'] or '?'}세대, "
-                    f"{r['total_buildings'] or '?'}동, data_source={r['data_source']}."
+                    f"REB 상업용 임대동향 — {ctx.sigungu} {r['quarter_code']} "
+                    f"{r['building_type']}: 공실률 {r['vacancy_rate']}%, "
+                    f"임대료 {r['rent_per_sqm']}원/㎡, 수익률 {r['yield_rate']}%."
                 ),
-                "ref": f"apartment_complex:{r['master_complex_id']}",
-                "kind": "complex_meta",
+                "ref": f"reb_lease:{ctx.sigungu_cd}:{r['quarter_code']}:{r['building_type']}",
+                "kind": "reb_lease",
             })
-    if ctx.sigungu:
-        for r in conn.execute(
-            "SELECT canonical_name, household_count, completion_date "
-            "FROM apartment_complex WHERE road_address LIKE ? OR legal_address LIKE ? "
-            "ORDER BY household_count DESC LIMIT 5",
-            (f"%{ctx.sigungu}%", f"%{ctx.sigungu}%"),
-        ):
+
+    # NTS 사업자 신규/폐업 — 시군구 단위 최근 분기
+    if _table_exists(conn, "business_registry_stats_quarterly") and ctx.sigungu_cd:
+        cur = conn.execute(
+            """
+            SELECT industry_name, quarter_code,
+                   new_count, closed_count, surviving_count,
+                   CASE WHEN surviving_count > 0
+                        THEN ROUND(100.0 * closed_count / surviving_count, 2)
+                        ELSE NULL END AS churn_pct
+            FROM business_registry_stats_quarterly
+            WHERE region_cd=? AND region_level='sigungu'
+              AND quarter_code = (SELECT MAX(quarter_code) FROM business_registry_stats_quarterly
+                                  WHERE region_cd=? AND region_level='sigungu')
+            ORDER BY churn_pct DESC NULLS LAST LIMIT 5
+            """,
+            (ctx.sigungu_cd, ctx.sigungu_cd),
+        ).fetchall()
+        for r in cur:
             out.append({
                 "text": (
-                    f"동일 자치구 대단지 — {r['canonical_name']}: "
-                    f"{r['household_count'] or '?'}세대, "
-                    f"{r['completion_date'] or '?'} 준공."
+                    f"NTS 사업자 churn — {ctx.sigungu} {r['quarter_code']} "
+                    f"{r['industry_name']}: 신규 {r['new_count']} / 폐업 {r['closed_count']} / "
+                    f"생존 {r['surviving_count']} (폐업률 {r['churn_pct']}%)."
                 ),
-                "ref": f"region_complex:{ctx.sigungu}",
-                "kind": "region_peer",
+                "ref": f"nts:{ctx.sigungu_cd}:{r['industry_name']}",
+                "kind": "nts_churn",
             })
-    # 매매 거래 (있을 경우)
-    try:
-        if ctx.master_complex_id is not None:
-            r = conn.execute(
-                "SELECT COUNT(*) AS n, AVG(deal_amount) AS avg_amt, "
-                "MAX(deal_year_month) AS latest FROM apt_sale_transaction "
-                "WHERE master_complex_id=?",
-                (ctx.master_complex_id,),
-            ).fetchone()
-            if r and r["n"]:
+
+    # 인접 commercial_area의 업종별 매출 분포 (배후 임차 수요 추정)
+    if ctx.latitude and ctx.longitude:
+        trdar_cd = _nearest_trdar(conn, ctx.latitude, ctx.longitude)
+        if trdar_cd:
+            cur = conn.execute(
+                "SELECT industry_name, SUM(sales_amount) AS s "
+                "FROM commercial_estimated_sales WHERE trdar_cd=? "
+                "GROUP BY industry_code ORDER BY s DESC LIMIT 5",
+                (trdar_cd,),
+            ).fetchall()
+            if cur:
+                top = ", ".join(f"{r['industry_name']}({r['s']:,}원)" for r in cur)
                 out.append({
-                    "text": f"본 단지 매매 실거래 {r['n']}건, 평균 {r['avg_amt']:,.0f}만원, "
-                            f"최근 {r['latest']}.",
-                    "ref": f"apt_sale:{ctx.master_complex_id}",
-                    "kind": "sale_stats",
+                    "text": (
+                        f"인접 상권({trdar_cd}) 누적 매출 상위 업종: {top}. "
+                        f"본 건물의 잠재 임차업종 가이드."
+                    ),
+                    "ref": f"industry_top:{trdar_cd}",
+                    "kind": "industry_top",
                 })
-    except sqlite3.OperationalError:
-        pass
-    try:
-        if ctx.master_complex_id is not None:
-            for r in conn.execute(
-                "SELECT contract_type, COUNT(*) AS n, AVG(deposit) AS avg_dep, "
-                "AVG(monthly_rent) AS avg_rent FROM apt_rent_transaction "
-                "WHERE master_complex_id=? GROUP BY contract_type",
-                (ctx.master_complex_id,),
-            ):
-                out.append({
-                    "text": f"본 단지 {r['contract_type']} {r['n']}건, "
-                            f"평균 보증금 {(r['avg_dep'] or 0):,.0f}만원, "
-                            f"평균 월세 {(r['avg_rent'] or 0):,.0f}만원.",
-                    "ref": f"apt_rent:{ctx.master_complex_id}",
-                    "kind": "rent_stats",
-                })
-    except sqlite3.OperationalError:
-        pass
-    try:
-        if ctx.sigungu:
-            for r in conn.execute(
-                "SELECT lease_type, COUNT(*) AS n, SUM(household_count) AS hh "
-                "FROM public_lease_complex WHERE region_name LIKE ? "
-                "GROUP BY lease_type ORDER BY n DESC LIMIT 5",
-                (f"%{ctx.sigungu}%",),
-            ):
-                out.append({
-                    "text": f"동일 자치구 {r['lease_type']} 공공임대 {r['n']}개 단지, "
-                            f"합산 {r['hh'] or 0:,}세대.",
-                    "ref": f"public_lease:{ctx.sigungu}",
-                    "kind": "lh_stats",
-                })
-    except sqlite3.OperationalError:
-        pass
     return out
 
 
 def _candidates_esg(conn, ctx: AssetContext) -> list[dict]:
     out: list[dict] = []
-    if not ctx.sigungu:
-        return out
-    # BEEC 등급 분포
-    for r in conn.execute(
-        "SELECT grd_name, COUNT(*) AS n FROM energy_efficiency_cert "
-        "WHERE jibun_addr LIKE ? OR full_addr LIKE ? "
-        "GROUP BY grd_name ORDER BY n DESC LIMIT 10",
-        (f"%{ctx.sigungu}%", f"%{ctx.sigungu}%"),
-    ):
-        out.append({
-            "text": f"{ctx.sigungu} BEEC 에너지효율 인증 {r['grd_name']} 등급 — {r['n']}건.",
-            "ref": f"beec:{ctx.sigungu}:{r['grd_name']}",
-            "kind": "beec",
-        })
-    # G-SEED 등급 분포
-    for r in conn.execute(
-        "SELECT cert_grade, cert_type, COUNT(*) AS n FROM green_cert "
-        "WHERE jibun_addr LIKE ? OR address LIKE ? "
-        "GROUP BY cert_grade, cert_type ORDER BY n DESC LIMIT 10",
-        (f"%{ctx.sigungu}%", f"%{ctx.sigungu}%"),
-    ):
-        out.append({
-            "text": f"{ctx.sigungu} G-SEED 녹색건축 {r['cert_grade']}({r['cert_type']}) — {r['n']}건.",
-            "ref": f"gseed:{ctx.sigungu}:{r['cert_grade']}",
-            "kind": "gseed",
-        })
-    # 본 단지가 직접 인증 받았는지 (단지명 substring 매칭)
-    if ctx.master_complex_id is not None:
-        target = conn.execute(
-            "SELECT canonical_name FROM apartment_complex WHERE master_complex_id=?",
-            (ctx.master_complex_id,),
-        ).fetchone()
-        if target:
-            name = target["canonical_name"]
-            hit_b = conn.execute(
-                "SELECT COUNT(*) AS n FROM energy_efficiency_cert WHERE bld_nm LIKE ?",
-                (f"%{name}%",),
-            ).fetchone()
-            if hit_b and hit_b["n"]:
-                out.append({
-                    "text": f"본 단지({name})와 이름이 일치하는 BEEC 인증 건물 {hit_b['n']}건 발견 (단지 직접 인증 가능성).",
-                    "ref": f"beec_self:{name}",
-                    "kind": "beec_self",
-                })
-            hit_g = conn.execute(
-                "SELECT COUNT(*) AS n FROM green_cert WHERE building_name LIKE ?",
-                (f"%{name}%",),
-            ).fetchone()
-            if hit_g and hit_g["n"]:
-                out.append({
-                    "text": f"본 단지({name})와 이름이 일치하는 G-SEED 인증 건물 {hit_g['n']}건 발견.",
-                    "ref": f"gseed_self:{name}",
-                    "kind": "gseed_self",
-                })
+
+    # ★ 건물 직접 인증 매칭 — bd_mgt_sn 우선, 없으면 단지명 매칭
+    if ctx.bd_mgt_sn:
+        for cur in (conn.execute(
+            "SELECT bld_nm, grd_name, crtif_isu_dd, primary_energy_req, energy_reduce_rate "
+            "FROM energy_efficiency_cert WHERE bdmgt_sn=?",
+            (ctx.bd_mgt_sn,),
+        ).fetchall()):
+            out.append({
+                "text": (
+                    f"본 건물 BEEC 직접 인증 매칭 — {cur['bld_nm']}, "
+                    f"등급 {cur['grd_name']}, 인증일 {cur['crtif_isu_dd']}, "
+                    f"1차에너지소요량 {cur['primary_energy_req']}, "
+                    f"절감률 {cur['energy_reduce_rate']}%."
+                ),
+                "ref": f"beec_self:{ctx.bd_mgt_sn}",
+                "kind": "beec_self",
+            })
+        for cur in (conn.execute(
+            "SELECT building_name, cert_grade, cert_type, cert_date, cert_standard "
+            "FROM green_cert WHERE bdmgt_sn=?",
+            (ctx.bd_mgt_sn,),
+        ).fetchall()):
+            out.append({
+                "text": (
+                    f"본 건물 G-SEED 직접 인증 매칭 — {cur['building_name']}, "
+                    f"등급 {cur['cert_grade']} ({cur['cert_type']}), "
+                    f"인증일 {cur['cert_date']}, 기준 {cur['cert_standard']}."
+                ),
+                "ref": f"gseed_self:{ctx.bd_mgt_sn}",
+                "kind": "gseed_self",
+            })
+
+    # 자치구 인증 분포 (상대 위치 평가용)
+    if ctx.sigungu:
+        cur = conn.execute(
+            "SELECT grd_name, COUNT(*) AS n FROM energy_efficiency_cert "
+            "WHERE jibun_addr LIKE ? OR full_addr LIKE ? "
+            "GROUP BY grd_name ORDER BY grade_rank ASC LIMIT 6",
+            (f"%{ctx.sigungu}%", f"%{ctx.sigungu}%"),
+        ).fetchall()
+        if cur:
+            total = sum(r["n"] for r in cur)
+            dist = ", ".join(f"{r['grd_name']}({r['n']})" for r in cur)
+            out.append({
+                "text": f"{ctx.sigungu} BEEC 인증 분포 ({total}건): {dist}. (상대 위치 평가용)",
+                "ref": f"beec_dist:{ctx.sigungu}",
+                "kind": "beec_district",
+            })
+        cur = conn.execute(
+            "SELECT cert_grade, COUNT(*) AS n FROM green_cert "
+            "WHERE jibun_addr LIKE ? OR address LIKE ? "
+            "GROUP BY cert_grade ORDER BY n DESC LIMIT 6",
+            (f"%{ctx.sigungu}%", f"%{ctx.sigungu}%"),
+        ).fetchall()
+        if cur:
+            total = sum(r["n"] for r in cur)
+            dist = ", ".join(f"{r['cert_grade']}({r['n']})" for r in cur)
+            out.append({
+                "text": f"{ctx.sigungu} G-SEED 인증 분포 ({total}건): {dist}.",
+                "ref": f"gseed_dist:{ctx.sigungu}",
+                "kind": "gseed_district",
+            })
     return out
 
 
 def _candidates_commercial(conn, ctx: AssetContext) -> list[dict]:
     out: list[dict] = []
-    if not ctx.latitude or not ctx.longitude:
+    if not (ctx.latitude and ctx.longitude):
         return out
-    # bbox 매칭
-    cand = conn.execute(
-        "SELECT trdar_cd, trdar_name, trdar_se_name, area_sqm, center_lat, center_lon "
-        "FROM commercial_area "
-        "WHERE bbox_min_lat <= ? AND bbox_max_lat >= ? "
-        "AND bbox_min_lon <= ? AND bbox_max_lon >= ?",
-        (ctx.latitude, ctx.latitude, ctx.longitude, ctx.longitude),
-    ).fetchall()
-    if not cand:
-        cand = conn.execute(
-            "SELECT trdar_cd, trdar_name, trdar_se_name, area_sqm, center_lat, center_lon "
-            "FROM commercial_area WHERE center_lat IS NOT NULL"
+
+    # 인접 상권 + 시계열
+    trdar_cd = _nearest_trdar(conn, ctx.latitude, ctx.longitude)
+    if trdar_cd:
+        cur = conn.execute(
+            "SELECT trdar_name, trdar_se_name, area_sqm, center_lat, center_lon "
+            "FROM commercial_area WHERE trdar_cd=?",
+            (trdar_cd,),
+        ).fetchone()
+        if cur:
+            distance = _haversine_m(
+                ctx.latitude, ctx.longitude, cur["center_lat"], cur["center_lon"],
+            )
+            out.append({
+                "text": (
+                    f"인접 상권 '{cur['trdar_name']}' ({cur['trdar_se_name']}), "
+                    f"면적 {cur['area_sqm']:,.0f}㎡, 중심거리 {distance:.0f}m."
+                ),
+                "ref": f"trdar:{trdar_cd}",
+                "kind": "trdar",
+            })
+        rows = conn.execute(
+            "SELECT quarter_code, total FROM commercial_floating_population "
+            "WHERE trdar_cd=? ORDER BY quarter_code DESC LIMIT 4",
+            (trdar_cd,),
         ).fetchall()
-        if cand:
-            cand = sorted(cand, key=lambda r: _haversine_m(
-                ctx.latitude, ctx.longitude, r["center_lat"], r["center_lon"]))[:1]
-    if not cand:
-        return out
-    area = cand[0]
-    distance = _haversine_m(ctx.latitude, ctx.longitude, area["center_lat"], area["center_lon"])
-    out.append({
-        "text": f"인접 상권 '{area['trdar_name']}' ({area['trdar_se_name']}), "
-                f"면적 {area['area_sqm']:,.0f}㎡, 중심거리 {distance:.0f}m.",
-        "ref": f"trdar:{area['trdar_cd']}",
-        "kind": "commercial_area",
-    })
-    trdar_cd = area["trdar_cd"]
-    # 최근 4 분기 유동인구 시계열
-    rows = conn.execute(
-        "SELECT quarter_code, total FROM commercial_floating_population "
-        "WHERE trdar_cd=? ORDER BY quarter_code DESC LIMIT 4",
-        (trdar_cd,),
+        if rows:
+            trend = " → ".join(f"{r['quarter_code']}:{r['total']:,}" for r in reversed(rows))
+            out.append({
+                "text": f"상권 분기 유동인구 추이: {trend}.",
+                "ref": f"floating:{trdar_cd}",
+                "kind": "floating_trend",
+            })
+        rows = conn.execute(
+            "SELECT quarter_code, SUM(sales_amount) AS s FROM commercial_estimated_sales "
+            "WHERE trdar_cd=? GROUP BY quarter_code ORDER BY quarter_code DESC LIMIT 4",
+            (trdar_cd,),
+        ).fetchall()
+        if rows:
+            trend = " → ".join(f"{r['quarter_code']}:{r['s']:,}원" for r in reversed(rows))
+            out.append({
+                "text": f"상권 분기 추정매출 추이: {trend}.",
+                "ref": f"sales:{trdar_cd}",
+                "kind": "sales_trend",
+            })
+
+    # ★ 배후수요: 반경 N m 안 아파트 단지 세대수 (이전 핀트 오류 → 이제 컨텍스트로 정확히 활용)
+    cur = conn.execute(
+        "SELECT canonical_name, household_count, latitude, longitude, completion_date "
+        "FROM apartment_complex WHERE latitude IS NOT NULL"
     ).fetchall()
-    if len(rows) >= 1:
-        latest = rows[0]
-        trend = " → ".join(f"{r['quarter_code']}: {r['total']:,}" for r in reversed(rows))
-        out.append({
-            "text": f"{area['trdar_name']} 분기 유동인구 추이 — {trend}.",
-            "ref": f"floating:{trdar_cd}",
-            "kind": "floating_trend",
-        })
-    # 최근 4 분기 매출 합
-    rows = conn.execute(
-        "SELECT quarter_code, SUM(sales_amount) AS s FROM commercial_estimated_sales "
-        "WHERE trdar_cd=? GROUP BY quarter_code ORDER BY quarter_code DESC LIMIT 4",
-        (trdar_cd,),
-    ).fetchall()
-    if rows:
-        trend = " → ".join(f"{r['quarter_code']}: {r['s']:,}원" for r in reversed(rows))
-        out.append({
-            "text": f"{area['trdar_name']} 분기 추정매출 추이 — {trend}.",
-            "ref": f"sales:{trdar_cd}",
-            "kind": "sales_trend",
-        })
-    # 업종별 top 5
-    rows = conn.execute(
-        "SELECT industry_name, SUM(sales_amount) AS s FROM commercial_estimated_sales "
-        "WHERE trdar_cd=? GROUP BY industry_code ORDER BY s DESC LIMIT 5",
-        (trdar_cd,),
-    ).fetchall()
-    if rows:
-        top = ", ".join(f"{r['industry_name']}({r['s']:,}원)" for r in rows)
-        out.append({
-            "text": f"{area['trdar_name']} 상위 업종 매출(누적) — {top}.",
-            "ref": f"industry:{trdar_cd}",
-            "kind": "industry",
-        })
+    if cur:
+        nearby = []
+        for c in cur:
+            d = _haversine_m(ctx.latitude, ctx.longitude, c["latitude"], c["longitude"])
+            if d <= ctx.nearby_radius_m:
+                nearby.append((d, c))
+        if nearby:
+            total_hh = sum(c["household_count"] or 0 for _, c in nearby)
+            avg_yr = sum(int((c["completion_date"] or "0")[:4]) for _, c in nearby if c["completion_date"]) / max(1, len([1 for _, c in nearby if c["completion_date"]]))
+            top3 = ", ".join(f"{c['canonical_name']}({c['household_count']}세대,{d:.0f}m)"
+                              for d, c in sorted(nearby)[:3])
+            out.append({
+                "text": (
+                    f"반경 {ctx.nearby_radius_m}m 배후수요: 아파트 {len(nearby)}단지, "
+                    f"합산 {total_hh:,}세대, 평균 준공 {int(avg_yr)}년. 대표: {top3}."
+                ),
+                "ref": f"backing_demand:{ctx.asset_id}",
+                "kind": "backing_demand",
+            })
+
+    # 행정동 상주 인구
+    # admin_dong은 commercial_area를 통해 adstrd_cd 매핑
+    if trdar_cd:
+        cur = conn.execute(
+            "SELECT adstrd_cd, adstrd_name FROM commercial_area WHERE trdar_cd=?",
+            (trdar_cd,),
+        ).fetchone()
+        if cur and cur["adstrd_cd"]:
+            res = conn.execute(
+                "SELECT quarter_code, total FROM admin_dong_resident_population "
+                "WHERE adstrd_cd=? ORDER BY quarter_code DESC LIMIT 1",
+                (cur["adstrd_cd"],),
+            ).fetchone()
+            if res:
+                out.append({
+                    "text": (
+                        f"{cur['adstrd_name']} 상주 인구 {res['quarter_code']} 기준 "
+                        f"{res['total']:,}명."
+                    ),
+                    "ref": f"resident:{cur['adstrd_cd']}",
+                    "kind": "resident_pop",
+                })
+
+    # 가장 가까운 지하철역
+    if _table_exists(conn, "transit_station"):
+        stations = conn.execute(
+            "SELECT station_name, line_name, latitude, longitude FROM transit_station "
+            "WHERE ABS(latitude - ?) < 0.02 AND ABS(longitude - ?) < 0.02",
+            (ctx.latitude, ctx.longitude),
+        ).fetchall()
+        if stations:
+            with_dist = sorted(
+                stations,
+                key=lambda s: _haversine_m(ctx.latitude, ctx.longitude,
+                                           s["latitude"], s["longitude"]),
+            )
+            top = with_dist[0]
+            d = _haversine_m(ctx.latitude, ctx.longitude, top["latitude"], top["longitude"])
+            out.append({
+                "text": (
+                    f"가장 가까운 지하철역: {top['station_name']} ({top['line_name']}) "
+                    f"— {d:.0f}m."
+                ),
+                "ref": f"transit:{top['station_name']}",
+                "kind": "transit_subway",
+            })
+
+    # 가장 가까운 버스정류장 수
+    if _table_exists(conn, "bus_stop"):
+        bus_stops = conn.execute(
+            "SELECT stop_name, latitude, longitude FROM bus_stop "
+            "WHERE ABS(latitude - ?) < 0.005 AND ABS(longitude - ?) < 0.005",
+            (ctx.latitude, ctx.longitude),
+        ).fetchall()
+        within_300 = 0
+        within_500 = 0
+        for s in bus_stops:
+            d = _haversine_m(ctx.latitude, ctx.longitude, s["latitude"], s["longitude"])
+            if d <= 300: within_300 += 1
+            if d <= 500: within_500 += 1
+        if within_500:
+            out.append({
+                "text": f"본 위치 반경 300m 버스정류장 {within_300}개, 500m 내 {within_500}개.",
+                "ref": f"bus_stops:{ctx.asset_id}",
+                "kind": "bus_stops",
+            })
+
     # 자치구 정비사업
     if ctx.sigungu:
-        cnt = conn.execute(
+        rows = conn.execute(
             "SELECT category, stage, COUNT(*) AS n FROM development_project "
-            "WHERE district=? GROUP BY category, stage ORDER BY n DESC LIMIT 8",
+            "WHERE district=? GROUP BY category, stage ORDER BY n DESC LIMIT 5",
             (ctx.sigungu,),
         ).fetchall()
-        for r in cnt:
+        for r in rows:
             out.append({
-                "text": f"{ctx.sigungu} {r['category']} 정비사업 {r['stage'] or '미상'} 단계 — {r['n']}건.",
+                "text": (
+                    f"{ctx.sigungu} {r['category']} "
+                    f"{r['stage'] or '미상'}: {r['n']}건."
+                ),
                 "ref": f"dev:{ctx.sigungu}:{r['category']}:{r['stage']}",
                 "kind": "dev_project",
             })
+
+    # MOLIT 상가 매매 통계 (PR-13)
+    if _table_exists(conn, "commercial_sale_transaction") and ctx.sigungu_cd:
+        r = conn.execute(
+            "SELECT COUNT(*) AS n, AVG(deal_amount) AS avg_amt, MAX(deal_year_month) AS latest "
+            "FROM commercial_sale_transaction WHERE lawd_cd=?",
+            (ctx.sigungu_cd,),
+        ).fetchone()
+        if r and r["n"]:
+            out.append({
+                "text": (
+                    f"{ctx.sigungu} 상업·업무용 매매 실거래 {r['n']}건, "
+                    f"평균 {r['avg_amt']:,.0f}만원, 최근 {r['latest']}."
+                ),
+                "ref": f"commercial_sale:{ctx.sigungu_cd}",
+                "kind": "commercial_sale_stats",
+            })
+
     return out
+
+
+def _nearest_trdar(conn, lat: float, lng: float) -> str | None:
+    """bbox 매칭 우선, 실패 시 중심점 거리 최소."""
+    cand = conn.execute(
+        "SELECT trdar_cd, center_lat, center_lon FROM commercial_area "
+        "WHERE bbox_min_lat<=? AND bbox_max_lat>=? AND bbox_min_lon<=? AND bbox_max_lon>=?",
+        (lat, lat, lng, lng),
+    ).fetchall()
+    if not cand:
+        cand = conn.execute(
+            "SELECT trdar_cd, center_lat, center_lon FROM commercial_area "
+            "WHERE center_lat IS NOT NULL"
+        ).fetchall()
+        if cand:
+            cand = sorted(cand, key=lambda r: _haversine_m(
+                lat, lng, r["center_lat"], r["center_lon"]))[:1]
+    return cand[0]["trdar_cd"] if cand else None
 
 
 # ───────────────────────────────────────────────────────────
@@ -292,8 +406,6 @@ class SqliteRetriever(Retriever):
     def __init__(self, db_path: str, asset_context: AssetContext):
         self._db_path = db_path
         self._ctx = asset_context
-        # axis별 후보를 미리 한 번 다 수집해서 그 안에서 cosine 정렬.
-        # 데이터 변경이 거의 없는 read-only 평가 시나리오라 1회 캐시 안전.
         with sqlite3.connect(db_path) as conn:
             conn.row_factory = sqlite3.Row
             self._by_axis: dict[Axis, list[dict]] = {
@@ -303,7 +415,6 @@ class SqliteRetriever(Retriever):
             }
         for axis, items in self._by_axis.items():
             logger.info("SqliteRetriever %s: %d candidates", axis, len(items))
-        # bge-m3 임베딩 (배치)
         self._vecs_by_axis: dict[Axis, list[list[float]]] = {}
         for axis, items in self._by_axis.items():
             if items:
@@ -319,11 +430,7 @@ class SqliteRetriever(Retriever):
         axis: Axis | None = None,
     ) -> list[GroundedSnippet]:
         qv = embed_one(query)
-        if axis is not None:
-            scope_axes = [axis]
-        else:
-            scope_axes = ["tenant", "esg", "commercial"]
-
+        scope_axes = [axis] if axis else ["tenant", "esg", "commercial"]
         scored: list[tuple[float, dict, Axis]] = []
         for a in scope_axes:
             items = self._by_axis.get(a, [])
