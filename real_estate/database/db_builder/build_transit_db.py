@@ -34,8 +34,13 @@ from infra.env import load_env
 from infra.external.seoul_open_data import SeoulOpenDataClient
 from real_estate.database.schema import ensure_schema
 
-SUBWAY_SVC = "SearchSTNBySubwayLineService"
-BUS_SVC = "tbBusStopLocationXyInfo"
+# 서울 열린데이터광장 현행 service name (2024+):
+# - SearchSTNBySubwayLineService → deprecated (ERROR-500)
+# - subwayStationMaster: 좌표(LAT/LOT) 포함 ✓
+# - tbBusStopLocationXyInfo → deprecated (tb prefix 빠짐)
+# - busStopLocationXyInfo: 11k+ 정류장 ✓
+SUBWAY_SVC = "subwayStationMaster"
+BUS_SVC = "busStopLocationXyInfo"
 DB_PATH = _PROJECT_ROOT / "real_estate" / "database" / "DB" / "real_estate.db"
 
 logger = logging.getLogger("builder.transit")
@@ -47,13 +52,18 @@ def _f(v):
 
 
 def parse_subway(row: dict) -> dict | None:
-    name = row.get("STATN_NM") or row.get("STATION_NM") or row.get("BLDN_NM")
-    line = row.get("LINE_NUM") or row.get("ROUTE")
-    lat = _f(row.get("YPOINT_WGS") or row.get("LAT"))
-    lon = _f(row.get("XPOINT_WGS") or row.get("LOT") or row.get("LON"))
+    """subwayStationMaster 필드: BLDN_ID, BLDN_NM, ROUTE, LAT, LOT.
+    이전 SVC(SearchSTNBySubwayLineService) 필드명도 fallback으로 유지.
+    """
+    name = row.get("BLDN_NM") or row.get("STATN_NM") or row.get("STATION_NM")
+    line = row.get("ROUTE") or row.get("LINE_NUM")
+    lat = _f(row.get("LAT") or row.get("YPOINT_WGS"))
+    lon = _f(row.get("LOT") or row.get("XPOINT_WGS") or row.get("LON"))
+    bldn_id = row.get("BLDN_ID") or row.get("STATION_CD")
     if not name or lat is None or lon is None:
         return None
-    station_id = f"subway:{line or '?'}:{name}"
+    # station_id: BLDN_ID 우선 (unique). 없으면 라인+이름.
+    station_id = f"subway:{bldn_id}" if bldn_id else f"subway:{line or '?'}:{name}"
     return {
         "station_id": station_id,
         "station_name": name,

@@ -37,8 +37,9 @@ from real_estate.database.db_builder.build_apt_sale_db import SEOUL_LAWD_CDS
 from real_estate.database.schema import ensure_schema
 from real_estate.external.molit_rtms import MolitRtmsClient
 
+# 1611000은 deprecated. 1613000이 현행 endpoint.
 ENDPOINT = (
-    "https://apis.data.go.kr/1611000/nrg/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade"
+    "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade"
 )
 API_NAME = "molit_nrg_trade"
 DB_PATH = _PROJECT_ROOT / "real_estate" / "database" / "DB" / "real_estate.db"
@@ -47,63 +48,72 @@ PAGE_SIZE = 1000
 logger = logging.getLogger("builder.commercial_sale")
 
 
+def _g(d, *keys):
+    """fallback: 한국어 키 → 영문 키 순서로 try."""
+    for k in keys:
+        v = d.get(k)
+        if v not in (None, ""):
+            return v
+    return ""
+
+
 def parse_item(raw: dict, *, lawd_cd: str) -> dict:
     """MOLIT NRG XML item → DB row.
 
-    공식 사용 필드(확인 가능 범위):
-        거래금액, 거래유형, 건물명, 건물주용도, 건축년도,
-        구분, 년/월/일, 대지권면적, 도로명, 법정동,
-        법정동본번코드/부번코드/읍면동코드/지번코드,
-        시군구코드(=LAWD_CD echo), 유형, 지번,
-        지역코드, 층, 해제사유발생일, 해제여부.
+    현행 1613000 endpoint는 **영문 필드명**으로 응답:
+        dealAmount, dealYear, dealMonth, dealDay, umdNm(법정동), bldgNm(건물명),
+        buildingUse(건물주용도), buildingAr(전용면적/대지권면적), floor, buildYear,
+        jibun, roadNm, sggNm(시군구명), sggCd, umdCd(법정동읍면동), buyerGbn,
+        dealingGbn, cdealType, cdealDay.
+    한국어 키도 fallback으로 (이전 1611000 호환).
     """
-    amt_str = raw.get("거래금액", "").replace(",", "").strip()
+    amt_str = str(_g(raw, "거래금액", "dealAmount")).replace(",", "").strip()
     deal_amount = int(amt_str) if amt_str.isdigit() else None
 
-    year = raw.get("년", "").strip()
-    month = raw.get("월", "").strip().zfill(2)
-    day_str = raw.get("일", "").strip()
+    year = str(_g(raw, "년", "dealYear")).strip()
+    month_raw = str(_g(raw, "월", "dealMonth")).strip()
+    month = month_raw.zfill(2) if month_raw else ""
+    day_str = str(_g(raw, "일", "dealDay")).strip()
     deal_day = int(day_str) if day_str.isdigit() else None
     deal_year_month = f"{year}{month}" if year and month else ""
 
-    area_str = raw.get("대지권면적", "") or raw.get("건물면적", "")
+    area_str = str(_g(raw, "대지권면적", "건물면적", "buildingAr")).strip()
     try:
-        floor_area = float(area_str.strip()) if area_str.strip() else None
+        floor_area = float(area_str) if area_str else None
     except ValueError:
         floor_area = None
 
-    floor_str = raw.get("층", "").strip()
+    floor_str = str(_g(raw, "층", "floor")).strip()
     floor = int(floor_str) if floor_str.lstrip("-").isdigit() else None
 
-    by_str = raw.get("건축년도", "").strip()
+    by_str = str(_g(raw, "건축년도", "buildYear")).strip()
     build_year = int(by_str) if by_str.isdigit() else None
 
-    sub_code = raw.get("법정동읍면동코드", "").strip()
+    sub_code = str(_g(raw, "법정동읍면동코드", "umdCd")).strip()
     bcode = f"{lawd_cd}{sub_code}" if sub_code and len(sub_code) == 5 else None
 
-    is_canceled = 1 if raw.get("해제여부", "").strip().upper() == "O" else 0
-    cancel_date = raw.get("해제사유발생일", "").strip() or None
+    cancel_flag = str(_g(raw, "해제여부", "cdealType")).strip().upper()
+    is_canceled = 1 if cancel_flag == "O" else 0
+    cancel_date = str(_g(raw, "해제사유발생일", "cdealDay")).strip() or None
 
     return {
         "deal_year_month": deal_year_month,
         "deal_day": deal_day,
         "deal_amount": deal_amount,
         "lawd_cd": lawd_cd,
-        "legal_dong": raw.get("법정동", "").strip() or None,
+        "legal_dong": str(_g(raw, "법정동", "umdNm")).strip() or None,
         "bcode": bcode,
-        "jibun": raw.get("지번", "").strip() or None,
-        "road_name": raw.get("도로명", "").strip() or None,
-        "building_name": raw.get("건물명", "").strip() or None,
+        "jibun": str(_g(raw, "지번", "jibun")).strip() or None,
+        "road_name": str(_g(raw, "도로명", "roadNm")).strip() or None,
+        "building_name": str(_g(raw, "건물명", "bldgNm")).strip() or None,
         "property_type": (
-            raw.get("건물주용도", "").strip()
-            or raw.get("유형", "").strip()
-            or raw.get("구분", "").strip()
+            str(_g(raw, "건물주용도", "buildingUse", "유형", "buildingType", "구분")).strip()
             or None
         ),
         "floor_total_sqm": floor_area,
         "floor": floor,
         "build_year": build_year,
-        "bd_mgt_sn": None,  # NRG는 직접 제공하지 않음. 추후 JUSO 보강 빌더로.
+        "bd_mgt_sn": None,
         "is_canceled": is_canceled,
         "cancel_date": cancel_date,
         "raw_payload": json.dumps(raw, ensure_ascii=False),
