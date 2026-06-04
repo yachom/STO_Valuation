@@ -36,7 +36,9 @@ class CriticOutput(BaseModel):
 
 _SYSTEM = korean_system_prompt(
     "보고서 critic. 정밀 검토자 역할. 잘 쓰여진 부분은 침묵하고 문제만 짚는다. "
-    "issues는 actionable해야 한다 — '명확하지 않다'가 아니라 '어떻게 명확하게 해라'."
+    "issues는 actionable해야 한다 — '명확하지 않다'가 아니라 '어떻게 명확하게 해라'. "
+    "severity 정확히 구분: high=사실/위계 오류·핵심 누락, medium=구조·표현 미흡, "
+    "low=가벼운 보완. high가 1개도 없고 medium도 2개 이하면 overall_pass=True."
 )
 
 
@@ -44,7 +46,10 @@ def risk_critic_node(state: dict) -> dict:
     sections = state.get("sections", {})
     overview = state.get("overview_section", {})
     if not sections:
-        return {"critic_output": {"overall_pass": True, "issues": []}, "critic_iter": state.get("critic_iter", 0) + 1}
+        return {
+            "critic_output": {"overall_pass": True, "issues": []},
+            "critic_iter": state.get("critic_iter", 0) + 1,
+        }
 
     asset_summary = state.get("asset_summary", "")
     bundle = [f"=== Asset ===\n{asset_summary}\n"]
@@ -61,17 +66,34 @@ def risk_critic_node(state: dict) -> dict:
         "다음 보고서를 critic 관점으로 검토하세요.\n\n"
         + "\n".join(bundle)
         + "\n출력 형태로 issue들을 나열하세요. 큰 문제가 없으면 overall_pass=True, "
-          "issues=[]. 1~2개의 high 이슈 또는 3개 이상의 medium 이슈가 있으면 "
-          "overall_pass=False로 표시."
+          "issues=[]. high가 1개 이상 또는 medium이 3개 이상이면 overall_pass=False. "
+          "low 이슈만 있는 경우는 overall_pass=True (사소한 보완은 final_editor가 처리)."
     )
     llm = build_llm(ModelTier.SONNET).with_structured_output(CriticOutput)
     out: CriticOutput = llm.invoke([
         {"role": "system", "content": _SYSTEM},
         {"role": "user", "content": user},
     ])
-    logger.info("risk_critic — pass=%s, issues=%d",
-                out.overall_pass, len(out.issues))
+
+    # severity 기반 정렬 + 자동 게이트
+    sev_order = {"high": 0, "medium": 1, "low": 2}
+    sorted_issues = sorted(
+        out.issues, key=lambda it: sev_order.get((it.severity or "").lower(), 9)
+    )
+    n_high = sum(1 for it in sorted_issues if (it.severity or "").lower() == "high")
+    n_medium = sum(1 for it in sorted_issues if (it.severity or "").lower() == "medium")
+    # auto-pass: high=0 AND medium<=2면 LLM이 False라 했어도 통과 (수렴 강화)
+    auto_pass = (n_high == 0 and n_medium <= 2)
+    overall_pass = out.overall_pass or auto_pass
+
+    result = out.model_copy(update={
+        "overall_pass": overall_pass,
+        "issues": sorted_issues,
+    })
+    logger.info("risk_critic — pass=%s (raw_pass=%s, auto_pass=%s, h=%d m=%d total=%d)",
+                overall_pass, out.overall_pass, auto_pass,
+                n_high, n_medium, len(sorted_issues))
     return {
-        "critic_output": out.model_dump(),
+        "critic_output": result.model_dump(),
         "critic_iter": state.get("critic_iter", 0) + 1,
     }

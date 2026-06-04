@@ -37,7 +37,17 @@ def reviser_v2_node(state: dict) -> dict:
     if not sections or not critic or critic.get("overall_pass"):
         return {}
 
-    issues = critic.get("issues", [])
+    # severity gating — high만 강제, medium은 선택, low는 무시
+    all_issues = critic.get("issues", [])
+    issues = [
+        it for it in all_issues
+        if (it.get("severity") or "").lower() in ("high", "medium")
+    ]
+    high_issues = [it for it in issues if (it.get("severity") or "").lower() == "high"]
+    if not issues:
+        logger.info("reviser_v2: low 이슈만 있어 skip — final_editor가 처리")
+        return {}
+
     target_locations = {it.get("location") for it in issues if it.get("location") != "overview"}
     if not target_locations:
         return {}
@@ -59,13 +69,24 @@ def reviser_v2_node(state: dict) -> dict:
             f"→ 가이드: {it.get('suggestion')}"
         )
 
+    instruction = (
+        "각 issue를 가이드대로 반영해 해당 섹션 본문을 다시 쓰세요. "
+        "수정하지 않을 섹션은 결과에 포함하지 마세요 (issue가 없으면 그대로). "
+    )
+    if high_issues:
+        instruction += (
+            f"high 이슈 {len(high_issues)}건은 반드시 반영. "
+            "medium은 자연스럽게 통합되면 반영하되, 분량을 늘리지 마라."
+        )
+    else:
+        instruction += "medium 이슈만 있으므로 가벼운 수정 (한두 단락 보강)으로 충분."
+
     user = (
-        "다음은 보고서 critic의 issue 리스트입니다:\n\n"
+        "다음은 보고서 critic의 issue 리스트입니다 (severity high/medium만 전달):\n\n"
         + "\n".join(issue_lines)
         + "\n\n수정 대상 섹션들:\n\n"
         + "\n\n".join(inputs)
-        + "\n\n각 issue를 가이드대로 반영해 해당 섹션 본문을 다시 쓰세요. "
-          "수정하지 않을 섹션은 결과에 포함하지 마세요 (issue가 없으면 그대로)."
+        + "\n\n" + instruction
     )
     llm = build_llm(ModelTier.SONNET).with_structured_output(ReviserOutput)
     try:

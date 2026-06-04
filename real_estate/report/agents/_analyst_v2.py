@@ -1,13 +1,14 @@
 """2-step axis analyst — 초기 retriever evidence → scout 호출 결정 → 통합 본문.
 
-각 axis(tenant/esg/commercial)별로 동일 패턴.
+각 axis(tenant/esg/commercial)별로 동일 패턴. v2.1: scout 인자 검증 강화.
 
 Step 1 — Sonnet
     초기 evidence를 보고 "어느 scout를 어떤 인자로 호출할지" + 1차 draft를
     structured output으로 반환.
 
 Step 2 — Python (no LLM)
-    data_scout를 직접 호출해 보강 evidence 수집.
+    inspect.signature 기반 인자 검증 후 data_scout 호출.
+    잘못된 인자는 자동 필터링 + 경고 (이전 self_certified(sigungu=...) 오류 차단).
 
 Step 3 — Sonnet
     1차 draft + 신규 scout 결과를 통합해 최종 섹션 본문 작성.
@@ -15,6 +16,7 @@ Step 3 — Sonnet
 
 from __future__ import annotations
 
+import inspect
 import logging
 
 from pydantic import BaseModel, Field
@@ -32,10 +34,20 @@ class ScoutCall(BaseModel):
         "호출할 scout 함수 이름. 가능: " +
         ", ".join(f"{n}(axis={a})" for n, a, _ in SCOUT_REGISTRY)
     ))
-    sigungu: str | None = Field(default=None, description="자치구명 (예: '강남구')")
-    trdar_cd: str | None = Field(default=None, description="상권 코드 (commercial 전용)")
-    canonical_name: str | None = Field(default=None, description="단지명 (self_certified 전용)")
-    master_complex_id: int | None = Field(default=None)
+    # 모든 scout가 다양한 인자를 가질 수 있어 union으로 받는다.
+    # step2에서 inspect.signature로 메소드별 실제 받는 인자만 필터링.
+    sigungu: str | None = Field(default=None, description="자치구 이름 (예: '강남구')")
+    sigungu_cd: str | None = Field(default=None, description="LAWD_CD 5자리 (예: '11680')")
+    region_cd: str | None = Field(default=None, description="region_cd: sigungu_cd 또는 adstrd_cd")
+    region_level: str | None = Field(default=None, description="'sigungu' 또는 'adstrd'")
+    bd_mgt_sn: str | None = Field(default=None, description="건물관리번호 25자리")
+    trdar_cd: str | None = Field(default=None, description="상권 코드")
+    building_type: str | None = Field(default=None, description="REB 건물유형")
+    latitude: float | None = Field(default=None)
+    longitude: float | None = Field(default=None)
+    radius_m: int | None = Field(default=None)
+    n: int | None = Field(default=None, description="top-N (industry_top_in_area)")
+    recent_quarters: int | None = Field(default=None)
 
 
 class Step1Out(BaseModel):
@@ -53,12 +65,34 @@ class Step3Out(BaseModel):
     confidence: float = Field(description="최종 확신도 0~1")
 
 
+def _filter_kwargs_for_method(method, all_kwargs: dict) -> tuple[dict, list[str]]:
+    """method.signature에 맞춰 kwargs를 필터링. 누락된 required 인자는 missing 리턴."""
+    try:
+        sig = inspect.signature(method)
+    except (TypeError, ValueError):
+        return {k: v for k, v in all_kwargs.items() if v is not None}, []
+
+    params = sig.parameters
+    filtered: dict = {}
+    missing: list[str] = []
+    for name, param in params.items():
+        if name == "self":
+            continue
+        v = all_kwargs.get(name)
+        if v is not None:
+            filtered[name] = v
+        elif param.default is inspect.Parameter.empty:
+            missing.append(name)
+    return filtered, missing
+
+
 def make_v2_analyst_node(axis: Axis, role_label: str, db_path: str):
     """v2 multi-step analyst 노드를 반환."""
 
     system_1 = korean_system_prompt(
         f"{role_label} 분석가 1단계. 주어진 초기 evidence로 1차 draft를 만들고, "
-        f"부족하다 판단되면 SCOUT를 호출해 통계를 보강하라."
+        f"부족하다 판단되면 SCOUT를 호출해 통계를 보강하라. "
+        f"SCOUT 인자 명세를 정확히 따르고, 다른 인자를 끼워 넣지 마라."
     )
     system_3 = korean_system_prompt(
         f"{role_label} 분석가 2단계 통합. 1차 draft에 scout 결과를 합쳐 "
@@ -83,9 +117,10 @@ def make_v2_analyst_node(axis: Axis, role_label: str, db_path: str):
         step1_user = (
             f"이번 섹션: {my['title']}\n핵심 질문: {question}\n\n"
             f"=== 가용 evidence ===\n{evidence_text}\n\n"
-            f"=== 가용 SCOUT 함수 (이 축) ===\n{scout_desc}\n\n"
+            f"=== 가용 SCOUT 함수 (이 축 한정, 인자 명세 정확히 지킬 것) ===\n{scout_desc}\n\n"
             "위 evidence로 1차 draft를 작성하고, 더 필요한 통계가 있다면 scout 호출 명세를 "
-            "최대 3개까지 명시하세요. 충분하면 빈 리스트."
+            "최대 3개까지 명시하세요. 충분하면 빈 리스트. "
+            "각 scout가 받지 않는 인자는 비워두세요 (예: building_self_cert에 sigungu 금지)."
         )
         llm1 = build_llm(ModelTier.SONNET).with_structured_output(Step1Out)
         step1: Step1Out = llm1.invoke([
@@ -95,29 +130,28 @@ def make_v2_analyst_node(axis: Axis, role_label: str, db_path: str):
         logger.info("axis=%s step1 done — confidence=%.2f, scouts=%d",
                     axis, step1.confidence, len(step1.scout_calls))
 
-        # ── Step 2: scout 실행 (Python only) ──
+        # ── Step 2: scout 실행 (Python only, signature 검증) ──
         scout = DataScout(db_path)
         scout_results: list[tuple[str, str]] = []  # (text, ref)
         for call in step1.scout_calls[:3]:
+            method = getattr(scout, call.method, None)
+            if method is None:
+                logger.warning("unknown scout: %s", call.method)
+                continue
+            # 모든 후보 인자
+            all_kwargs = call.model_dump(exclude={"method"}, exclude_none=True)
+            filtered, missing = _filter_kwargs_for_method(method, all_kwargs)
+            if missing:
+                logger.warning(
+                    "scout %s missing required args: %s (provided: %s) — skipping",
+                    call.method, missing, list(all_kwargs.keys()),
+                )
+                continue
             try:
-                method = getattr(scout, call.method, None)
-                if method is None:
-                    logger.warning("unknown scout: %s", call.method)
-                    continue
-                # 함수별 인자 매핑 — 모두 keyword
-                kwargs = {}
-                if call.sigungu is not None:
-                    kwargs["sigungu"] = call.sigungu
-                if call.trdar_cd is not None:
-                    kwargs["trdar_cd"] = call.trdar_cd
-                if call.canonical_name is not None:
-                    kwargs["canonical_name"] = call.canonical_name
-                if call.master_complex_id is not None:
-                    kwargs["master_complex_id"] = call.master_complex_id
-                result = method(**kwargs)
+                result = method(**filtered)
                 scout_results.append((result.text, result.ref))
             except Exception as exc:
-                logger.warning("scout %s failed: %s", call.method, exc)
+                logger.warning("scout %s call failed: %s", call.method, exc)
 
         # ── Step 3: 통합 ──
         scout_text = (
