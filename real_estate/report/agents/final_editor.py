@@ -32,8 +32,12 @@ _SYSTEM = korean_system_prompt(
 
 
 def final_editor_node(state: dict) -> dict:
+    from real_estate.report.tracing import emit
+    emit("node_start", node="final_editor",
+         sections_count=len(state.get("sections", {})))
     sections = state.get("sections", {})
     if not sections:
+        emit("node_end", node="final_editor", status="skip", reason="no_sections")
         return {}
 
     inputs = []
@@ -62,4 +66,6 @@ def final_editor_node(state: dict) -> dict:
             sec["polished"] = True
             new_sections[ps.section_id] = sec
     logger.info("final_editor polished %d sections", len(out.sections))
+    emit("node_end", node="final_editor", status="ok",
+         polished_sections=len(out.sections))
     return {"sections": new_sections}

@@ -33,6 +33,8 @@ _SYSTEM = korean_system_prompt(
 
 def planner_node(state: dict) -> dict:
     """asset_summary → section_outline (3개)."""
+    from real_estate.report.tracing import emit
+    emit("node_start", node="planner", input_keys=list(state.keys()))
     llm = build_llm(ModelTier.OPUS).with_structured_output(PlannerOutput)
     asset_summary = state.get("asset_summary", "")
     user = (
@@ -55,4 +57,7 @@ def planner_node(state: dict) -> dict:
             "question": sp.question,
         })
     logger.info("planner produced %d sections", len(outline))
+    emit("node_end", node="planner", sections=len(outline),
+         outline=[{"axis": o["axis"], "title": o["title"], "question": o["question"]}
+                  for o in outline])
     return {"section_outline": outline}

@@ -45,8 +45,16 @@ _TIER_DEFAULTS = {
 
 
 def build_llm(tier: ModelTier, **overrides) -> ChatAnthropic:
-    """등급별 ChatAnthropic 인스턴스. ANTHROPIC_API_KEY 환경변수 필수."""
+    """등급별 ChatAnthropic 인스턴스. ANTHROPIC_API_KEY 환경변수 필수.
+
+    현재 컨텍스트에 RunTracer가 있으면 LLMTraceCallback을 자동으로 부착해
+    LLM 호출 1건당 start/end 이벤트가 trace.jsonl에 기록된다.
+    """
     params = {**_TIER_DEFAULTS[tier], **overrides}
+    # 지연 import 로 순환 의존 회피
+    from real_estate.report.tracing import LLMTraceCallback, get_tracer
+    if get_tracer() is not None and "callbacks" not in params:
+        params["callbacks"] = [LLMTraceCallback()]
     return ChatAnthropic(model=_TIER_MODEL_ID[tier], **params)
 
 

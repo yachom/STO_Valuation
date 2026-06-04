@@ -32,9 +32,14 @@ _SYSTEM = korean_system_prompt(
 
 
 def reviser_v2_node(state: dict) -> dict:
+    from real_estate.report.tracing import emit
+    emit("node_start", node="reviser_v2",
+         critic_iter=state.get("critic_iter", 0),
+         critic_issues=len((state.get("critic_output") or {}).get("issues", [])))
     sections = state.get("sections", {})
     critic = state.get("critic_output", {})
     if not sections or not critic or critic.get("overall_pass"):
+        emit("node_end", node="reviser_v2", status="skip", reason="critic_pass_or_empty")
         return {}
 
     # severity gating — high만 강제, medium은 선택, low는 무시
@@ -46,10 +51,12 @@ def reviser_v2_node(state: dict) -> dict:
     high_issues = [it for it in issues if (it.get("severity") or "").lower() == "high"]
     if not issues:
         logger.info("reviser_v2: low 이슈만 있어 skip — final_editor가 처리")
+        emit("node_end", node="reviser_v2", status="skip", reason="only_low_issues")
         return {}
 
     target_locations = {it.get("location") for it in issues if it.get("location") != "overview"}
     if not target_locations:
+        emit("node_end", node="reviser_v2", status="skip", reason="overview_only")
         return {}
 
     # 섹션 ID는 outline의 section_id, location은 title 또는 axis로 들어올 수 있음
@@ -96,6 +103,7 @@ def reviser_v2_node(state: dict) -> dict:
         ])
     except Exception as exc:
         logger.warning("reviser_v2 LLM 실패 — 섹션 변경 없이 패스: %s", exc)
+        emit("node_end", node="reviser_v2", status="llm_error", error=str(exc)[:200])
         return {}
 
     new_sections = dict(sections)
@@ -106,4 +114,8 @@ def reviser_v2_node(state: dict) -> dict:
             sec["revised"] = True
             new_sections[rs.section_id] = sec
     logger.info("reviser_v2 updated %d sections", len(out.sections))
+    emit("node_end", node="reviser_v2", status="ok",
+         updated_sections=len(out.sections),
+         processed_high=len(high_issues),
+         processed_medium=len(issues) - len(high_issues))
     return {"sections": new_sections}

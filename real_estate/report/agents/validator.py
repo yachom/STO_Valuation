@@ -17,6 +17,9 @@ _CITE_PAT = re.compile(r"\[E\d+\]")
 
 
 def validator_node(state: dict) -> dict:
+    from real_estate.report.tracing import emit
+    emit("node_start", node="validator",
+         sections_count=len(state.get("sections", {})))
     sections = state.get("sections", {})
     issues: list[dict] = []
     for sid, sec in sections.items():
@@ -35,4 +38,7 @@ def validator_node(state: dict) -> dict:
                 "message": "본문에 [E#] 인용 표시가 없음",
             })
     logger.info("validator issues: %d", len(issues))
+    emit("node_end", node="validator", status="ok",
+         issues_count=len(issues),
+         issues=[{"section_id": i["section_id"], "kind": i["kind"]} for i in issues])
     return {"validation_issues": issues}

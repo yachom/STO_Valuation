@@ -39,6 +39,7 @@ from real_estate.report.agents.base import AgentContext
 from real_estate.report.domain import Report, ReportSection
 from real_estate.report.rag.sqlite_retriever import AssetContext, SqliteRetriever
 from real_estate.report.storage.report_repo import ReportRepository
+from real_estate.report.tracing import RunTracer, make_report_id, set_tracer
 from real_estate.report.workflow.graph_v2 import (
     build_draft_graph_v2,
     state_to_report_sections_v2,
@@ -107,29 +108,47 @@ def main() -> None:
     args = parser.parse_args()
     address = " ".join(args.address).strip()
 
-    logger.info("=== 파이프라인 시작 — address=%s ===", address)
+    # report_id를 미리 생성해서 trace 디렉토리 + Report.save에 동일 ID 사용
+    report_id = make_report_id()
+    logger.info("=== 파이프라인 시작 — address=%s report_id=%s ===", address, report_id)
     t0 = time.monotonic()
 
-    asset_ctx, asset_summary = build_asset_context(address, args.building)
-    logger.info("asset_id=%s, sigungu=%s, sigungu_cd=%s, bd_mgt_sn=%s",
-                asset_ctx.asset_id, asset_ctx.sigungu, asset_ctx.sigungu_cd,
-                asset_ctx.bd_mgt_sn)
+    tracer = RunTracer(report_id, DB_PATH)
+    set_tracer(tracer)
+    try:
+        tracer.emit("pipeline_input", address=address, building_name=args.building)
 
-    logger.info("retriever 준비 (배후수요·인접상권·인증 candidate 수집 + 임베딩)...")
-    retriever = SqliteRetriever(str(DB_PATH), asset_ctx)
+        asset_ctx, asset_summary = build_asset_context(address, args.building)
+        logger.info("asset_id=%s, sigungu=%s, sigungu_cd=%s, bd_mgt_sn=%s",
+                    asset_ctx.asset_id, asset_ctx.sigungu, asset_ctx.sigungu_cd,
+                    asset_ctx.bd_mgt_sn)
+        tracer.emit("asset_context",
+                    asset_id=asset_ctx.asset_id,
+                    sigungu=asset_ctx.sigungu, sigungu_cd=asset_ctx.sigungu_cd,
+                    bd_mgt_sn=asset_ctx.bd_mgt_sn,
+                    coords=[asset_ctx.latitude, asset_ctx.longitude])
 
-    ctx = AgentContext(retriever=retriever)
-    app = build_draft_graph_v2(ctx, db_path=str(DB_PATH))
-    logger.info("LangGraph v2 컴파일 완료. invoke 시작...")
+        logger.info("retriever 준비 (배후수요·인접상권·인증 candidate 수집 + 임베딩)...")
+        retriever = SqliteRetriever(str(DB_PATH), asset_ctx)
 
-    initial = {
-        "asset_id": asset_ctx.asset_id,
-        "asset_summary": asset_summary,
-        "critic_iter": 0,
-    }
-    final_state = app.invoke(initial)
-    elapsed = time.monotonic() - t0
-    logger.info("=== 파이프라인 종료 — %.1fs ===", elapsed)
+        ctx = AgentContext(retriever=retriever)
+        app = build_draft_graph_v2(ctx, db_path=str(DB_PATH))
+        logger.info("LangGraph v2 컴파일 완료. invoke 시작...")
+
+        initial = {
+            "asset_id": asset_ctx.asset_id,
+            "asset_summary": asset_summary,
+            "critic_iter": 0,
+        }
+        final_state = app.invoke(initial)
+        elapsed = time.monotonic() - t0
+        logger.info("=== 파이프라인 종료 — %.1fs ===", elapsed)
+    except Exception as exc:
+        tracer.emit("error", phase="pipeline", error=type(exc).__name__,
+                    message=str(exc)[:300])
+        tracer.close()
+        set_tracer(None)
+        raise
 
     # Report 저장
     sections_data = state_to_report_sections_v2(final_state)
@@ -141,10 +160,14 @@ def main() -> None:
         evidence_node_refs=s.get("evidence_node_refs", []),
         evidence_snippets=s.get("evidence_snippets", []),
     ) for s in sections_data]
-    report = Report.new(asset_id=asset_ctx.asset_id, asset_summary=asset_summary)
+    report = Report.new(asset_id=asset_ctx.asset_id, asset_summary=asset_summary,
+                        report_id=report_id)
     report.append_version(sections, notes=f"v2 commercial pipeline ({elapsed:.1f}s)")
     ReportRepository(DB_PATH).save(report)
     logger.info("Report 저장: %s", report.report_id)
+    tracer.emit("report_saved", report_id=report.report_id,
+                version_id=report.versions[-1].version_id,
+                sections=len(sections), elapsed_sec=round(elapsed, 1))
 
     print("\n" + "=" * 70)
     print(f"Report {report.report_id} (status={report.status})")
@@ -173,7 +196,13 @@ def main() -> None:
             print(f"  [{sec['axis']}] conf_step1={c1s} conf_final={c2s} "
                   f"scouts={sec.get('scout_calls_made')}")
     print(f"\n총 소요: {elapsed:.1f}s")
-    print(f"sidecar md: real_estate/database/DB/reports/{report.report_id}/")
+    print(f"산출물:")
+    print(f"  {tracer.run_dir}/")
+    print(f"  ├── {report.versions[-1].version_id}.md  (보고서 본문)")
+    print(f"  ├── trace.jsonl                          (에이전트·LLM·scout 호출 trace)")
+    print(f"  └── run.log                              (전체 logger output)")
+    tracer.close()
+    set_tracer(None)
 
 
 if __name__ == "__main__":

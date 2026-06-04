@@ -43,12 +43,17 @@ _SYSTEM = korean_system_prompt(
 
 
 def risk_critic_node(state: dict) -> dict:
+    from real_estate.report.tracing import emit
+    cur_iter = state.get("critic_iter", 0)
+    emit("node_start", node="risk_critic", iter=cur_iter,
+         sections_count=len(state.get("sections", {})))
     sections = state.get("sections", {})
     overview = state.get("overview_section", {})
     if not sections:
+        emit("node_end", node="risk_critic", status="empty", overall_pass=True)
         return {
             "critic_output": {"overall_pass": True, "issues": []},
-            "critic_iter": state.get("critic_iter", 0) + 1,
+            "critic_iter": cur_iter + 1,
         }
 
     asset_summary = state.get("asset_summary", "")
@@ -93,7 +98,18 @@ def risk_critic_node(state: dict) -> dict:
     logger.info("risk_critic — pass=%s (raw_pass=%s, auto_pass=%s, h=%d m=%d total=%d)",
                 overall_pass, out.overall_pass, auto_pass,
                 n_high, n_medium, len(sorted_issues))
+    emit("node_end", node="risk_critic", status="ok",
+         iter=cur_iter + 1,
+         overall_pass=overall_pass,
+         raw_pass=out.overall_pass,
+         auto_pass=auto_pass,
+         n_high=n_high, n_medium=n_medium, n_low=len(sorted_issues) - n_high - n_medium,
+         issues_summary=[
+             {"severity": it.severity, "kind": it.kind,
+              "location": it.location, "desc": (it.description or "")[:120]}
+             for it in sorted_issues[:5]
+         ])
     return {
         "critic_output": result.model_dump(),
-        "critic_iter": state.get("critic_iter", 0) + 1,
+        "critic_iter": cur_iter + 1,
     }

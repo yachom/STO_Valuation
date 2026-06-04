@@ -415,6 +415,17 @@ class SqliteRetriever(Retriever):
             }
         for axis, items in self._by_axis.items():
             logger.info("SqliteRetriever %s: %d candidates", axis, len(items))
+        # trace event
+        try:
+            from real_estate.report.tracing import emit
+            emit("retriever_init",
+                 candidates_per_axis={a: len(items) for a, items in self._by_axis.items()},
+                 asset_id=asset_context.asset_id,
+                 bd_mgt_sn=asset_context.bd_mgt_sn,
+                 sigungu_cd=asset_context.sigungu_cd,
+                 nearby_radius_m=asset_context.nearby_radius_m)
+        except Exception:
+            pass
         self._vecs_by_axis: dict[Axis, list[list[float]]] = {}
         for axis, items in self._by_axis.items():
             if items:

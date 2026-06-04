@@ -103,14 +103,19 @@ def make_v2_analyst_node(axis: Axis, role_label: str, db_path: str):
     scout_desc = "\n".join(f"- {name}: {desc}" for name, _, desc in available_scouts)
 
     def node(state: dict, ctx) -> dict:
+        from real_estate.report.tracing import emit
+        emit("node_start", node=f"{axis}_analyst")
         outline = state.get("section_outline", [])
         my = next((s for s in outline if s["axis"] == axis), None)
         if my is None:
             logger.warning("axis=%s 섹션이 outline에 없음", axis)
+            emit("node_end", node=f"{axis}_analyst", status="no_outline")
             return {}
 
         question = my["question"]
         snippets = ctx.retriever.retrieve(question, k=6, axis=axis)
+        emit("retriever_call", axis=axis, k=6, returned=len(snippets),
+             scores=[round(s.score, 3) for s in snippets[:6]])
         evidence_text = format_snippets(snippets)
 
         # ── Step 1: scout 결정 + 1차 draft ──
@@ -137,6 +142,7 @@ def make_v2_analyst_node(axis: Axis, role_label: str, db_path: str):
             method = getattr(scout, call.method, None)
             if method is None:
                 logger.warning("unknown scout: %s", call.method)
+                emit("scout_call", axis=axis, scout=call.method, status="unknown")
                 continue
             # 모든 후보 인자
             all_kwargs = call.model_dump(exclude={"method"}, exclude_none=True)
@@ -146,12 +152,19 @@ def make_v2_analyst_node(axis: Axis, role_label: str, db_path: str):
                     "scout %s missing required args: %s (provided: %s) — skipping",
                     call.method, missing, list(all_kwargs.keys()),
                 )
+                emit("scout_call", axis=axis, scout=call.method,
+                     status="missing_args", missing=missing, provided=list(all_kwargs.keys()))
                 continue
             try:
                 result = method(**filtered)
                 scout_results.append((result.text, result.ref))
+                emit("scout_call", axis=axis, scout=call.method,
+                     status="ok", args=filtered, ref=result.ref,
+                     text_preview=result.text[:200])
             except Exception as exc:
                 logger.warning("scout %s call failed: %s", call.method, exc)
+                emit("scout_call", axis=axis, scout=call.method,
+                     status="error", error=str(exc)[:200])
 
         # ── Step 3: 통합 ──
         scout_text = (
@@ -195,6 +208,11 @@ def make_v2_analyst_node(axis: Axis, role_label: str, db_path: str):
             "confidence_final": step3.confidence,
             "scout_calls_made": [c.method for c in step1.scout_calls[:3]],
         }
+        emit("node_end", node=f"{axis}_analyst", status="ok",
+             confidence_step1=round(step1.confidence, 3),
+             confidence_final=round(step3.confidence, 3),
+             body_chars=len(step3.body_markdown),
+             scout_count=len(scout_results))
         return {"sections": sections}
 
     return node

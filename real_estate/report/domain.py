@@ -13,6 +13,8 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Literal
 
+from real_estate.report.tracing import make_report_id
+
 ReportStatus = Literal["draft", "revised", "final", "qa_passed"]
 
 _ALLOWED_TRANSITIONS: dict[str, set[str]] = {
@@ -53,9 +55,12 @@ class Report:
     finalized_at: str | None = None
 
     @staticmethod
-    def new(asset_id: str, asset_summary: str) -> "Report":
+    def new(asset_id: str, asset_summary: str, *, report_id: str | None = None) -> "Report":
+        """report_id 지정 가능 (RunTracer가 사전 생성한 ID를 재사용하기 위함).
+        미지정 시 타임스탬프 prefix가 박힌 ID 자동 생성.
+        """
         return Report(
-            report_id=f"rpt_{uuid.uuid4().hex[:12]}",
+            report_id=report_id or make_report_id(),
             asset_id=asset_id,
             asset_summary=asset_summary,
             status="draft",
