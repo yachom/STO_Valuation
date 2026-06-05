@@ -20,6 +20,7 @@ from real_estate.report.graph.schema import NODE_LABELS
 from real_estate.report.rag.embedder import embed_one
 from real_estate.report.rag.protocol import Axis, GroundedSnippet, Retriever
 from real_estate.report.rag.vector_index import search_similar
+from real_estate.report.tracing import emit_tool_call
 
 logger = logging.getLogger("rag.naive")
 
@@ -136,6 +137,18 @@ class NaiveNeighborhoodRetriever(Retriever):
                     },
                 )
                 snippets.append(snippet)
+        emit_tool_call(
+            tool=f"retriever:neo4j:{axis or 'all'}",
+            args={"query": query, "k": k, "axis": axis,
+                  "neighbor_hops": self._neighbor_hops,
+                  "neighbor_limit": self._neighbor_limit},
+            result={"returned": len(snippets),
+                    "snippets": [
+                        {"text": s.text, "node_refs": s.node_refs,
+                         "score": s.score, "metadata": s.metadata}
+                        for s in snippets
+                    ]},
+        )
         return snippets
 
 

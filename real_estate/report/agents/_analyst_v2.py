@@ -23,8 +23,9 @@ from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import format_snippets, korean_system_prompt
 from real_estate.report.agents.data_scout import SCOUT_REGISTRY, DataScout
-from real_estate.report.llm import ModelTier, build_llm
+from real_estate.report.llm import get_llm
 from real_estate.report.rag.protocol import Axis
+from real_estate.report.tracing import axis_scope, emit, emit_tool_call, node_scope
 
 logger = logging.getLogger("agent.analyst_v2")
 
@@ -103,116 +104,121 @@ def make_v2_analyst_node(axis: Axis, role_label: str, db_path: str):
     scout_desc = "\n".join(f"- {name}: {desc}" for name, _, desc in available_scouts)
 
     def node(state: dict, ctx) -> dict:
-        from real_estate.report.tracing import emit
-        emit("node_start", node=f"{axis}_analyst")
-        outline = state.get("section_outline", [])
-        my = next((s for s in outline if s["axis"] == axis), None)
-        if my is None:
-            logger.warning("axis=%s 섹션이 outline에 없음", axis)
-            emit("node_end", node=f"{axis}_analyst", status="no_outline")
-            return {}
+        with axis_scope(axis), node_scope(f"{axis}_analyst"):
+            outline = state.get("section_outline", [])
+            my = next((s for s in outline if s["axis"] == axis), None)
+            if my is None:
+                logger.warning("axis=%s 섹션이 outline에 없음", axis)
+                emit("analyst_result", status="no_outline")
+                return {}
 
-        question = my["question"]
-        snippets = ctx.retriever.retrieve(question, k=6, axis=axis)
-        emit("retriever_call", axis=axis, k=6, returned=len(snippets),
-             scores=[round(s.score, 3) for s in snippets[:6]])
-        evidence_text = format_snippets(snippets)
+            question = my["question"]
+            snippets = ctx.retriever.retrieve(question, k=6, axis=axis)
+            # tool_call(retriever:*)는 retriever 내부에서 자동 emit
+            evidence_text = format_snippets(snippets)
 
-        # ── Step 1: scout 결정 + 1차 draft ──
-        step1_user = (
-            f"이번 섹션: {my['title']}\n핵심 질문: {question}\n\n"
-            f"=== 가용 evidence ===\n{evidence_text}\n\n"
-            f"=== 가용 SCOUT 함수 (이 축 한정, 인자 명세 정확히 지킬 것) ===\n{scout_desc}\n\n"
-            "위 evidence로 1차 draft를 작성하고, 더 필요한 통계가 있다면 scout 호출 명세를 "
-            "최대 3개까지 명시하세요. 충분하면 빈 리스트. "
-            "각 scout가 받지 않는 인자는 비워두세요 (예: building_self_cert에 sigungu 금지)."
-        )
-        llm1 = build_llm(ModelTier.SONNET).with_structured_output(Step1Out)
-        step1: Step1Out = llm1.invoke([
-            {"role": "system", "content": system_1},
-            {"role": "user", "content": step1_user},
-        ])
-        logger.info("axis=%s step1 done — confidence=%.2f, scouts=%d",
-                    axis, step1.confidence, len(step1.scout_calls))
+            # ── Step 1: scout 결정 + 1차 draft ──
+            step1_user = (
+                f"이번 섹션: {my['title']}\n핵심 질문: {question}\n\n"
+                f"=== 가용 evidence ===\n{evidence_text}\n\n"
+                f"=== 가용 SCOUT 함수 (이 축 한정, 인자 명세 정확히 지킬 것) ===\n{scout_desc}\n\n"
+                "위 evidence로 1차 draft를 작성하고, 더 필요한 통계가 있다면 scout 호출 명세를 "
+                "최대 3개까지 명시하세요. 충분하면 빈 리스트. "
+                "각 scout가 받지 않는 인자는 비워두세요 (예: building_self_cert에 sigungu 금지)."
+            )
+            llm1 = get_llm(f"{axis}_analyst").with_structured_output(Step1Out)
+            step1: Step1Out = llm1.invoke([
+                {"role": "system", "content": system_1},
+                {"role": "user", "content": step1_user},
+            ])
+            logger.info("axis=%s step1 done — confidence=%.2f, scouts=%d",
+                        axis, step1.confidence, len(step1.scout_calls))
 
-        # ── Step 2: scout 실행 (Python only, signature 검증) ──
-        scout = DataScout(db_path)
-        scout_results: list[tuple[str, str]] = []  # (text, ref)
-        for call in step1.scout_calls[:3]:
-            method = getattr(scout, call.method, None)
-            if method is None:
-                logger.warning("unknown scout: %s", call.method)
-                emit("scout_call", axis=axis, scout=call.method, status="unknown")
-                continue
-            # 모든 후보 인자
-            all_kwargs = call.model_dump(exclude={"method"}, exclude_none=True)
-            filtered, missing = _filter_kwargs_for_method(method, all_kwargs)
-            if missing:
-                logger.warning(
-                    "scout %s missing required args: %s (provided: %s) — skipping",
-                    call.method, missing, list(all_kwargs.keys()),
-                )
-                emit("scout_call", axis=axis, scout=call.method,
-                     status="missing_args", missing=missing, provided=list(all_kwargs.keys()))
-                continue
-            try:
-                result = method(**filtered)
-                scout_results.append((result.text, result.ref))
-                emit("scout_call", axis=axis, scout=call.method,
-                     status="ok", args=filtered, ref=result.ref,
-                     text_preview=result.text[:200])
-            except Exception as exc:
-                logger.warning("scout %s call failed: %s", call.method, exc)
-                emit("scout_call", axis=axis, scout=call.method,
-                     status="error", error=str(exc)[:200])
+            # ── Step 2: scout 실행 (Python only, signature 검증) ──
+            scout = DataScout(db_path)
+            scout_results: list[tuple[str, str]] = []
+            for call in step1.scout_calls[:3]:
+                method = getattr(scout, call.method, None)
+                if method is None:
+                    logger.warning("unknown scout: %s", call.method)
+                    emit_tool_call(tool=f"scout:{call.method}", status="unknown")
+                    continue
+                all_kwargs = call.model_dump(
+                    exclude={"method"}, exclude_none=True)
+                filtered, missing = _filter_kwargs_for_method(method, all_kwargs)
+                if missing:
+                    logger.warning(
+                        "scout %s missing required args: %s (provided: %s) — skipping",
+                        call.method, missing, list(all_kwargs.keys()),
+                    )
+                    emit_tool_call(
+                        tool=f"scout:{call.method}", status="missing_args",
+                        args=all_kwargs,
+                        result={"missing": missing,
+                                "provided": list(all_kwargs.keys())},
+                    )
+                    continue
+                try:
+                    result = method(**filtered)
+                    scout_results.append((result.text, result.ref))
+                    emit_tool_call(tool=f"scout:{call.method}", status="ok",
+                                   args=filtered,
+                                   result={"text": result.text,
+                                           "ref": result.ref})
+                except Exception as exc:
+                    logger.warning("scout %s call failed: %s", call.method, exc)
+                    emit_tool_call(tool=f"scout:{call.method}",
+                                   status="error", args=filtered,
+                                   result={"error": str(exc)[:300]})
 
-        # ── Step 3: 통합 ──
-        scout_text = (
-            "\n".join(f"[S{i+1}] {t}" for i, (t, _) in enumerate(scout_results))
-            if scout_results else "(추가 scout 결과 없음)"
-        )
-        step3_user = (
-            f"섹션 제목: {my['title']}\n질문: {question}\n\n"
-            f"=== 초기 evidence ===\n{evidence_text}\n\n"
-            f"=== Scout 보강 결과 ===\n{scout_text}\n\n"
-            f"=== 1차 draft (참고만 — 그대로 쓰지 말 것) ===\n{step1.draft_markdown}\n\n"
-            "위 두 종류 출처를 통합해 3~6단락 markdown 본문을 완성하세요. "
-            "초기 evidence는 [E#], scout 결과는 [S#]으로 표시. "
-            "데이터 부족 영역은 솔직히 명시."
-        )
-        llm3 = build_llm(ModelTier.SONNET).with_structured_output(Step3Out)
-        step3: Step3Out = llm3.invoke([
-            {"role": "system", "content": system_3},
-            {"role": "user", "content": step3_user},
-        ])
+            # ── Step 3: 통합 ──
+            scout_text = (
+                "\n".join(
+                    f"[S{i+1}] {t}" for i, (t, _) in enumerate(scout_results))
+                if scout_results else "(추가 scout 결과 없음)"
+            )
+            step3_user = (
+                f"섹션 제목: {my['title']}\n질문: {question}\n\n"
+                f"=== 초기 evidence ===\n{evidence_text}\n\n"
+                f"=== Scout 보강 결과 ===\n{scout_text}\n\n"
+                f"=== 1차 draft (참고만 — 그대로 쓰지 말 것) ===\n{step1.draft_markdown}\n\n"
+                "위 두 종류 출처를 통합해 3~6단락 markdown 본문을 완성하세요. "
+                "초기 evidence는 [E#], scout 결과는 [S#]으로 표시. "
+                "데이터 부족 영역은 솔직히 명시."
+            )
+            llm3 = get_llm(f"{axis}_analyst").with_structured_output(Step3Out)
+            step3: Step3Out = llm3.invoke([
+                {"role": "system", "content": system_3},
+                {"role": "user", "content": step3_user},
+            ])
 
-        # ── 저장 ──
-        evidence_refs: list[str] = []
-        evidence_snippets: list[str] = []
-        for i in step3.used_evidence_indexes:
-            if 1 <= i <= len(snippets):
-                evidence_refs.extend(snippets[i - 1].node_refs)
-                evidence_snippets.append(snippets[i - 1].text)
-        for text, ref in scout_results:
-            evidence_refs.append(ref)
-            evidence_snippets.append(text)
+            # ── 저장 ──
+            evidence_refs: list[str] = []
+            evidence_snippets: list[str] = []
+            for i in step3.used_evidence_indexes:
+                if 1 <= i <= len(snippets):
+                    evidence_refs.extend(snippets[i - 1].node_refs)
+                    evidence_snippets.append(snippets[i - 1].text)
+            for text, ref in scout_results:
+                evidence_refs.append(ref)
+                evidence_snippets.append(text)
 
-        sections = dict(state.get("sections", {}))
-        sections[my["section_id"]] = {
-            "axis": axis,
-            "title": my["title"],
-            "body_markdown": step3.body_markdown,
-            "evidence_node_refs": list(dict.fromkeys(evidence_refs)),
-            "evidence_snippets": evidence_snippets,
-            "confidence_step1": step1.confidence,
-            "confidence_final": step3.confidence,
-            "scout_calls_made": [c.method for c in step1.scout_calls[:3]],
-        }
-        emit("node_end", node=f"{axis}_analyst", status="ok",
-             confidence_step1=round(step1.confidence, 3),
-             confidence_final=round(step3.confidence, 3),
-             body_chars=len(step3.body_markdown),
-             scout_count=len(scout_results))
-        return {"sections": sections}
+            sections = dict(state.get("sections", {}))
+            sections[my["section_id"]] = {
+                "axis": axis,
+                "title": my["title"],
+                "body_markdown": step3.body_markdown,
+                "evidence_node_refs": list(dict.fromkeys(evidence_refs)),
+                "evidence_snippets": evidence_snippets,
+                "confidence_step1": step1.confidence,
+                "confidence_final": step3.confidence,
+                "scout_calls_made": [c.method for c in step1.scout_calls[:3]],
+            }
+            emit("analyst_result", status="ok",
+                 confidence_step1=round(step1.confidence, 3),
+                 confidence_final=round(step3.confidence, 3),
+                 body_chars=len(step3.body_markdown),
+                 scout_count=len(scout_results))
+            return {"sections": sections}
 
     return node

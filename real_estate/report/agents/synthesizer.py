@@ -7,7 +7,8 @@ import logging
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import korean_system_prompt
-from real_estate.report.llm import ModelTier, build_llm
+from real_estate.report.llm import get_llm
+from real_estate.report.tracing import emit, node_scope
 
 logger = logging.getLogger("agent.synthesizer")
 
@@ -28,41 +29,42 @@ _SYSTEM = korean_system_prompt(
 
 
 def synthesizer_node(state: dict) -> dict:
-    from real_estate.report.tracing import emit
-    emit("node_start", node="synthesizer", sections_count=len(state.get("sections", {})))
-    sections = state.get("sections", {})
-    if not sections:
-        logger.warning("synthesizer: 섹션이 없음")
-        emit("node_end", node="synthesizer", status="no_sections")
-        return {}
+    with node_scope("synthesizer",
+                    sections_count=len(state.get("sections", {}))):
+        sections = state.get("sections", {})
+        if not sections:
+            logger.warning("synthesizer: 섹션이 없음")
+            emit("synthesizer_result", status="no_sections")
+            return {}
 
-    parts = [f"자산: {state.get('asset_summary', '')}\n"]
-    for sid, sec in sections.items():
-        parts.append(f"\n## [{sec['axis']}] {sec['title']}\n{sec['body_markdown']}\n")
-    bundle = "".join(parts)
+        parts = [f"자산: {state.get('asset_summary', '')}\n"]
+        for sid, sec in sections.items():
+            parts.append(
+                f"\n## [{sec['axis']}] {sec['title']}\n{sec['body_markdown']}\n")
+        bundle = "".join(parts)
 
-    user = (
-        f"=== 축별 섹션 ===\n{bundle}\n\n"
-        "위 섹션들을 종합해 5~10문장 executive summary와 cross-axis insight를 작성하세요. "
-        "원 섹션 본문에 등장한 사실 외엔 추가하지 마세요."
-    )
-    llm = build_llm(ModelTier.OPUS).with_structured_output(SynthesizerOutput)
-    result: SynthesizerOutput = llm.invoke([
-        {"role": "system", "content": _SYSTEM},
-        {"role": "user", "content": user},
-    ])
+        user = (
+            f"=== 축별 섹션 ===\n{bundle}\n\n"
+            "위 섹션들을 종합해 5~10문장 executive summary와 cross-axis insight를 "
+            "작성하세요. 원 섹션 본문에 등장한 사실 외엔 추가하지 마세요."
+        )
+        llm = get_llm("synthesizer").with_structured_output(SynthesizerOutput)
+        result: SynthesizerOutput = llm.invoke([
+            {"role": "system", "content": _SYSTEM},
+            {"role": "user", "content": user},
+        ])
 
-    overview = {
-        "axis": "overview",
-        "title": "Executive Summary & 교차 축 통찰",
-        "body_markdown": (
-            f"### Executive Summary\n\n{result.executive_summary_markdown}\n\n"
-            f"### Cross-axis Insights\n\n{result.cross_axis_insights_markdown}\n"
-        ),
-        "evidence_node_refs": [],
-        "evidence_snippets": [],
-    }
-    emit("node_end", node="synthesizer", status="ok",
-         exec_summary_chars=len(result.executive_summary_markdown),
-         cross_axis_chars=len(result.cross_axis_insights_markdown))
-    return {"overview_section": overview}
+        overview = {
+            "axis": "overview",
+            "title": "Executive Summary & 교차 축 통찰",
+            "body_markdown": (
+                f"### Executive Summary\n\n{result.executive_summary_markdown}\n\n"
+                f"### Cross-axis Insights\n\n{result.cross_axis_insights_markdown}\n"
+            ),
+            "evidence_node_refs": [],
+            "evidence_snippets": [],
+        }
+        emit("synthesizer_result", status="ok",
+             exec_summary_chars=len(result.executive_summary_markdown),
+             cross_axis_chars=len(result.cross_axis_insights_markdown))
+        return {"overview_section": overview}

@@ -11,7 +11,8 @@ import logging
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import korean_system_prompt
-from real_estate.report.llm import ModelTier, build_llm
+from real_estate.report.llm import get_llm
+from real_estate.report.tracing import emit, node_scope
 
 logger = logging.getLogger("agent.risk_critic")
 
@@ -43,73 +44,75 @@ _SYSTEM = korean_system_prompt(
 
 
 def risk_critic_node(state: dict) -> dict:
-    from real_estate.report.tracing import emit
     cur_iter = state.get("critic_iter", 0)
-    emit("node_start", node="risk_critic", iter=cur_iter,
-         sections_count=len(state.get("sections", {})))
-    sections = state.get("sections", {})
-    overview = state.get("overview_section", {})
-    if not sections:
-        emit("node_end", node="risk_critic", status="empty", overall_pass=True)
+    with node_scope("risk_critic", iter=cur_iter,
+                    sections_count=len(state.get("sections", {}))):
+        sections = state.get("sections", {})
+        overview = state.get("overview_section", {})
+        if not sections:
+            emit("critic_result", status="empty", overall_pass=True)
+            return {
+                "critic_output": {"overall_pass": True, "issues": []},
+                "critic_iter": cur_iter + 1,
+            }
+
+        asset_summary = state.get("asset_summary", "")
+        bundle = [f"=== Asset ===\n{asset_summary}\n"]
+        if overview:
+            bundle.append(f"=== Overview ===\n{overview.get('body_markdown','')}\n")
+        for sid, sec in sections.items():
+            bundle.append(
+                f"=== [{sec['axis']}] {sec['title']} "
+                f"(conf={sec.get('confidence_final','?')}) ===\n"
+                f"{sec['body_markdown']}\n"
+            )
+
+        user = (
+            "다음 보고서를 critic 관점으로 검토하세요.\n\n"
+            + "\n".join(bundle)
+            + "\n출력 형태로 issue들을 나열하세요. 큰 문제가 없으면 overall_pass=True, "
+              "issues=[]. high가 1개 이상 또는 medium이 3개 이상이면 overall_pass=False. "
+              "low 이슈만 있는 경우는 overall_pass=True (사소한 보완은 final_editor가 처리)."
+        )
+        llm = get_llm("risk_critic").with_structured_output(CriticOutput)
+        out: CriticOutput = llm.invoke([
+            {"role": "system", "content": _SYSTEM},
+            {"role": "user", "content": user},
+        ])
+
+        sev_order = {"high": 0, "medium": 1, "low": 2}
+        sorted_issues = sorted(
+            out.issues,
+            key=lambda it: sev_order.get((it.severity or "").lower(), 9),
+        )
+        n_high = sum(1 for it in sorted_issues
+                     if (it.severity or "").lower() == "high")
+        n_medium = sum(1 for it in sorted_issues
+                       if (it.severity or "").lower() == "medium")
+        auto_pass = (n_high == 0 and n_medium <= 2)
+        overall_pass = out.overall_pass or auto_pass
+
+        result = out.model_copy(update={
+            "overall_pass": overall_pass,
+            "issues": sorted_issues,
+        })
+        logger.info(
+            "risk_critic — pass=%s (raw_pass=%s, auto_pass=%s, h=%d m=%d total=%d)",
+            overall_pass, out.overall_pass, auto_pass,
+            n_high, n_medium, len(sorted_issues))
+        emit("critic_result", status="ok",
+             iter=cur_iter + 1,
+             overall_pass=overall_pass,
+             raw_pass=out.overall_pass,
+             auto_pass=auto_pass,
+             n_high=n_high, n_medium=n_medium,
+             n_low=len(sorted_issues) - n_high - n_medium,
+             issues_summary=[
+                 {"severity": it.severity, "kind": it.kind,
+                  "location": it.location, "desc": (it.description or "")[:120]}
+                 for it in sorted_issues[:5]
+             ])
         return {
-            "critic_output": {"overall_pass": True, "issues": []},
+            "critic_output": result.model_dump(),
             "critic_iter": cur_iter + 1,
         }
-
-    asset_summary = state.get("asset_summary", "")
-    bundle = [f"=== Asset ===\n{asset_summary}\n"]
-    if overview:
-        bundle.append(f"=== Overview ===\n{overview.get('body_markdown','')}\n")
-    for sid, sec in sections.items():
-        bundle.append(
-            f"=== [{sec['axis']}] {sec['title']} "
-            f"(conf={sec.get('confidence_final','?')}) ===\n"
-            f"{sec['body_markdown']}\n"
-        )
-
-    user = (
-        "다음 보고서를 critic 관점으로 검토하세요.\n\n"
-        + "\n".join(bundle)
-        + "\n출력 형태로 issue들을 나열하세요. 큰 문제가 없으면 overall_pass=True, "
-          "issues=[]. high가 1개 이상 또는 medium이 3개 이상이면 overall_pass=False. "
-          "low 이슈만 있는 경우는 overall_pass=True (사소한 보완은 final_editor가 처리)."
-    )
-    llm = build_llm(ModelTier.SONNET).with_structured_output(CriticOutput)
-    out: CriticOutput = llm.invoke([
-        {"role": "system", "content": _SYSTEM},
-        {"role": "user", "content": user},
-    ])
-
-    # severity 기반 정렬 + 자동 게이트
-    sev_order = {"high": 0, "medium": 1, "low": 2}
-    sorted_issues = sorted(
-        out.issues, key=lambda it: sev_order.get((it.severity or "").lower(), 9)
-    )
-    n_high = sum(1 for it in sorted_issues if (it.severity or "").lower() == "high")
-    n_medium = sum(1 for it in sorted_issues if (it.severity or "").lower() == "medium")
-    # auto-pass: high=0 AND medium<=2면 LLM이 False라 했어도 통과 (수렴 강화)
-    auto_pass = (n_high == 0 and n_medium <= 2)
-    overall_pass = out.overall_pass or auto_pass
-
-    result = out.model_copy(update={
-        "overall_pass": overall_pass,
-        "issues": sorted_issues,
-    })
-    logger.info("risk_critic — pass=%s (raw_pass=%s, auto_pass=%s, h=%d m=%d total=%d)",
-                overall_pass, out.overall_pass, auto_pass,
-                n_high, n_medium, len(sorted_issues))
-    emit("node_end", node="risk_critic", status="ok",
-         iter=cur_iter + 1,
-         overall_pass=overall_pass,
-         raw_pass=out.overall_pass,
-         auto_pass=auto_pass,
-         n_high=n_high, n_medium=n_medium, n_low=len(sorted_issues) - n_high - n_medium,
-         issues_summary=[
-             {"severity": it.severity, "kind": it.kind,
-              "location": it.location, "desc": (it.description or "")[:120]}
-             for it in sorted_issues[:5]
-         ])
-    return {
-        "critic_output": result.model_dump(),
-        "critic_iter": cur_iter + 1,
-    }

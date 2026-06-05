@@ -37,6 +37,7 @@ from infra.env import load_env
 from real_estate.location import LocationResolver
 from real_estate.report.agents.base import AgentContext
 from real_estate.report.domain import Report, ReportSection
+from real_estate.report.llm import get_langfuse_handler
 from real_estate.report.rag.sqlite_retriever import AssetContext, SqliteRetriever
 from real_estate.report.storage.report_repo import ReportRepository
 from real_estate.report.tracing import RunTracer, make_report_id, set_tracer
@@ -140,7 +141,20 @@ def main() -> None:
             "asset_summary": asset_summary,
             "critic_iter": 0,
         }
-        final_state = app.invoke(initial)
+        # Langfuse callback을 LangGraph 호출 레벨에도 부착 — 노드 단위 span 자동 생성.
+        # 키 없으면 None이라 silent skip.
+        invoke_config: dict = {
+            "metadata": {
+                "report_id": report_id, "address": address,
+                "asset_id": asset_ctx.asset_id,
+                "sigungu": asset_ctx.sigungu,
+                "bd_mgt_sn": asset_ctx.bd_mgt_sn,
+            },
+        }
+        lf = get_langfuse_handler()
+        if lf is not None:
+            invoke_config["callbacks"] = [lf]
+        final_state = app.invoke(initial, config=invoke_config)
         elapsed = time.monotonic() - t0
         logger.info("=== 파이프라인 종료 — %.1fs ===", elapsed)
     except Exception as exc:

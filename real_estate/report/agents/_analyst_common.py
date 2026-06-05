@@ -14,7 +14,7 @@ import logging
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import AgentContext, format_snippets, korean_system_prompt
-from real_estate.report.llm import ModelTier, build_llm
+from real_estate.report.llm import get_llm
 from real_estate.report.rag.protocol import Axis
 
 logger = logging.getLogger("agent.analyst")
@@ -57,7 +57,7 @@ def make_analyst_node(axis: Axis, role_label: str):
             "- 각 주장 끝에 [E#] 형식 인용\n"
             "- evidence가 부족한 부분은 '데이터 부족' 으로 명시"
         )
-        llm = build_llm(ModelTier.SONNET).with_structured_output(AnalystOutput)
+        llm = get_llm(f"{axis}_analyst").with_structured_output(AnalystOutput)
         result: AnalystOutput = llm.invoke([
             {"role": "system", "content": system},
             {"role": "user", "content": user},

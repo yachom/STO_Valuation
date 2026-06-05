@@ -11,7 +11,7 @@ import logging
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import format_snippets, korean_system_prompt
-from real_estate.report.llm import ModelTier, build_llm
+from real_estate.report.llm import get_llm
 from real_estate.report.rag.protocol import Axis, Retriever
 
 logger = logging.getLogger("agent.reviser")
@@ -73,7 +73,7 @@ def revise_section(
         "[E#] 인용을 보존하되, missing-evidence 코멘트가 있으면 새 evidence를 "
         "끌어와 [E#] 추가, factual 코멘트는 evidence와 대조해 정정하세요."
     )
-    llm = build_llm(ModelTier.SONNET).with_structured_output(ReviserOutput)
+    llm = get_llm("reviser").with_structured_output(ReviserOutput)
     result: ReviserOutput = llm.invoke([
         {"role": "system", "content": _SYSTEM},
         {"role": "user", "content": user},

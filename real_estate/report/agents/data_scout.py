@@ -28,6 +28,8 @@ import math
 import sqlite3
 from dataclasses import dataclass
 
+from real_estate.report.tracing_sqlite import tracing_connect
+
 logger = logging.getLogger("agent.data_scout")
 
 
@@ -51,9 +53,7 @@ class DataScout:
         self._db_path = db_path
 
     def _conn(self) -> sqlite3.Connection:
-        c = sqlite3.connect(self._db_path)
-        c.row_factory = sqlite3.Row
-        return c
+        return tracing_connect(self._db_path, source="data_scout")
 
     # ─── tenant ──────────────────────────────────────────────
     def commercial_sale_stats_in_district(self, *, sigungu_cd: str) -> ScoutResult:
@@ -345,7 +345,7 @@ class DataScout:
         avg_year = sum(completions) / len(completions) if completions else None
         top3 = ", ".join(
             f"{c['canonical_name']}({c['household_count']}세대,{d:.0f}m)"
-            for d, c in sorted(nearby)[:3]
+            for d, c in sorted(nearby, key=lambda x: x[0])[:3]
         )
         return ScoutResult(
             f"반경 {radius_m}m 배후수요 — 아파트 {len(nearby)}단지, "

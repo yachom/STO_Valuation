@@ -23,6 +23,8 @@ from dataclasses import dataclass
 
 from real_estate.report.rag.embedder import embed_one, embed_texts
 from real_estate.report.rag.protocol import Axis, GroundedSnippet, Retriever
+from real_estate.report.tracing import emit_tool_call
+from real_estate.report.tracing_sqlite import tracing_connect
 
 logger = logging.getLogger("rag.sqlite_retriever")
 
@@ -266,8 +268,10 @@ def _candidates_commercial(conn, ctx: AssetContext) -> list[dict]:
         if nearby:
             total_hh = sum(c["household_count"] or 0 for _, c in nearby)
             avg_yr = sum(int((c["completion_date"] or "0")[:4]) for _, c in nearby if c["completion_date"]) / max(1, len([1 for _, c in nearby if c["completion_date"]]))
-            top3 = ", ".join(f"{c['canonical_name']}({c['household_count']}세대,{d:.0f}m)"
-                              for d, c in sorted(nearby)[:3])
+            top3 = ", ".join(
+                f"{c['canonical_name']}({c['household_count']}세대,{d:.0f}m)"
+                for d, c in sorted(nearby, key=lambda x: x[0])[:3]
+            )
             out.append({
                 "text": (
                     f"반경 {ctx.nearby_radius_m}m 배후수요: 아파트 {len(nearby)}단지, "
@@ -406,13 +410,15 @@ class SqliteRetriever(Retriever):
     def __init__(self, db_path: str, asset_context: AssetContext):
         self._db_path = db_path
         self._ctx = asset_context
-        with sqlite3.connect(db_path) as conn:
-            conn.row_factory = sqlite3.Row
+        conn = tracing_connect(db_path, source="sqlite_retriever")
+        try:
             self._by_axis: dict[Axis, list[dict]] = {
                 "tenant": _candidates_tenant(conn, asset_context),
                 "esg": _candidates_esg(conn, asset_context),
                 "commercial": _candidates_commercial(conn, asset_context),
             }
+        finally:
+            conn.close()
         for axis, items in self._by_axis.items():
             logger.info("SqliteRetriever %s: %d candidates", axis, len(items))
         # trace event
@@ -458,4 +464,14 @@ class SqliteRetriever(Retriever):
                 score=float(score),
                 metadata={"axis": a, "kind": item["kind"]},
             ))
+        emit_tool_call(
+            tool=f"retriever:sqlite:{axis or 'all'}",
+            args={"query": query, "k": k, "axis": axis},
+            result={"returned": len(out),
+                    "snippets": [
+                        {"text": s.text, "node_refs": s.node_refs,
+                         "score": s.score, "metadata": s.metadata}
+                        for s in out
+                    ]},
+        )
         return out

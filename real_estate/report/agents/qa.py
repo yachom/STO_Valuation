@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import format_snippets, korean_system_prompt
-from real_estate.report.llm import ModelTier, build_llm
+from real_estate.report.llm import get_llm
 from real_estate.report.rag.protocol import Retriever
 
 logger = logging.getLogger("agent.qa")
@@ -67,7 +67,7 @@ def answer_question(
         "위 evidence만 사용해 질문에 답하세요. 5문장 이내. 각 사실 끝에 [E#] 인용. "
         "evidence가 질문과 무관하면 is_out_of_scope=True."
     )
-    llm = build_llm(ModelTier.SONNET).with_structured_output(QaOutput)
+    llm = get_llm("qa").with_structured_output(QaOutput)
     result: QaOutput = llm.invoke([
         {"role": "system", "content": _SYSTEM},
         {"role": "user", "content": user},

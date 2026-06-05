@@ -8,7 +8,8 @@ import uuid
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import korean_system_prompt
-from real_estate.report.llm import ModelTier, build_llm
+from real_estate.report.llm import get_llm
+from real_estate.report.tracing import emit, node_scope
 
 logger = logging.getLogger("agent.planner")
 
@@ -33,31 +34,30 @@ _SYSTEM = korean_system_prompt(
 
 def planner_node(state: dict) -> dict:
     """asset_summary → section_outline (3개)."""
-    from real_estate.report.tracing import emit
-    emit("node_start", node="planner", input_keys=list(state.keys()))
-    llm = build_llm(ModelTier.OPUS).with_structured_output(PlannerOutput)
-    asset_summary = state.get("asset_summary", "")
-    user = (
-        f"자산 요약:\n{asset_summary}\n\n"
-        "위 자산을 평가하기 위해 테넌트 가치 / ESG 가치 / 상권 가치 각 축마다 "
-        "섹션 1개씩 기획해 주세요. 섹션마다 '이 단지에 대해 무엇을 알아내야 하는가'를 "
-        "구체적 질문으로 표현해 주세요."
-    )
-    result: PlannerOutput = llm.invoke([
-        {"role": "system", "content": _SYSTEM},
-        {"role": "user", "content": user},
-    ])
+    with node_scope("planner", input_keys=list(state.keys())):
+        llm = get_llm("planner").with_structured_output(PlannerOutput)
+        asset_summary = state.get("asset_summary", "")
+        user = (
+            f"자산 요약:\n{asset_summary}\n\n"
+            "위 자산을 평가하기 위해 테넌트 가치 / ESG 가치 / 상권 가치 각 축마다 "
+            "섹션 1개씩 기획해 주세요. 섹션마다 '이 단지에 대해 무엇을 알아내야 하는가'를 "
+            "구체적 질문으로 표현해 주세요."
+        )
+        result: PlannerOutput = llm.invoke([
+            {"role": "system", "content": _SYSTEM},
+            {"role": "user", "content": user},
+        ])
 
-    outline = []
-    for sp in result.sections:
-        outline.append({
-            "section_id": f"sec_{uuid.uuid4().hex[:8]}",
-            "axis": sp.axis,
-            "title": sp.title,
-            "question": sp.question,
-        })
-    logger.info("planner produced %d sections", len(outline))
-    emit("node_end", node="planner", sections=len(outline),
-         outline=[{"axis": o["axis"], "title": o["title"], "question": o["question"]}
-                  for o in outline])
-    return {"section_outline": outline}
+        outline = []
+        for sp in result.sections:
+            outline.append({
+                "section_id": f"sec_{uuid.uuid4().hex[:8]}",
+                "axis": sp.axis,
+                "title": sp.title,
+                "question": sp.question,
+            })
+        logger.info("planner produced %d sections", len(outline))
+        emit("planner_outline", sections=len(outline),
+             outline=[{"axis": o["axis"], "title": o["title"],
+                       "question": o["question"]} for o in outline])
+        return {"section_outline": outline}

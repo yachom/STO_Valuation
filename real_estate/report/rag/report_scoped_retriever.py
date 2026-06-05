@@ -19,6 +19,7 @@ import logging
 from real_estate.report.domain import Report
 from real_estate.report.rag.embedder import embed_one, embed_texts
 from real_estate.report.rag.protocol import Axis, GroundedSnippet, Retriever
+from real_estate.report.tracing import emit_tool_call
 
 logger = logging.getLogger("rag.report_scoped")
 
@@ -75,4 +76,14 @@ class ReportScopedRetriever(Retriever):
                     "section_title": it["section_title"],
                 },
             ))
+        emit_tool_call(
+            tool=f"retriever:report_scoped:{axis or 'all'}",
+            args={"query": query, "k": k, "axis": axis},
+            result={"returned": len(out),
+                    "snippets": [
+                        {"text": s.text, "node_refs": s.node_refs,
+                         "score": s.score, "metadata": s.metadata}
+                        for s in out
+                    ]},
+        )
         return out

@@ -11,7 +11,8 @@ import logging
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import korean_system_prompt
-from real_estate.report.llm import ModelTier, build_llm
+from real_estate.report.llm import get_llm
+from real_estate.report.tracing import emit, node_scope
 
 logger = logging.getLogger("agent.final_editor")
 
@@ -32,40 +33,39 @@ _SYSTEM = korean_system_prompt(
 
 
 def final_editor_node(state: dict) -> dict:
-    from real_estate.report.tracing import emit
-    emit("node_start", node="final_editor",
-         sections_count=len(state.get("sections", {})))
-    sections = state.get("sections", {})
-    if not sections:
-        emit("node_end", node="final_editor", status="skip", reason="no_sections")
-        return {}
+    with node_scope("final_editor",
+                    sections_count=len(state.get("sections", {}))):
+        sections = state.get("sections", {})
+        if not sections:
+            emit("final_editor_result", status="skip", reason="no_sections")
+            return {}
 
-    inputs = []
-    for sid, sec in sections.items():
-        inputs.append(
-            f"=== section_id={sid} | [{sec['axis']}] {sec['title']} ===\n"
-            f"{sec['body_markdown']}"
+        inputs = []
+        for sid, sec in sections.items():
+            inputs.append(
+                f"=== section_id={sid} | [{sec['axis']}] {sec['title']} ===\n"
+                f"{sec['body_markdown']}"
+            )
+
+        user = (
+            "아래 섹션들의 어조와 문단 흐름을 다듬으세요. 사실/숫자/인용 보존.\n\n"
+            + "\n\n".join(inputs)
+            + "\n\n각 section_id별로 polished_markdown을 반환하세요."
         )
+        llm = get_llm("final_editor").with_structured_output(FinalEditorOutput)
+        out: FinalEditorOutput = llm.invoke([
+            {"role": "system", "content": _SYSTEM},
+            {"role": "user", "content": user},
+        ])
 
-    user = (
-        "아래 섹션들의 어조와 문단 흐름을 다듬으세요. 사실/숫자/인용 보존.\n\n"
-        + "\n\n".join(inputs)
-        + "\n\n각 section_id별로 polished_markdown을 반환하세요."
-    )
-    llm = build_llm(ModelTier.OPUS).with_structured_output(FinalEditorOutput)
-    out: FinalEditorOutput = llm.invoke([
-        {"role": "system", "content": _SYSTEM},
-        {"role": "user", "content": user},
-    ])
-
-    new_sections = dict(sections)
-    for ps in out.sections:
-        if ps.section_id in new_sections:
-            sec = dict(new_sections[ps.section_id])
-            sec["body_markdown"] = ps.polished_markdown
-            sec["polished"] = True
-            new_sections[ps.section_id] = sec
-    logger.info("final_editor polished %d sections", len(out.sections))
-    emit("node_end", node="final_editor", status="ok",
-         polished_sections=len(out.sections))
-    return {"sections": new_sections}
+        new_sections = dict(sections)
+        for ps in out.sections:
+            if ps.section_id in new_sections:
+                sec = dict(new_sections[ps.section_id])
+                sec["body_markdown"] = ps.polished_markdown
+                sec["polished"] = True
+                new_sections[ps.section_id] = sec
+        logger.info("final_editor polished %d sections", len(out.sections))
+        emit("final_editor_result", status="ok",
+             polished_sections=len(out.sections))
+        return {"sections": new_sections}

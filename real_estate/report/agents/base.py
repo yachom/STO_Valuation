@@ -1,7 +1,7 @@
 """에이전트 공통 유틸리티 — AgentContext, 시스템 프롬프트 헬퍼.
 
 각 에이전트는 함수로 구현되어 ReportState의 일부를 받아 일부를 갱신한다.
-구체 ChatAnthropic은 build_llm() 통해서만 받음 → 모델 교체 시 한 곳만 수정.
+LLM 인스턴스는 `llm.get_llm("agent_name")` 1곳에서만 받음 — provider/Langfuse 분기는 BASE_LLM 매니저 내부에서 캡슐화.
 """
 
 from __future__ import annotations
