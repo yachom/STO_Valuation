@@ -7,7 +7,7 @@ import logging
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import korean_system_prompt
-from real_estate.report.llm import get_llm
+from real_estate.report.llm import cache_block, cached_system, get_llm
 from real_estate.report.tracing import emit, node_scope
 
 logger = logging.getLogger("agent.synthesizer")
@@ -37,21 +37,28 @@ def synthesizer_node(state: dict) -> dict:
             emit("synthesizer_result", status="no_sections")
             return {}
 
-        parts = [f"자산: {state.get('asset_summary', '')}\n"]
-        for sid, sec in sections.items():
-            parts.append(
-                f"\n## [{sec['axis']}] {sec['title']}\n{sec['body_markdown']}\n")
-        bundle = "".join(parts)
-
-        user = (
-            f"=== 축별 섹션 ===\n{bundle}\n\n"
-            "위 섹션들을 종합해 5~10문장 executive summary와 cross-axis insight를 "
-            "작성하세요. 원 섹션 본문에 등장한 사실 외엔 추가하지 마세요."
+        # invariant prefix — asset_summary는 pipeline 안에서 동일 → cache
+        invariant_prefix = (
+            f"자산: {state.get('asset_summary', '')}\n=== 축별 섹션 ===\n"
         )
+        # variable — sections는 reviser loop에서 변동
+        section_parts = []
+        for sid, sec in sections.items():
+            section_parts.append(
+                f"\n## [{sec['axis']}] {sec['title']}\n{sec['body_markdown']}\n")
+        variable_part = (
+            "".join(section_parts)
+            + "\n\n위 섹션들을 종합해 5~10문장 executive summary와 cross-axis insight를 "
+              "작성하세요. 원 섹션 본문에 등장한 사실 외엔 추가하지 마세요."
+        )
+
         llm = get_llm("synthesizer").with_structured_output(SynthesizerOutput)
         result: SynthesizerOutput = llm.invoke([
-            {"role": "system", "content": _SYSTEM},
-            {"role": "user", "content": user},
+            {"role": "system", "content": cached_system(_SYSTEM)},
+            {"role": "user", "content": [
+                cache_block(invariant_prefix),
+                {"type": "text", "text": variable_part},
+            ]},
         ])
 
         overview = {

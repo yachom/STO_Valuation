@@ -11,7 +11,7 @@ import logging
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import korean_system_prompt
-from real_estate.report.llm import get_llm
+from real_estate.report.llm import cached_system, get_llm
 from real_estate.report.tracing import emit, node_scope
 
 logger = logging.getLogger("agent.reviser_v2")
@@ -99,7 +99,7 @@ def reviser_v2_node(state: dict) -> dict:
         llm = get_llm("reviser_v2").with_structured_output(ReviserOutput)
         try:
             out: ReviserOutput = llm.invoke([
-                {"role": "system", "content": _SYSTEM},
+                {"role": "system", "content": cached_system(_SYSTEM)},
                 {"role": "user", "content": user},
             ])
         except Exception as exc:

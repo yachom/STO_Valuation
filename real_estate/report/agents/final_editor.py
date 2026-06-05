@@ -11,7 +11,7 @@ import logging
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import korean_system_prompt
-from real_estate.report.llm import get_llm
+from real_estate.report.llm import cached_system, get_llm
 from real_estate.report.tracing import emit, node_scope
 
 logger = logging.getLogger("agent.final_editor")
@@ -54,7 +54,7 @@ def final_editor_node(state: dict) -> dict:
         )
         llm = get_llm("final_editor").with_structured_output(FinalEditorOutput)
         out: FinalEditorOutput = llm.invoke([
-            {"role": "system", "content": _SYSTEM},
+            {"role": "system", "content": cached_system(_SYSTEM)},
             {"role": "user", "content": user},
         ])
 

@@ -8,7 +8,7 @@ import uuid
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import korean_system_prompt
-from real_estate.report.llm import get_llm
+from real_estate.report.llm import cached_system, get_llm
 from real_estate.report.tracing import emit, node_scope
 
 logger = logging.getLogger("agent.planner")
@@ -44,7 +44,7 @@ def planner_node(state: dict) -> dict:
             "구체적 질문으로 표현해 주세요."
         )
         result: PlannerOutput = llm.invoke([
-            {"role": "system", "content": _SYSTEM},
+            {"role": "system", "content": cached_system(_SYSTEM)},
             {"role": "user", "content": user},
         ])
 

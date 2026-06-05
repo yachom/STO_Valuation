@@ -11,7 +11,7 @@ import logging
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import korean_system_prompt
-from real_estate.report.llm import get_llm
+from real_estate.report.llm import cache_block, cached_system, get_llm
 from real_estate.report.tracing import emit, node_scope
 
 logger = logging.getLogger("agent.risk_critic")
@@ -57,27 +57,36 @@ def risk_critic_node(state: dict) -> dict:
             }
 
         asset_summary = state.get("asset_summary", "")
-        bundle = [f"=== Asset ===\n{asset_summary}\n"]
+        # invariant prefix — pipeline 안에서 변하지 않음 → cache_control 마킹
+        invariant_prefix = (
+            "다음 보고서를 critic 관점으로 검토하세요.\n\n"
+            f"=== Asset ===\n{asset_summary}\n"
+        )
+        # variable part — critic_iter 별로 sections/overview가 reviser에 의해 변동
+        variable_parts: list[str] = []
         if overview:
-            bundle.append(f"=== Overview ===\n{overview.get('body_markdown','')}\n")
+            variable_parts.append(
+                f"\n=== Overview ===\n{overview.get('body_markdown','')}\n")
         for sid, sec in sections.items():
-            bundle.append(
+            variable_parts.append(
                 f"=== [{sec['axis']}] {sec['title']} "
                 f"(conf={sec.get('confidence_final','?')}) ===\n"
                 f"{sec['body_markdown']}\n"
             )
-
-        user = (
-            "다음 보고서를 critic 관점으로 검토하세요.\n\n"
-            + "\n".join(bundle)
-            + "\n출력 형태로 issue들을 나열하세요. 큰 문제가 없으면 overall_pass=True, "
-              "issues=[]. high가 1개 이상 또는 medium이 3개 이상이면 overall_pass=False. "
-              "low 이슈만 있는 경우는 overall_pass=True (사소한 보완은 final_editor가 처리)."
+        variable_parts.append(
+            "\n출력 형태로 issue들을 나열하세요. 큰 문제가 없으면 overall_pass=True, "
+            "issues=[]. high가 1개 이상 또는 medium이 3개 이상이면 overall_pass=False. "
+            "low 이슈만 있는 경우는 overall_pass=True (사소한 보완은 final_editor가 처리)."
         )
+        variable_part = "\n".join(variable_parts)
+
         llm = get_llm("risk_critic").with_structured_output(CriticOutput)
         out: CriticOutput = llm.invoke([
-            {"role": "system", "content": _SYSTEM},
-            {"role": "user", "content": user},
+            {"role": "system", "content": cached_system(_SYSTEM)},
+            {"role": "user", "content": [
+                cache_block(invariant_prefix),
+                {"type": "text", "text": variable_part},
+            ]},
         ])
 
         sev_order = {"high": 0, "medium": 1, "low": 2}

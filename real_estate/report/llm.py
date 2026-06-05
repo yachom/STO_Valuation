@@ -299,6 +299,33 @@ def model_id_for(tier: ModelTier) -> str:
     return _load_tier_specs()[tier.value].model
 
 
+# ───────────────────────────────────────────────────────────
+# Prompt caching helpers (Anthropic ephemeral)
+# ───────────────────────────────────────────────────────────
+def cache_block(text: str) -> dict:
+    """invariant 텍스트를 cache_control: ephemeral로 마킹한 content block.
+
+    사용:
+        llm.invoke([
+            {"role": "system", "content": [cache_block(_SYSTEM)]},
+            {"role": "user", "content": [
+                cache_block(invariant_prefix),  # asset_summary 등 변동 없는 부분
+                {"type": "text", "text": variable_part},
+            ]},
+        ])
+
+    Anthropic은 마지막 cache_control이 박힌 block까지를 캐시 prefix로 잡는다.
+    5분 TTL(ephemeral). 최소 토큰 미만(Sonnet/Opus ~1024)이면 silent skip.
+    """
+    return {"type": "text", "text": text,
+            "cache_control": {"type": "ephemeral"}}
+
+
+def cached_system(text: str) -> list[dict]:
+    """system 메시지용 list[content_block] 단축형."""
+    return [cache_block(text)]
+
+
 def reset_caches() -> None:
     """테스트/환경변수 재로딩용. 캐시 + Langfuse 싱글톤 초기화."""
     global _langfuse_handler, _langfuse_inited

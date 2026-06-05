@@ -23,7 +23,7 @@ from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import format_snippets, korean_system_prompt
 from real_estate.report.agents.data_scout import SCOUT_REGISTRY, DataScout
-from real_estate.report.llm import get_llm
+from real_estate.report.llm import cached_system, get_llm
 from real_estate.report.rag.protocol import Axis
 from real_estate.report.tracing import axis_scope, emit, emit_tool_call, node_scope
 
@@ -128,7 +128,7 @@ def make_v2_analyst_node(axis: Axis, role_label: str, db_path: str):
             )
             llm1 = get_llm(f"{axis}_analyst").with_structured_output(Step1Out)
             step1: Step1Out = llm1.invoke([
-                {"role": "system", "content": system_1},
+                {"role": "system", "content": cached_system(system_1)},
                 {"role": "user", "content": step1_user},
             ])
             logger.info("axis=%s step1 done — confidence=%.2f, scouts=%d",
@@ -188,7 +188,7 @@ def make_v2_analyst_node(axis: Axis, role_label: str, db_path: str):
             )
             llm3 = get_llm(f"{axis}_analyst").with_structured_output(Step3Out)
             step3: Step3Out = llm3.invoke([
-                {"role": "system", "content": system_3},
+                {"role": "system", "content": cached_system(system_3)},
                 {"role": "user", "content": step3_user},
             ])
 
