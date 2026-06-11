@@ -21,7 +21,10 @@
 | D7 | QA 라이브 확장 | **자동 발동.** 증거 부족 시 미니 EXPAND(1라운드, 검색 ≤3건) 실행 후 재탐색. "검색해도 없음"만 진짜 GAP |
 | D8 | 확장 소스 | 네이버 검색+뉴스 스크랩(주력) + 공공 API 재조회(건축HUB·MOLIT 등). 웹 일반 검색(구글 등)은 추후 별도 브랜치 |
 | D9 | 엔티티 연결 | 2단계 — 코드/주소 근거 있으면 확정(MENTIONS), 이름 유사만이면 별도 Entity + SAME_AS_CANDIDATE(미확정, Curator 승격) |
-| D10 | 신선도 | 삭제 대신 **반감기 점수 감쇠** + Writer 날짜 명시 의무. 오래된 Fact는 재검색 신호로 기능 |
+| D10 | 유효성/신선도 | **유효성 2단 모델** — Fact 추출 시 원문의 명시 유효기간(valid_until 등)을 속성으로 추출, 있으면 우선 적용. 없으면 반감기 감쇠 폴백. 공용 ValidityCheck 모듈을 보고서·QA·Auditor·Navigator가 공유 |
+| D11 | QA 탐색 범위 | QA 초기 탐색(스코프 요약·앵커 매칭)은 **자산 N홉 스코프로 한정**. 스코프 밖 전역 검색은 하지 않음 — 부족하면 라이브 확장(D7)으로 새 증거를 스코프에 편입. 자산과 무관한 답변 구조적 차단 |
+| D12 | 보고서 구조화 | 보고서의 1급 표현은 **주소 가능한 구조화 JSON**(section/block/claim ID). markdown은 렌더 산출물. 발행자 피드백은 본문 텍스트가 아니라 **대상 ID + 코멘트**로 입력 |
+| D13 | 발행자 수정 루프 | Feedback 노드(TARGETS 엣지) + Reviser 에이전트. 피드백 종류별(edit/challenge/enrich) 타깃 한정 수정 — 같은 walk·미니 EXPAND 재사용, Auditor 재검사 후 새 report_version |
 
 ---
 
@@ -135,11 +138,14 @@ temperature 0이어도 완전 결정적이지 않으므로 보고서 경로에�
 factual claim에서 도출됐음을 명시** (§10). Auditor 기계층이 "CITES 없는
 factual Claim"을 LLM 없이 잡아낸다.
 
-### 원칙 5 — 오래된 증거는 삭제하지 않고 감쇠시킨다 (D10)
+### 원칙 5 — 증거에는 유효기간이 있다 (D10)
 
-Fact/WebDoc은 반감기 기반 점수 감쇠를 받는다. 오래된 Fact는 답을 오염시키는 게
-아니라 walk에서 후순위로 밀리고, Navigator의 frontier 점수에서 "갱신 필요"
-신호로 기능한다 (§12).
+원문에 명시된 유효기간("2027년 12월 준공 예정", "이달 말까지 모집")이 있으면
+Fact의 속성(valid_until)으로 추출해 **그것을 우선 적용**하고, 없을 때만 반감기
+감쇠로 폴백한다. "이 소스가 지금도 유효한가"의 판단은 공용 ValidityCheck 모듈
+하나로 — 보고서 집필(Composer), QA, Auditor, Navigator가 전부 같은 로직을
+쓴다 (§12). 오래된/만료 Fact는 삭제하지 않고 후순위로 밀리며 재검색 신호로
+기능한다.
 
 ---
 
@@ -161,7 +167,7 @@ Fact/WebDoc은 반감기 기반 점수 감쇠를 받는다. 오래된 Fact는 �
 | `Asset` | asset_id (`re:{bd_mgt_sn}`) | Seeder | 모든 walk의 기본 앵커. 주소, 좌표, building_name |
 | `Industry` | industry_cd | Seeder | 상권 업종 (commercial_estimated_sales의 svc_induty_cd). 최신 분기 매출 요약 |
 | `WebDoc` | url_hash | Harvester | title, url, published_at, source_tier(§9), fetched_at, collected_by |
-| `Fact` | fact_id | Harvester | **원자적 사실 1문장** (D3). text, confidence(§9), published_at, collected_by |
+| `Fact` | fact_id | Harvester | **원자적 사실 1문장** (D3). text, confidence(§9), published_at, event_date, valid_until·temporal_kind(§12), collected_by |
 | `Entity` | entity_id | Harvester | 기존 라벨 매칭 실패한 추출 엔티티 (프랜차이즈, 정책, 인물 등). resolution_status |
 | `Query` | query_hash | Navigator | text, executed_at, hop_path(낳은 경로), n_results |
 | `Question` | question_id | QA | text, asked_at, answered(bool), expanded(bool, 라이브 확장 발동 여부) |
@@ -297,7 +303,7 @@ hop 3: Fact"저가커피 출점 가속"→채택 / frontier 빔 → 종료
 
 ```
 score(path) = ∏ 엣지가중치(LLMPolicy면 채택 확신도)
-            × 신선도(끝 노드, §12 반감기 decay)
+            × 유효성(끝 노드, §12 ValidityCheck — 보고서·QA 공용)
             × 신뢰도(끝 노드가 Fact면 confidence, §9)
 ```
 
@@ -330,6 +336,13 @@ QA: 2단 결합 —
 2. **벡터 매칭**: 힌트 + 질문 원문을 card_text 벡터 인덱스로 검색 → 실제 노드.
    후보는 **Asset에서 N홉 이내로 제한**(범위 누출 방지). Claim/ReportSection
    노드도 후보에 포함 (종합 질문은 보고서 결론에 매칭됨).
+
+**초기 탐색은 자산 스코프가 전부다 (D11).** 프롬프트에 넣는 지도 요약도, 벡터
+후보도 자산 N홉(기본 3) 안으로 한정하고, **스코프 밖 전역 그래프는 검색하지
+않는다** — 전역 층의 다른 자산 수집물 중 이 자산과 관련 있는 것은 어차피 공유
+노드(상권·행정동)를 통해 N홉 안에 들어와 있고, 그렇지 않은 것은 이 자산의
+답변에 끼면 안 되는 노이즈다. 스코프 안에서 증거가 부족하면 전역을 뒤지는 게
+아니라 라이브 확장(D7)으로 새 증거를 수집해 스코프에 편입시킨다.
 
 **실패 모드와 완화**:
 
@@ -373,6 +386,7 @@ JSON 스키마 검증 + boost 클램프 + hops 하드캡. LLM이 이상한 plan�
 | 7 | **Synthesizer** | ✅ Opus | 3축 섹션 → Overview (요약 + 축간 인사이트 + 정성 종합의견). Claim grounding 동일 |
 | 8 | **Auditor** | 반반 | 기계층(CITES/실존/수치, §10.2) + LLM층(모순/과대해석). fail → 재작성 or GAP → 미니 EXPAND |
 | 9 | **QA Responder** | ✅ Sonnet | 앵커 결정(§5.6) → LLMPolicy walk → 충분성 판정 → (부족 시) 미니 EXPAND 자동 발동(§11) → 답변+인용 |
+| 10 | **Reviser** | ✅ Sonnet | 발행자 피드백(대상 ID+코멘트, §10.4)을 kind별 처리 — 타깃 한정 재작성/재검증/보강. 수정분은 Auditor 기계층 재검사 후 새 버전 |
 
 planner는 없다. 목차는 3축 고정(D2)이고, 각 축의 세부 논점은 walk가 모은
 증거 분포에서 나온다.
@@ -409,8 +423,17 @@ planner는 없다. 목차는 3축 고정(D2)이고, 각 축의 세부 논점은 
                 │          → 미니 EXPAND → Phase 3 재진입   │
                 └──────────────┬───────────────────────────┘
                                ▼
-                  보고서 저장 (SQLite + md sidecar, 기존 형식)
+                  보고서 저장 (SQLite + 구조화 JSON + md 렌더, §10.3)
                   + Report 서브그래프 적재 (HAS_SECTION/HAS_CLAIM/CITES)
+                               ▼
+                ┌──────────────────────────────────────────┐
+                │ Phase 5: REVISE (발행자 상호작용, 이벤트 구동)│
+                │  발행자: 대상 ID(섹션/블록/주장) + 코멘트   │
+                │  → Feedback 노드 적재 (TARGETS 엣지)       │
+                │  → Reviser: kind별 타깃 한정 수정 (§10.4)  │
+                │     (보강·재검증은 미니 EXPAND 재사용)      │
+                │  → Auditor 기계층 → 새 report_version     │
+                └──────────────────────────────────────────┘
 
  ─────────────── QA (별도 entry, 같은 그래프) ───────────────
  질문 → 앵커(§5.6) → LLMPolicy walk → 충분성 판정
@@ -531,7 +554,7 @@ Fact.confidence = source_tier × extraction_confidence
 
 ```json
 {"title": "상권 가치 분석",
- "paragraphs": ["...markdown..."],
+ "blocks": [{"block_id": "blk_c1", "markdown": "...", "claim_ids": ["clm_17"]}],  // §10.3 구조와 1:1
  "claims": [
    {"text": "본 건물이 속한 강남대로 상권의 공실률은 2분기 연속 상승했다",
     "kind": "factual",
@@ -562,13 +585,67 @@ report/report_version + md sidecar)은 기존 그대로.
 - 낮은 confidence 증거의 과대 해석, 누락된 반대 증거
 - fail → 해당 위치 GAP 마킹 → 미니 EXPAND → Phase 3 재진입 (≤2회)
 
+### 10.3 보고서 구조화 — 주소 가능한 JSON (D12)
+
+보고서의 1급 표현은 markdown이 아니라 **구조화 JSON**이다. markdown은 렌더링
+산출물일 뿐이다. 모든 단위에 안정적 ID를 부여해 "보고서의 특정 부분"을
+가리킬 수 있게 한다:
+
+```json
+{"report_id": "rpt_...", "version_id": "v3",
+ "sections": [
+   {"section_id": "sec_commercial", "axis": "commercial", "title": "상권 가치 분석",
+    "blocks": [
+      {"block_id": "blk_c2",                   // 문단 단위
+       "markdown": "...",
+       "claim_ids": ["clm_17", "clm_18"]}      // 이 문단이 담는 주장
+    ]}],
+ "claims": {
+   "clm_17": {"text": "...", "kind": "factual",
+              "cites": ["fact:abc"], "as_of": "2026-04"}}}
+```
+
+기존 SQLite `report_version.body_json`이 이 구조를 담도록 형식을 확장하고,
+그래프에는 Report→Section→Claim이 이미 노드이므로(§4.3) Claim 노드에
+block_id 프로퍼티만 추가하면 **JSON ↔ 그래프가 1:1로 맞물린다.**
+
+### 10.4 발행자 피드백 루프 — REVISE (D13)
+
+보고서는 생성으로 끝나지 않는다. 발행 담당자가 에이전트와 상호작용하며
+보고서 자체를 수정하는 것까지가 목표다. 피드백은 **본문 텍스트 붙여넣기가
+아니라 대상 ID + 코멘트**로 들어온다 — UI에서 블록/주장을 클릭하면 ID가
+잡히는 구조:
+
+```json
+{"target": "clm_17",            // section / block / claim 어느 수준이든
+ "kind": "challenge",           // edit | challenge | enrich
+ "comment": "공실률 2분기 연속 상승 근거가 약함. 최신 분기 확인 필요"}
+```
+
+피드백은 `(:Feedback)-[:TARGETS]->(Claim|Block|Section)` 노드로 그래프에
+적재된다 — **사람의 판단도 그래프의 1급 시민.** Reviser가 kind별 처리:
+
+| kind | 의미 | 처리 | 사용 도구 |
+|---|---|---|---|
+| **edit** | 표현/구성 수정 | 해당 block만 재작성, 인용 유지 | Writer 재호출 (타깃 한정) |
+| **challenge** | 사실 이의 | 해당 Claim의 CITES 증거 유효성 재판정(§12) → 미달이면 미니 EXPAND로 최신 증거 수집 후 재작성 또는 철회 | ValidityCheck + 미니 EXPAND |
+| **enrich** | 보강 요청 | 대상 주변 walk + 미니 EXPAND → 해당 섹션 증보 | 미니 EXPAND + Writer |
+
+수정분은 Auditor 기계층을 다시 통과해야 하며, 통과 시 새 report_version
+(parent_version_id 체인, 기존 형식)으로 저장된다. **타깃 외 부분은 건드리지
+않는다** — 전체 재생성이 아니라 외과적 수정.
+
+Feedback 노드는 영구히 남아 ① 같은 자산의 다음 평가 라운드에 prior signal로
+자동 반영되고(frontier 가산), ② 발행자가 반복 지적하는 패턴(특정 출처 불신
+등)이 쌓이면 가중치 표·검증 규칙 튜닝의 입력이 된다.
+
 ---
 
-## 11. QA 상세 (D6 + D7)
+## 11. QA 상세 (D6 + D7 + D11)
 
 ```
 질문
- → ① 앵커: 스코프 지도 요약 + LLM 힌트 추출 → 벡터 매칭 (§5.6)
+ → ① 앵커: 스코프 지도 요약 + LLM 힌트 추출 → 벡터 매칭 (§5.6, 자산 스코프 한정 D11)
  → ② walk(anchors, LLMPolicy(질문), max_hops=3)
  → ③ 충분성 판정: 경로 점수 상위 k의 합이 임계 미달 or LLM "부족" 판정
       ├─ 충분 → ④
@@ -589,14 +666,50 @@ report/report_version + md sidecar)은 기존 그대로.
 
 ---
 
-## 12. 신선도 관리 (D10)
+## 12. 유효성 관리 — 공용 ValidityCheck (D10)
 
-- walk 점수에 감쇠 항: `decay = 0.5 ^ (경과개월 / 반감기)`
-  - 뉴스 Fact: 반감기 6개월 / 분기 통계: 12개월 / 정적 사실(인증, 준공): 무감쇠
-- 자산 B가 자산 A 때의 1년 전 Fact를 만나면: walk에서 후순위 + Navigator
-  frontier 점수에서 "오래된 증거만 있는 노드" 가산 → **재검색 신호**로 기능.
-- Writer는 인용 시 as_of 명시 의무, Auditor 기계층이 대조.
-- 분기 통계 갱신 시 그래프 프로퍼티는 latest로 교체 (시계열 원본은 SQLite).
+### 12.1 시간 속성 추출 (Harvester)
+
+Fact 추출 시 텍스트에 **명시된 시간 정보를 속성으로 함께 구조화**한다.
+"~까지", "~예정", "한시 적용" 같은 표현이 유효기간의 원천:
+
+```json
+{"text": "OO재개발 사업은 2027년 12월 준공 예정이다",
+ "published_at": "2026-04-02",       // 보도 시점
+ "event_date": null,                  // 사실이 가리키는 과거 시점 (있다면)
+ "valid_until": "2027-12-31",        // 명시 유효기간 — 원문에서 추출
+ "temporal_kind": "forecast"}         // static | dated | forecast
+```
+
+명시 정보가 없으면 valid_until=null로 두고 폴백 규칙(반감기)을 쓴다.
+
+### 12.2 공용 판단 로직
+
+```python
+# graphflow/validity.py — Composer·QA·Auditor·Navigator·Reviser가 전부 이 하나를 쓴다
+def validity(node, as_of=today) -> Validity:        # {status, score}
+    if node.valid_until:                             # ① 명시 유효기간 우선
+        return VALID(1.0) if as_of <= node.valid_until else EXPIRED(0.1)
+    if node.temporal_kind == "static":               # ② 정적 사실 (인증, 준공연도)
+        return VALID(1.0)
+    half_life = HALF_LIFE[node.kind]                 # ③ 폴백 — 반감기 감쇠
+    return DECAYED(0.5 ** (months_since(node.published_at) / half_life))
+    # 뉴스 Fact 6개월 / 분기 통계 12개월
+```
+
+### 12.3 사용처 — 보고서·QA·검증·확장이 같은 로직 공유
+
+| 사용처 | 적용 |
+|---|---|
+| walk 경로 점수 (§5.4) | score × validity.score — **보고서 집필과 QA가 동일하게** |
+| Auditor 기계층 (§10.2) | EXPIRED Fact 단독 인용 factual Claim 차단. as_of ↔ 인용 노드 대조 |
+| Navigator frontier (§8.1) | EXPIRED/만료 임박 증거만 있는 노드 가산 → **재검색 신호** |
+| QA 답변 | 만료 근거 인용 시 "유효기간 경과(~2027-12) — 최신 확인 필요" 라벨 표시 |
+| Reviser challenge (§10.4) | 이의 제기된 Claim의 인용 증거 유효성 재판정이 1차 처리 |
+
+오래된/만료 Fact는 삭제하지 않는다 — "작년엔 이랬다"는 이력 가치가 있고,
+frontier 가산을 통해 갱신을 유도하는 신호로 쓰인다. 분기 통계 갱신 시 그래프
+프로퍼티는 latest로 교체한다 (시계열 원본은 SQLite).
 
 ---
 
@@ -605,7 +718,7 @@ report/report_version + md sidecar)은 기존 그대로.
 | 구분 | 대상 |
 |---|---|
 | **공유 (데이터 축)** | LocationResolver, `real_estate/{asset,database,external,repository}`, `infra/` 전체, 데이터 검증 `scripts/try_*` |
-| **신규** | `real_estate/graphflow/`: traversal.py, profiles.py, policies.py, seeder.py, navigator.py, harvester.py, curator.py, composer.py, writer.py, synthesizer.py, auditor.py, qa.py, state.py, workflow.py, graph/(driver·schema·cards — 스냅샷 복원+확장), llm.py(복원), tracing(복원) + `scripts/try_graphflow.py` |
+| **신규** | `real_estate/graphflow/`: traversal.py, profiles.py, policies.py, validity.py, seeder.py, navigator.py, harvester.py, curator.py, composer.py, writer.py, synthesizer.py, auditor.py, reviser.py, qa.py, state.py, workflow.py, graph/(driver·schema·cards — 스냅샷 복원+확장), llm.py(복원), tracing(복원) + `scripts/try_graphflow.py` |
 | **삭제됨 (b7a9e54)** | 구 `real_estate/report/` 전체 + report 의존 스크립트 9개 |
 
 복원 출처: `yachom/wip/v3-pre-graphflow-snapshot` — graph ETL, llm.py,
@@ -622,6 +735,7 @@ embedder/vector_index, scout SQL(Seeder로 흡수), report 저장 스키마.
 | **C** | EXPAND 루프 (Navigator/Harvester/Curator + LLMPolicy + novelty) | 검색어 샘플 30개 리뷰(경로 고유명사 포함률), 오연결 0건 확인 |
 | **D** | Composer/Writer/Synthesizer/Auditor + Report 서브그래프 + 저장 | Auditor 기계층 위반 0으로 수렴하는지, 보고서 1건 전체 생산 |
 | **E** | QA + 미니 EXPAND + GAP 피드백 (+ UI는 후속) | golden 질문 20개: 인용 정확도 + 라이브 확장 발동률/지연 측정 |
+| **F** | 보고서 구조화 JSON 렌더 + Feedback/Reviser 루프 | 피드백 3종(edit/challenge/enrich) 시나리오 각 1건 처리 + **타깃 외 블록 불변** 확인 |
 
 ---
 
