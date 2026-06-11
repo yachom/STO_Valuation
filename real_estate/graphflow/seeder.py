@@ -143,6 +143,13 @@ def _nearest_trdar(conn, lat: float, lng: float) -> str | None:
 # ───────────────────────────────────────────────────────────
 # 스코프 수집 (순수 SQLite — 오프라인 검증 가능)
 # ───────────────────────────────────────────────────────────
+def asset_id_for(location: LocationInfo) -> str:
+    """자산 식별자 규칙: 건물관리번호 우선, 없으면 좌표 (asset.py와 동일 규칙)."""
+    if location.bd_mgt_sn:
+        return f"re:{location.bd_mgt_sn}"
+    return f"re:{location.latitude},{location.longitude}"
+
+
 def collect_scope(
     location: LocationInfo,
     db_path: str,
@@ -153,7 +160,7 @@ def collect_scope(
     sg = ScopeGraph()
 
     bd = location.bd_mgt_sn
-    asset_id = f"re:{bd}" if bd else f"re:{location.latitude},{location.longitude}"
+    asset_id = asset_id_for(location)
     sigungu_cd = location.bcode[:5] if location.bcode else None
 
     asset = sg.add_node(L.ASSET, asset_id, {
