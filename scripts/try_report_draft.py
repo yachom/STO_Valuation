@@ -20,7 +20,7 @@ from real_estate.location import LocationResolver
 from real_estate.report.agents.base import AgentContext
 from real_estate.report.domain import Report, ReportSection
 from real_estate.report.graph.driver import close_neo4j_driver, get_neo4j_driver
-from real_estate.report.rag.naive_retriever import NaiveNeighborhoodRetriever
+from real_estate.report.tool.retriever.naive_retriever import NaiveNeighborhoodRetriever
 from real_estate.report.storage.report_repo import ReportRepository
 from real_estate.report.workflow.graph_v1 import (
     build_draft_graph,
@@ -60,15 +60,29 @@ def main() -> None:
         f"건물관리번호: {getattr(location, 'bd_mgt_sn', '')}\n"
         f"좌표: ({getattr(location, 'latitude', '')}, {getattr(location, 'longitude', '')})"
     )
+    bcode = getattr(location, "bcode", None) or ""
+    hcode = getattr(location, "hcode", None) or ""
+    asset_identifiers = {
+        "bd_mgt_sn": getattr(location, "bd_mgt_sn", None),
+        "latitude": getattr(location, "latitude", None),
+        "longitude": getattr(location, "longitude", None),
+        "sigungu": getattr(location, "sigungu", None),
+        "sigungu_cd": bcode[:5] if bcode else None,
+        "adstrd_cd": hcode[:8] if hcode else None,
+    }
 
     driver = get_neo4j_driver()
     try:
         retriever = NaiveNeighborhoodRetriever(driver)
         ctx = AgentContext(retriever=retriever)
-        app = build_draft_graph(ctx)
+        app = build_draft_graph(ctx, db_path=str(DB_PATH))
 
         # 2) graph 실행
-        initial = {"asset_id": asset_id, "asset_summary": asset_summary}
+        initial = {
+            "asset_id": asset_id,
+            "asset_summary": asset_summary,
+            "asset_identifiers": asset_identifiers,
+        }
         final_state = app.invoke(initial)
 
         # 3) Report 도메인 객체로 변환 + SQLite 저장

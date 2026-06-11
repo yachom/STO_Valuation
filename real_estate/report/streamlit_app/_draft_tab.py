@@ -57,9 +57,25 @@ def _generate_draft(address: str) -> str:
         f"지번: {getattr(location, 'jibun_address', '')}\n"
         f"건물관리번호: {getattr(location, 'bd_mgt_sn', '')}\n"
     )
+    # bcode 10자리 앞 5자리 = LAWD_CD(sigungu_cd). MOLIT/REB scout 인자.
+    # hcode 10자리 앞 8자리 = adstrd_cd (서울 OD 행정동 단위).
+    bcode = getattr(location, "bcode", None) or ""
+    hcode = getattr(location, "hcode", None) or ""
+    asset_identifiers = {
+        "bd_mgt_sn": getattr(location, "bd_mgt_sn", None),
+        "latitude": getattr(location, "latitude", None),
+        "longitude": getattr(location, "longitude", None),
+        "sigungu": getattr(location, "sigungu", None),
+        "sigungu_cd": bcode[:5] if bcode else None,
+        "adstrd_cd": hcode[:8] if hcode else None,
+    }
 
-    app = build_draft_graph(AgentContext(retriever=retriever))
-    final_state = app.invoke({"asset_id": asset_id, "asset_summary": asset_summary})
+    app = build_draft_graph(AgentContext(retriever=retriever), db_path=str(DB_PATH))
+    final_state = app.invoke({
+        "asset_id": asset_id,
+        "asset_summary": asset_summary,
+        "asset_identifiers": asset_identifiers,
+    })
 
     sections_data = state_to_report_sections(final_state)
     sections = [ReportSection(

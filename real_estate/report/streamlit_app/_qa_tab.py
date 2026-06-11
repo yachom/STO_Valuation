@@ -7,7 +7,7 @@ import logging
 import streamlit as st
 
 from real_estate.report.agents.qa import answer_question
-from real_estate.report.rag.report_scoped_retriever import ReportScopedRetriever
+from real_estate.report.tool.retriever.report_scoped_retriever import ReportScopedRetriever
 from real_estate.report.streamlit_app._deps import get_repo
 
 logger = logging.getLogger("streamlit.qa")

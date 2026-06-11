@@ -22,9 +22,9 @@ import logging
 from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import format_snippets, korean_system_prompt
-from real_estate.report.agents.data_scout import SCOUT_REGISTRY, DataScout
+from real_estate.report.tool.scout.data_scout import SCOUT_REGISTRY, DataScout
 from real_estate.report.llm import cached_system, get_llm
-from real_estate.report.rag.protocol import Axis
+from real_estate.report.tool.retriever.protocol import Axis
 from real_estate.report.tracing import axis_scope, emit, emit_tool_call, node_scope
 
 logger = logging.getLogger("agent.analyst_v2")

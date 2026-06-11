@@ -1,4 +1,4 @@
-from real_estate.report.rag.protocol import (
+from real_estate.report.tool.retriever.protocol import (
     Axis,
     GroundedSnippet,
     Retriever,

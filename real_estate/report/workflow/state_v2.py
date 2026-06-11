@@ -12,6 +12,8 @@ def _merge_dict(left: dict | None, right: dict | None) -> dict:
 class ReportStateV2(TypedDict, total=False):
     asset_id: str
     asset_summary: str
+    asset_identifiers: dict                         # bd_mgt_sn, lat, lon, sigungu_cd, sigungu 등
+    prefetched_facts: dict                          # planner가 사전 수집한 건물·입지·시장 facts
     section_outline: list[dict]
     sections: Annotated[dict[str, dict], _merge_dict]
     overview_section: dict

@@ -396,6 +396,130 @@ class DataScout:
             f"scout:dev:{sigungu}",
         )
 
+    # ─── 행정동 단위 / 좌표→상권 (B축) ─────────────────────
+    def admin_dong_demographics(self, *, adstrd_cd: str) -> ScoutResult:
+        """행정동 상주인구 + 세대수(아파트/비아파트) + 연령 분포 (최근 분기)."""
+        try:
+            conn = self._conn()
+            r = conn.execute(
+                "SELECT quarter_code, adstrd_name, total, male, female, "
+                "age_10, age_20, age_30, age_40, age_50, age_60_over, "
+                "household, apartment_household, non_apartment_household "
+                "FROM admin_dong_resident_population "
+                "WHERE adstrd_cd=? ORDER BY quarter_code DESC LIMIT 1",
+                (adstrd_cd,),
+            ).fetchone()
+            conn.close()
+            if not r:
+                return ScoutResult(
+                    f"행정동 {adstrd_cd} 상주인구 데이터 없음.",
+                    f"scout:dong_pop:{adstrd_cd}:no_data",
+                )
+            return ScoutResult(
+                f"행정동 {r['adstrd_name']}({adstrd_cd}, {r['quarter_code']}): "
+                f"상주 {r['total']:,}명 (남 {r['male']:,}/여 {r['female']:,}), "
+                f"세대 {r['household']:,} (아파트 {r['apartment_household']:,}/"
+                f"비아파트 {r['non_apartment_household']:,}). "
+                f"연령: 10대 {r['age_10']:,}, 20대 {r['age_20']:,}, "
+                f"30대 {r['age_30']:,}, 40대 {r['age_40']:,}, "
+                f"50대 {r['age_50']:,}, 60+ {r['age_60_over']:,}.",
+                f"scout:dong_pop:{adstrd_cd}",
+            )
+        except sqlite3.OperationalError:
+            return ScoutResult(
+                "admin_dong_resident_population 테이블 없음.",
+                "scout:dong_pop:missing_table",
+            )
+
+    def admin_dong_floating(self, *, adstrd_cd: str) -> ScoutResult:
+        """행정동 유동인구 (최근 분기) — 시간대·요일·성별 비중."""
+        try:
+            conn = self._conn()
+            r = conn.execute(
+                "SELECT quarter_code, adstrd_name, total, male, female, "
+                "time_00_06, time_06_11, time_11_14, time_14_17, "
+                "time_17_21, time_21_24, "
+                "mon, tue, wed, thu, fri, sat, sun "
+                "FROM admin_dong_floating_population "
+                "WHERE adstrd_cd=? ORDER BY quarter_code DESC LIMIT 1",
+                (adstrd_cd,),
+            ).fetchone()
+            conn.close()
+            if not r:
+                return ScoutResult(
+                    f"행정동 {adstrd_cd} 유동인구 데이터 없음.",
+                    f"scout:dong_float:{adstrd_cd}:no_data",
+                )
+            weekday = r["mon"] + r["tue"] + r["wed"] + r["thu"] + r["fri"]
+            weekend = r["sat"] + r["sun"]
+            return ScoutResult(
+                f"행정동 {r['adstrd_name']}({adstrd_cd}, {r['quarter_code']}) "
+                f"유동인구: 총 {r['total']:,} "
+                f"(남 {r['male']:,}/여 {r['female']:,}). "
+                f"시간대: 06~11 {r['time_06_11']:,}, 11~14 {r['time_11_14']:,}, "
+                f"14~17 {r['time_14_17']:,}, 17~21 {r['time_17_21']:,}. "
+                f"평일합 {weekday:,} vs 주말합 {weekend:,}.",
+                f"scout:dong_float:{adstrd_cd}",
+            )
+        except sqlite3.OperationalError:
+            return ScoutResult(
+                "admin_dong_floating_population 테이블 없음.",
+                "scout:dong_float:missing_table",
+            )
+
+    def industry_top_near_coords(
+        self, *, latitude: float, longitude: float, n: int = 5,
+    ) -> ScoutResult:
+        """좌표 → 가장 가까운 상권(center 거리) → 그 상권 상위 N업종 매출 (2단계)."""
+        try:
+            conn = self._conn()
+            rows = conn.execute(
+                "SELECT trdar_cd, trdar_name, trdar_se_name, "
+                "center_lat, center_lon FROM commercial_area "
+                "WHERE center_lat IS NOT NULL "
+                "AND ABS(center_lat-?)<0.03 AND ABS(center_lon-?)<0.03",
+                (latitude, longitude),
+            ).fetchall()
+            if not rows:
+                conn.close()
+                return ScoutResult(
+                    f"좌표 ({latitude:.4f},{longitude:.4f}) 인근 상권 없음.",
+                    f"scout:industry_near:"
+                    f"{latitude:.4f},{longitude:.4f}:no_area",
+                )
+            nearest = min(rows, key=lambda r: _haversine_m(
+                latitude, longitude, r["center_lat"], r["center_lon"]))
+            d = _haversine_m(latitude, longitude,
+                             nearest["center_lat"], nearest["center_lon"])
+            trdar_cd = nearest["trdar_cd"]
+            sales = conn.execute(
+                "SELECT industry_name, SUM(sales_amount) AS s, "
+                "SUM(sales_count) AS c FROM commercial_estimated_sales "
+                "WHERE trdar_cd=? GROUP BY industry_code "
+                "ORDER BY s DESC LIMIT ?",
+                (trdar_cd, n),
+            ).fetchall()
+            conn.close()
+            if not sales:
+                return ScoutResult(
+                    f"가장 가까운 상권 {nearest['trdar_name']}({trdar_cd}, "
+                    f"{d:.0f}m, {nearest['trdar_se_name']}) — 매출 데이터 없음.",
+                    f"scout:industry_near:{trdar_cd}:no_sales",
+                )
+            parts = [f"{r['industry_name']}({r['s']:,}원,{r['c']:,}건)"
+                     for r in sales]
+            return ScoutResult(
+                f"가장 가까운 상권 {nearest['trdar_name']}({trdar_cd}, "
+                f"{d:.0f}m, {nearest['trdar_se_name']}) 상위 {n}개 업종: "
+                + ", ".join(parts) + ".",
+                f"scout:industry_near:{trdar_cd}",
+            )
+        except sqlite3.OperationalError as exc:
+            return ScoutResult(
+                f"commercial_area/commercial_estimated_sales 조회 실패: {exc}",
+                "scout:industry_near:error",
+            )
+
 
 SCOUT_REGISTRY = [
     ("commercial_sale_stats_in_district", "tenant",
@@ -418,4 +542,10 @@ SCOUT_REGISTRY = [
      "상권 상위 N개 업종 매출 — 인자: trdar_cd, n(opt)"),
     ("development_pipeline", "commercial",
      "자치구 정비사업 분포 — 인자: sigungu(이름)"),
+    ("admin_dong_demographics", "commercial",
+     "행정동 상주인구·세대(아파트/비아파트)·연령 분포 — 인자: adstrd_cd (8자리)"),
+    ("admin_dong_floating", "commercial",
+     "행정동 유동인구(시간대·요일·성별) — 인자: adstrd_cd (8자리)"),
+    ("industry_top_near_coords", "commercial",
+     "좌표 → 가장 가까운 상권 → 상위 N업종 — 인자: latitude, longitude, n(opt)"),
 ]

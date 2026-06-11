@@ -21,8 +21,8 @@ import math
 import sqlite3
 from dataclasses import dataclass
 
-from real_estate.report.rag.embedder import embed_one, embed_texts
-from real_estate.report.rag.protocol import Axis, GroundedSnippet, Retriever
+from real_estate.report.tool.retriever.embedder import embed_one, embed_texts
+from real_estate.report.tool.retriever.protocol import Axis, GroundedSnippet, Retriever
 from real_estate.report.tracing import emit_tool_call
 from real_estate.report.tracing_sqlite import tracing_connect
 

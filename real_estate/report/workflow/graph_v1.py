@@ -7,18 +7,18 @@ from langgraph.graph import END, StateGraph
 from real_estate.report.agents.base import AgentContext
 from real_estate.report.agents.commercial_analyst import commercial_analyst_node
 from real_estate.report.agents.esg_analyst import esg_analyst_node
-from real_estate.report.agents.planner import planner_node
+from real_estate.report.agents.planner import make_planner_node
 from real_estate.report.agents.synthesizer import synthesizer_node
 from real_estate.report.agents.tenant_analyst import tenant_analyst_node
 from real_estate.report.agents.validator import validator_node
 from real_estate.report.workflow.state import ReportState
 
 
-def build_draft_graph(ctx: AgentContext):
+def build_draft_graph(ctx: AgentContext, *, db_path: str):
     """compile된 LangGraph 반환. 호출자가 invoke(state)로 사용."""
     g = StateGraph(ReportState)
 
-    g.add_node("planner", planner_node)
+    g.add_node("planner", make_planner_node(db_path))
     # analyst 노드들은 ctx를 closure로 잡아 wrap
     g.add_node("tenant_analyst", lambda s: tenant_analyst_node(s, ctx))
     g.add_node("esg_analyst", lambda s: esg_analyst_node(s, ctx))

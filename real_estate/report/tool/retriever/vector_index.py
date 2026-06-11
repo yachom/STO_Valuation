@@ -12,7 +12,7 @@ import logging
 from neo4j import Driver
 
 from real_estate.report.graph.schema import NODE_LABELS
-from real_estate.report.rag.embedder import dim, embed_texts
+from real_estate.report.tool.retriever.embedder import dim, embed_texts
 
 logger = logging.getLogger("rag.vector_index")
 

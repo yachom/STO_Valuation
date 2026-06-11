@@ -14,7 +14,7 @@ from langgraph.graph import END, StateGraph
 from real_estate.report.agents._analyst_v2 import make_v2_analyst_node
 from real_estate.report.agents.base import AgentContext
 from real_estate.report.agents.final_editor import final_editor_node
-from real_estate.report.agents.planner import planner_node
+from real_estate.report.agents.planner import make_planner_node
 from real_estate.report.agents.reviser_v2 import reviser_v2_node
 from real_estate.report.agents.risk_critic import risk_critic_node
 from real_estate.report.agents.synthesizer import synthesizer_node
@@ -30,7 +30,7 @@ def build_draft_graph_v2(ctx: AgentContext, *, db_path: str):
     g = StateGraph(ReportStateV2)
 
     # ── nodes ──
-    g.add_node("planner", planner_node)
+    g.add_node("planner", make_planner_node(db_path))
 
     tenant = make_v2_analyst_node("tenant", "테넌트 가치", db_path)
     esg = make_v2_analyst_node("esg", "ESG 가치", db_path)

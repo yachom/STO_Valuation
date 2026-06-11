@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import format_snippets, korean_system_prompt
 from real_estate.report.llm import get_llm
-from real_estate.report.rag.protocol import Retriever
+from real_estate.report.tool.retriever.protocol import Retriever
 
 logger = logging.getLogger("agent.qa")
 

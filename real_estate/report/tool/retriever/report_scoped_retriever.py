@@ -17,8 +17,8 @@ from __future__ import annotations
 import logging
 
 from real_estate.report.domain import Report
-from real_estate.report.rag.embedder import embed_one, embed_texts
-from real_estate.report.rag.protocol import Axis, GroundedSnippet, Retriever
+from real_estate.report.tool.retriever.embedder import embed_one, embed_texts
+from real_estate.report.tool.retriever.protocol import Axis, GroundedSnippet, Retriever
 from real_estate.report.tracing import emit_tool_call
 
 logger = logging.getLogger("rag.report_scoped")

@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field
 
 from real_estate.report.agents.base import AgentContext, format_snippets, korean_system_prompt
 from real_estate.report.llm import get_llm
-from real_estate.report.rag.protocol import Axis
+from real_estate.report.tool.retriever.protocol import Axis
 
 logger = logging.getLogger("agent.analyst")
 

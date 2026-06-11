@@ -9,7 +9,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 
-from real_estate.report.rag.protocol import Retriever
+from real_estate.report.tool.retriever.protocol import Retriever
 
 logger = logging.getLogger("agent.base")
 

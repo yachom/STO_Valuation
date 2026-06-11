@@ -10,8 +10,8 @@ import sys
 
 from infra.env import load_env
 from real_estate.report.graph.driver import close_neo4j_driver, get_neo4j_driver
-from real_estate.report.rag.naive_retriever import NaiveNeighborhoodRetriever
-from real_estate.report.rag.vector_index import (
+from real_estate.report.tool.retriever.naive_retriever import NaiveNeighborhoodRetriever
+from real_estate.report.tool.retriever.vector_index import (
     ensure_vector_index,
     update_all_embeddings,
 )

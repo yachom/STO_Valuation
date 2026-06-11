@@ -65,6 +65,7 @@ _TIER_SPECS_DEFAULT: dict[str, ProviderSpec] = {
 # 에이전트 이름 → tier. 새 에이전트는 여기에 등록.
 AGENT_TO_TIER_DEFAULT: dict[str, str] = {
     "planner":            "opus",
+    "planner_v3":         "opus",
     "synthesizer":        "opus",
     "final_editor":       "opus",
     "tenant_analyst":     "sonnet",
@@ -73,6 +74,7 @@ AGENT_TO_TIER_DEFAULT: dict[str, str] = {
     "risk_critic":        "sonnet",
     "reviser_v2":         "sonnet",
     "reviser":            "sonnet",   # v1 호환
+    "reflection":         "sonnet",   # Reflexion verbal memo (graph_v3)
     "qa":                 "sonnet",
     "walk_confidence":    "haiku",    # PR-3 walk loop 신뢰도 체크
 }

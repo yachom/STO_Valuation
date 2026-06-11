@@ -14,7 +14,7 @@ import streamlit as st
 from infra.env import load_env
 from real_estate.location import LocationResolver
 from real_estate.report.graph.driver import get_neo4j_driver
-from real_estate.report.rag.naive_retriever import NaiveNeighborhoodRetriever
+from real_estate.report.tool.retriever.naive_retriever import NaiveNeighborhoodRetriever
 from real_estate.report.storage.report_repo import ReportRepository
 
 DB_PATH = Path("real_estate/database/DB/real_estate.db")

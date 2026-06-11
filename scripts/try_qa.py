@@ -11,7 +11,7 @@ from pathlib import Path
 
 from infra.env import load_env
 from real_estate.report.agents.qa import answer_question
-from real_estate.report.rag.report_scoped_retriever import ReportScopedRetriever
+from real_estate.report.tool.retriever.report_scoped_retriever import ReportScopedRetriever
 from real_estate.report.storage.report_repo import ReportRepository
 
 DB_PATH = Path("real_estate/database/DB/real_estate.db")

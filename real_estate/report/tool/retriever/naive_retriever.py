@@ -17,9 +17,9 @@ import logging
 from neo4j import Driver
 
 from real_estate.report.graph.schema import NODE_LABELS
-from real_estate.report.rag.embedder import embed_one
-from real_estate.report.rag.protocol import Axis, GroundedSnippet, Retriever
-from real_estate.report.rag.vector_index import search_similar
+from real_estate.report.tool.retriever.embedder import embed_one
+from real_estate.report.tool.retriever.protocol import Axis, GroundedSnippet, Retriever
+from real_estate.report.tool.retriever.vector_index import search_similar
 from real_estate.report.tracing import emit_tool_call
 
 logger = logging.getLogger("rag.naive")

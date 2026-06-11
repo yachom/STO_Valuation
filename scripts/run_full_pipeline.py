@@ -38,7 +38,7 @@ from real_estate.location import LocationResolver
 from real_estate.report.agents.base import AgentContext
 from real_estate.report.domain import Report, ReportSection
 from real_estate.report.llm import get_langfuse_handler
-from real_estate.report.rag.sqlite_retriever import AssetContext, SqliteRetriever
+from real_estate.report.tool.retriever.sqlite_retriever import AssetContext, SqliteRetriever
 from real_estate.report.storage.report_repo import ReportRepository
 from real_estate.report.tracing import RunTracer, make_report_id, set_tracer
 from real_estate.report.workflow.graph_v2 import (
