@@ -65,7 +65,10 @@ class StaticPolicy:
         return _clamp(base, 0.0, 1.0)
 
     def node_score(self, label: str, props: dict) -> float:
-        # PR-B: 구조 노드만 존재 → 유효성/신뢰도 배수 1.0.
-        # 확장/유효성 단계(§9.3 confidence, §12 ValidityCheck)에서 이 지점에
-        # validity(node) × confidence(node)를 곱해 넣는다.
-        return 1.0
+        """유효성(§12 ValidityCheck) × 신뢰도(§9.3 confidence) 배수."""
+        from real_estate.graphflow.validity import validity
+        score = validity(props, label=label).score
+        conf = props.get("confidence")
+        if isinstance(conf, (int, float)):
+            score *= max(0.0, min(1.0, float(conf)))
+        return score
