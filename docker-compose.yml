@@ -1,0 +1,32 @@
+# 로컬 개발용 Neo4j (graphflow). 설계 §17 — graphflow는 Neo4j를 필수로 둔다.
+#
+# 사용:
+#   docker compose up -d neo4j
+#   → 브라우저 http://localhost:7474 (neo4j / graphflow_dev_pw)
+#   → .env에 NEO4J_PASSWORD=graphflow_dev_pw 채우기 (기본 비밀번호와 일치)
+#
+# 벡터 인덱스(db.index.vector.*)는 Neo4j 5.13+ 필요 — 5.26 LTS 사용.
+services:
+  neo4j:
+    image: neo4j:5.26-community
+    container_name: graphflow_neo4j
+    ports:
+      - "7474:7474"   # HTTP (브라우저)
+      - "7687:7687"   # Bolt (드라이버)
+    environment:
+      NEO4J_AUTH: "neo4j/graphflow_dev_pw"
+      # APOC 미사용 (현재 vector index는 코어 기능). 필요 시 plugins에 추가.
+      NEO4J_server_memory_heap_max__size: "1G"
+      NEO4J_server_memory_pagecache_size: "512M"
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:7474 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  neo4j_data:
+  neo4j_logs:

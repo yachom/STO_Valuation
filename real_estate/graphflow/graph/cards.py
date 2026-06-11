@@ -1,0 +1,186 @@
+"""노드 텍스트 카드 — 노드별 1~3문장 한국어 요약을 `card_text` 프로퍼티로 저장.
+
+retriever/QA가 카드를 벡터 임베딩해 의미 검색 + LLM 컨텍스트 압축에 쓴다.
+카드는 결정적 템플릿이라 LLM 호출 없이 재현 가능하다. None/누락 필드는 자연스럽게
+생략한다. 카드 품질이 곧 QA 앵커 매칭 품질이므로 (설계 §5.6) 성의 있게 채운다.
+
+각 builder는 properties dict를 받아 한국어 string을 반환한다.
+"""
+
+from __future__ import annotations
+
+import logging
+
+from real_estate.graphflow.graph.schema import NODE_LABELS
+
+logger = logging.getLogger("graphflow.cards")
+
+
+def _fmt_int(v) -> str | None:
+    try:
+        return f"{int(v):,}"
+    except (TypeError, ValueError):
+        return None
+
+
+# ───────────────────────────────────────────────────────────
+# 템플릿
+# ───────────────────────────────────────────────────────────
+def card_for_asset(p: dict) -> str:
+    name = p.get("building_name") or p.get("road_address") or p.get("jibun_address") or "상가 건물"
+    parts = [name]
+    loc = p.get("road_address") or p.get("jibun_address")
+    if loc and loc != name:
+        parts.append(f"({loc})")
+    tail = "는 평가 대상 상가 건물이다."
+    sigungu = p.get("sigungu")
+    if sigungu:
+        tail = f"는 {sigungu} 소재 평가 대상 상가 건물이다."
+    bd = p.get("bd_mgt_sn")
+    if bd:
+        tail += f" 건물관리번호 {bd}."
+    return "".join(parts) + tail
+
+
+def card_for_complex(p: dict) -> str:
+    name = p.get("canonical_name", "이름 미상")
+    parts = [name]
+    if p.get("road_address"):
+        parts.append(f"({p['road_address']})")
+    parts.append("는 ")
+    sub = []
+    if p.get("completion_date"):
+        sub.append(f"{p['completion_date']} 준공")
+    hh = _fmt_int(p.get("household_count"))
+    if hh:
+        sub.append(f"{hh}세대 규모")
+    parts.append(", ".join(sub) if sub else "정보 미확정")
+    parts.append("의 아파트 단지이다.")
+    return "".join(parts)
+
+
+def card_for_building(p: dict) -> str:
+    name = p.get("name") or p.get("building_name") or "건물명 미상"
+    addr = p.get("jibun_addr") or p.get("addr") or ""
+    suffix = f" ({addr})" if addr else ""
+    return f"{name}{suffix} — 건물관리번호 {p.get('bdmgt_sn', '')}."
+
+
+def card_for_certification(p: dict) -> str:
+    kind = p.get("kind", "")
+    grade = p.get("grade", "")
+    date = p.get("issue_date", "")
+    if kind == "BEEC":
+        extra = []
+        if p.get("primary_energy_req") is not None:
+            extra.append(f"1차에너지소요량 {p['primary_energy_req']}")
+        if p.get("energy_reduce_rate") is not None:
+            extra.append(f"에너지절감률 {p['energy_reduce_rate']}%")
+        extra_s = " (" + ", ".join(extra) + ")" if extra else ""
+        return f"BEEC 건물에너지효율 인증 — 등급 {grade}, 인증일 {date}{extra_s}."
+    if kind == "GSEED":
+        std = p.get("cert_standard", "")
+        ct = p.get("cert_type", "")
+        return f"G-SEED 녹색건축 {ct} — 등급 {grade}, 기준 {std}, 인증일 {date}."
+    return f"인증 {kind} 등급 {grade} ({date})."
+
+
+def card_for_commercial_area(p: dict) -> str:
+    name = p.get("trdar_name", "상권명 미상")
+    kind = p.get("trdar_se_name", "")
+    area = p.get("area_sqm")
+    area_s = f", 면적 {area:,.0f}㎡" if area else ""
+    base = f"상권 {name} ({kind}){area_s}."
+    extras = []
+    fl = _fmt_int(p.get("latest_floating_total"))
+    if fl:
+        extras.append(f"분기 유동인구 {fl}명")
+    sl = _fmt_int(p.get("latest_sales_total"))
+    if sl:
+        extras.append(f"추정매출 {sl}원")
+    if extras:
+        q = p.get("latest_quarter", "")
+        base += f" 최근({q}) " + ", ".join(extras) + "."
+    return base
+
+
+def card_for_industry(p: dict) -> str:
+    name = p.get("industry_name", "업종 미상")
+    trdar = p.get("trdar_name", "")
+    sales = _fmt_int(p.get("sales_amount"))
+    where = f"{trdar} 상권" if trdar else "상권"
+    if sales:
+        return f"{name} — {where} 매출 상위 업종 (추정매출 {sales}원)."
+    return f"{name} — {where} 주요 업종."
+
+
+def card_for_admin_dong(p: dict) -> str:
+    name = p.get("adstrd_name") or ""
+    base = f"행정동 {name} ({p.get('adstrd_cd', '')})."
+    pop = _fmt_int(p.get("latest_resident_total"))
+    if pop:
+        base += f" 상주인구 {pop}명({p.get('latest_resident_quarter', '')})."
+    return base
+
+
+def card_for_legal_dong(p: dict) -> str:
+    name = p.get("bname") or ""
+    return f"법정동 {name} ({p.get('bcode', '')})."
+
+
+def card_for_transit_station(p: dict) -> str:
+    name = p.get("station_name", "역명 미상")
+    line = p.get("line_name", "")
+    line_s = f" ({line})" if line else ""
+    return f"{name}{line_s} 지하철역."
+
+
+def card_for_tenancy_event(p: dict) -> str:
+    kind = p.get("kind", "")
+    ym = p.get("deal_year_month", "")
+    area = p.get("area_sqm")
+    area_s = f"{area}m²" if area else ""
+    if kind == "sale":
+        amount = _fmt_int(p.get("amount"))
+        amount_s = f"{amount}만원" if amount else "금액 미상"
+        return f"매매 거래 — {ym} {area_s} {amount_s}."
+    if kind == "rent":
+        deposit = _fmt_int(p.get("deposit")) or "0"
+        monthly = p.get("monthly_rent") or 0
+        ct = p.get("contract_type", "")
+        if monthly == 0:
+            return f"{ct} 거래 — {ym} {area_s} 보증금 {deposit}만원."
+        return f"{ct} 거래 — {ym} {area_s} 보증금 {deposit}만원 / 월세 {monthly:,}만원."
+    return f"거래 이벤트 ({ym})."
+
+
+def card_for_development_project(p: dict) -> str:
+    name = p.get("name", "사업명 미상")
+    district = p.get("district", "")
+    cat = p.get("category", "")
+    stage = p.get("stage", "")
+    return f"{district} {name} — {cat} ({stage})."
+
+
+_BUILDERS = {
+    NODE_LABELS.ASSET: card_for_asset,
+    NODE_LABELS.COMPLEX: card_for_complex,
+    NODE_LABELS.BUILDING: card_for_building,
+    NODE_LABELS.CERTIFICATION: card_for_certification,
+    NODE_LABELS.COMMERCIAL_AREA: card_for_commercial_area,
+    NODE_LABELS.INDUSTRY: card_for_industry,
+    NODE_LABELS.ADMIN_DONG: card_for_admin_dong,
+    NODE_LABELS.LEGAL_DONG: card_for_legal_dong,
+    NODE_LABELS.TRANSIT_STATION: card_for_transit_station,
+    NODE_LABELS.TENANCY_EVENT: card_for_tenancy_event,
+    NODE_LABELS.DEVELOPMENT_PROJECT: card_for_development_project,
+}
+
+
+def build_card(label: str, props: dict) -> str:
+    """라벨+프로퍼티로 카드 텍스트 생성. 빌더 미정의 라벨은 빈 문자열."""
+    builder = _BUILDERS.get(label)
+    if builder is None:
+        logger.warning("카드 빌더 미정의: %s", label)
+        return ""
+    return builder(props)
