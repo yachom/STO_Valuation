@@ -55,6 +55,7 @@ def run_expand(
     total_query_budget: int = 40,
     novelty_threshold: float = NOVELTY_THRESHOLD,
     scope_hops: int = 3,
+    purpose: str | None = None,    # QA 미니 EXPAND: 질문 구동 (§8.5, D7)
 ) -> dict:
     """EXPAND 실행. 반환: 라운드별 통계 요약."""
     asset_card, asset_sigungu = _asset_summary(driver, asset_id)
@@ -77,7 +78,8 @@ def run_expand(
 
             plans = navigator.plan_round(
                 asset_card, candidates[:frontier_max], executed,
-                max_targets=frontier_max, queries_per_node=queries_per_node)
+                max_targets=frontier_max, queries_per_node=queries_per_node,
+                purpose=purpose)
 
             # 총 검색 예산 캡 — 초과분은 계획 뒤에서부터 잘라냄
             remaining = total_query_budget - queries_spent

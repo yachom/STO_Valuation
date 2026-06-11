@@ -23,6 +23,24 @@ from real_estate.graphflow.tracing import node_scope, observe
 logger = logging.getLogger("graphflow.agent")
 
 
+def coerce_json(v):
+    """structured output 방어 — 소형 모델이 list/dict 필드를 JSON 문자열로
+    반환하는 경우가 있다 (Haiku에서 관측). field_validator(mode='before')에 사용:
+
+        @field_validator("items", mode="before")
+        @classmethod
+        def _coerce(cls, v):
+            return coerce_json(v)
+    """
+    if isinstance(v, str):
+        import json
+        try:
+            return json.loads(v)
+        except (ValueError, TypeError):
+            return v
+    return v
+
+
 DOMAIN_HIERARCHY = """
 도메인 위계 (명시적으로 적용 — 등급 순서 환각 차단):
 

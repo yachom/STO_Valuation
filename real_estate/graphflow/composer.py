@@ -38,6 +38,7 @@ class Evidence:
     valid_until: str | None = None
     confidence: float | None = None
     validity_status: str = "VALID"
+    collected_by: str | None = None      # 수집 출처 run — QA '신규 수집 근거' 라벨용
 
     def to_map_entry(self) -> dict:
         return {
@@ -78,20 +79,8 @@ def _source_kind(label: str) -> str:
     return "graph_stat"          # SQLite 적재 구조 노드 (상권 통계/인증/거래 등)
 
 
-def compose(
-    driver: Driver,
-    asset_id: str,
-    axis: str,
-    *,
-    k: int = 12,
-    max_hops: int = 4,
-) -> list[Evidence]:
-    """축 프로파일 walk → Evidence 목록 (E1..Ek). 결정적."""
-    anchor = asset_anchor_eid(driver, asset_id)
-    if anchor is None:
-        raise ValueError(f"Asset 노드 없음: {asset_id}")
-
-    paths = walk(driver, [anchor], StaticPolicy(axis), max_hops=max_hops, k=k)
+def paths_to_evidence(driver: Driver, paths) -> list[Evidence]:
+    """walk/llm_walk 경로 → Evidence 목록 (E1..En). Composer·QA 공용."""
     tail_eids = [p.tail.eid for p in paths]
     props_map = _fetch_props(driver, tail_eids)
     origins = _doc_origins(
@@ -111,7 +100,25 @@ def compose(
             valid_until=props.get("valid_until"),
             confidence=props.get("confidence"),
             validity_status=v.status,
+            collected_by=props.get("collected_by"),
         ))
+    return out
+
+
+def compose(
+    driver: Driver,
+    asset_id: str,
+    axis: str,
+    *,
+    k: int = 12,
+    max_hops: int = 4,
+) -> list[Evidence]:
+    """축 프로파일 walk → Evidence 목록. 결정적 (보고서 집필용)."""
+    anchor = asset_anchor_eid(driver, asset_id)
+    if anchor is None:
+        raise ValueError(f"Asset 노드 없음: {asset_id}")
+    paths = walk(driver, [anchor], StaticPolicy(axis), max_hops=max_hops, k=k)
+    out = paths_to_evidence(driver, paths)
     logger.info("compose(%s, %s): %d evidence", asset_id, axis, len(out))
     return out
 

@@ -20,7 +20,9 @@ from datetime import datetime
 from typing import Literal
 
 from neo4j import Driver
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+
+from real_estate.graphflow.agents.base import coerce_json
 
 from real_estate.graphflow.agents.base import BaseAgent
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
@@ -76,6 +78,11 @@ class ExtractionOutput(BaseModel):
     facts: list[FactDraft] = Field(description=f"관련 사실 최대 {_MAX_FACTS_PER_DOC}개. 무관하면 빈 배열")
     doc_relevance: float = Field(description="기사 전체가 검색 맥락과 관련된 정도 0~1")
 
+    @field_validator("facts", mode="before")
+    @classmethod
+    def _coerce(cls, v):
+        return coerce_json(v)
+
 
 # ───────────────────────────────────────────────────────────
 # 사전 필터 — 스크랩/추출 전에 제목+요약만으로 관련 기사 선별 (Haiku, 저비용)
@@ -83,6 +90,11 @@ class ExtractionOutput(BaseModel):
 class PrefilterOutput(BaseModel):
     relevant_indexes: list[int] = Field(
         description="검색 맥락과 관련된 기사의 번호들 (0-base). 없으면 빈 배열")
+
+    @field_validator("relevant_indexes", mode="before")
+    @classmethod
+    def _coerce(cls, v):
+        return coerce_json(v)
 
 
 _PREFILTER_SYSTEM = (

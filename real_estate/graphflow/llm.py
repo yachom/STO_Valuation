@@ -48,6 +48,7 @@ AGENT_TO_TIER_DEFAULT: dict[str, str] = {
                                      # AGENT_TIER_HARVESTER=sonnet
     "prefilter":         "haiku",    # 제목+요약 관련성 사전 필터 (스크랩/추출 전)
     "curator":           "haiku",    # dedup/병합 승격 판정
+    "walk_judge":        "haiku",    # llm_walk 홉당 배치 판정 (keep/expand/drop)
     "writer":            "sonnet",   # 섹션 집필 (Claim+CITES)
     "synthesizer":       "opus",     # Overview + 정성 종합
     "auditor":           "sonnet",   # LLM층 모순/과대해석 검토

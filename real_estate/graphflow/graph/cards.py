@@ -201,6 +201,10 @@ def card_for_claim(p: dict) -> str:
     return f"{text}{as_of}"
 
 
+def card_for_question(p: dict) -> str:
+    return f"질문: {p.get('text', '')}"
+
+
 _BUILDERS = {
     NODE_LABELS.ASSET: card_for_asset,
     NODE_LABELS.COMPLEX: card_for_complex,
@@ -219,6 +223,7 @@ _BUILDERS = {
     NODE_LABELS.REPORT: card_for_report,
     NODE_LABELS.REPORT_SECTION: card_for_report_section,
     NODE_LABELS.CLAIM: card_for_claim,
+    NODE_LABELS.QUESTION: card_for_question,
 }
 
 

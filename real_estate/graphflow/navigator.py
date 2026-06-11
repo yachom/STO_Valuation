@@ -266,6 +266,7 @@ class Navigator(BaseAgent):
         *,
         max_targets: int = 8,
         queries_per_node: int = 2,
+        purpose: str | None = None,    # QA 미니 EXPAND: 섹션 주제 대신 질문 (§8.5)
     ) -> list[QueryPlan]:
         """frontier 후보 → 확장 계획. LLM 1회 + 코드 검증."""
         cand_lines = []
@@ -277,9 +278,13 @@ class Navigator(BaseAgent):
                 f"  템플릿 제안: {' / '.join(c.templates)}"
             )
         executed_block = "\n".join(f"- {q}" for q in executed) if executed else "(없음)"
+        purpose_block = (
+            f"[이번 확장의 목적 — 이 질문에 답할 정보 수집이 최우선]\n{purpose}\n\n"
+            if purpose else "")
         user = (
             f"[평가 대상 자산]\n{asset_card}\n\n"
-            f"[frontier 후보 — frontier 점수순]\n" + "\n".join(cand_lines) + "\n\n"
+            + purpose_block
+            + f"[frontier 후보 — frontier 점수순]\n" + "\n".join(cand_lines) + "\n\n"
             f"[이미 실행된 검색어]\n{executed_block}\n\n"
             f"최대 {max_targets}개 타깃을 고르고, 타깃당 검색어 최대 {queries_per_node}개를 "
             f"만들어 주세요."

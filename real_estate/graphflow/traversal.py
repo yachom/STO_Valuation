@@ -228,6 +228,151 @@ def _scope_eids(driver: Driver, asset_id: str, hops: int) -> set[str]:
         return set(r["eids"]) if r else set()
 
 
+# ───────────────────────────────────────────────────────────
+# LLMPolicy 적응 순회 — llm_walk (설계 §5.3, D4)
+#
+# 엔진 프리미티브(_expand/_load_nodes/EvidencePath)는 StaticPolicy walk와
+# 공유하고, "이 노드를 더 갈까" 판단만 LLM이 홉당 1회 배치로 한다.
+# 점수 산정은 qa_base StaticPolicy(랭킹 일관성) — LLM은 가지치기/확장만 결정.
+# 비결정적이므로 보고서 집필에는 쓰지 않는다 (QA·확장 전용).
+# ───────────────────────────────────────────────────────────
+_JUDGE_SYSTEM = (
+    "당신은 지식 그래프 탐색 판정자입니다. 목적(질문)에 비추어 각 후보 노드를 "
+    "판정합니다:\n"
+    "- keep: 이 노드 자체가 답의 근거가 된다\n"
+    "- expand: 이 노드 너머에 근거가 있을 듯하다 — 이웃을 더 탐색\n"
+    "- both: 근거이면서 더 탐색할 가치도 있다\n"
+    "- drop: 목적과 무관\n"
+    "탐색 예산이 제한적이니 무관한 노드는 과감히 drop하세요. "
+    "목록에 없는 번호는 만들지 마세요."
+)
+
+
+def _get_walk_judge():
+    """walk_judge 에이전트 (지연 생성 — traversal은 평소 LLM 무의존)."""
+    global _walk_judge
+    try:
+        return _walk_judge
+    except NameError:
+        from real_estate.graphflow.agents.base import BaseAgent
+
+        class _WalkJudge(BaseAgent):
+            name = "walk_judge"
+
+        _walk_judge = _WalkJudge()
+        return _walk_judge
+
+
+def llm_walk(
+    driver: Driver,
+    anchor_eids: list[str],
+    purpose: str,
+    *,
+    max_hops: int = 3,
+    k: int = 12,
+    max_candidates_per_hop: int = 24,
+) -> list[EvidencePath]:
+    """적응적 깊이 순회 — LLM이 홉당 후보를 일괄 판정해 keep/expand 결정.
+
+    frontier가 비면 MAX 홉 전에 자연 조기 종료. 판정 결과는 trace에 남는다.
+    """
+    from pydantic import BaseModel, Field, field_validator
+
+    from real_estate.graphflow.agents.base import coerce_json
+    from real_estate.graphflow.policies import StaticPolicy
+    from real_estate.graphflow.tracing import emit
+
+    class _Verdict(BaseModel):
+        index: int
+        verdict: str = Field(description="keep | expand | both | drop")
+
+    class _JudgeOutput(BaseModel):
+        verdicts: list[_Verdict]
+
+        @field_validator("verdicts", mode="before")
+        @classmethod
+        def _coerce(cls, v):
+            return coerce_json(v)
+
+    static = StaticPolicy("qa_base")           # 점수 산정용 (판정과 분리)
+    judge = _get_walk_judge()
+
+    anchors = _load_nodes(driver, anchor_eids)
+    best: dict[str, EvidencePath] = {}
+    frontier: list[EvidencePath] = []
+    for eid, nr in anchors.items():
+        p = EvidencePath([nr], [], 1.0)
+        best[eid] = p
+        frontier.append(p)
+    kept: dict[str, EvidencePath] = {}
+
+    for hop in range(1, max_hops + 1):
+        if not frontier:
+            break
+        neighbors = _expand(driver, [p.tail.eid for p in frontier])
+        # 후보 구성 (노드별 최고 점수 경로, 정렬·상한)
+        cands: dict[str, EvidencePath] = {}
+        for p in frontier:
+            path_eids = {n.eid for n in p.nodes}
+            for nb in neighbors.get(p.tail.eid, []):
+                if nb.noderef.eid in path_eids:
+                    continue
+                w = static.edge_weight(nb.rel, nb.direction)
+                if w <= 0:
+                    continue
+                score = p.score * w * static.node_score(nb.noderef.label, nb.props)
+                cur = best.get(nb.noderef.eid)
+                if cur is not None and score <= cur.score + _EPS:
+                    continue
+                npath = EvidencePath(
+                    p.nodes + [nb.noderef],
+                    p.edges + [EdgeStep(nb.rel, nb.direction, w)], score)
+                prev = cands.get(nb.noderef.eid)
+                if prev is None or score > prev.score:
+                    cands[nb.noderef.eid] = npath
+        ranked = sorted(cands.values(), key=lambda p: (-p.score, p.sig))
+        ranked = ranked[:max_candidates_per_hop]
+        if not ranked:
+            break
+
+        lines = [f"[{i}] ({p.tail.label}) {p.tail.card_text[:200]}"
+                 for i, p in enumerate(ranked)]
+        try:
+            out = judge.complete(
+                system=_JUDGE_SYSTEM,
+                user=f"[목적]\n{purpose}\n\n[후보 노드]\n" + "\n".join(lines),
+                schema=_JudgeOutput)
+            vmap = {v.index: v.verdict for v in out.verdicts
+                    if 0 <= v.index < len(ranked)}
+        except Exception as exc:
+            # 판정 실패 → 결정적 폴백: 전부 keep + 점수 상위 3개만 확장
+            emit("walk_judge_fallback", hop=hop, error=str(exc)[:200])
+            vmap = {i: ("both" if i < 3 else "keep") for i in range(len(ranked))}
+
+        next_frontier: list[EvidencePath] = []
+        n_keep = n_expand = 0
+        for i, p in enumerate(ranked):
+            verdict = vmap.get(i, "drop")
+            best[p.tail.eid] = p
+            if verdict in ("keep", "both"):
+                prev = kept.get(p.tail.eid)
+                if prev is None or p.score > prev.score:
+                    kept[p.tail.eid] = p
+                n_keep += 1
+            if verdict in ("expand", "both"):
+                next_frontier.append(p)
+                n_expand += 1
+        emit("walk_judge", hop=hop, candidates=len(ranked),
+             kept=n_keep, expanded=n_expand,
+             dropped=len(ranked) - n_keep - n_expand)
+        frontier = next_frontier
+
+    results = sorted(kept.values(), key=lambda p: (-p.score, p.tail.label, p.tail.key))
+    logger.info("llm_walk(%d anchors, hops≤%d) → %d kept", len(anchor_eids),
+                max_hops, len(results))
+    return results[:k]
+
+
 def vector_anchors(
     driver: Driver,
     query: str,
