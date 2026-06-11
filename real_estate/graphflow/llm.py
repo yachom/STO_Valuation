@@ -36,15 +36,17 @@ class ProviderSpec:
 _TIER_SPECS_DEFAULT: dict[str, ProviderSpec] = {
     "opus":   ProviderSpec("anthropic", "claude-opus-4-8",           8000),
     "sonnet": ProviderSpec("anthropic", "claude-sonnet-4-6",         8000),
-    "haiku":  ProviderSpec("anthropic", "claude-haiku-4-5-20251001", 2048),
+    "haiku":  ProviderSpec("anthropic", "claude-haiku-4-5-20251001", 4096),
 }
 
 
 # graphflow 에이전트 → tier (설계 §6 roster). 새 에이전트는 여기 등록.
 AGENT_TO_TIER_DEFAULT: dict[str, str] = {
     "navigator":         "sonnet",   # frontier 선정 + 검색어 생성
-    "harvester":         "sonnet",   # Fact/Entity 추출 판정
-    "harvester_extract": "haiku",    # 저비용 1차 추출 (Haiku 추출 + Sonnet 검증, §15)
+    "harvester":         "haiku",    # Fact 추출 — 강화 프롬프트로 Sonnet 대비 품질
+                                     # 동급(수치·출처·날짜), 비용 1/3. 복귀:
+                                     # AGENT_TIER_HARVESTER=sonnet
+    "prefilter":         "haiku",    # 제목+요약 관련성 사전 필터 (스크랩/추출 전)
     "curator":           "haiku",    # dedup/병합 승격 판정
     "writer":            "sonnet",   # 섹션 집필 (Claim+CITES)
     "synthesizer":       "opus",     # Overview + 정성 종합
