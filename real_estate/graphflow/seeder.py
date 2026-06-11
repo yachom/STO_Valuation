@@ -190,9 +190,15 @@ def collect_scope(
 
 
 def _collect_location_anchors(sg, conn, asset, loc) -> None:
-    """LegalDong + Building 앵커."""
+    """LegalDong + 자산 자신의 AdminDong + Building 앵커."""
     legal = sg.add_node(L.LEGAL_DONG, loc.bcode, {"bname": loc.bname})
     sg.add_edge(asset, E.ANCHORS, legal)
+
+    # 자산 본인의 행정동 (hcode[:8] = adstrd_cd). 인근 상권의 행정동과 다를 수
+    # 있다 — 상권 행정동을 자산에 앵커링하면 "서초2동 소재" 같은 모순이 생긴다.
+    if loc.hcode:
+        own_dong = _collect_admin_dong(sg, conn, loc.hcode[:8], loc.hname)
+        sg.add_edge(asset, E.ANCHORS, own_dong)
 
     if loc.bd_mgt_sn:
         # 건물 메타는 cert 테이블에서 best-effort 보강 (없으면 최소 노드)
@@ -293,10 +299,10 @@ def _collect_commercial_area(sg, conn, asset, loc, trdar_cd) -> object | None:
     ca_node = sg.add_node(L.COMMERCIAL_AREA, trdar_cd, props)
     sg.add_edge(asset, E.ANCHORS, ca_node, {"distance_m": props.get("distance_m")})
 
-    # 행정동
+    # 상권의 행정동 — 상권을 통해서만 연결 (자산 ANCHORS 아님: 자산 본인의
+    # 행정동은 _collect_location_anchors가 담당)
     if ca["adstrd_cd"]:
         ad_node = _collect_admin_dong(sg, conn, ca["adstrd_cd"], ca["adstrd_name"])
-        sg.add_edge(asset, E.ANCHORS, ad_node)
         sg.add_edge(ca_node, E.SERVES_DISTRICT, ad_node)
 
     # 상위 업종 (전 분기 누적 매출 상위 N) — Industry는 전역 공유 노드

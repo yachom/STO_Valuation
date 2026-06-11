@@ -182,7 +182,10 @@ def write_report_graph(driver: Driver, report: dict) -> None:
         edges.append(SeedEdge(L.REPORT_SECTION, f"sec_{cl['axis']}",
                               E.HAS_CLAIM, L.CLAIM, cid))
         for ref in cl["cites"]:
-            label, key = ref.split(":", 1)
+            if ":" in ref:                    # evidence ref "Label:key"
+                label, key = ref.split(":", 1)
+            else:                             # overview → 섹션 claim id ("clm_…")
+                label, key = L.CLAIM, ref
             edges.append(SeedEdge(L.CLAIM, cid, E.CITES, label, key))
         for dcid in cl["derived_from"]:
             edges.append(SeedEdge(L.CLAIM, cid, E.CITES, L.CLAIM, dcid))
