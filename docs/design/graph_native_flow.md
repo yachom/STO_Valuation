@@ -25,6 +25,9 @@
 | D11 | QA 탐색 범위 | QA 초기 탐색(스코프 요약·앵커 매칭)은 **자산 N홉 스코프로 한정**. 스코프 밖 전역 검색은 하지 않음 — 부족하면 라이브 확장(D7)으로 새 증거를 스코프에 편입. 자산과 무관한 답변 구조적 차단 |
 | D12 | 보고서 구조화 | 보고서의 1급 표현은 **주소 가능한 구조화 JSON**(section/block/claim ID). markdown은 렌더 산출물. 발행자 피드백은 본문 텍스트가 아니라 **대상 ID + 코멘트**로 입력 |
 | D13 | 발행자 수정 루프 | Feedback 노드(TARGETS 엣지) + Reviser 에이전트. 피드백 종류별(edit/challenge/enrich) 타깃 한정 수정 — 같은 walk·미니 EXPAND 재사용, Auditor 재검사 후 새 report_version |
+| D14 | 합의 기반 반영 + 첨부 자료 | 에이전트는 피드백·첨부 자료를 **맹신하지 않는다.** 그래프 증거와 대조한 Assessment(동의/반박/판단불가 + 인용 근거)를 회신, 다중 라운드 토의 후 **양측 합의(agreed) 시에만** 보고서 반영. 첨부 자료(PDF·의뢰자 문서)는 UserDoc으로 인입돼 일반 증거와 동일한 추출·검증 파이프라인 통과 |
+| D15 | 그래프 정비 (Janitor) | 분열(동일 실체 복수 노드)·오병합(복수 실체 단일 노드)을 주기 배치로 점검. 자동 병합은 코드 수준 근거 시에만, 나머지는 리뷰 큐. 보고서 파이프라인과 독립된 배치 잡 |
+| D16 | 자동화 수집 트랙 | 온디맨드(평가 시 EXPAND) 외에 스케줄 수집(Airflow 등)으로 자산 무관 최근 동향을 전역 층에 선적재 — LLM 지식 한계 보완. 수집 대상은 그래프가 결정(허브 엔티티·만료 임박 노드). 주기/소스 설계는 **별도 브랜치** |
 
 ---
 
@@ -167,6 +170,7 @@ Fact의 속성(valid_until)으로 추출해 **그것을 우선 적용**하고, �
 | `Asset` | asset_id (`re:{bd_mgt_sn}`) | Seeder | 모든 walk의 기본 앵커. 주소, 좌표, building_name |
 | `Industry` | industry_cd | Seeder | 상권 업종 (commercial_estimated_sales의 svc_induty_cd). 최신 분기 매출 요약 |
 | `WebDoc` | url_hash | Harvester | title, url, published_at, source_tier(§9), fetched_at, collected_by |
+| `UserDoc` | doc_hash | Reviser(첨부 인입) | 발행자/의뢰자 제공 자료 (PDF·문서). provider, received_at, source_tier=provisional(교차 검증 전, §10.4) |
 | `Fact` | fact_id | Harvester | **원자적 사실 1문장** (D3). text, confidence(§9), published_at, event_date, valid_until·temporal_kind(§12), collected_by |
 | `Entity` | entity_id | Harvester | 기존 라벨 매칭 실패한 추출 엔티티 (프랜차이즈, 정책, 인물 등). resolution_status |
 | `Query` | query_hash | Navigator | text, executed_at, hop_path(낳은 경로), n_results |
@@ -428,11 +432,14 @@ planner는 없다. 목차는 3축 고정(D2)이고, 각 축의 세부 논점은 
                                ▼
                 ┌──────────────────────────────────────────┐
                 │ Phase 5: REVISE (발행자 상호작용, 이벤트 구동)│
-                │  발행자: 대상 ID(섹션/블록/주장) + 코멘트   │
+                │  발행자: 대상 ID + 코멘트 [+ 첨부 자료]     │
                 │  → Feedback 노드 적재 (TARGETS 엣지)       │
-                │  → Reviser: kind별 타깃 한정 수정 (§10.4)  │
-                │     (보강·재검증은 미니 EXPAND 재사용)      │
-                │  → Auditor 기계층 → 새 report_version     │
+                │  ┌→ Reviser: 그래프 증거 대조 평가          │
+                │  │   → Assessment(동의/반박+인용) 회신      │
+                │  └─ 발행자 재반박/자료 추가 (토의 루프 §10.5)│
+                │  → 양측 합의(agreed) 시에만:               │
+                │     kind별 타깃 한정 수정 (§10.4)          │
+                │     → Auditor 기계층 → 새 report_version  │
                 └──────────────────────────────────────────┘
 
  ─────────────── QA (별도 entry, 같은 그래프) ───────────────
@@ -602,12 +609,33 @@ report/report_version + md sidecar)은 기존 그대로.
     ]}],
  "claims": {
    "clm_17": {"text": "...", "kind": "factual",
-              "cites": ["fact:abc"], "as_of": "2026-04"}}}
+              "cites": ["fact:abc"], "as_of": "2026-04"}},
+ "evidence": {                                  // ← 인용된 근거의 전체 해석 정보 (사람 검증용)
+   "fact:abc": {
+     "text": "강남대로 상권 1분기 공실률 1.2%p 상승",   // 근거 원문 (Fact 문장 / 통계 요약)
+     "source_kind": "news",                     // news | public_api | sqlite_stat | user_doc
+     "origin": {"url": "https://...", "title": "...", "publisher": "한국경제"},
+                                                // sqlite_stat이면 {"table": "...", "row_pk": ...}
+     "published_at": "2026-04-02",
+     "confidence": 0.8,                         // §9.3
+     "validity": {"status": "VALID", "valid_until": null},   // §12, 렌더 시점 평가
+     "path": "Asset →[ANCHORS]→ 상권 →[MENTIONS by]→ Fact"   // 어떤 경로로 발견됐나
+   }}}
 ```
+
+**evidence 맵이 핵심이다 (D12 확장).** claims의 `cites`는 ID 참조일 뿐이고,
+evidence 맵이 그 ID를 사람이 검증 가능한 수준으로 해석해 둔다 — 근거 원문,
+출처(URL/테이블·행), 날짜, confidence, 유효성 상태, 발견 경로까지. 보고서
+JSON 하나만 있으면 **문장 단위로 "이 주장은 어디서 왔고 지금도 유효한가"를
+사람이 직접 확인**할 수 있다. UI에서 주장 클릭 → 근거 카드가 뜨는 구조의
+데이터 기반이며, 수정(§10.4) 시에도 Reviser가 이 맵으로 대상 근거를 즉시
+특정한다.
 
 기존 SQLite `report_version.body_json`이 이 구조를 담도록 형식을 확장하고,
 그래프에는 Report→Section→Claim이 이미 노드이므로(§4.3) Claim 노드에
-block_id 프로퍼티만 추가하면 **JSON ↔ 그래프가 1:1로 맞물린다.**
+block_id 프로퍼티만 추가하면 **JSON ↔ 그래프가 1:1로 맞물린다.** evidence
+맵은 그래프에서 렌더 시점에 생성되는 파생물 — 진실은 그래프, JSON은 사람
+검증용 스냅샷.
 
 ### 10.4 발행자 피드백 루프 — REVISE (D13)
 
@@ -631,13 +659,49 @@ block_id 프로퍼티만 추가하면 **JSON ↔ 그래프가 1:1로 맞물린�
 | **challenge** | 사실 이의 | 해당 Claim의 CITES 증거 유효성 재판정(§12) → 미달이면 미니 EXPAND로 최신 증거 수집 후 재작성 또는 철회 | ValidityCheck + 미니 EXPAND |
 | **enrich** | 보강 요청 | 대상 주변 walk + 미니 EXPAND → 해당 섹션 증보 | 미니 EXPAND + Writer |
 
+### 10.5 합의 프로토콜 — 토의 후 반영 (D14)
+
+에이전트는 발행자의 피드백·첨부 자료를 **전적으로 신뢰하지 않는다.** 피드백이
+도착해도 즉시 보고서를 고치지 않고, 먼저 그래프 증거와 대조한 평가를 회신한다:
+
+```
+발행자: Feedback(target, kind, comment) [+ 첨부 자료]   status=open
+   ↓
+Reviser 평가:
+  ① 첨부가 있으면 UserDoc 인입 → 일반 증거와 동일 파이프라인
+     (Fact 추출 → 연결(D9) → confidence → validity(D10)) 통과
+  ② 피드백 주장 vs 기존 그래프 증거 + 신규 추출 Fact 대조
+   ↓
+Assessment 회신 (그래프에 적재):
+  {stance: agree | disagree | partial | inconclusive,
+   rationale: "...",
+   cites: [지지/모순 증거 노드 ID],      ← 에이전트도 근거 인용 의무
+   proposal: "반영 시 이렇게 수정하겠다" (있다면)}
+   ↓
+발행자: 수용 / 재반박(코멘트) / 추가 자료 첨부 / 철회
+   ↓
+(여러 라운드 반복 — 전 과정이 Feedback 스레드로 그래프에 남음)
+   ↓
+status = agreed     → 그때서야 Reviser가 수정 실행 → Auditor → 새 버전
+status = withdrawn  → 반영 없음, 스레드 보존
+status = disputed   → 미합의 보류 — 보고서 불변, 쟁점 기록 잔존
+```
+
+그래프 모델: `(:Assessment)-[:REPLIES_TO]->(:Feedback)`, 라운드마다 노드가
+스레드로 쌓인다. **합의(agreed) 전에는 보고서가 절대 변하지 않는다.**
+
+첨부 자료의 신뢰 등급: UserDoc은 `source_tier=provisional`로 시작한다 —
+공식 문서(등기, 계약서, 공시)로 확인되거나 기존 증거와 교차 검증되면 상향,
+기존 증거와 모순이면 Assessment에서 모순 지점을 인용과 함께 제시한다. 즉
+"의뢰자가 준 자료"라는 이유로 자동 신뢰하지도, 자동 배척하지도 않는다.
+
 수정분은 Auditor 기계층을 다시 통과해야 하며, 통과 시 새 report_version
 (parent_version_id 체인, 기존 형식)으로 저장된다. **타깃 외 부분은 건드리지
 않는다** — 전체 재생성이 아니라 외과적 수정.
 
-Feedback 노드는 영구히 남아 ① 같은 자산의 다음 평가 라운드에 prior signal로
-자동 반영되고(frontier 가산), ② 발행자가 반복 지적하는 패턴(특정 출처 불신
-등)이 쌓이면 가중치 표·검증 규칙 튜닝의 입력이 된다.
+Feedback/Assessment 스레드는 영구히 남아 ① 같은 자산의 다음 평가 라운드에
+prior signal로 자동 반영되고(frontier 가산), ② 발행자가 반복 지적하는 패턴
+(특정 출처 불신 등)이 쌓이면 가중치 표·검증 규칙 튜닝의 입력이 된다.
 
 ---
 
@@ -713,12 +777,71 @@ frontier 가산을 통해 갱신을 유도하는 신호로 쓰인다. 분기 통
 
 ---
 
-## 13. 공유 vs 신규 vs 삭제
+## 13. 그래프 정비 — Janitor (D15)
+
+수집이 누적되면 인입 시점 방어(D9)만으로 못 막는 두 오류가 쌓인다:
+
+- **분열 (duplicate)**: 동일 실체가 여러 노드로 — "스타벅스 역삼점" Entity와
+  "역삼동 스타벅스" Entity가 따로 존재. 증거가 분산돼 walk가 둘 다 못 줍거나
+  반쪽만 줍는다.
+- **오병합 (conflation)**: 다른 실체가 한 노드로 — 동명의 다른 건물이 병합돼
+  남의 인증·거래가 우리 자산 근거로 인용된다. **오염이 인용을 타고 보고서까지
+  번지므로 분열보다 위험.**
+
+인입 시점엔 판단 정보가 부족해 놓치는 케이스가 있으므로, **주기 점검 배치
+(Janitor)** 가 필요하다. LangGraph 워크플로우가 아니라 독립 배치 잡이다.
+
+| 단계 | 내용 |
+|---|---|
+| 분열 탐지 | 같은 라벨 내 card_text 임베딩 유사 + 속성(주소·좌표·코드) 근접 클러스터링 |
+| 오병합 탐지 | 한 노드에 상충 속성(좌표 수 km 차, 주소 불일치), 서로 모순되는 Fact의 집중 |
+| 자동 처리 | **코드 수준 근거(bd_mgt_sn·사업자번호·trdar_cd 일치)가 있을 때만** 자동 병합/분리. 병합 시 엣지 이관 + `merged_into` 기록(traceability) |
+| 리뷰 큐 | 그 외 의심 케이스는 사람 확인 큐로 — Curator 승격 규칙(§9.2)과 동일한 보수 기준 |
+| 주기 | EXPAND 누적 라운드 기준 또는 일/주 배치. 보고서 생성 직전 스코프 한정 점검(빠름) + 전역 주기 점검(느림) 2단 |
+
+Janitor 결과(병합/분리 이력)도 그래프에 남아, 같은 실수를 반복하는 추출
+패턴이 보이면 Harvester 연결 규칙(D9) 튜닝의 입력이 된다.
+
+---
+
+## 14. 자동화 수집 트랙 (D16 — 설계는 별도 브랜치)
+
+온디맨드 수집(평가 시 EXPAND, QA 라이브 확장)만으로는 못 잡는 것이 있다:
+**LLM 지식 한계 너머의 최근 동향.** 예 — 테넌트 가치 평가에서 앵커 테넌트가
+스타벅스인데 최근 본사 차원의 악재가 있었다면, LLM도 모르고 자산 발 멀티홉
+검색어("OO타워 임대", "강남대로 상권 공실")도 그것을 정조준하지 못한다.
+
+방향: 스케줄 수집(Airflow 등)이 **자산과 무관하게** 최근 동향을 전역 층(D5)에
+선적재한다. 공유 노드(Industry, Entity-프랜차이즈, CommercialArea, AdminDong)에
+붙은 수집물은 어느 자산이든 해당 엔티티를 N홉 안에서 만나는 순간 자동으로
+스코프에 들어온다 — **전역 층 구조가 이미 받침이라 graphflow 쪽 추가 작업이
+거의 없다.**
+
+**수집 대상 선정 자체를 그래프가 결정한다**:
+
+| 대상 | 선정 기준 | 예 |
+|---|---|---|
+| 허브 엔티티 | degree 상위 공유 노드 (여러 자산에 연결) | 주요 프랜차이즈, 핵심 상권, 반복 등장 개발사업 |
+| 갱신 필요 노드 | ValidityCheck상 EXPIRED/만료 임박 Fact 보유 (§12 재검색 신호의 배치판) | 완공 예정일 지난 개발사업 |
+| 정기 정형 | 분기/월 갱신 공공 데이터 — 기존 빌더에 스케줄만 | REB 임대동향, NTS 사업자통계, MOLIT |
+| 거시 (추후) | 금리·정책 — Entity 노드로 | 임대차보호법 개정 |
+
+**통합 원칙**: 수집 진입점만 다르고 적재 규칙은 동일하다 — 스케줄 수집물도
+Harvester와 같은 추출 → 연결(D9) → confidence(§9.3) → validity(§12) 파이프라인을
+통과하고 `collected_by="scheduled:{job_id}"`로 표기된다. 검증 안 된 데이터가
+뒷문으로 들어오는 경로는 없다.
+
+미정 (별도 브랜치에서 설계): 주기, 소스별 쿼터, Airflow vs 경량 스케줄러,
+수집 예산. 데이터 축 작업이므로 graphflow 브랜치와 분리한다.
+
+---
+
+## 15. 공유 vs 신규 vs 삭제
 
 | 구분 | 대상 |
 |---|---|
 | **공유 (데이터 축)** | LocationResolver, `real_estate/{asset,database,external,repository}`, `infra/` 전체, 데이터 검증 `scripts/try_*` |
-| **신규** | `real_estate/graphflow/`: traversal.py, profiles.py, policies.py, validity.py, seeder.py, navigator.py, harvester.py, curator.py, composer.py, writer.py, synthesizer.py, auditor.py, reviser.py, qa.py, state.py, workflow.py, graph/(driver·schema·cards — 스냅샷 복원+확장), llm.py(복원), tracing(복원) + `scripts/try_graphflow.py` |
+| **신규** | `real_estate/graphflow/`: traversal.py, profiles.py, policies.py, validity.py, seeder.py, navigator.py, harvester.py, curator.py, composer.py, writer.py, synthesizer.py, auditor.py, reviser.py, janitor.py, qa.py, state.py, workflow.py, graph/(driver·schema·cards — 스냅샷 복원+확장), llm.py(복원), tracing(복원) + `scripts/try_graphflow.py` |
 | **삭제됨 (b7a9e54)** | 구 `real_estate/report/` 전체 + report 의존 스크립트 9개 |
 
 복원 출처: `yachom/wip/v3-pre-graphflow-snapshot` — graph ETL, llm.py,
@@ -726,7 +849,7 @@ embedder/vector_index, scout SQL(Seeder로 흡수), report 저장 스키마.
 
 ---
 
-## 14. 구현 단계 (PR 단위)
+## 16. 구현 단계 (PR 단위)
 
 | PR | 내용 | 검증 게이트 |
 |---|---|---|
@@ -735,11 +858,14 @@ embedder/vector_index, scout SQL(Seeder로 흡수), report 저장 스키마.
 | **C** | EXPAND 루프 (Navigator/Harvester/Curator + LLMPolicy + novelty) | 검색어 샘플 30개 리뷰(경로 고유명사 포함률), 오연결 0건 확인 |
 | **D** | Composer/Writer/Synthesizer/Auditor + Report 서브그래프 + 저장 | Auditor 기계층 위반 0으로 수렴하는지, 보고서 1건 전체 생산 |
 | **E** | QA + 미니 EXPAND + GAP 피드백 (+ UI는 후속) | golden 질문 20개: 인용 정확도 + 라이브 확장 발동률/지연 측정 |
-| **F** | 보고서 구조화 JSON 렌더 + Feedback/Reviser 루프 | 피드백 3종(edit/challenge/enrich) 시나리오 각 1건 처리 + **타깃 외 블록 불변** 확인 |
+| **F** | 보고서 구조화 JSON(evidence 맵 포함) 렌더 + Feedback/Reviser 합의 루프(§10.5) | 피드백 3종 시나리오 각 1건 + **타깃 외 블록 불변** + 미합의 시 보고서 불변 확인. 첨부는 텍스트/URL 먼저, PDF 파서는 후반 |
+| **G** | Janitor (그래프 정비, §13) — 탐지 + 리뷰 큐 우선, 자동 병합 최소 | 의도적 중복/오병합 주입 → 탐지율 확인. 자동 병합은 코드 근거 케이스만 |
+
+자동화 수집(D16, §14)은 이 브랜치 범위 밖 — 별도 브랜치 트랙으로 설계/구현.
 
 ---
 
-## 15. 리스크 / 미해결
+## 17. 리스크 / 미해결
 
 - **Neo4j 운영 전제**: graphflow에선 필수 컴포넌트. 로컬 dev용 docker-compose
   구성 필요 (PR-A에서).
