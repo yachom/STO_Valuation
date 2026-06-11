@@ -288,17 +288,23 @@ mind_map/evidence_pool/prefetched_facts 같은 대형 dict가 state에서 사라
 
 ---
 
-## 8. 공유 vs 신규 vs 폐기
+## 8. 공유 vs 신규 vs 삭제
+
+> 2026-06-11 결정: 이 브랜치에서 `real_estate/report/` 전체와 report 의존
+> 스크립트를 **삭제**했다 (커밋 b7a9e54). 데이터 축만 기존과 동일하게 유지.
+> 삭제 직전 워킹트리의 v2/v3 작업분은 `yachom/wip/v3-pre-graphflow-snapshot`
+> 브랜치에 보존 — 필요한 코드는 거기(또는 main)에서 선별 복원한다.
 
 | 구분 | 대상 |
 |---|---|
-| **공유 (그대로)** | LocationResolver, SQLite 전 테이블+빌더, infra/external/* 클라이언트, graph/{driver,schema,cards}.py(확장), embedder/vector_index, llm.py(get_llm), 트레이싱, report 저장 형식 |
-| **신규** | `real_estate/report/graphflow/` 패키지: traversal.py, seeder.py, navigator.py, harvester.py, curator.py, composer.py, writer.py, synthesizer.py, auditor.py, qa.py, state.py, workflow.py + `scripts/try_graphflow.py` |
-| **무시 (삭제 아님)** | agents/* (planner~reflection), workflow/graph_v1~v3, tool/scout/*, tool/mindmap.py, report_scoped_retriever. 기존 v2/v3 파이프라인은 그대로 두고 graphflow를 병렬 신설 — 비교 실험 가능 |
+| **공유 (데이터 축, 그대로)** | LocationResolver(`real_estate/location.py`), `real_estate/{asset,database,external,repository}`, `infra/` 전체(env/gateway/external/asset/repository), 데이터 검증용 `scripts/try_*` |
+| **신규** | `real_estate/graphflow/` 패키지: traversal.py, seeder.py, navigator.py, harvester.py, curator.py, composer.py, writer.py, synthesizer.py, auditor.py, qa.py, state.py, workflow.py + `scripts/try_graphflow.py`. 그래프 인프라(driver/schema/cards)·임베딩·llm 매니저·트레이싱·report 저장은 스냅샷/main에서 선별 복원해 graphflow 밑에 재배치 |
+| **삭제 (이 브랜치)** | `real_estate/report/` 전체 — agents, workflow(graph_v1~v3), tool(retriever/scout/mindmap), graph(Neo4j ETL), storage, streamlit_app, llm.py, tracing, domain + report 의존 스크립트 9개 |
 
-> scout 12종의 SQL 로직은 버리지 않는다 — Seeder의 스코프 적재(§4.4)가 같은
-> 쿼리를 재사용해 그래프 프로퍼티/노드로 변환한다. "에이전트가 매번 SQL 도구를
-> 부르는" 패턴이 "그래프에 미리 구워두고 순회하는" 패턴으로 바뀌는 것.
+> scout 12종의 SQL 로직은 개념적으로 버리지 않는다 — Seeder의 스코프 적재(§4.4)가
+> 같은 쿼리를 재사용해 그래프 프로퍼티/노드로 변환한다. "에이전트가 매번 SQL
+> 도구를 부르는" 패턴이 "그래프에 미리 구워두고 순회하는" 패턴으로 바뀌는 것.
+> 복원 시 출처: 스냅샷 브랜치의 `tool/scout/data_scout.py`, `graph/*`, `llm.py`.
 
 ---
 
