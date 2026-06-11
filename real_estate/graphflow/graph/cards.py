@@ -162,6 +162,29 @@ def card_for_development_project(p: dict) -> str:
     return f"{district} {name} — {cat} ({stage})."
 
 
+# ── 확장 수집물 (Harvester) ──
+def card_for_web_doc(p: dict) -> str:
+    title = p.get("title", "제목 미상")
+    press = p.get("press") or p.get("source") or ""
+    date = (p.get("published_at") or "")[:10]
+    meta = ", ".join(x for x in (press, date) if x)
+    return f"뉴스: {title}" + (f" ({meta})." if meta else ".")
+
+
+def card_for_fact(p: dict) -> str:
+    # 카드 = 사실 문장 자체 (임베딩 의미 검색의 본체) + 시점 표기
+    text = p.get("text", "")
+    date = (p.get("published_at") or "")[:10]
+    return f"{text}" + (f" ({date} 보도)" if date else "")
+
+
+def card_for_entity(p: dict) -> str:
+    name = p.get("name") or p.get("entity_id", "엔티티 미상")
+    guess = p.get("guess_label")
+    suffix = f" (추정 종류: {guess})" if guess else ""
+    return f"{name} — 수집 문서에서 언급된 엔티티{suffix}."
+
+
 _BUILDERS = {
     NODE_LABELS.ASSET: card_for_asset,
     NODE_LABELS.COMPLEX: card_for_complex,
@@ -174,6 +197,9 @@ _BUILDERS = {
     NODE_LABELS.TRANSIT_STATION: card_for_transit_station,
     NODE_LABELS.TENANCY_EVENT: card_for_tenancy_event,
     NODE_LABELS.DEVELOPMENT_PROJECT: card_for_development_project,
+    NODE_LABELS.WEB_DOC: card_for_web_doc,
+    NODE_LABELS.FACT: card_for_fact,
+    NODE_LABELS.ENTITY: card_for_entity,
 }
 
 

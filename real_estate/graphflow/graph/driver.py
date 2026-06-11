@@ -19,6 +19,10 @@ from neo4j import Driver, GraphDatabase
 
 logger = logging.getLogger("infra.neo4j")
 
+# 빈 라벨/프로퍼티 첫 조회 시 서버가 보내는 'does not exist' 알림은 정상 흐름
+# (수집물 라벨은 점진 생성됨) — 로그 소음만 만드므로 억제한다.
+logging.getLogger("neo4j.notifications").setLevel(logging.ERROR)
+
 _driver_lock = threading.Lock()
 _driver: Driver | None = None
 
