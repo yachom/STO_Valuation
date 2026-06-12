@@ -195,50 +195,63 @@ def write_report_graph(driver: Driver, report: dict) -> None:
 
 
 # ───────────────────────────────────────────────────────────
-# 파이프라인
+# 파이프라인 단계 헬퍼 — LangGraph workflow.py의 노드들이 호출 (1단계=1함수)
 # ───────────────────────────────────────────────────────────
-def generate_report(
+def write_axis(
     driver: Driver,
     asset_id: str,
+    asset_card: str,
+    axis: str,
     *,
-    out_dir: str | Path,
     evidence_k: int = 12,
-) -> dict:
-    """보고서 1건 생성. 반환: 구조화 JSON (파일/그래프 적재 포함)."""
-    report_id = make_run_id("rpt")
-    asset_card = _asset_card(driver, asset_id)
-    writer = Writer()
+) -> tuple[SectionDraft, list[Evidence], list[str]]:
+    """축 1개: compose → write → 기계 검증 → 위반 시 재작성 1회.
 
-    sections: dict[str, SectionDraft] = {}
-    evidence_by_axis: dict[str, list[Evidence]] = {}
-    mech_audit: dict[str, list[str]] = {}
-
-    for axis in REPORT_AXES:
-        with node_scope(f"write_{axis}"):
-            evidence = compose(driver, asset_id, axis, k=evidence_k)
-            evidence_by_axis[axis] = evidence
-            draft = writer.write(axis, asset_card, evidence)
+    반환: (최종 draft, evidence, 잔여 위반 — 비면 통과).
+    """
+    with node_scope(f"write_{axis}"):
+        evidence = compose(driver, asset_id, axis, k=evidence_k)
+        writer = Writer()
+        draft = writer.write(axis, asset_card, evidence)
+        violations = audit_section(draft, evidence)
+        rewrites = 0
+        while violations and rewrites < _MAX_REWRITES:
+            emit("audit_mechanical_fail", axis=axis, violations=violations)
+            draft = writer.write(axis, asset_card, evidence, violations=violations)
             violations = audit_section(draft, evidence)
-            rewrites = 0
-            while violations and rewrites < _MAX_REWRITES:
-                emit("audit_mechanical_fail", axis=axis, violations=violations)
-                draft = writer.write(axis, asset_card, evidence, violations=violations)
-                violations = audit_section(draft, evidence)
-                rewrites += 1
-            sections[axis] = draft
-            mech_audit[axis] = violations            # 남은 위반 (비면 통과)
+            rewrites += 1
+        return draft, evidence, violations
 
+
+def synthesize_overview(asset_card: str, sections: dict[str, SectionDraft]):
+    """3축 → Overview + 기계 검증 (위반 시 재합성 1회).
+
+    반환: (overview, index_map, 잔여 위반).
+    """
     with node_scope("synthesize"):
         synth = Synthesizer()
         overview, index_map = synth.synthesize(asset_card, sections)
-        ov_violations = audit_overview(overview, len(index_map))
-        if ov_violations:
-            emit("audit_mechanical_fail", axis="overview", violations=ov_violations)
-            # overview 재합성 1회
+        violations = audit_overview(overview, len(index_map))
+        if violations:
+            emit("audit_mechanical_fail", axis="overview", violations=violations)
             overview, index_map = synth.synthesize(asset_card, sections)
-            ov_violations = audit_overview(overview, len(index_map))
-        mech_audit["overview"] = ov_violations
+            violations = audit_overview(overview, len(index_map))
+        return overview, index_map, violations
 
+
+def finalize_report(
+    driver: Driver,
+    asset_id: str,
+    sections: dict[str, SectionDraft],
+    overview,
+    index_map: list,
+    evidence_by_axis: dict[str, list[Evidence]],
+    mech_audit: dict[str, list[str]],
+    *,
+    out_dir: str | Path,
+) -> dict:
+    """조립 → LLM층 감사 → 파일 저장 → Report 서브그래프 적재."""
+    report_id = make_run_id("rpt")
     report = _assemble(report_id, asset_id, sections, overview, index_map,
                        evidence_by_axis, audit={"mechanical": mech_audit})
     md = render_markdown(report)
@@ -261,3 +274,27 @@ def generate_report(
          llm_pass=report["audit"]["llm"]["overall_pass"])
     logger.info("report %s 생성 완료 → %s", report_id, out)
     return report
+
+
+def generate_report(
+    driver: Driver,
+    asset_id: str,
+    *,
+    out_dir: str | Path,
+    evidence_k: int = 12,
+) -> dict:
+    """순차 단독 실행 진입점 (LangGraph 없이). 표준 경로는 workflow.py."""
+    asset_card = _asset_card(driver, asset_id)
+    sections: dict[str, SectionDraft] = {}
+    evidence_by_axis: dict[str, list[Evidence]] = {}
+    mech_audit: dict[str, list[str]] = {}
+    for axis in REPORT_AXES:
+        draft, evidence, violations = write_axis(
+            driver, asset_id, asset_card, axis, evidence_k=evidence_k)
+        sections[axis] = draft
+        evidence_by_axis[axis] = evidence
+        mech_audit[axis] = violations
+    overview, index_map, ov_violations = synthesize_overview(asset_card, sections)
+    mech_audit["overview"] = ov_violations
+    return finalize_report(driver, asset_id, sections, overview, index_map,
+                           evidence_by_axis, mech_audit, out_dir=out_dir)

@@ -1,9 +1,12 @@
-"""보고서 생성 시험 진입점 (PR-D).
+"""보고서 생성 시험 진입점 — LangGraph 워크플로우 경유 (PR-D/E).
 
-EXPAND가 끝난 그래프에서 보고서 1건 생성:
+    # 기존 그래프로 보고서만 (EXPAND 생략)
     python -m scripts.try_report "서울특별시 강남구 강남대로 396"
 
-필요 env: KAKAO/JUSO/ANTHROPIC/NEO4J (+LANGFUSE 선택)
+    # 한 바퀴 단일 명령: 시드 → 확장 3라운드 → 보고서
+    python -m scripts.try_report "..." --expand-rounds 3
+
+필요 env: KAKAO/JUSO/ANTHROPIC/NEO4J (+확장 시 NAVER, +LANGFUSE 선택)
 """
 
 from __future__ import annotations
@@ -22,8 +25,11 @@ _DEFAULT_ADDRESS = "서울특별시 강남구 강남대로 396"
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="graphflow 보고서 생성 (PR-D)")
+    ap = argparse.ArgumentParser(description="graphflow 보고서 생성 (LangGraph)")
     ap.add_argument("address", nargs="?", default=_DEFAULT_ADDRESS)
+    ap.add_argument("--expand-rounds", type=int, default=0,
+                    help="보고서 전 EXPAND 라운드 수 (0=생략)")
+    ap.add_argument("--expand-budget", type=int, default=40)
     ap.add_argument("-k", type=int, default=12, help="섹션당 evidence 수")
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args()
@@ -32,43 +38,51 @@ def main() -> int:
         level=logging.INFO if args.verbose else logging.WARNING,
         format="%(levelname)s %(name)s: %(message)s")
     load_env()
-    for key in ("KAKAO_API_KEY", "JUSO_API_KEY", "ANTHROPIC_API_KEY"):
+    needed = ["KAKAO_API_KEY", "JUSO_API_KEY", "ANTHROPIC_API_KEY"]
+    if args.expand_rounds > 0:
+        needed += ["NAVER_CLIENT_ID", "NAVER_CLIENT_SECRET"]
+    for key in needed:
         if not os.environ.get(key):
             print(f"ERROR: .env에 {key} 필요", file=sys.stderr)
             return 2
 
     from real_estate.graphflow.graph.driver import close_neo4j_driver, get_neo4j_driver
-    from real_estate.graphflow.report import generate_report
     from real_estate.graphflow.seeder import asset_id_for
-    from real_estate.graphflow.tracing import run_tracer
+    from real_estate.graphflow.tracing import make_run_id, run_tracer
+    from real_estate.graphflow.workflow import run_report_pipeline
     from real_estate.location import LocationResolver
 
     location = LocationResolver(
         kakao_api_key=os.environ["KAKAO_API_KEY"],
         juso_api_key=os.environ["JUSO_API_KEY"]).resolve(args.address)
     asset_id = asset_id_for(location)
-    print(f"asset_id={asset_id}")
+    print(f"asset_id={asset_id} | expand_rounds={args.expand_rounds}")
 
     driver = get_neo4j_driver()
     try:
-        from real_estate.graphflow.tracing import make_run_id
-        run_id = make_run_id("rpt")
-        with run_tracer(run_id, Path(DB_PATH)) as tracer:
-            report = generate_report(driver, asset_id,
-                                     out_dir=tracer.run_dir, evidence_k=args.k)
+        with run_tracer(make_run_id("rpt"), Path(DB_PATH)) as tracer:
+            final = run_report_pipeline(
+                driver, asset_id=asset_id, out_dir=str(tracer.run_dir),
+                db_path=DB_PATH, location=location,
+                expand_rounds=args.expand_rounds,
+                expand_budget=args.expand_budget, evidence_k=args.k)
             out_dir = tracer.run_dir
 
+        report = final["report"]
+        exp = final.get("expand_summary", {})
         print(f"\n{'='*70}\n보고서 생성 완료: {report['report_id']}\n{'='*70}")
+        if not exp.get("skipped"):
+            print(f"  EXPAND: {exp.get('rounds_run')}라운드, "
+                  f"검색 {exp.get('queries_total')}건")
         print(f"  섹션 {len(report['sections'])} / 주장 {len(report['claims'])} "
               f"/ 인용 근거 {len(report['evidence'])}")
         print(f"  기계층 잔여 위반: "
               f"{ {k: len(v) for k, v in report['audit']['mechanical'].items()} }")
         llm = report["audit"]["llm"]
-        print(f"  LLM층: overall_pass={llm['overall_pass']}, "
-              f"이슈 {len(llm['issues'])}건")
+        print(f"  LLM층: overall_pass={llm['overall_pass']}, 이슈 {len(llm['issues'])}건")
         for iss in llm["issues"]:
             print(f"    - [{iss['severity']}/{iss['kind']}] {iss['location']}: "
-                  f"{iss['description']}")
+                  f"{iss['description'][:100]}")
         print(f"\n산출물: {out_dir}/report.md, report.json")
         return 0
     finally:
