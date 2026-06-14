@@ -62,8 +62,26 @@ def card_for_complex(p: dict) -> str:
 def card_for_building(p: dict) -> str:
     name = p.get("name") or p.get("building_name") or "건물명 미상"
     addr = p.get("jibun_addr") or p.get("addr") or ""
-    suffix = f" ({addr})" if addr else ""
-    return f"{name}{suffix} — 건물관리번호 {p.get('bdmgt_sn', '')}."
+    head = f"{name} ({addr})" if addr else name
+    # 건축HUB 표제부 보강 시 물리 스펙 노출 (보고서 ESG/물리 평가의 근거)
+    spec = []
+    if p.get("main_use"):
+        spec.append(str(p["main_use"]))
+    fa, fb = p.get("floors_above"), p.get("floors_below")
+    if fa:
+        spec.append(f"지상{fa}층" + (f"/지하{fb}층" if fb else ""))
+    if p.get("total_area_sqm"):
+        spec.append(f"연면적 {p['total_area_sqm']}㎡")
+    if p.get("structure"):
+        spec.append(str(p["structure"]))
+    if p.get("use_district"):
+        spec.append(str(p["use_district"]))
+    if p.get("approved_at"):
+        spec.append(f"{p['approved_at']} 사용승인")
+    if p.get("energy_grade"):
+        spec.append(f"에너지효율 {p['energy_grade']}등급")
+    spec_s = " — " + ", ".join(spec) if spec else ""
+    return f"{head}{spec_s}. 건물관리번호 {p.get('bdmgt_sn', '')}."
 
 
 def card_for_certification(p: dict) -> str:

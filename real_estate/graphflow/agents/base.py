@@ -18,7 +18,7 @@ from __future__ import annotations
 import logging
 
 from real_estate.graphflow.llm import cached_system, get_llm
-from real_estate.graphflow.tracing import node_scope, observe
+from infra.agent.tracing import node_scope, observe
 
 logger = logging.getLogger("graphflow.agent")
 

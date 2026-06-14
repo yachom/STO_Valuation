@@ -1,9 +1,9 @@
-"""graphflow 툴 — 네이버 검색/스크랩, 공공 API 재조회, walk 등 외부/조회 도구.
+"""real_estate/graphflow/tool — 부동산 전용 도구.
 
-모두 BaseTool을 상속해 호출 시 자동으로 (a) Langfuse tool span (b) 로컬 사이드카
-emit_tool_call (c) 타이밍/에러 캡처를 얻는다. 툴 코드는 트레이싱을 직접 짜지 않는다.
+부동산 평가에서만 쓰임이 명확한 도구. 자산 공통 도구(네이버 검색 등)와
+공통 베이스(BaseTool)는 infra/tool에 있다 — 에이전트는 두 곳에서 import한다.
 """
 
-from real_estate.graphflow.tool.base import BaseTool
+from real_estate.graphflow.tool.building_hub import BuildingRegisterTool
 
-__all__ = ["BaseTool"]
+__all__ = ["BuildingRegisterTool"]

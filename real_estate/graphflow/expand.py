@@ -25,7 +25,7 @@ from real_estate.graphflow.navigator import (
     fetch_executed_queries,
     write_query_nodes,
 )
-from real_estate.graphflow.tracing import emit, node_scope
+from infra.agent.tracing import emit, node_scope
 
 logger = logging.getLogger("graphflow.expand")
 

@@ -162,7 +162,7 @@ def _override_key(overrides: dict) -> str:
 
 def _attach_callbacks() -> list:
     """Langfuse(클라우드, 선택) + LLMTraceCallback(로컬 사이드카, 필수)."""
-    from real_estate.graphflow.tracing import LLMTraceCallback
+    from infra.agent.tracing import LLMTraceCallback
     callbacks: list = []
     lf = get_langfuse_handler()
     if lf is not None:

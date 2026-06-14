@@ -28,7 +28,7 @@ from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.profiles import REPORT_AXES
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, _write_edges, seed
 from real_estate.graphflow.synthesizer import Synthesizer
-from real_estate.graphflow.tracing import emit, make_run_id, node_scope
+from infra.agent.tracing import emit, make_run_id, node_scope
 from real_estate.graphflow.writer import SectionDraft, Writer
 
 logger = logging.getLogger("graphflow.report")

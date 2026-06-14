@@ -28,7 +28,7 @@ from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.harvester import load_scope_names
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, _write_edges, seed
-from real_estate.graphflow.tracing import emit, node_scope
+from infra.agent.tracing import emit, node_scope
 from real_estate.graphflow.traversal import llm_walk, vector_anchors
 
 logger = logging.getLogger("graphflow.qa")

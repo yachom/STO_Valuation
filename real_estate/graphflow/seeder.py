@@ -155,8 +155,17 @@ def collect_scope(
     db_path: str,
     *,
     radius_m: int = _NEARBY_RADIUS_M,
+    building_hub_key: str | None = None,
 ) -> ScopeGraph:
-    """LocationInfo + SQLite → 자산 스코프 ScopeGraph. Neo4j 불필요."""
+    """LocationInfo + SQLite → 자산 스코프 ScopeGraph.
+
+    building_hub_key: None이면 BUILDING_HUB_API_KEY env 폴백, ""이면 명시적 비활성
+    (오프라인 순수 SQLite 경로). 키가 있으면 Building 노드에 건축물대장 표제부
+    (연면적·층수·용도·준공·에너지등급)를 보강한다 — 유일한 네트워크 의존.
+    """
+    if building_hub_key is None:
+        import os
+        building_hub_key = os.environ.get("BUILDING_HUB_API_KEY", "")
     sg = ScopeGraph()
 
     bd = location.bd_mgt_sn
@@ -179,7 +188,7 @@ def collect_scope(
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     try:
-        _collect_location_anchors(sg, conn, asset, location)
+        _collect_location_anchors(sg, conn, asset, location, building_hub_key)
         _collect_certifications(sg, conn, asset, location)
         _collect_commercial(sg, conn, asset, location, radius_m)
     finally:
@@ -189,7 +198,7 @@ def collect_scope(
     return sg
 
 
-def _collect_location_anchors(sg, conn, asset, loc) -> None:
+def _collect_location_anchors(sg, conn, asset, loc, building_hub_key="") -> None:
     """LegalDong + 자산 자신의 AdminDong + Building 앵커."""
     legal = sg.add_node(L.LEGAL_DONG, loc.bcode, {"bname": loc.bname})
     sg.add_edge(asset, E.ANCHORS, legal)
@@ -207,16 +216,29 @@ def _collect_location_anchors(sg, conn, asset, loc) -> None:
             "WHERE bdmgt_sn=? LIMIT 1", (loc.bd_mgt_sn,),
         ).fetchone()
         if meta is None:
-            g = conn.execute(
+            meta = conn.execute(
                 "SELECT building_name AS name, jibun_addr FROM green_cert "
                 "WHERE bdmgt_sn=? LIMIT 1", (loc.bd_mgt_sn,),
             ).fetchone()
-            meta = g
         bprops = {"name": meta["name"] if meta else None,
                   "jibun_addr": (meta["jibun_addr"] if meta else None) or loc.jibun_address}
+        # 건축HUB 대장 보강 (표제부 → 연면적·층수·용도·준공·에너지등급)
+        if building_hub_key:
+            bprops.update(_fetch_building_register(loc, building_hub_key))
         building = sg.add_node(L.BUILDING, loc.bd_mgt_sn, bprops)
         sg.add_edge(asset, E.ANCHORS, building)
         sg.add_edge(building, E.LOCATED_IN, legal)
+
+
+def _fetch_building_register(loc: LocationInfo, key: str) -> dict:
+    """건축HUB 표제부 → Building 프로퍼티. 실패는 best-effort (빈 dict)."""
+    try:
+        from real_estate.graphflow.tool.building_hub import BuildingRegisterTool
+        result = BuildingRegisterTool(key)(location=loc)
+        return result.get("building_props", {})
+    except Exception as exc:
+        logger.warning("건축HUB 보강 실패 (계속 진행): %s", exc)
+        return {}
 
 
 def _collect_certifications(sg, conn, asset, loc) -> None:

@@ -26,7 +26,7 @@ from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import KEY_PROP
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.policies import StaticPolicy
-from real_estate.graphflow.tracing import emit
+from infra.agent.tracing import emit
 from real_estate.graphflow.traversal import asset_anchor_eid, walk
 
 logger = logging.getLogger("graphflow.navigator")

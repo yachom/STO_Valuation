@@ -25,7 +25,7 @@ from neo4j import Driver
 
 from real_estate.graphflow.profiles import REPORT_AXES
 from real_estate.graphflow.state import GraphFlowState
-from real_estate.graphflow.tracing import make_run_id
+from infra.agent.tracing import make_run_id
 
 logger = logging.getLogger("graphflow.workflow")
 

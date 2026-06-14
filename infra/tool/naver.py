@@ -17,7 +17,7 @@ from infra.external.naver_search import (
     fetch_news_metadata,
     load_credentials,
 )
-from real_estate.graphflow.tool.base import BaseTool
+from infra.tool.base import BaseTool
 
 logger = logging.getLogger("graphflow.tool.naver")
 

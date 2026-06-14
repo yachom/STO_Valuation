@@ -280,7 +280,7 @@ def llm_walk(
 
     from real_estate.graphflow.agents.base import coerce_json
     from real_estate.graphflow.policies import StaticPolicy
-    from real_estate.graphflow.tracing import emit
+    from infra.agent.tracing import emit
 
     class _Verdict(BaseModel):
         index: int

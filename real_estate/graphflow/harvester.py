@@ -29,8 +29,8 @@ from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import KEY_PROP
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, _write_edges, seed
-from real_estate.graphflow.tool.naver import NaverNewsScrapeTool, NaverNewsSearchTool
-from real_estate.graphflow.tracing import emit
+from infra.tool.naver import NaverNewsScrapeTool, NaverNewsSearchTool
+from infra.agent.tracing import emit
 
 logger = logging.getLogger("graphflow.harvester")
 

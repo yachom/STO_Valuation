@@ -22,7 +22,7 @@ from __future__ import annotations
 import logging
 import time
 
-from real_estate.graphflow.tracing import emit_tool_call, observe
+from infra.agent.tracing import emit_tool_call, observe
 
 logger = logging.getLogger("graphflow.tool")
 
