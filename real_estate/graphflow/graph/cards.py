@@ -223,6 +223,14 @@ def card_for_question(p: dict) -> str:
     return f"질문: {p.get('text', '')}"
 
 
+def card_for_feedback(p: dict) -> str:
+    return f"발행자 피드백 [{p.get('kind', '')}→{p.get('target_id', '')}]: {p.get('comment', '')}"
+
+
+def card_for_assessment(p: dict) -> str:
+    return f"평가 회신 ({p.get('stance', '')}): {p.get('rationale', '')[:120]}"
+
+
 _BUILDERS = {
     NODE_LABELS.ASSET: card_for_asset,
     NODE_LABELS.COMPLEX: card_for_complex,
@@ -242,6 +250,8 @@ _BUILDERS = {
     NODE_LABELS.REPORT_SECTION: card_for_report_section,
     NODE_LABELS.CLAIM: card_for_claim,
     NODE_LABELS.QUESTION: card_for_question,
+    NODE_LABELS.FEEDBACK: card_for_feedback,
+    NODE_LABELS.ASSESSMENT: card_for_assessment,
 }
 
 

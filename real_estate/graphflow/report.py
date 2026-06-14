@@ -127,7 +127,8 @@ def _assemble(
     })
 
     return {
-        "report_id": report_id, "version_id": "v1", "asset_id": asset_id,
+        "report_id": report_id, "version_id": "v1", "parent_version_id": None,
+        "asset_id": asset_id,
         "created_at": datetime.now().isoformat(timespec="seconds"),
         "sections": sections_json, "claims": claims_json,
         "evidence": evidence_map, "audit": audit,
@@ -192,6 +193,52 @@ def write_report_graph(driver: Driver, report: dict) -> None:
 
     seed(sg, driver)
     _write_edges(driver, edges)
+
+
+def rewrite_report_graph(driver: Driver, report: dict) -> None:
+    """Report 서브그래프를 외과적으로 교체 — 기존 Claim/Section 제거 후 재적재.
+
+    REVISE에서 claim_id가 바뀌어도(텍스트 수정) 잔존 노드가 안 남게 한다.
+    Report 노드 자체는 MERGE로 갱신.
+    """
+    rid = report["report_id"]
+    with driver.session() as s:
+        s.run(
+            f"""
+            MATCH (r:{L.REPORT} {{report_id: $rid}})-[:{E.HAS_SECTION}]->(sec)
+            OPTIONAL MATCH (sec)-[:{E.HAS_CLAIM}]->(c:{L.CLAIM})
+            DETACH DELETE sec, c
+            """,
+            rid=rid,
+        )
+    write_report_graph(driver, report)
+
+
+def bump_version(report: dict, *, notes: str = "") -> dict:
+    """버전 증가 + parent 체인. report dict를 in-place 갱신 후 반환."""
+    cur = report.get("version_id", "v1")
+    n = int(cur[1:]) if cur.startswith("v") and cur[1:].isdigit() else 1
+    report["parent_version_id"] = cur
+    report["version_id"] = f"v{n + 1}"
+    report["created_at"] = datetime.now().isoformat(timespec="seconds")
+    if notes:
+        report.setdefault("revision_notes", []).append(notes)
+    return report
+
+
+def save_report_files(report: dict, out_dir: str | Path) -> Path:
+    """버전 파일(report_{version}.json + .md) 저장. 최신은 report.json/md로도 미러."""
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    ver = report["version_id"]
+    md = render_markdown(report)
+    (out / f"report_{ver}.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    (out / f"report_{ver}.md").write_text(md, encoding="utf-8")
+    (out / "report.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    (out / "report.md").write_text(md, encoding="utf-8")
+    return out
 
 
 # ───────────────────────────────────────────────────────────
