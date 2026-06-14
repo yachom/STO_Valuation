@@ -28,7 +28,7 @@ from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.harvester import load_scope_names
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, _write_edges, seed
-from infra.agent.tracing import emit, node_scope
+from infra.agent.tracing import add_score, emit, node_scope
 from real_estate.graphflow.traversal import llm_walk, vector_anchors
 
 logger = logging.getLogger("graphflow.qa")
@@ -157,6 +157,9 @@ class QAResponder(BaseAgent):
                                  answer, citations, expanded=expanded, gap=gap)
             emit("qa_done", question_id=question_id, sufficient=answer.sufficient,
                  expanded=expanded, gap=gap, citations=len(citations))
+            add_score("qa_sufficient", 1 if answer.sufficient else 0, data_type="BOOLEAN")
+            add_score("qa_live_expanded", 1 if expanded else 0, data_type="BOOLEAN")
+            add_score("qa_citations", len(citations))
             return QAResult(
                 question_id=question_id, question=question,
                 answer_markdown=answer.answer_markdown,

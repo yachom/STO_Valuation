@@ -116,7 +116,11 @@ def main() -> int:
     driver = get_neo4j_driver()
     try:
         asset_card = _asset_card(driver, asset_id)
-        with run_tracer(make_run_id("rev"), Path(DB_PATH)):
+        with run_tracer(make_run_id("rev"), Path(DB_PATH),
+                        session_id=asset_id, trace_name=f"revise:{spec['kind']}",
+                        tags=["revise", spec["kind"]],
+                        metadata={"asset_id": asset_id, "scenario": args.scenario,
+                                  "report_id": report["report_id"]}):
             print(f"\n[피드백] scenario={args.scenario}, kind={spec['kind']}, target={target_id}")
             print(f"  대상 주장: {target_text[:70]}")
             print(f"  comment: {spec['comment'][:90]}")

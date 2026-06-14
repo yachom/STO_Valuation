@@ -60,7 +60,11 @@ def main() -> int:
 
     driver = get_neo4j_driver()
     try:
-        with run_tracer(make_run_id("rpt"), Path(DB_PATH)) as tracer:
+        with run_tracer(make_run_id("rpt"), Path(DB_PATH),
+                        session_id=asset_id, trace_name=f"report:{args.address}",
+                        tags=["report"],
+                        metadata={"asset_id": asset_id,
+                                  "expand_rounds": args.expand_rounds}) as tracer:
             final = run_report_pipeline(
                 driver, asset_id=asset_id, out_dir=str(tracer.run_dir),
                 db_path=DB_PATH, location=location,

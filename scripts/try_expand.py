@@ -72,7 +72,9 @@ def main() -> int:
                                  rounds=args.rounds, frontier_max=args.frontier,
                                  total_query_budget=args.budget)
         else:
-            with run_tracer(run_id, Path(DB_PATH)) as tracer:
+            with run_tracer(run_id, Path(DB_PATH), session_id=asset_id,
+                            trace_name=f"expand:{args.address}", tags=["expand"],
+                            metadata={"asset_id": asset_id, "rounds": args.rounds}) as tracer:
                 summary = run_expand(driver, asset_id=asset_id, collected_by=run_id,
                                      rounds=args.rounds, frontier_max=args.frontier,
                                      total_query_budget=args.budget)

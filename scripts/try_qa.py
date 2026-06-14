@@ -51,7 +51,9 @@ def main() -> int:
 
     driver = get_neo4j_driver()
     try:
-        with run_tracer(make_run_id("qa"), Path(DB_PATH)):
+        with run_tracer(make_run_id("qa"), Path(DB_PATH),
+                        session_id=asset_id, trace_name=f"qa:{args.question[:30]}",
+                        tags=["qa"], metadata={"asset_id": asset_id}):
             result = QAResponder().answer(
                 driver, asset_id, args.question,
                 allow_expand=not args.no_expand)

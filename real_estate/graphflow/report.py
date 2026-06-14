@@ -28,7 +28,7 @@ from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.profiles import REPORT_AXES
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, _write_edges, seed
 from real_estate.graphflow.synthesizer import Synthesizer
-from infra.agent.tracing import emit, make_run_id, node_scope
+from infra.agent.tracing import add_score, emit, make_run_id, node_scope
 from real_estate.graphflow.writer import SectionDraft, Writer
 
 logger = logging.getLogger("graphflow.report")
@@ -314,11 +314,17 @@ def finalize_report(
     (out / "report.md").write_text(md, encoding="utf-8")
 
     write_report_graph(driver, report)
+    total_mech = sum(len(v) for v in mech_audit.values())
     emit("report_done", report_id=report_id,
          sections=len(report["sections"]), claims=len(report["claims"]),
          evidence=len(report["evidence"]),
          mech_violations={k: len(v) for k, v in mech_audit.items()},
          llm_pass=report["audit"]["llm"]["overall_pass"])
+    # Langfuse 품질 점수 (시간에 따른 보고서 품질 추적)
+    add_score("audit_llm_pass", 1 if report["audit"]["llm"]["overall_pass"] else 0,
+              data_type="BOOLEAN")
+    add_score("audit_mech_violations", total_mech)
+    add_score("claims_total", len(report["claims"]))
     logger.info("report %s 생성 완료 → %s", report_id, out)
     return report
 

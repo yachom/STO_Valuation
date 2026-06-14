@@ -7,15 +7,17 @@
 
 from infra.agent.tracing import (
     LLMTraceCallback,
+    add_score,
     emit,
     emit_tool_call,
     make_run_id,
     node_scope,
     observe,
     run_tracer,
+    trace_context,
 )
 
 __all__ = [
     "emit", "emit_tool_call", "node_scope", "observe",
-    "run_tracer", "make_run_id", "LLMTraceCallback",
+    "run_tracer", "trace_context", "add_score", "make_run_id", "LLMTraceCallback",
 ]

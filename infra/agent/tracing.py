@@ -166,16 +166,67 @@ def get_tracer() -> RunTracer | None:
 
 
 @contextmanager
-def run_tracer(run_id: str, db_path: str | Path):
-    """RunTracer를 set하고 종료 시 close + Langfuse flush 하는 컨텍스트 매니저."""
+def run_tracer(run_id: str, db_path: str | Path, *,
+               session_id: str | None = None, trace_name: str | None = None,
+               tags: list[str] | None = None, metadata: dict | None = None):
+    """RunTracer를 set + Langfuse trace 속성 전파 + 종료 시 close/flush.
+
+    session_id: Langfuse Sessions 그룹핑 (자산별 추천 — asset_id).
+    trace_name: 대시보드 trace 이름 (예: 'report:강남대로396').
+    tags: 분류 태그 (report/qa/revise/expand 등).
+    metadata: 필터용 부가정보 (asset_id, rounds 등). 값은 자동 str화.
+    """
     tracer = RunTracer(run_id, Path(db_path))
     token = _current_tracer.set(tracer)
     try:
-        yield tracer
+        with trace_context(name=trace_name or run_id, session_id=session_id,
+                           tags=tags, metadata=metadata):
+            yield tracer
     finally:
         tracer.close()
         _current_tracer.reset(token)
         flush_langfuse()
+
+
+@contextmanager
+def trace_context(*, name: str | None = None, session_id: str | None = None,
+                  tags: list[str] | None = None, metadata: dict | None = None):
+    """Langfuse trace-level 속성을 이 컨텍스트 내 모든 span에 전파. 키 없으면 no-op.
+
+    LLM 호출의 CallbackHandler가 만드는 span이 이 속성(session/tags/metadata)을
+    상속한다 → 대시보드에서 자산별·단계별 집계.
+    """
+    try:
+        from langfuse import propagate_attributes
+    except Exception:
+        yield
+        return
+    kw: dict = {"as_baggage": True}
+    if name:
+        kw["trace_name"] = name
+    if session_id:
+        kw["session_id"] = session_id
+    if tags:
+        kw["tags"] = list(tags)
+    if metadata:
+        kw["metadata"] = {k: str(v) for k, v in metadata.items() if v is not None}
+    try:
+        with propagate_attributes(**kw):
+            yield
+    except Exception as e:
+        logger.debug("langfuse trace_context skip: %s", e)
+        yield
+
+
+def add_score(name: str, value, *, data_type: str | None = None,
+              comment: str | None = None) -> None:
+    """현재 Langfuse trace에 품질 점수 부착 (Auditor 통과/novelty 등). graceful no-op."""
+    try:
+        from langfuse import get_client
+        get_client().score_current_trace(
+            name=name, value=value, data_type=data_type, comment=comment)
+    except Exception as e:
+        logger.debug("langfuse score skip: %s", e)
 
 
 def emit(event_type: str, **fields: Any) -> None:

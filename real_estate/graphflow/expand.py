@@ -25,7 +25,7 @@ from real_estate.graphflow.navigator import (
     fetch_executed_queries,
     write_query_nodes,
 )
-from infra.agent.tracing import emit, node_scope
+from infra.agent.tracing import add_score, emit, node_scope
 
 logger = logging.getLogger("graphflow.expand")
 
@@ -128,5 +128,10 @@ def run_expand(
                 emit("expand_stop", reason="novelty_low", round=rnd, novelty=novelty)
                 break
 
+    facts_total = sum(r["facts_new"] for r in history)
+    add_score("expand_facts", facts_total)
+    add_score("expand_rounds_run", len(history))
+    if history:
+        add_score("expand_final_novelty", history[-1]["novelty"])
     return {"asset_id": asset_id, "rounds_run": len(history),
             "queries_total": queries_spent, "history": history}
