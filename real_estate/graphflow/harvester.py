@@ -35,6 +35,7 @@ from infra.agent.tracing import emit
 logger = logging.getLogger("graphflow.harvester")
 
 SOURCE_TIER_NEWS = 0.8          # 주요 언론 (§9.3). 공공 1.0 / 블로그 0.4은 채널 추가 시
+SOURCE_TIER_PROVISIONAL = 0.5   # 발행자 제공 자료 — 교차 검증 전 (§10.5, D14)
 _MAX_ARTICLES_PER_QUERY = 3     # 쿼리당 본문 스크랩·추출 상한 (LLM 비용 캡)
 _MAX_FACTS_PER_DOC = 5
 _BODY_TRIM = 3500               # 추출 프롬프트에 넣는 본문 길이 상한
@@ -180,6 +181,57 @@ def load_scope_names(driver: Driver, asset_id: str, *, hops: int = 3) -> list[Sc
             if r["name"]:
                 out.append(ScopeName(r["label"], str(r["key"]), r["name"], _norm(r["name"])))
         return out
+
+
+def _asset_sigungu(driver: Driver, asset_id: str) -> str | None:
+    with driver.session() as s:
+        r = s.run(f"MATCH (a:{L.ASSET} {{asset_id: $a}}) RETURN a.sigungu AS sg",
+                  a=asset_id).single()
+        return r["sg"] if r else None
+
+
+def store_extracted_facts(
+    sg, edges, facts, *, scope, asset_sigungu, source_label, source_key,
+    source_tier, published_at, collected_by,
+) -> tuple[dict, list[str]]:
+    """Fact 노드 + EXTRACTED_FROM + MENTIONS/Entity 연결 (D9). 뉴스·UserDoc 공용.
+
+    반환: ({facts, entities, confirmed, candidate}, fact_texts).
+    """
+    counts = {"facts": 0, "entities": 0, "confirmed": 0, "candidate": 0}
+    texts: list[str] = []
+    for fd in facts:
+        fact_id = _short_hash(_norm(fd.text))
+        confidence = round(source_tier * max(0.0, min(1.0, fd.extraction_confidence)), 3)
+        sg.add_node(L.FACT, fact_id, {
+            "text": fd.text, "published_at": published_at,
+            "event_date": fd.event_date, "valid_until": fd.valid_until,
+            "temporal_kind": fd.temporal_kind,
+            "extraction_confidence": fd.extraction_confidence,
+            "source_tier": source_tier, "confidence": confidence,
+            "collected_by": collected_by,
+        })
+        counts["facts"] += 1
+        texts.append(fd.text)
+        edges.append(SeedEdge(L.FACT, fact_id, E.EXTRACTED_FROM, source_label, source_key))
+        for m in fd.mentions:
+            kind, sn = link_mention(m, scope, asset_sigungu)
+            if kind == "mentions":
+                edges.append(SeedEdge(L.FACT, fact_id, E.MENTIONS, sn.label, sn.key))
+                counts["confirmed"] += 1
+                continue
+            entity_id = _norm(m.surface)
+            sg.add_node(L.ENTITY, entity_id, {
+                "name": m.surface, "guess_label": m.guess_label,
+                "resolution_status": "unresolved", "collected_by": collected_by})
+            counts["entities"] += 1
+            edges.append(SeedEdge(L.FACT, fact_id, E.MENTIONS, L.ENTITY, entity_id))
+            if kind == "candidate" and sn is not None:
+                edges.append(SeedEdge(L.ENTITY, entity_id, E.SAME_AS_CANDIDATE,
+                                      sn.label, sn.key,
+                                      {"surface": m.surface, "matched_name": sn.name}))
+                counts["candidate"] += 1
+    return counts, texts
 
 
 def link_mention(
@@ -364,43 +416,64 @@ class Harvester(BaseAgent):
         edges.append(SeedEdge(L.QUERY, query_hash, E.RETRIEVED, L.WEB_DOC, url_hash))
         edges.append(SeedEdge(L.WEB_DOC, url_hash, E.ABOUT, target_label, target_key))
 
-        for fd in out.facts[:_MAX_FACTS_PER_DOC]:
-            fact_id = _short_hash(_norm(fd.text))
-            confidence = round(SOURCE_TIER_NEWS * max(0.0, min(1.0, fd.extraction_confidence)), 3)
-            sg.add_node(L.FACT, fact_id, {
-                "text": fd.text, "published_at": published_at,
-                "event_date": fd.event_date, "valid_until": fd.valid_until,
-                "temporal_kind": fd.temporal_kind,
-                "extraction_confidence": fd.extraction_confidence,
-                "source_tier": SOURCE_TIER_NEWS, "confidence": confidence,
-                "collected_by": collected_by,
-            })
-            stats.facts_new += 1
-            stats.new_fact_texts.append(fd.text)
-            edges.append(SeedEdge(L.FACT, fact_id, E.EXTRACTED_FROM, L.WEB_DOC, url_hash))
-
-            for m in fd.mentions:
-                kind, sn = link_mention(m, scope, asset_sigungu)
-                if kind == "mentions":
-                    edges.append(SeedEdge(L.FACT, fact_id, E.MENTIONS, sn.label, sn.key))
-                    stats.mentions_confirmed += 1
-                    continue
-                # Entity 신설 (candidate/entity 공통) — entity_id = 정규화 표면형
-                entity_id = _norm(m.surface)
-                sg.add_node(L.ENTITY, entity_id, {
-                    "name": m.surface, "guess_label": m.guess_label,
-                    "resolution_status": "unresolved",
-                    "collected_by": collected_by,
-                })
-                stats.entities_new += 1
-                edges.append(SeedEdge(L.FACT, fact_id, E.MENTIONS, L.ENTITY, entity_id))
-                if kind == "candidate" and sn is not None:
-                    edges.append(SeedEdge(L.ENTITY, entity_id, E.SAME_AS_CANDIDATE,
-                                          sn.label, sn.key,
-                                          {"surface": m.surface, "matched_name": sn.name}))
-                    stats.mentions_candidate += 1
+        counts, texts = store_extracted_facts(
+            sg, edges, out.facts[:_MAX_FACTS_PER_DOC], scope=scope,
+            asset_sigungu=asset_sigungu, source_label=L.WEB_DOC, source_key=url_hash,
+            source_tier=SOURCE_TIER_NEWS, published_at=published_at,
+            collected_by=collected_by)
+        stats.facts_new += counts["facts"]
+        stats.entities_new += counts["entities"]
+        stats.mentions_confirmed += counts["confirmed"]
+        stats.mentions_candidate += counts["candidate"]
+        stats.new_fact_texts.extend(texts)
 
         seed(sg, driver)                # 신규 노드 MERGE (+카드)
         _write_edges(driver, edges)     # 기존 노드 향한 엣지 포함
         emit("harvest_doc", url=article.get("url"), facts=len(out.facts),
              doc_relevance=out.doc_relevance, query=query)
+
+    # ── 발행자 첨부 자료 인입 (§10.5, D14) ─────────────────
+    def ingest_user_doc(self, driver, *, asset_id, text, provider,
+                        collected_by, context="") -> list[str]:
+        """발행자 제공 자료 → UserDoc(provisional tier) + Fact 추출/연결.
+
+        '의뢰자가 준 자료'라는 이유로 자동 신뢰하지 않는다 — 일반 증거와 동일
+        파이프라인(추출→연결 D9→confidence→validity)을 통과하되 source_tier만
+        provisional(0.5)로 낮게 시작. 반환: 추출된 Fact 텍스트 목록.
+        """
+        scope = load_scope_names(driver, asset_id)
+        asset_sigungu = _asset_sigungu(driver, asset_id)
+        doc_hash = _short_hash(text[:1000] + provider)
+        user = (f"[발행자 제공 자료]\n출처: {provider}\n{context}\n\n"
+                f"본문:\n{text[:_BODY_TRIM]}")
+        try:
+            out: ExtractionOutput = self.complete(system=_SYSTEM, user=user,
+                                                  schema=ExtractionOutput)
+        except Exception as exc:
+            emit("userdoc_extract_error", error=str(exc)[:200])
+            return []
+        sg = ScopeGraph()
+        edges: list[SeedEdge] = []
+        now = datetime.now().isoformat(timespec="seconds")
+        sg.add_node(L.USER_DOC, doc_hash, {
+            "provider": provider, "source_tier": SOURCE_TIER_PROVISIONAL,
+            "received_at": now, "doc_relevance": out.doc_relevance,
+            "collected_by": collected_by})
+        counts, texts = store_extracted_facts(
+            sg, edges, out.facts[:_MAX_FACTS_PER_DOC], scope=scope,
+            asset_sigungu=asset_sigungu, source_label=L.USER_DOC, source_key=doc_hash,
+            source_tier=SOURCE_TIER_PROVISIONAL, published_at=now[:10],
+            collected_by=collected_by)
+        seed(sg, driver)
+        _write_edges(driver, edges)
+        # 신규 첨부 Fact 임베딩 — assess의 벡터 검색에 잡히도록
+        from real_estate.graphflow.graph.vector_index import (
+            ensure_vector_index,
+            update_embeddings_for_label,
+        )
+        ensure_vector_index(driver)
+        for label in (L.FACT, L.ENTITY, L.USER_DOC):
+            update_embeddings_for_label(driver, label)
+        emit("userdoc_ingested", provider=provider, facts=counts["facts"],
+             confirmed=counts["confirmed"], candidate=counts["candidate"])
+        return texts
