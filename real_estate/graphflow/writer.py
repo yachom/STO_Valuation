@@ -49,6 +49,7 @@ class ClaimDraft(BaseModel):
 class BlockDraft(BaseModel):
     markdown: str = Field(description="문단 markdown (3~6문장)")
     claim_indexes: list[int] = Field(
+        default_factory=list,
         description="이 문단이 담는 claim들의 인덱스 (claims 배열 0-base)")
 
 

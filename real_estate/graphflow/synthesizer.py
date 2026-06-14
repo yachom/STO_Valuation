@@ -35,7 +35,8 @@ class OverviewDraft(BaseModel):
 
 class OverviewBlockDraft(BaseModel):
     markdown: str
-    claim_indexes: list[int] = Field(description="claims 배열 0-base 인덱스")
+    claim_indexes: list[int] = Field(
+        default_factory=list, description="claims 배열 0-base 인덱스")
 
 
 def _format_sections(sections: dict[str, SectionDraft]) -> tuple[str, list[tuple[str, int]]]:
