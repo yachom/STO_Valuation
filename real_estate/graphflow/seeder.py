@@ -314,6 +314,7 @@ def _collect_commercial_area(sg, conn, asset, loc, trdar_cd) -> object | None:
         "WHERE trdar_cd=? GROUP BY quarter_code ORDER BY quarter_code DESC LIMIT 1",
         (trdar_cd,),
     ).fetchone()
+    latest_sales_q = sales["quarter_code"] if sales else None
     if sales:
         props.setdefault("latest_quarter", sales["quarter_code"])
         props["latest_sales_total"] = sales["s"]
@@ -327,16 +328,24 @@ def _collect_commercial_area(sg, conn, asset, loc, trdar_cd) -> object | None:
         ad_node = _collect_admin_dong(sg, conn, ca["adstrd_cd"], ca["adstrd_name"])
         sg.add_edge(ca_node, E.SERVES_DISTRICT, ad_node)
 
-    # 상위 업종 (전 분기 누적 매출 상위 N) — Industry는 전역 공유 노드
+    # 상위 업종 (최신 분기 매출 상위 N) — Industry는 전역 공유 노드.
+    # 분기 필터를 상권 총매출(latest_sales_total)과 동일 분기로 맞춰야
+    # '업종 매출 > 상권 총매출' 모순이 안 생긴다 (둘 다 최신 1분기 기준).
+    area_total = props.get("latest_sales_total") or 0
     for r in conn.execute(
         "SELECT industry_code, industry_name, SUM(sales_amount) AS s "
-        "FROM commercial_estimated_sales WHERE trdar_cd=? "
-        "GROUP BY industry_code ORDER BY s DESC LIMIT ?", (trdar_cd, _TOP_INDUSTRY_N),
+        "FROM commercial_estimated_sales WHERE trdar_cd=? AND quarter_code=? "
+        "GROUP BY industry_code ORDER BY s DESC LIMIT ?",
+        (trdar_cd, latest_sales_q, _TOP_INDUSTRY_N),
     ).fetchall():
+        # 매출비중 = 업종 매출 / 상권 총매출 (동일 최신 분기 기준이라 정합).
+        share = round(r["s"] / area_total, 4) if area_total else None
         ind = sg.add_node(L.INDUSTRY, r["industry_code"], {
             "industry_name": r["industry_name"],
             "trdar_name": ca["trdar_name"],   # 카드 가독성용 (가장 최근 연결 상권)
             "sales_amount": r["s"],
+            "sales_share": share,             # 상권 매출 대비 비중 (0~1)
+            "sales_quarter": latest_sales_q,
         })
         sg.add_edge(ca_node, E.TOP_INDUSTRY, ind, {"sales_amount": r["s"]})
 

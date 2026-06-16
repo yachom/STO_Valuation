@@ -128,7 +128,12 @@ def card_for_industry(p: dict) -> str:
     sales = _fmt_int(p.get("sales_amount"))
     where = f"{trdar} 상권" if trdar else "상권"
     if sales:
-        return f"{name} — {where} 매출 상위 업종 (추정매출 {sales}원)."
+        share = p.get("sales_share")
+        q = p.get("sales_quarter", "")
+        qs = f"{q} 분기 " if q else ""
+        share_s = (f", 상권 매출의 {share * 100:.1f}%"
+                   if isinstance(share, (int, float)) else "")
+        return f"{name} — {where} 매출 상위 업종 ({qs}추정매출 {sales}원{share_s})."
     return f"{name} — {where} 주요 업종."
 
 
