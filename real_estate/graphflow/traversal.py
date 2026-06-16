@@ -120,7 +120,8 @@ def _expand(driver: Driver, eids: list[str]) -> dict[str, list[_Neighbor]]:
                    coalesce(m.card_text, '') AS card,
                    m[$keymap[lbl]] AS nat_key,
                    m.published_at AS published_at, m.valid_until AS valid_until,
-                   m.temporal_kind AS temporal_kind, m.confidence AS confidence
+                   m.temporal_kind AS temporal_kind, m.confidence AS confidence,
+                   m.`앵커점수` AS anchor_score
             ORDER BY from_eid, to_eid, rel
             """,
             eids=eids, keymap=KEY_PROP,
@@ -131,7 +132,8 @@ def _expand(driver: Driver, eids: list[str]) -> dict[str, list[_Neighbor]]:
                 direction="out" if r["outgoing"] else "in",
                 noderef=NodeRef(r["to_eid"], r["to_label"], str(r["nat_key"]), r["card"]),
                 props={"published_at": r["published_at"], "valid_until": r["valid_until"],
-                       "temporal_kind": r["temporal_kind"], "confidence": r["confidence"]},
+                       "temporal_kind": r["temporal_kind"], "confidence": r["confidence"],
+                       "앵커점수": r["anchor_score"]},
             )
             out[r["from_eid"]].append(nb)
     return out

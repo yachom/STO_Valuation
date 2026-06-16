@@ -31,6 +31,7 @@ class NODE_LABELS:
     DEVELOPMENT_PROJECT = "DevelopmentProject"
     CERTIFICATION = "Certification"      # BEEC/GSEED 통합 — cert_id
     TENANCY_EVENT = "TenancyEvent"       # MOLIT sale/rent 통합 — event_id
+    TENANT = "Tenant"                    # 상가 입점업체(카카오 장소) — place_id
     TRANSIT_STATION = "TransitStation"   # station_id
 
     # ── 확장 수집물 (Harvester/Navigator, PR-C~) ──
@@ -60,6 +61,7 @@ class EDGE_TYPES:
     LOCATED_IN = "LOCATED_IN"            # Building/Complex → LegalDong|AdminDong
     CERTIFIED_AS = "CERTIFIED_AS"        # Building → Certification
     HAS_TENANCY = "HAS_TENANCY"          # Complex → TenancyEvent
+    HAS_TENANT = "HAS_TENANT"            # Asset → Tenant (상가 입점업체)
     SERVES_DISTRICT = "SERVES_DISTRICT"  # CommercialArea → AdminDong
     TOP_INDUSTRY = "TOP_INDUSTRY"        # CommercialArea → Industry
     WITHIN_RADIUS = "WITHIN_RADIUS"      # Asset → Complex|TransitStation (distance_m)
@@ -100,6 +102,7 @@ _UNIQUE_KEYS: list[tuple[str, str]] = [
     (NODE_LABELS.DEVELOPMENT_PROJECT, "dev_id"),
     (NODE_LABELS.CERTIFICATION, "cert_id"),
     (NODE_LABELS.TENANCY_EVENT, "event_id"),
+    (NODE_LABELS.TENANT, "place_id"),
     (NODE_LABELS.TRANSIT_STATION, "station_id"),
     (NODE_LABELS.WEB_DOC, "url_hash"),
     (NODE_LABELS.USER_DOC, "doc_hash"),

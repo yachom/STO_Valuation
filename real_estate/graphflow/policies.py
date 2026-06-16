@@ -71,4 +71,9 @@ class StaticPolicy:
         conf = props.get("confidence")
         if isinstance(conf, (int, float)):
             score *= max(0.0, min(1.0, float(conf)))
+        # 앵커점수가 있는 노드(Tenant)는 그 점수를 신뢰 배수로 반영 →
+        # walk가 같은 HAS_TENANT 엣지여도 앵커 테넌트를 우선 표면화(주차장·일반 후순위).
+        anchor = props.get("앵커점수")
+        if isinstance(anchor, (int, float)):
+            score *= 0.4 + 0.6 * max(0.0, min(1.0, float(anchor)))
         return score

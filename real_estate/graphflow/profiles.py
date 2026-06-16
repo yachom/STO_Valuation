@@ -21,6 +21,7 @@ PROFILES: dict[str, dict[str, float]] = {
     # ── 임차/임대 가치 ──
     "tenant": {
         E.ANCHORS: 1.0,
+        E.HAS_TENANT: 0.95,
         E.HAS_TENANCY: 0.9,
         E.MENTIONS: 0.7,
         E.ABOUT: 0.5,
@@ -43,6 +44,7 @@ PROFILES: dict[str, dict[str, float]] = {
         E.SERVES_DISTRICT: 0.2,
         E.TOP_INDUSTRY: 0.1,
         E.HAS_TENANCY: 0.1,
+        E.HAS_TENANT: 0.1,
         E.WITHIN_RADIUS: 0.1,
         E.SAME_AS_CANDIDATE: 0.1,
     },
@@ -52,6 +54,7 @@ PROFILES: dict[str, dict[str, float]] = {
         E.SERVES_DISTRICT: 0.9,
         E.TOP_INDUSTRY: 0.8,
         E.MENTIONS: 0.7,
+        E.HAS_TENANT: 0.6,
         E.ABOUT: 0.6,
         E.WITHIN_RADIUS: 0.6,
         E.EXTRACTED_FROM: 0.5,
@@ -64,6 +67,7 @@ PROFILES: dict[str, dict[str, float]] = {
     "qa_base": {
         E.ANCHORS: 1.0,
         E.MENTIONS: 0.7,
+        E.HAS_TENANT: 0.7,
         E.HAS_TENANCY: 0.6,
         E.SERVES_DISTRICT: 0.6,
         E.TOP_INDUSTRY: 0.6,

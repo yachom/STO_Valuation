@@ -236,6 +236,25 @@ def card_for_assessment(p: dict) -> str:
     return f"평가 회신 ({p.get('stance', '')}): {p.get('rationale', '')[:120]}"
 
 
+def card_for_tenant(p: dict) -> str:
+    """상가 입점업체 카드 — 상호·업종·앵커등급 + 리뷰 신호(있으면)."""
+    name = p.get("상호") or "업체"
+    cats = [c for c in (p.get("카테고리") or "").split(" > ") if c]
+    leaf = cats[-1] if cats else ""
+    head = f"{name} — {leaf}" if leaf else name
+    grade = p.get("앵커등급")
+    if grade:
+        head += f" (입점 {grade})"
+    sig = []
+    if p.get("평점"):
+        sig.append(f"평점 {p['평점']}")
+    if p.get("후기수"):
+        sig.append(f"카카오후기 {p['후기수']}")
+    if p.get("블로그리뷰수"):
+        sig.append(f"블로그리뷰 {p['블로그리뷰수']}")
+    return head + "." + (" " + ", ".join(sig) + "." if sig else "")
+
+
 _BUILDERS = {
     NODE_LABELS.ASSET: card_for_asset,
     NODE_LABELS.COMPLEX: card_for_complex,
@@ -247,6 +266,7 @@ _BUILDERS = {
     NODE_LABELS.LEGAL_DONG: card_for_legal_dong,
     NODE_LABELS.TRANSIT_STATION: card_for_transit_station,
     NODE_LABELS.TENANCY_EVENT: card_for_tenancy_event,
+    NODE_LABELS.TENANT: card_for_tenant,
     NODE_LABELS.DEVELOPMENT_PROJECT: card_for_development_project,
     NODE_LABELS.WEB_DOC: card_for_web_doc,
     NODE_LABELS.FACT: card_for_fact,
