@@ -119,6 +119,13 @@ def card_for_commercial_area(p: dict) -> str:
     if extras:
         q = p.get("latest_quarter", "")
         base += f" 최근({q}) " + ", ".join(extras) + "."
+    # 비교 grounding: 동일 자치구·상권구분 내 매출 순위 + 추세.
+    rank, n = p.get("sales_rank"), p.get("sales_peer_count")
+    if rank and n:
+        base += f" 동일 자치구 {kind} {n}곳 중 매출 {rank}위(상위 {round(rank / n * 100)}%)."
+    tp = p.get("sales_trend_pct")
+    if tp is not None:
+        base += f" 매출 추세({p.get('sales_trend_span', '')}) {'+' if tp >= 0 else ''}{tp}%."
     return base
 
 

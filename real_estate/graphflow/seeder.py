@@ -285,6 +285,40 @@ def _collect_commercial(sg, conn, asset, loc, radius_m) -> None:
     _collect_transit(sg, conn, asset, loc)
 
 
+def _benchmark_sales(conn, trdar_cd, se_name, adstrd_cd, latest_q) -> dict:
+    """상권 매출의 '동일 자치구·동일 상권구분 내 순위' + 최근 분기 추세.
+
+    비교 grounding — '631억(양호)' 같은 근거 없는 형용사 대신 '강서구 발달상권
+    N곳 중 K위(상위 X%), 매출 추세 ±Y%'를 보고서에 공급한다. 이게 있어야
+    LLM(특히 상위 모델)이 묘사가 아닌 판정·추론을 할 길이 열린다.
+    """
+    if not (se_name and adstrd_cd and latest_q):
+        return {}
+    sgg = str(adstrd_cd)[:5]
+    peers = conn.execute(
+        "SELECT es.trdar_cd AS cd, SUM(es.sales_amount) AS total "
+        "FROM commercial_estimated_sales es "
+        "JOIN commercial_area ca ON es.trdar_cd = ca.trdar_cd "
+        "WHERE substr(ca.adstrd_cd,1,5)=? AND ca.trdar_se_name=? AND es.quarter_code=? "
+        "GROUP BY es.trdar_cd ORDER BY total DESC",
+        (sgg, se_name, latest_q),
+    ).fetchall()
+    out: dict = {}
+    rank = next((i + 1 for i, r in enumerate(peers) if str(r["cd"]) == str(trdar_cd)), None)
+    if rank:
+        out["sales_rank"] = rank
+        out["sales_peer_count"] = len(peers)
+    trend = list(reversed(conn.execute(
+        "SELECT quarter_code AS q, SUM(sales_amount) AS s FROM commercial_estimated_sales "
+        "WHERE trdar_cd=? GROUP BY quarter_code ORDER BY quarter_code DESC LIMIT 4",
+        (trdar_cd,),
+    ).fetchall()))
+    if len(trend) >= 2 and trend[0]["s"]:
+        out["sales_trend_pct"] = round((trend[-1]["s"] - trend[0]["s"]) / trend[0]["s"] * 100, 1)
+        out["sales_trend_span"] = f'{trend[0]["q"]}~{trend[-1]["q"]}'
+    return out
+
+
 def _collect_commercial_area(sg, conn, asset, loc, trdar_cd) -> object | None:
     ca = conn.execute(
         "SELECT trdar_name, trdar_se_name, area_sqm, center_lat, center_lon, "
@@ -318,6 +352,8 @@ def _collect_commercial_area(sg, conn, asset, loc, trdar_cd) -> object | None:
     if sales:
         props.setdefault("latest_quarter", sales["quarter_code"])
         props["latest_sales_total"] = sales["s"]
+        props.update(_benchmark_sales(
+            conn, trdar_cd, ca["trdar_se_name"], ca["adstrd_cd"], latest_sales_q))
 
     ca_node = sg.add_node(L.COMMERCIAL_AREA, trdar_cd, props)
     sg.add_edge(asset, E.ANCHORS, ca_node, {"distance_m": props.get("distance_m")})
