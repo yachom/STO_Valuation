@@ -54,8 +54,55 @@ def seed_node(state: GraphFlowState) -> dict:
     return {"asset_card": _asset_card(driver, state["asset_id"])}
 
 
+def tenant_node(state: GraphFlowState) -> dict:
+    """입점업체 수집(staleness 90일 게이트) + 건물유형 분류.
+
+    수집은 분리 원칙(보고서는 그래프만 읽음) — 동일 자산 재실행 시 collected_at이
+    신선하면 스크래핑을 건너뛰고 분류만 한다. location/KAKAO 키가 없으면(기존
+    그래프 재사용 모드) 그래프의 기존 Tenant로 분류만 시도한다.
+    """
+    import os
+
+    from real_estate.repository.building_type import classify_building_type
+    driver = _get_driver()
+    aid = state["asset_id"]
+    with driver.session() as s:
+        b = s.run("MATCH (:Asset {asset_id:$a})-[:ANCHORS]->(b:Building) "
+                  "RETURN b.name AS n, b.main_use AS mu LIMIT 1", a=aid).single()
+    building_name = (b or {}).get("n")
+    main_use = (b or {}).get("mu")
+
+    summary: dict = {"skipped": True, "reason": "no_location_or_key"}
+    loc = state.get("location")
+    kakao = os.environ.get("KAKAO_API_KEY")
+    if loc is not None and kakao:
+        from real_estate.graphflow.tenant_collector import collect_tenants
+        summary = collect_tenants(driver, aid, location=loc, kakao_key=kakao,
+                                  building_name=building_name)
+
+    # 그래프의 Tenant(방금/기존 적재)로 건물유형 분류.
+    with driver.session() as s:
+        rows = s.run("MATCH (:Asset {asset_id:$a})-[:HAS_TENANT]->(t:Tenant) "
+                     "RETURN t.카테고리 AS 카테고리", a=aid).data()
+    btype = classify_building_type(main_use, rows)
+    return {"tenant_summary": summary, "building_type": btype}
+
+
+def _office_purpose(building_type: dict | None) -> str | None:
+    """오피스/혼합형이면 navigator를 입주사 식별 쪽으로 유도하는 purpose."""
+    if not building_type or building_type.get("앵커전략") not in ("뉴스기반", "혼합"):
+        return None
+    return (f"이 건물은 '{building_type.get('유형')}'으로 사무실/업무 비중이 있어 "
+            "카카오 지도에 입주 기업이 거의 잡히지 않는다. 입주 기업·임차사·"
+            "본사/지점 이전·사옥 등 '핵심 입주사 식별'에 도움되는 검색어를 우선 "
+            "생성하라(예: '{건물명} 입주 기업', '{건물명} 임차').")
+
+
 def expand_node(state: GraphFlowState) -> dict:
-    """EXPAND (rounds=0이면 생략). 내부에서 라운드 루프 + novelty 종료."""
+    """EXPAND (rounds=0이면 생략). 내부에서 라운드 루프 + novelty 종료.
+
+    건물유형이 오피스/혼합이면 navigator에 입주사 식별 purpose를 주입한다(②).
+    """
     rounds = state.get("expand_rounds", 0)
     if rounds <= 0:
         return {"expand_summary": {"rounds_run": 0, "skipped": True}}
@@ -64,7 +111,8 @@ def expand_node(state: GraphFlowState) -> dict:
         _get_driver(), asset_id=state["asset_id"],
         collected_by=state.get("collected_by", make_run_id("exp")),
         rounds=rounds,
-        total_query_budget=state.get("expand_budget", 40))
+        total_query_budget=state.get("expand_budget", 40),
+        purpose=_office_purpose(state.get("building_type")))
     return {"expand_summary": summary}
 
 
@@ -104,6 +152,7 @@ def finalize_node(state: GraphFlowState) -> dict:
 def build_report_graph():
     g = StateGraph(GraphFlowState)
     g.add_node("seed", seed_node)
+    g.add_node("tenant", tenant_node)
     g.add_node("expand", expand_node)
     for axis in REPORT_AXES:
         g.add_node(f"write_{axis}", _make_write_node(axis))
@@ -111,7 +160,8 @@ def build_report_graph():
     g.add_node("finalize", finalize_node)
 
     g.add_edge(START, "seed")
-    g.add_edge("seed", "expand")
+    g.add_edge("seed", "tenant")
+    g.add_edge("tenant", "expand")
     for axis in REPORT_AXES:                 # fan-out: 3축 병렬
         g.add_edge("expand", f"write_{axis}")
         g.add_edge(f"write_{axis}", "synthesize")   # fan-in (전 축 완료 대기)

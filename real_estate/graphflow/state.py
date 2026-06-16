@@ -33,6 +33,8 @@ class GraphFlowState(TypedDict, total=False):
 
     # ── 단계 산출 ──
     asset_card: str
+    building_type: dict        # 건물유형 분류(상가형/오피스형/혼합형) + 앵커전략
+    tenant_summary: dict       # 입점업체 수집 결과 (count/anchors/collected_at)
     expand_summary: dict
     sections: Annotated[dict, merge_dicts]          # axis → SectionDraft
     evidence_by_axis: Annotated[dict, merge_dicts]  # axis → list[Evidence]
