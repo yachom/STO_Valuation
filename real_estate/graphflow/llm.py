@@ -81,11 +81,16 @@ def _load_agent_tier_map() -> dict[str, str]:
     return out
 
 
-def _build_chat_model(spec: ProviderSpec, callbacks: list) -> BaseChatModel:
+def _build_chat_model(spec: ProviderSpec, callbacks: list,
+                      name: str | None = None) -> BaseChatModel:
+    # name은 Runnable의 run name → Langfuse GENERATION 이름이 된다. 에이전트명을
+    # 넘기면 비용이 'ChatAnthropic' 한 덩어리가 아니라 에이전트별로 집계된다.
     if spec.provider == "anthropic":
         from langchain_anthropic import ChatAnthropic
         kwargs: dict[str, Any] = {"model": spec.model, "max_tokens": spec.max_tokens,
                                   "callbacks": callbacks}
+        if name:
+            kwargs["name"] = name
         kwargs.update(spec.extra)
         return ChatAnthropic(**kwargs)
     if spec.provider == "ollama":
@@ -94,6 +99,8 @@ def _build_chat_model(spec: ProviderSpec, callbacks: list) -> BaseChatModel:
         except ImportError as e:
             raise RuntimeError("provider 'ollama'엔 langchain-ollama 필요") from e
         kwargs = {"model": spec.model, "callbacks": callbacks}
+        if name:
+            kwargs["name"] = name
         if spec.base_url:
             kwargs["base_url"] = spec.base_url
         kwargs.update(spec.extra)
@@ -105,6 +112,8 @@ def _build_chat_model(spec: ProviderSpec, callbacks: list) -> BaseChatModel:
             raise RuntimeError("provider 'openai_compat'엔 langchain-openai 필요") from e
         kwargs = {"model": spec.model, "callbacks": callbacks, "max_tokens": spec.max_tokens,
                   "api_key": os.environ.get("LOCAL_LLM_API_KEY", "local")}
+        if name:
+            kwargs["name"] = name
         if spec.base_url:
             kwargs["base_url"] = spec.base_url
         kwargs.update(spec.extra)
@@ -203,7 +212,7 @@ def get_llm(agent_name: str, **overrides) -> BaseChatModel:
         if cached is not None:
             return cached
         spec = _spec_for_agent(agent_name, overrides)
-        llm = _build_chat_model(spec, _attach_callbacks())
+        llm = _build_chat_model(spec, _attach_callbacks(), name=agent_name)
         _llm_cache[cache_key] = llm
         logger.info("get_llm('%s') → %s/%s (max_tokens=%d)",
                     agent_name, spec.provider, spec.model, spec.max_tokens)
