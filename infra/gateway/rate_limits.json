@@ -13,5 +13,6 @@
   "molit_nrg_trade": { "min_interval_seconds": 0.2 },
   "reb_lease_market": { "min_interval_seconds": 0.5 },
   "nts_business_registry": { "min_interval_seconds": 0.5 },
-  "seoul_open_data": { "min_interval_seconds": 0.2 }
+  "seoul_open_data": { "min_interval_seconds": 0.2 },
+  "localdata": { "min_interval_seconds": 0.2 }
 }
