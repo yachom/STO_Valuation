@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import logging
 
-from real_estate.graphflow.llm import cached_system, get_llm, provider_for_agent
+from real_estate.graphflow.llm import get_llm, provider_for_agent, system_content
 from infra.agent.tracing import node_scope, observe
 
 logger = logging.getLogger("graphflow.agent")
@@ -126,12 +126,12 @@ class BaseAgent:
 
         user는 str 또는 content block list. schema(Pydantic/JSON)면 structured output.
 
-        프롬프트 캐싱(cache_control: ephemeral)은 Anthropic 전용이라, provider가
-        anthropic이 아니면(예: OpenAI) 평문 system을 보낸다 — 안 그러면 GPT가
-        모르는 content block 형식이라 호출이 깨진다.
+        프롬프트 캐싱 전략은 provider별로 다르다(llm.system_content가 캡슐화):
+        Anthropic은 cache_control 블록, OpenAI는 평문(자동 캐싱). cache_system=False면
+        provider 무관하게 평문.
         """
-        use_cache = cache_system and provider_for_agent(self.name) == "anthropic"
-        sys_content = cached_system(system) if use_cache else system
+        sys_content = (system_content(provider_for_agent(self.name), system)
+                       if cache_system else system)
         messages = [
             {"role": "system", "content": sys_content},
             {"role": "user", "content": user},

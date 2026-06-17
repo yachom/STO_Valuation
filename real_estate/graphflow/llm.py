@@ -46,10 +46,10 @@ _TIER_SPECS_DEFAULT: dict[str, ProviderSpec] = {
 # graphflow 에이전트 → tier (설계 §6 roster). 새 에이전트는 여기 등록.
 AGENT_TO_TIER_DEFAULT: dict[str, str] = {
     "navigator":         "sonnet",   # frontier 선정 + 검색어 생성
-    "harvester":         "haiku",    # Fact 추출 — 강화 프롬프트로 Sonnet 대비 품질
-                                     # 동급(수치·출처·날짜), 비용 1/3. 복귀:
-                                     # AGENT_TIER_HARVESTER=sonnet
-    "prefilter":         "haiku",    # 제목+요약 관련성 사전 필터 (스크랩/추출 전)
+    "harvester":         "gpt_mini",  # 뉴스 Fact 추출 — gpt-4o-mini가 하이쿠 대비
+                                     # 토큰당 ~6-8배 저렴(입력단가), 추출 품질
+                                     # 동등(수치·날짜·confidence). 복귀: AGENT_TIER_HARVESTER=haiku
+    "prefilter":         "gpt_mini",  # 제목+요약 관련성 사전 필터 — 뉴스 작업, 동일 절감
     "curator":           "haiku",    # dedup/병합 승격 판정
     "walk_judge":        "haiku",    # llm_walk 홉당 배치 판정 (keep/expand/drop)
     "writer":            "sonnet",   # 섹션 집필 (Claim+CITES)
@@ -257,6 +257,21 @@ def cache_block(text: str) -> dict:
 def cached_system(text: str) -> list[dict]:
     """system 메시지용 list[content_block] 단축형."""
     return [cache_block(text)]
+
+
+def system_content(provider: str, system: str):
+    """provider별 프롬프트 캐싱 전략을 캡슐화 — system 메시지 content를 만든다.
+
+    - anthropic: cache_control: ephemeral 블록으로 명시적 캐시 마킹.
+    - openai / 그 외: 평문 문자열. OpenAI는 1024토큰↑ 공통 프리픽스를 자동
+      캐싱하므로 마커가 불필요하고(시스템 메시지를 앞에 두는 것으로 충분),
+      Anthropic 전용 cache_control 블록을 보내면 오히려 호출이 깨진다.
+
+    새 provider의 캐싱 전략은 이 함수 한 곳만 확장하면 된다.
+    """
+    if provider == "anthropic":
+        return cached_system(system)
+    return system
 
 
 def reset_caches() -> None:
