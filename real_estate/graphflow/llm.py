@@ -37,6 +37,9 @@ _TIER_SPECS_DEFAULT: dict[str, ProviderSpec] = {
     "opus":   ProviderSpec("anthropic", "claude-opus-4-8",           8000),
     "sonnet": ProviderSpec("anthropic", "claude-sonnet-4-6",         8000),
     "haiku":  ProviderSpec("anthropic", "claude-haiku-4-5-20251001", 4096),
+    # 저비용 OpenAI 등급 — 뉴스 Fact 추출(harvester)·사전필터 등 대량 작업용.
+    # 사용: AGENT_TIER_HARVESTER=gpt_mini (OPENAI_API_KEY 필요).
+    "gpt_mini": ProviderSpec("openai", "gpt-4o-mini",                4096),
 }
 
 
@@ -105,6 +108,18 @@ def _build_chat_model(spec: ProviderSpec, callbacks: list,
             kwargs["base_url"] = spec.base_url
         kwargs.update(spec.extra)
         return ChatOllama(**kwargs)
+    if spec.provider == "openai":
+        try:
+            from langchain_openai import ChatOpenAI
+        except ImportError as e:
+            raise RuntimeError("provider 'openai'엔 langchain-openai 필요") from e
+        kwargs = {"model": spec.model, "max_tokens": spec.max_tokens,
+                  "callbacks": callbacks,
+                  "api_key": os.environ.get("OPENAI_API_KEY")}
+        if name:
+            kwargs["name"] = name
+        kwargs.update(spec.extra)
+        return ChatOpenAI(**kwargs)
     if spec.provider == "openai_compat":
         try:
             from langchain_openai import ChatOpenAI
@@ -194,6 +209,15 @@ def _spec_for_agent(agent_name: str, overrides: dict) -> ProviderSpec:
             base_url=spec.base_url,
             extra={**spec.extra, **{k: v for k, v in overrides.items() if k != "max_tokens"}})
     return spec
+
+
+def provider_for_agent(agent_name: str) -> str:
+    """에이전트가 실제로 쓰는 provider (anthropic/openai/...).
+
+    provider별 분기 판단용 — 예: Anthropic 전용 프롬프트 캐싱(cache_control)을
+    적용할지. 캐시(_llm_cache)와 무관하게 가벼운 spec 조회만 한다.
+    """
+    return _spec_for_agent(agent_name, {}).provider
 
 
 def get_llm(agent_name: str, **overrides) -> BaseChatModel:

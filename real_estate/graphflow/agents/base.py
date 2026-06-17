@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import logging
 
-from real_estate.graphflow.llm import cached_system, get_llm
+from real_estate.graphflow.llm import cached_system, get_llm, provider_for_agent
 from infra.agent.tracing import node_scope, observe
 
 logger = logging.getLogger("graphflow.agent")
@@ -125,8 +125,13 @@ class BaseAgent:
         """system+user 단발 호출 단축형. system은 기본적으로 prompt-cache 마킹.
 
         user는 str 또는 content block list. schema(Pydantic/JSON)면 structured output.
+
+        프롬프트 캐싱(cache_control: ephemeral)은 Anthropic 전용이라, provider가
+        anthropic이 아니면(예: OpenAI) 평문 system을 보낸다 — 안 그러면 GPT가
+        모르는 content block 형식이라 호출이 깨진다.
         """
-        sys_content = cached_system(system) if cache_system else system
+        use_cache = cache_system and provider_for_agent(self.name) == "anthropic"
+        sys_content = cached_system(system) if use_cache else system
         messages = [
             {"role": "system", "content": sys_content},
             {"role": "user", "content": user},
