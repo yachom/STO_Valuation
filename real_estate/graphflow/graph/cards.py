@@ -84,6 +84,18 @@ def card_for_building(p: dict) -> str:
     return f"{head}{spec_s}. 건물관리번호 {p.get('bdmgt_sn', '')}."
 
 
+def _grade_bench(p: dict) -> str:
+    """인증 등급의 자치구 내 순위 문장 — 'BEEC 1++ 양호' 대신 비교 grounding."""
+    n = p.get("grade_peer_count")
+    if not n:
+        return ""
+    better = p.get("grade_better_count", 0)
+    if better == 0:
+        return f" 자치구 인증건물 {n}건 중 최고 등급."
+    return (f" 자치구 인증건물 {n}건 중 상위 {round(p.get('grade_rank_pct', 0) * 100)}%"
+            f"(더 높은 등급 {better}건).")
+
+
 def card_for_certification(p: dict) -> str:
     kind = p.get("kind", "")
     grade = p.get("grade", "")
@@ -95,11 +107,11 @@ def card_for_certification(p: dict) -> str:
         if p.get("energy_reduce_rate") is not None:
             extra.append(f"에너지절감률 {p['energy_reduce_rate']}%")
         extra_s = " (" + ", ".join(extra) + ")" if extra else ""
-        return f"BEEC 건물에너지효율 인증 — 등급 {grade}, 인증일 {date}{extra_s}."
+        return f"BEEC 건물에너지효율 인증 — 등급 {grade}, 인증일 {date}{extra_s}." + _grade_bench(p)
     if kind == "GSEED":
         std = p.get("cert_standard", "")
         ct = p.get("cert_type", "")
-        return f"G-SEED 녹색건축 {ct} — 등급 {grade}, 기준 {std}, 인증일 {date}."
+        return f"G-SEED 녹색건축 {ct} — 등급 {grade}, 기준 {std}, 인증일 {date}." + _grade_bench(p)
     return f"인증 {kind} 등급 {grade} ({date})."
 
 

@@ -241,10 +241,48 @@ def _fetch_building_register(loc: LocationInfo, key: str) -> dict:
         return {}
 
 
+# 인증 등급 위계 (높음→낮음, CLAUDE.md 도메인 위계). 낮은 인덱스=우수.
+_BEEC_ORDER = ["1+++등급", "1++등급", "1+등급", "1등급",
+               "2등급", "3등급", "4등급", "5등급", "6등급", "7등급"]
+_GSEED_ORDER = ["최우수(그린1등급)", "우수(그린2등급)", "우량(그린3등급)", "일반(그린4등급)"]
+
+
+def _benchmark_cert(conn, sigungu, kind, grade) -> dict:
+    """인증 등급의 '동일 자치구 내 순위' — 'BEEC 1++ 양호' 대신 '상위 X%,
+    더 높은 등급 K건'이라는 비교 grounding 공급 (esg 축 묘사→평가).
+    """
+    if not (sigungu and grade):
+        return {}
+    if kind == "BEEC":
+        order, rows = _BEEC_ORDER, conn.execute(
+            "SELECT grd_name AS g FROM energy_efficiency_cert WHERE bdmgt_sn LIKE ?",
+            (sigungu + "%",)).fetchall()
+    elif kind == "GSEED":
+        order, rows = _GSEED_ORDER, conn.execute(
+            "SELECT cert_grade AS g FROM green_cert WHERE bdmgt_sn LIKE ?",
+            (sigungu + "%",)).fetchall()
+    else:
+        return {}
+
+    def rk(g):
+        return order.index(g) if g in order else len(order)
+
+    grades = [rk(r["g"]) for r in rows if r["g"]]
+    if not grades:
+        return {}
+    mine = rk(grade)
+    return {
+        "grade_peer_count": len(grades),
+        "grade_better_count": sum(1 for x in grades if x < mine),   # 더 높은 등급
+        "grade_rank_pct": round(sum(1 for x in grades if x <= mine) / len(grades), 2),
+    }
+
+
 def _collect_certifications(sg, conn, asset, loc) -> None:
     """본 건물 직접 BEEC/GSEED 인증 (bd_mgt_sn 매칭) → Building -CERTIFIED_AS-> Cert."""
     if not loc.bd_mgt_sn:
         return
+    sgg = str(loc.bd_mgt_sn)[:5]
     building = sg._index.get((L.BUILDING, loc.bd_mgt_sn))
     if building is None:
         return
@@ -257,6 +295,7 @@ def _collect_certifications(sg, conn, asset, loc) -> None:
             "kind": "BEEC", "grade": r["grd_name"], "issue_date": r["crtif_isu_dd"],
             "primary_energy_req": r["primary_energy_req"],
             "energy_reduce_rate": r["energy_reduce_rate"],
+            **_benchmark_cert(conn, sgg, "BEEC", r["grd_name"]),
         })
         sg.add_edge(building, E.CERTIFIED_AS, cert)
 
@@ -267,6 +306,7 @@ def _collect_certifications(sg, conn, asset, loc) -> None:
         cert = sg.add_node(L.CERTIFICATION, f"GSEED:{r['cert_no']}", {
             "kind": "GSEED", "grade": r["cert_grade"], "issue_date": r["cert_date"],
             "cert_standard": r["cert_standard"], "cert_type": r["cert_type"],
+            **_benchmark_cert(conn, sgg, "GSEED", r["cert_grade"]),
         })
         sg.add_edge(building, E.CERTIFIED_AS, cert)
 
