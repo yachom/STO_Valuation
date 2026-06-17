@@ -132,6 +132,15 @@ def _assemble(
         "created_at": datetime.now().isoformat(timespec="seconds"),
         "sections": sections_json, "claims": claims_json,
         "evidence": evidence_map, "audit": audit,
+        # 사회적 가치 루브릭 (synthesizer 판정) — 묘사가 아닌 등급 결론.
+        "valuation": {
+            "overall_grade": getattr(overview, "overall_grade", "") or "",
+            "overall_rationale": getattr(overview, "overall_rationale", "") or "",
+            "axis_scores": [
+                {"axis": a.axis, "grade": a.grade, "rationale": a.rationale}
+                for a in (getattr(overview, "axis_scores", None) or [])
+            ],
+        },
     }
 
 
@@ -140,6 +149,15 @@ def render_markdown(report: dict) -> str:
              f"- report: `{report['report_id']}` ({report['version_id']})",
              f"- asset: `{report['asset_id']}`",
              f"- 생성: {report['created_at']}", ""]
+    val = report.get("valuation") or {}
+    if val.get("overall_grade") or val.get("axis_scores"):
+        lines.append(f"## 사회적 가치 종합 등급: **{val.get('overall_grade') or '-'}**\n")
+        if val.get("overall_rationale"):
+            lines.append(val["overall_rationale"])
+            lines.append("")
+        for a in val.get("axis_scores", []):
+            lines.append(f"- **{a['axis']}** ({a['grade']}): {a['rationale']}")
+        lines.append("")
     for sec in report["sections"]:
         lines.append(f"## [{sec['axis']}] {sec['title']}\n")
         for b in sec["blocks"]:

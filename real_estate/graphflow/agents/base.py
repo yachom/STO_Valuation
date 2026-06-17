@@ -108,8 +108,13 @@ class BaseAgent:
         """이 에이전트의 BaseChatModel (tier는 llm.py AGENT_TO_TIER에서 결정)."""
         return get_llm(self.name, **overrides)
 
-    def invoke(self, messages, *, schema=None, **overrides):
-        """messages로 LLM 호출. node_scope(로컬) + observe(Langfuse) 래핑."""
+    def invoke(self, messages, *, schema=None, retries: int = 1, **overrides):
+        """messages로 LLM 호출. node_scope(로컬) + observe(Langfuse) 래핑.
+
+        structured output(schema) 호출은 모델이 간헐적으로 스키마 위반 출력을 내
+        ValidationError로 run 전체가 깨질 수 있어 retries회 재시도한다(재호출 시
+        보통 성공 — 확률적 실패). 비-schema 호출은 재시도 안 함.
+        """
         @self._observed
         def _call():
             model = self.llm(**overrides)
@@ -118,7 +123,15 @@ class BaseAgent:
             return model.invoke(messages)
 
         with node_scope(self.name):
-            return _call()
+            attempts = retries + 1 if schema is not None else 1
+            for i in range(attempts):
+                try:
+                    return _call()
+                except Exception as exc:
+                    if i + 1 >= attempts:
+                        raise
+                    logger.warning("%s 구조화출력 실패 (시도 %d/%d) — 재시도: %s",
+                                   self.name, i + 1, attempts, str(exc)[:160])
 
     def complete(self, *, system: str, user, schema=None,
                  cache_system: bool = True, **overrides):
