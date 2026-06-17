@@ -274,6 +274,27 @@ def card_for_tenant(p: dict) -> str:
     return head + "." + (" " + ", ".join(sig) + "." if sig else "")
 
 
+def card_for_market_context(p: dict) -> str:
+    """REB 지역 임대시장 환경 카드 — 건물 아닌 지역(서울/권역) 시장 context."""
+    region = p.get("region", "")
+    bt = p.get("building_type", "")
+    q = p.get("기준분기", "")
+    parts = []
+    vac = p.get("공실률")
+    if isinstance(vac, (int, float)):
+        tr = p.get("공실추세")
+        trs = f"(전년比 {tr:+.1f}%)" if isinstance(tr, (int, float)) else ""
+        parts.append(f"공실률 {vac:.1f}%{trs}")
+    rent = p.get("임대료")
+    if isinstance(rent, (int, float)):
+        parts.append(f"임대료 {rent:.1f}천원/㎡")
+    yld = p.get("수익률")
+    if isinstance(yld, (int, float)):
+        parts.append(f"수익률 {yld:.2f}%/분기")
+    body = ", ".join(parts) if parts else "데이터 없음"
+    return f"[임대시장 환경] {region} {bt} — {body} ({q} 기준, 한국부동산원)."
+
+
 _BUILDERS = {
     NODE_LABELS.ASSET: card_for_asset,
     NODE_LABELS.COMPLEX: card_for_complex,
@@ -286,6 +307,7 @@ _BUILDERS = {
     NODE_LABELS.TRANSIT_STATION: card_for_transit_station,
     NODE_LABELS.TENANCY_EVENT: card_for_tenancy_event,
     NODE_LABELS.TENANT: card_for_tenant,
+    NODE_LABELS.MARKET_CONTEXT: card_for_market_context,
     NODE_LABELS.DEVELOPMENT_PROJECT: card_for_development_project,
     NODE_LABELS.WEB_DOC: card_for_web_doc,
     NODE_LABELS.FACT: card_for_fact,

@@ -21,6 +21,7 @@ from datetime import date
 from infra.agent.tracing import emit, node_scope
 from infra.external.kakao_local import KakaoLocalClient
 from infra.external.kakao_place_scraper import KakaoPlaceScraper
+from infra.external.reb_rone import RebRoneClient
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, seed
@@ -53,7 +54,50 @@ def _scope_top_industries(driver, asset_id: str) -> list[str]:
     return [r["n"] for r in rows if r.get("n")]
 
 
+def _add_market_context(sg, driver, asset_id: str, reb_key: str,
+                        region: str = "서울") -> bool:
+    """REB 지역 임대시장 환경을 MarketContext 노드로 그래프에 추가 (graceful).
+
+    건물 자체 값이 아니라 임차인이 처한 시장 환경(지역 단위). 실패 시 False.
+    """
+    from real_estate.repository.reb_lease import RebLeaseRepository
+    try:
+        with driver.session() as s:
+            b = s.run("MATCH (:Asset {asset_id:$a})-[:ANCHORS]->(b:Building) "
+                      "RETURN b.main_use AS mu LIMIT 1", a=asset_id).single()
+        main_use = (b or {}).get("mu") or ""
+        bt = "오피스" if "업무" in main_use else "소규모상가"
+        repo = RebLeaseRepository(RebRoneClient(reb_key))
+        props = {"region": region, "building_type": bt}
+        vac = repo.market("공실률", bt, region=region)
+        if vac:
+            props["공실률"] = vac["값"]
+            props["공실추세"] = vac["추세_pct"]
+            props["기준분기"] = vac.get("기준분기설명") or vac.get("기준분기")
+        rent = repo.market("임대료", bt, region=region)
+        if rent:
+            props["임대료"] = rent["값"]
+            props.setdefault("기준분기", rent.get("기준분기설명") or rent.get("기준분기"))
+        yld = repo.market("수익률", bt, region=region)
+        if yld:
+            props["수익률"] = yld["값"]
+        if not any(k in props for k in ("공실률", "임대료", "수익률")):
+            return False
+        node = sg.add_node(L.MARKET_CONTEXT, f"reb:{region}:{bt}", props)
+        if node is not None:
+            sg.edges.append(SeedEdge(
+                src_label=L.ASSET, src_key=asset_id, rel=E.HAS_MARKET,
+                dst_label=L.MARKET_CONTEXT, dst_key=f"reb:{region}:{bt}"))
+        emit("market_context", region=region, building_type=bt,
+             공실률=props.get("공실률"))
+        return True
+    except Exception as e:
+        logger.warning("REB 시장환경 수집 실패 (skip): %s", str(e)[:160])
+        return False
+
+
 def collect_tenants(driver, asset_id: str, *, location, kakao_key: str,
+                    reb_key: str | None = None,
                     building_name: str | None = None,
                     staleness_days: int = DEFAULT_STALENESS_DAYS,
                     scrape_reviews: bool = True, force: bool = False,
@@ -120,6 +164,8 @@ def collect_tenants(driver, asset_id: str, *, location, kakao_key: str,
                     src_label=L.ASSET, src_key=asset_id, rel=E.HAS_TENANT,
                     dst_label=L.TENANT, dst_key=t["place_id"]))
 
+        if reb_key:
+            _add_market_context(sg, driver, asset_id, reb_key)
         stats = seed(sg, driver, embed=True)
         anchors = sum(1 for t in ranked if t.get("앵커등급") == "앵커")
         emit("tenant_collect_done", count=len(ranked), anchors=anchors,
