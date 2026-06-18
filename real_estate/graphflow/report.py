@@ -33,7 +33,7 @@ from real_estate.graphflow.writer import SectionDraft, Writer
 
 logger = logging.getLogger("graphflow.report")
 
-_MAX_REWRITES = 1
+_MAX_REWRITES = 2     # 기계감사(숫자 충실도·인용 누락) 위반 수렴 — 1회로는 잔여 발생
 
 
 def _claim_id(axis: str, text: str) -> str:

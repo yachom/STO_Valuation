@@ -105,6 +105,34 @@ def paths_to_evidence(driver: Driver, paths) -> list[Evidence]:
     return out
 
 
+_FACT_LABELS = {L.FACT, L.WEB_DOC, L.USER_DOC}
+
+
+def _reserve_facts(paths: list, *, k: int, reserve: int) -> list:
+    """상위 k를 선택하되 뉴스 Fact/WebDoc 전용 슬롯을 보장한다 (결정적).
+
+    정형 통계가 풍부한 자산에선 1홉 구조노드(Tenant/Turnover/Market)가 2홉 뉴스
+    Fact(ANCHORS×MENTIONS)를 점수로 눌러 EXPAND 수집물이 보고서에 0건 인용되는
+    문제가 있다. top-k에 Fact가 reserve개 미만이면 차순위 Fact 경로를 끌어올려
+    비-Fact 하위 경로와 교체한다. paths는 점수 내림차순 가정 — 같은 그래프면
+    같은 선택(결정적).
+    """
+    top = paths[:k]
+    if reserve <= 0:
+        return top
+    facts_in_top = [p for p in top if p.tail.label in _FACT_LABELS]
+    if len(facts_in_top) >= reserve:
+        return top
+    need = reserve - len(facts_in_top)
+    extra = [p for p in paths[k:] if p.tail.label in _FACT_LABELS][:need]
+    if not extra:
+        return top
+    nonfacts = [p for p in top if p.tail.label not in _FACT_LABELS]
+    keep = facts_in_top + nonfacts[:max(0, len(nonfacts) - len(extra))] + extra
+    keep.sort(key=lambda p: (-p.score, p.tail.label, p.tail.key))
+    return keep[:k]
+
+
 def compose(
     driver: Driver,
     asset_id: str,
@@ -112,14 +140,22 @@ def compose(
     *,
     k: int = 12,
     max_hops: int = 4,
+    fact_reserve: int = 2,
 ) -> list[Evidence]:
-    """축 프로파일 walk → Evidence 목록. 결정적 (보고서 집필용)."""
+    """축 프로파일 walk → Evidence 목록. 결정적 (보고서 집필용).
+
+    fact_reserve: 뉴스 Fact/WebDoc에 보장할 최소 슬롯 (EXPAND 수집물 표면화).
+    """
     anchor = asset_anchor_eid(driver, asset_id)
     if anchor is None:
         raise ValueError(f"Asset 노드 없음: {asset_id}")
-    paths = walk(driver, [anchor], StaticPolicy(axis), max_hops=max_hops, k=k)
-    out = paths_to_evidence(driver, paths)
-    logger.info("compose(%s, %s): %d evidence", asset_id, axis, len(out))
+    # k보다 넉넉히 뽑아 Fact 슬롯 교체 여지를 둔다.
+    paths = walk(driver, [anchor], StaticPolicy(axis), max_hops=max_hops, k=k * 2)
+    selected = _reserve_facts(paths, k=k, reserve=fact_reserve)
+    out = paths_to_evidence(driver, selected)
+    n_fact = sum(1 for e in out if e.source_kind in ("news_fact", "news_doc"))
+    logger.info("compose(%s, %s): %d evidence (news=%d)", asset_id, axis,
+                len(out), n_fact)
     return out
 
 
