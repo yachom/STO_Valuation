@@ -271,11 +271,13 @@ def card_for_tenant(p: dict) -> str:
         sig.append(f"카카오후기 {p['후기수']}")
     if p.get("블로그리뷰수"):
         sig.append(f"블로그리뷰 {p['블로그리뷰수']}")
-    # 인허가 결합 신호 (면적·영업연수) — 매칭된 가게만
+    # 인허가 결합 신호 (면적·업력) — 매칭된 가게만.
+    # '업력'은 사업자 인허가일 기준 경과 연수다 — 인허가일이 건물 준공보다 앞설 수
+    # 있어(이전 위치 이력 승계) '이 건물 영업'이 아니라 '사업자 업력'으로 표기한다.
     if isinstance(p.get("면적"), (int, float)):
         sig.append(f"면적 {p['면적']:.0f}㎡")
     if isinstance(p.get("영업연수"), (int, float)):
-        sig.append(f"영업 {p['영업연수']:.0f}년")
+        sig.append(f"업력 {p['영업연수']:.0f}년(사업자 등록 기준)")
     return head + "." + (" " + ", ".join(sig) + "." if sig else "")
 
 
