@@ -29,7 +29,7 @@ def main() -> int:
     ap.add_argument("address", nargs="?", default=_DEFAULT_ADDRESS)
     ap.add_argument("--expand-rounds", type=int, default=0,
                     help="보고서 전 EXPAND 라운드 수 (0=생략)")
-    ap.add_argument("--expand-budget", type=int, default=40)
+    ap.add_argument("--expand-budget", type=int, default=100)
     ap.add_argument("-k", type=int, default=12, help="섹션당 evidence 수")
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args()

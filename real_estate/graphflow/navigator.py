@@ -38,6 +38,16 @@ _EXPANDABLE_LABELS = {
     L.COMPLEX, L.DEVELOPMENT_PROJECT, L.ENTITY,
 }
 
+# frontier 우선순위 — 평가 대상은 '상가 자산'이므로 상권/업종/건물/자산/개발에
+# 검색 예산을 집중하고, 배후수요 아파트(Complex)는 보조로 억제한다. 진단상
+# Complex가 facts=0·고가치 path로 frontier 상위를 장악해 '아파트 시세' 뉴스가
+# 수집을 독식하던 것을 교정 (상가 가치의 LG/MICE/공실 Fact가 묻히던 원인).
+_FRONTIER_LABEL_PRIORITY = {
+    L.ASSET: 1.0, L.COMMERCIAL_AREA: 1.0, L.INDUSTRY: 1.0, L.BUILDING: 1.0,
+    L.DEVELOPMENT_PROJECT: 0.9, L.ENTITY: 0.9, L.ADMIN_DONG: 0.8,
+    L.COMPLEX: 0.35,   # 배후수요 아파트 — 보조 (시세 뉴스 예산 독식 억제)
+}
+
 
 # ───────────────────────────────────────────────────────────
 # frontier 후보
@@ -62,7 +72,9 @@ class FrontierCandidate:
     @property
     def frontier_score(self) -> float:
         # 자산과 가깝고(path_score), 증거가 빈약하고(n_facts), 아직 안 판(n_queries)
-        return self.path_score / (1 + self.n_facts) / (1 + 0.5 * self.n_queries)
+        # × 라벨 우선순위(상가 가치 관련 노드 우선, 배후수요 아파트 억제)
+        lp = _FRONTIER_LABEL_PRIORITY.get(self.label, 0.7)
+        return lp * self.path_score / (1 + self.n_facts) / (1 + 0.5 * self.n_queries)
 
 
 def _fetch_props(driver: Driver, eids: list[str]) -> dict[str, dict]:

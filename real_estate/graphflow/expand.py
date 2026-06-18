@@ -29,7 +29,10 @@ from infra.agent.tracing import add_score, emit, node_scope
 
 logger = logging.getLogger("graphflow.expand")
 
-NOVELTY_THRESHOLD = 0.3
+# 수집은 싸다(harvester/prefilter=gpt-mini) → 그래프를 살찌우는 쪽으로 공격적
+# 수집. 멀티홉 표면화 정교화는 별개 과제. novelty 조기종료를 낮춰(0.3→0.1) 같은
+# 얘기 재탕이 명확할 때만 멈추고, 라운드/예산 상한은 run_expand 기본값에서 상향.
+NOVELTY_THRESHOLD = 0.1
 
 
 def _asset_summary(driver: Driver, asset_id: str) -> tuple[str, str | None]:
@@ -50,9 +53,9 @@ def run_expand(
     asset_id: str,
     collected_by: str,
     rounds: int = 3,
-    frontier_max: int = 8,
-    queries_per_node: int = 2,
-    total_query_budget: int = 40,
+    frontier_max: int = 12,
+    queries_per_node: int = 3,
+    total_query_budget: int = 100,
     novelty_threshold: float = NOVELTY_THRESHOLD,
     scope_hops: int = 3,
     purpose: str | None = None,    # QA 미니 EXPAND: 질문 구동 (§8.5, D7)

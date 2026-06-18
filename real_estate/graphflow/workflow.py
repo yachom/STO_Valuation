@@ -180,7 +180,7 @@ def run_report_pipeline(
     db_path: str = "",
     location=None,
     expand_rounds: int = 0,
-    expand_budget: int = 40,
+    expand_budget: int = 100,     # 공격적 수집 — 그래프 적재 우선 (gpt-mini 저비용)
     evidence_k: int = 12,
 ) -> GraphFlowState:
     """워크플로우 1회 실행. Langfuse 콜백 자동 부착."""

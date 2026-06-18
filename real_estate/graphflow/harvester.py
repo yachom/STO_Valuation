@@ -36,8 +36,8 @@ logger = logging.getLogger("graphflow.harvester")
 
 SOURCE_TIER_NEWS = 0.8          # 주요 언론 (§9.3). 공공 1.0 / 블로그 0.4은 채널 추가 시
 SOURCE_TIER_PROVISIONAL = 0.5   # 발행자 제공 자료 — 교차 검증 전 (§10.5, D14)
-_MAX_ARTICLES_PER_QUERY = 3     # 쿼리당 본문 스크랩·추출 상한 (LLM 비용 캡)
-_MAX_FACTS_PER_DOC = 5
+_MAX_ARTICLES_PER_QUERY = 5     # 쿼리당 본문 스크랩·추출 상한 (gpt-mini 저비용 → 공격적 수집)
+_MAX_FACTS_PER_DOC = 8
 _BODY_TRIM = 3500               # 추출 프롬프트에 넣는 본문 길이 상한
 
 _WS_RE = re.compile(r"\s+")
