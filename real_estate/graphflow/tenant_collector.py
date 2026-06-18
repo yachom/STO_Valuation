@@ -19,13 +19,14 @@ import logging
 from datetime import date
 
 from infra.agent.tracing import emit, node_scope
-from infra.external.kakao_local import KakaoLocalClient
 from infra.external.kakao_place_scraper import KakaoPlaceScraper
+from infra.external.localdata.client import LocalDataClient
 from infra.external.reb_rone import RebRoneClient
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, seed
-from real_estate.repository.building_tenants import BuildingTenantsRepository
+from real_estate.graphflow.tool.building_tenants import BuildingTenantsTool
+from real_estate.repository.building_turnover import BuildingTurnoverRepository
 from real_estate.repository.tenant_anchor import score_tenants
 
 logger = logging.getLogger("graphflow.tenant")
@@ -96,8 +97,69 @@ def _add_market_context(sg, driver, asset_id: str, reb_key: str,
         return False
 
 
+def _fetch_turnover(localdata_key: str, road_address: str | None):
+    """LocalData 단일 조회 → (영업중_인허가, 집계dict). 실패/없음이면 (None, None).
+
+    한 번의 조회로 앵커 스코어링(개별 면적·입점일)과 TurnoverStat 노드(집계)를
+    모두 채운다 — 업종 API가 늘면 이중 호출 비용이 커지므로 단일 fetch가 중요.
+    """
+    if not (localdata_key and road_address):
+        return None, None
+    try:
+        repo = BuildingTurnoverRepository(LocalDataClient(localdata_key))
+        lic, by_service, skipped = repo.licenses(road_address)
+    except Exception as e:
+        logger.warning("회전율 수집 실패 (skip): %s", str(e)[:160])
+        return None, None
+    if not lic:
+        emit("turnover_skip", road=road_address, reason="no_data")
+        return None, None
+    agg = repo.summarize(lic, by_service, skipped, road_address=road_address)
+    active = [x for x in lic if not x.is_closed]
+    return active, agg
+
+
+def _add_turnover(sg, asset_id: str, st: dict, *, today: date) -> bool:
+    """회전율 집계(st)를 TurnoverStat 노드로 그래프에 추가 (graceful).
+
+    REB(지역 시장환경)와 달리 **이 건물 자체**의 폐업이력 기반 임차 변동.
+    nested(dict)는 Neo4j 적재 불가라 문자열화한다.
+    """
+    if not st or st.get("입점이력", 0) <= 0:
+        return False
+    road_address = st.get("도로명주소") or ""
+    turnover_id = f"turnover:{road_address}"
+    dist = st.get("업태분포") or {}
+    props = {
+        "도로명주소": st.get("도로명주소") or road_address,
+        "입점이력": st.get("입점이력"), "영업중": st.get("영업중"),
+        "폐업": st.get("폐업"), "누적폐업률": st.get("누적폐업률"),
+        "평균존속연수": st.get("평균존속연수"),
+        "중앙존속연수": st.get("중앙존속연수"),
+        "영업중_평균영업연수": st.get("영업중_평균영업연수"),
+        "최근2년_폐업": st.get("최근2년_폐업"),
+        "최근2년_신규": st.get("최근2년_신규"),
+        # dict/list nested는 Neo4j 프로퍼티 불가 → 스칼라화
+        "업태분포": ", ".join(f"{k} {v}" for k, v in dist.items()) or None,
+        "수집업종": st.get("수집업종") or None,
+        "미수집업종": st.get("미수집업종") or None,
+        # 시간속성 미부여 — MarketContext처럼 적재 시점 latest로 교체되는 구조
+        # 통계라 validity는 VALID(무감쇠). 재수집은 tenant staleness 게이트가 담당.
+        "collected_at": str(today),
+    }
+    node = sg.add_node(L.TURNOVER_STAT, turnover_id, props)
+    if node is not None:
+        sg.edges.append(SeedEdge(
+            src_label=L.ASSET, src_key=asset_id, rel=E.HAS_TURNOVER,
+            dst_label=L.TURNOVER_STAT, dst_key=turnover_id))
+    emit("turnover_stat", road=road_address, 입점이력=st.get("입점이력"),
+         누적폐업률=st.get("누적폐업률"), 평균존속연수=st.get("평균존속연수"))
+    return True
+
+
 def collect_tenants(driver, asset_id: str, *, location, kakao_key: str,
                     reb_key: str | None = None,
+                    localdata_key: str | None = None,
                     building_name: str | None = None,
                     staleness_days: int = DEFAULT_STALENESS_DAYS,
                     scrape_reviews: bool = True, force: bool = False,
@@ -109,6 +171,8 @@ def collect_tenants(driver, asset_id: str, *, location, kakao_key: str,
         asset_id:    대상 자산.
         location:    LocationInfo (road_address·좌표).
         kakao_key:   Kakao REST 키.
+        reb_key:     REB R-ONE 키 (있으면 MarketContext 지역 시장환경 추가).
+        localdata_key: data.go.kr 키 (있으면 TurnoverStat 건물 회전율 추가).
         building_name: 건물명 (키워드 검색 보강).
         staleness_days: 이 일수 이내 collected_at이면 재수집 skip.
         scrape_reviews: False면 로스터만(리뷰 없이) 빠르게.
@@ -126,10 +190,9 @@ def collect_tenants(driver, asset_id: str, *, location, kakao_key: str,
             return {"skipped": True, "reason": "fresh", "collected_at": str(last)}
 
     with node_scope("tenant_collect"):
-        repo = BuildingTenantsRepository(KakaoLocalClient(kakao_key))
-        tenants = repo.fetch(road_address=location.road_address,
-                             x=location.longitude, y=location.latitude,
-                             building_name=building_name)
+        roster = BuildingTenantsTool(kakao_key)(
+            location=location, building_name=building_name)
+        tenants = roster.get("입점업체", [])
 
         if scrape_reviews and tenants:
             revs = {r.place_id: r.as_dict()
@@ -138,13 +201,18 @@ def collect_tenants(driver, asset_id: str, *, location, kakao_key: str,
             for t in tenants:
                 t["리뷰"] = revs.get(t["place_id"], {})
 
+        # 인허가 단일 조회 — 앵커 스코어링(면적·존속)과 TurnoverStat 노드 공용.
+        active_lic, turnover_agg = _fetch_turnover(localdata_key, location.road_address)
+
         top_inds = _scope_top_industries(driver, asset_id)
-        ranked = score_tenants(tenants, top_industries=top_inds)
+        ranked = score_tenants(tenants, top_industries=top_inds,
+                               licenses=active_lic, today=today)
 
         coll = str(today)
         sg = ScopeGraph()
         for t in ranked:
             rv = t.get("리뷰") or {}
+            sig = t.get("신호") or {}
             tn = sg.add_node(L.TENANT, t["place_id"], {
                 "상호": t.get("상호"),
                 "카테고리": t.get("카테고리"),
@@ -153,6 +221,10 @@ def collect_tenants(driver, asset_id: str, *, location, kakao_key: str,
                 "평점": rv.get("평점"),
                 "후기수": rv.get("후기수"),
                 "블로그리뷰수": rv.get("블로그리뷰수"),
+                # 인허가 결합 신호 (매칭된 가게만 — None은 add_node가 필터)
+                "면적": sig.get("면적"),
+                "영업연수": sig.get("영업연수"),
+                "인허가매칭": sig.get("인허가매칭"),
                 "앵커점수": t.get("앵커점수"),
                 "앵커등급": t.get("앵커등급"),
                 "collected_at": coll,
@@ -166,6 +238,8 @@ def collect_tenants(driver, asset_id: str, *, location, kakao_key: str,
 
         if reb_key:
             _add_market_context(sg, driver, asset_id, reb_key)
+        if turnover_agg:
+            _add_turnover(sg, asset_id, turnover_agg, today=today)
         stats = seed(sg, driver, embed=True)
         anchors = sum(1 for t in ranked if t.get("앵커등급") == "앵커")
         emit("tenant_collect_done", count=len(ranked), anchors=anchors,

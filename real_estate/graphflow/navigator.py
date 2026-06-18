@@ -126,7 +126,11 @@ def proper_nouns_for(label: str, props: dict, asset_props: dict) -> list[str]:
                 out.append(v)
 
     if label == L.ASSET:
+        from real_estate.location import core_road_address
+        # 풀주소 + 도로명+번호 코어 둘 다 — LLM/템플릿이 시/구 접두 없이 '공항대로
+        # 209'만 쓰는 경우에도 고유명사 매칭이 통과하도록 (도로명 불일치 방지).
         add(props.get("building_name"), props.get("road_address"),
+            core_road_address(props.get("road_address") or ""),
             props.get("jibun_address"), props.get("bname"))
     elif label == L.BUILDING:
         name = props.get("name")

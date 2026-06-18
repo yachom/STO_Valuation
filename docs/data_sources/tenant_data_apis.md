@@ -97,6 +97,6 @@ localdata.go.kr 포털 폐쇄). **업종별 209종 개별 API** — 통합 단�
 | 데이터 | 소스 | 구현 | tenant 축 연결 |
 |---|---|---|---|
 | 임대시장 환경(공실/임대료) | REB 임대동향 | ✅ client+repo | ✅ MarketContext 노드 |
-| 임차 회전율(폐업이력) | LocalData 인허가 | ✅ client+repo (일반음식점 검증) | ⏳ 미배선(다음) |
+| 임차 회전율(폐업이력) | LocalData 인허가 | ✅ client+repo+`BuildingTurnoverTool` | ✅ TurnoverStat 노드 (tenant_collector 배선, `HAS_TURNOVER`) |
 | 오피스 입주사 | 뉴스/DART | harvester + 오피스 라우팅 | ✅ (② navigator purpose) |
 | 입점업체 로스터 | 카카오 Local+스크래핑 | ✅ | ✅ Tenant 노드 |

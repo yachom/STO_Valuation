@@ -16,6 +16,7 @@ import statistics
 from collections import Counter
 
 from infra.external.localdata.client import LocalDataClient, LocalDataError
+from real_estate.location import core_road_address as _core_road
 
 logger = logging.getLogger("repository.building_turnover")
 
@@ -37,17 +38,18 @@ class BuildingTurnoverRepository:
         self._c = client
         self._catalog = catalog or SERVICE_CATALOG
 
-    def turnover(self, road_address: str, *, services: list[str] | None = None,
-                 recent_years: int = 2, today: _dt.date | None = None,
-                 max_rows: int = 500) -> dict:
-        """도로명주소의 임차 회전율 지표.
+    def licenses(self, road_address: str, *, services: list[str] | None = None,
+                 max_rows: int = 500) -> tuple[list, dict[str, int], list[str]]:
+        """도로명주소의 인허가 이력(영업+폐업)을 업종 API들에서 모아 dedup 반환.
+
+        turnover() 집계와 앵커 스코어링(개별 면적·입점일)의 공용 원천 — 한 번
+        조회로 둘을 모두 채운다. 업종은 catalog가 결정하므로 SERVICE_CATALOG에
+        데이터셋을 추가하면 자동으로 합산 범위가 넓어진다(코드 변경 불필요).
 
         Returns:
-            {입점이력, 영업중, 폐업, 누적폐업률, 최근폐업, 신규진입,
-             평균존속연수, 중앙존속연수, 영업중평균영업연수, 업태분포,
-             업종별, 수집업종, 미수집업종}
+            (licenses[BusinessLicense], by_service{라벨:건수}, skipped[미신청 라벨])
         """
-        today = today or _dt.date.today()
+        road = _core_road(road_address)        # 시/도·시군구 접두 제거 (LIKE 매칭)
         labels = services or list(self._catalog)
         all_lic = []
         by_service: dict[str, int] = {}
@@ -57,7 +59,7 @@ class BuildingTurnoverRepository:
             if not svc:
                 continue
             try:
-                lic = self._c.fetch_by_road(svc, road_address, max_rows=max_rows)
+                lic = self._c.fetch_by_road(svc, road, max_rows=max_rows)
             except LocalDataError as e:
                 # 403 = 미신청 업종 → skip (나머지는 진행)
                 logger.info("turnover %s skip: %s", label, str(e)[:80])
@@ -68,12 +70,36 @@ class BuildingTurnoverRepository:
 
         # 관리번호 dedup
         seen = set()
-        lic = []
+        deduped = []
         for x in all_lic:
             k = x.관리번호 or f"{x.상호}|{x.인허가일자}"
             if k not in seen:
                 seen.add(k)
-                lic.append(x)
+                deduped.append(x)
+        return deduped, by_service, skipped
+
+    def turnover(self, road_address: str, *, services: list[str] | None = None,
+                 recent_years: int = 2, today: _dt.date | None = None,
+                 max_rows: int = 500) -> dict:
+        """도로명주소의 임차 회전율 지표 (licenses() 원천 → 집계)."""
+        lic, by_service, skipped = self.licenses(
+            road_address, services=services, max_rows=max_rows)
+        return self.summarize(lic, by_service, skipped, road_address=road_address,
+                              recent_years=recent_years, today=today)
+
+    def summarize(self, lic: list, by_service: dict[str, int] | None = None,
+                  skipped: list[str] | None = None, *, road_address: str = "",
+                  recent_years: int = 2, today: _dt.date | None = None) -> dict:
+        """인허가 리스트 → 회전율 집계 dict.
+
+        Returns:
+            {입점이력, 영업중, 폐업, 누적폐업률, 최근폐업, 신규진입,
+             평균존속연수, 중앙존속연수, 영업중평균영업연수, 업태분포,
+             업종별, 수집업종, 미수집업종}
+        """
+        today = today or _dt.date.today()
+        by_service = by_service or {}
+        skipped = skipped or []
 
         if not lic:
             return {"입점이력": 0, "수집업종": list(by_service), "미수집업종": skipped,

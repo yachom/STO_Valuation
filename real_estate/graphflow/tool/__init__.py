@@ -5,5 +5,7 @@
 """
 
 from real_estate.graphflow.tool.building_hub import BuildingRegisterTool
+from real_estate.graphflow.tool.building_tenants import BuildingTenantsTool
+from real_estate.graphflow.tool.building_turnover import BuildingTurnoverTool
 
-__all__ = ["BuildingRegisterTool"]
+__all__ = ["BuildingRegisterTool", "BuildingTenantsTool", "BuildingTurnoverTool"]

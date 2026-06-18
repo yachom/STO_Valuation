@@ -30,6 +30,23 @@ import urllib.request
 import json
 
 
+def core_road_address(road: str) -> str:
+    """전체 도로명주소에서 '도로명 + 건물번호'만 남긴다.
+
+    '서울 강서구 공항대로 209' → '공항대로 209'.
+
+    시/도·시군구 접두는 데이터 소스마다 표기가 달라(예: 해소값 '서울' vs
+    LocalData 저장값 '서울특별시') 부분일치·LIKE 매칭을 깨뜨린다. 도로명
+    토큰(…로/…길)부터 끝까지만 남겨 그 불일치를 제거한다. LocalData 인허가
+    조회, navigator 검색어 고유명사 매칭 등 도로명 기반 매칭의 공용 정규화.
+    """
+    toks = (road or "").split()
+    for i, t in enumerate(toks):
+        if t.endswith("로") or t.endswith("길"):
+            return " ".join(toks[i:])
+    return road or ""
+
+
 class LocationInfo:
     """주소 정규화 결과를 담는 값 객체.
 

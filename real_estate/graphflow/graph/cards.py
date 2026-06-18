@@ -271,6 +271,11 @@ def card_for_tenant(p: dict) -> str:
         sig.append(f"카카오후기 {p['후기수']}")
     if p.get("블로그리뷰수"):
         sig.append(f"블로그리뷰 {p['블로그리뷰수']}")
+    # 인허가 결합 신호 (면적·영업연수) — 매칭된 가게만
+    if isinstance(p.get("면적"), (int, float)):
+        sig.append(f"면적 {p['면적']:.0f}㎡")
+    if isinstance(p.get("영업연수"), (int, float)):
+        sig.append(f"영업 {p['영업연수']:.0f}년")
     return head + "." + (" " + ", ".join(sig) + "." if sig else "")
 
 
@@ -295,6 +300,33 @@ def card_for_market_context(p: dict) -> str:
     return f"[임대시장 환경] {region} {bt} — {body} ({q} 기준, 한국부동산원)."
 
 
+def card_for_turnover(p: dict) -> str:
+    """건물 임차 회전율 카드 — 이 건물의 인허가/폐업 이력 정량 (LocalData)."""
+    road = p.get("도로명주소", "")
+    parts = []
+    hist = p.get("입점이력")
+    if isinstance(hist, int):
+        parts.append(f"입점이력 {hist}건")
+    rate = p.get("누적폐업률")
+    if isinstance(rate, (int, float)):
+        parts.append(f"누적폐업률 {rate * 100:.0f}%")
+    surv = p.get("평균존속연수")
+    if isinstance(surv, (int, float)):
+        parts.append(f"평균존속 {surv:.1f}년")
+    act = p.get("영업중")
+    act_yr = p.get("영업중_평균영업연수")
+    if isinstance(act, int):
+        ay = f"(평균영업 {act_yr:.1f}년)" if isinstance(act_yr, (int, float)) else ""
+        parts.append(f"영업중 {act}곳{ay}")
+    rc = p.get("최근2년_폐업")
+    rn = p.get("최근2년_신규")
+    if isinstance(rc, int) or isinstance(rn, int):
+        parts.append(f"최근2년 폐업 {rc or 0}/신규 {rn or 0}")
+    body = ", ".join(parts) if parts else "수집된 인허가 이력 없음"
+    svc = ", ".join(p.get("수집업종") or []) or "-"
+    return f"[임차 회전율] {road} — {body} (LocalData 인허가, 업종: {svc})."
+
+
 _BUILDERS = {
     NODE_LABELS.ASSET: card_for_asset,
     NODE_LABELS.COMPLEX: card_for_complex,
@@ -308,6 +340,7 @@ _BUILDERS = {
     NODE_LABELS.TENANCY_EVENT: card_for_tenancy_event,
     NODE_LABELS.TENANT: card_for_tenant,
     NODE_LABELS.MARKET_CONTEXT: card_for_market_context,
+    NODE_LABELS.TURNOVER_STAT: card_for_turnover,
     NODE_LABELS.DEVELOPMENT_PROJECT: card_for_development_project,
     NODE_LABELS.WEB_DOC: card_for_web_doc,
     NODE_LABELS.FACT: card_for_fact,

@@ -79,6 +79,7 @@ def tenant_node(state: GraphFlowState) -> dict:
         from real_estate.graphflow.tenant_collector import collect_tenants
         summary = collect_tenants(driver, aid, location=loc, kakao_key=kakao,
                                   reb_key=os.environ.get("REB_LEASE_MARKET_KEY"),
+                                  localdata_key=os.environ.get("DATA_GO_KR_API_KEY"),
                                   building_name=building_name)
 
     # 그래프의 Tenant(방금/기존 적재)로 건물유형 분류.

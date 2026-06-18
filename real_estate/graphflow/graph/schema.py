@@ -33,6 +33,7 @@ class NODE_LABELS:
     TENANCY_EVENT = "TenancyEvent"       # MOLIT sale/rent 통합 — event_id
     TENANT = "Tenant"                    # 상가 입점업체(카카오 장소) — place_id
     MARKET_CONTEXT = "MarketContext"     # REB 지역 임대시장 환경 — market_id
+    TURNOVER_STAT = "TurnoverStat"       # 건물 임차 회전율(LocalData 인허가) — turnover_id
     TRANSIT_STATION = "TransitStation"   # station_id
 
     # ── 확장 수집물 (Harvester/Navigator, PR-C~) ──
@@ -64,6 +65,7 @@ class EDGE_TYPES:
     HAS_TENANCY = "HAS_TENANCY"          # Complex → TenancyEvent
     HAS_TENANT = "HAS_TENANT"            # Asset → Tenant (상가 입점업체)
     HAS_MARKET = "HAS_MARKET"            # Asset → MarketContext (지역 임대시장 환경)
+    HAS_TURNOVER = "HAS_TURNOVER"        # Asset → TurnoverStat (건물 임차 회전율)
     SERVES_DISTRICT = "SERVES_DISTRICT"  # CommercialArea → AdminDong
     TOP_INDUSTRY = "TOP_INDUSTRY"        # CommercialArea → Industry
     WITHIN_RADIUS = "WITHIN_RADIUS"      # Asset → Complex|TransitStation (distance_m)
@@ -106,6 +108,7 @@ _UNIQUE_KEYS: list[tuple[str, str]] = [
     (NODE_LABELS.TENANCY_EVENT, "event_id"),
     (NODE_LABELS.TENANT, "place_id"),
     (NODE_LABELS.MARKET_CONTEXT, "market_id"),
+    (NODE_LABELS.TURNOVER_STAT, "turnover_id"),
     (NODE_LABELS.TRANSIT_STATION, "station_id"),
     (NODE_LABELS.WEB_DOC, "url_hash"),
     (NODE_LABELS.USER_DOC, "doc_hash"),
