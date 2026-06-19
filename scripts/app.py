@@ -13,9 +13,15 @@
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
 import streamlit as st
+
+# `streamlit run scripts/app.py`는 scripts/만 sys.path에 넣어 bare top-level
+# import(infra/real_estate)가 깨진다 → 프로젝트 루트를 경로에 추가
+# (python -m scripts.xxx 와 동일 환경으로). [[repo_import_style]]
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from infra.env import load_env
 
