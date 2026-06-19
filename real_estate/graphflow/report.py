@@ -269,7 +269,7 @@ def write_axis(
     asset_card: str,
     axis: str,
     *,
-    evidence_k: int = 12,
+    evidence_k: int = 20,
 ) -> tuple[SectionDraft, list[Evidence], list[str]]:
     """축 1개: compose → write → 기계 검증 → 위반 시 재작성 1회.
 
@@ -353,7 +353,7 @@ def generate_report(
     asset_id: str,
     *,
     out_dir: str | Path,
-    evidence_k: int = 12,
+    evidence_k: int = 20,
 ) -> dict:
     """순차 단독 실행 진입점 (LangGraph 없이). 표준 경로는 workflow.py."""
     asset_card = _asset_card(driver, asset_id)

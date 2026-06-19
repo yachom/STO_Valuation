@@ -327,6 +327,9 @@ with st.sidebar:
         st.caption(f"{loc.road_address or loc.jibun_address}\n\n({loc.latitude:.5f}, {loc.longitude:.5f})")
         st.map({"lat": [loc.latitude], "lon": [loc.longitude]}, size=40)
         rounds = st.slider("EXPAND 라운드(뉴스 수집)", 0, 3, 1)
+        detail = st.slider("보고서 상세도 (축별 근거 수)", 12, 36, 20,
+                           help="Writer에 보여줄 축별 evidence 수. 클수록 보고서가 "
+                                "풍부해지나 하위 순위(노이즈) 근거도 포함")
         if st.button("② 보고서 생성", type="primary"):
             d = _driver()
             out_dir = str(REPORTS / f"ui_{aid.replace(':','_').replace(',','_')}")
@@ -336,7 +339,7 @@ with st.sidebar:
             try:
                 final, logs = run_streaming(lambda: run_report_pipeline(
                     d, asset_id=aid, out_dir=out_dir, db_path=DB_PATH,
-                    location=loc, expand_rounds=rounds), box)
+                    location=loc, expand_rounds=rounds, evidence_k=detail), box)
                 ss["report"] = final["report"]; ss["asset_id"] = aid
                 ss["out_dir"] = out_dir; ss["gen_logs"] = logs
                 for k in ("rv_assess", "rv_diff", "qa_hist"):

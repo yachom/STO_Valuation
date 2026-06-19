@@ -123,7 +123,7 @@ def _make_write_node(axis: str):
         from real_estate.graphflow.report import write_axis
         draft, evidence, violations = write_axis(
             _get_driver(), state["asset_id"], state["asset_card"], axis,
-            evidence_k=state.get("evidence_k", 12))
+            evidence_k=state.get("evidence_k", 20))
         return {"sections": {axis: draft},
                 "evidence_by_axis": {axis: evidence},
                 "mech_audit": {axis: violations}}
@@ -181,7 +181,7 @@ def run_report_pipeline(
     location=None,
     expand_rounds: int = 0,
     expand_budget: int = 100,     # 공격적 수집 — 그래프 적재 우선 (gpt-mini 저비용)
-    evidence_k: int = 12,
+    evidence_k: int = 20,
 ) -> GraphFlowState:
     """워크플로우 1회 실행. Langfuse 콜백 자동 부착."""
     global _driver

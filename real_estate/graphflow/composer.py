@@ -255,7 +255,7 @@ def compose(
     fact_reserve: int = 0,
     semantic: bool = True,
     alpha: float = 0.6,
-    news_k: int = 2,
+    news_k: int = 4,
 ) -> list[Evidence]:
     """축별 증거 = 그래프 walk(구조) + Fact 직접 벡터검색(뉴스) 병합. 결정적.
 
