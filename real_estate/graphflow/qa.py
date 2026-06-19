@@ -23,13 +23,25 @@ from neo4j import Driver
 from pydantic import BaseModel, Field, field_validator
 
 from real_estate.graphflow.agents.base import BaseAgent, coerce_json
-from real_estate.graphflow.composer import Evidence, format_evidence, paths_to_evidence
+from real_estate.graphflow.composer import (
+    Evidence,
+    _scope_fact_paths,
+    format_evidence,
+    paths_to_evidence,
+)
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.harvester import load_scope_names
+from real_estate.graphflow.policies import SemanticPolicy
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, _write_edges, seed
 from infra.agent.tracing import add_score, emit, node_scope
-from real_estate.graphflow.traversal import llm_walk, vector_anchors
+from real_estate.graphflow.traversal import (
+    asset_anchor_eid,
+    llm_walk,
+    semantic_sims,
+    vector_anchors,
+    walk,
+)
 
 logger = logging.getLogger("graphflow.qa")
 
@@ -212,27 +224,67 @@ class QAResponder(BaseAgent):
                 sufficient=answer.sufficient, expanded=expanded, gap=gap,
                 citations=citations)
 
-    # ── ①+② 검색: 힌트 → 벡터 앵커 → llm_walk ────────────────
-    def _retrieve(self, driver, asset_id, question, *, k, max_hops) -> list[Evidence]:
+    # ── ①+② 검색: 보고서와 동일 하이브리드 (의미가중 walk + 직접 벡터 Fact) + 적응 llm_walk
+    def _retrieve(self, driver, asset_id, question, *, k, max_hops,
+                  news_k: int = 3) -> list[Evidence]:
+        """질문 목적으로 3소스 병합: (a) 자산 앵커 의미가중 walk(curated 리프),
+        (b) 질문 앵커 llm_walk(적응 멀티홉), (c) 스코프 Fact 직접 벡터검색(뉴스).
+
+        보고서 하이브리드를 QA에 이식 — 기존 llm_walk 단독은 degree-1 리프(TurnoverStat
+        ·Tenant)를 못 찾았다. 출처 무관하게 '질문과의 의미유사도'로 통합 랭킹(점수 스케일
+        다른 두 walk를 공정 병합) + 뉴스 슬롯 예약. sims는 (a)·랭킹·(c)가 공유.
+        """
+        anchor = asset_anchor_eid(driver, asset_id)
+        sims = (semantic_sims(driver, asset_id, question, scope_hops=max_hops)
+                if anchor else {})
+
+        paths = []
+        # (a) 구조 — 자산 앵커에서 질문 의미가중 walk (curated 리프 표면화)
+        if anchor:
+            paths += walk(driver, [anchor], SemanticPolicy("qa_base", sims),
+                          max_hops=max_hops, k=k * 2)
+        # (b) 적응 — 질문 힌트 앵커에서 llm_walk (체인 추적, 기존 강점)
         scope_summary = _scope_map_summary(driver, asset_id)
         hints: AnchorHints = self.complete(
             system=("질문에서 그래프 검색 힌트를 추출합니다. 스코프 지도에 있는 "
                     "엔티티명을 우선 사용하고, 없으면 질문의 핵심 키워드를 씁니다."),
             user=f"[질문]\n{question}\n\n[자산 스코프 지도]\n{scope_summary}",
             schema=AnchorHints)
-
         anchor_eids: list[str] = []
         for q in [question] + hints.entity_hints[:4]:
             for eid in vector_anchors(driver, q, k=2,
                                       scope_asset_id=asset_id, scope_hops=max_hops):
                 if eid not in anchor_eids:
                     anchor_eids.append(eid)
-        anchor_eids = anchor_eids[:5]
-        if not anchor_eids:
+        if anchor_eids[:5]:
+            paths += llm_walk(driver, anchor_eids[:5], question, max_hops=max_hops, k=k)
+
+        if not paths and not anchor:
             return []
 
-        paths = llm_walk(driver, anchor_eids, question, max_hops=max_hops, k=k)
-        return paths_to_evidence(driver, paths)
+        # 구조 vs 뉴스 분리 (보고서와 동일) — 뉴스(Fact/WebDoc)는 구조 풀에서 빼고
+        # news_k 예약 슬롯으로만 받는다. 안 그러면 llm_walk가 끌어온 WebDoc이 질문과
+        # 대화적으로 유사해 curated 구조(TurnoverStat·Tenant)를 랭킹에서 밀어낸다.
+        news_labels = {L.FACT, L.WEB_DOC, L.USER_DOC}
+        best: dict[str, object] = {}
+        for p in paths:
+            if p.tail.label in news_labels:
+                continue
+            if p.tail.eid not in best:
+                best[p.tail.eid] = p
+        structured = sorted(
+            best.values(),
+            key=lambda p: (-sims.get(p.tail.eid, 0.0), p.tail.label, p.tail.key)
+        )[:max(0, k - news_k)]
+
+        # (c) 뉴스/사실 — 질문으로 스코프 Fact 직접 벡터검색 (예약 슬롯)
+        facts = []
+        if anchor and news_k > 0:
+            seen = {p.tail.eid for p in structured}
+            facts = _scope_fact_paths(driver, asset_id, question, anchor,
+                                      n=news_k, exclude=seen, scope_hops=max_hops)
+        merged = structured + facts
+        return paths_to_evidence(driver, merged) if merged else []
 
     # ── ④ 답변 생성 ──────────────────────────────────────────
     def _generate(self, asset_card, question, evidence, question_id) -> QAAnswer:

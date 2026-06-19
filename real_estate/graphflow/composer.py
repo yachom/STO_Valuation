@@ -161,22 +161,21 @@ def _reserve_facts(paths: list, *, k: int, reserve: int) -> list:
 
 
 def _scope_fact_paths(
-    driver: Driver, asset_id: str, axis: str, anchor_eid: str, *,
+    driver: Driver, asset_id: str, purpose_text: str, anchor_eid: str, *,
     n: int, exclude: set[str], scope_hops: int = 4,
 ) -> list:
-    """자산 스코프 내 Fact/WebDoc을 축 의도로 직접 벡터검색 → 상위 n EvidencePath.
+    """자산 스코프 내 Fact/WebDoc을 목적 텍스트로 직접 벡터검색 → 상위 n EvidencePath.
 
     그래프 walk는 뉴스 Fact를 못 표면화한다(MENTIONS 저가중·다홉 → top-k 밖). PPR은
-    hub(WebDoc)에 쏠려 curated 리프를 잃는다. 둘 다 우회 — Fact 임베딩을 축 의도로
-    직접 검색해 '관련 뉴스'를 결정적으로 확보하고 스코프로 한정한다(타 자산 누출 차단).
+    hub(WebDoc)에 쏠려 curated 리프를 잃는다. 둘 다 우회 — Fact 임베딩을 목적으로
+    직접 검색해 '관련 뉴스/사실'을 결정적으로 확보하고 스코프로 한정한다(타 자산 누출
+    차단). purpose_text: 보고서=AXIS_NEWS_INTENT, QA=질문. 공용.
     """
     from real_estate.graphflow.graph.embedder import embed_one
     from real_estate.graphflow.graph.vector_index import search_similar
     from real_estate.graphflow.traversal import _load_nodes, _scope_eids
 
-    # 뉴스는 구조 데이터가 못 가진 GAP(개발/입주/경쟁)으로 검색 — 축 의도(공실/임대)로
-    # 찾으면 구조와 중복돼 Writer가 통계를 택하고 뉴스를 사장한다(진단 결과).
-    qv = embed_one(AXIS_NEWS_INTENT.get(axis, AXIS_INTENT[axis]))
+    qv = embed_one(purpose_text)
     scope = _scope_eids(driver, asset_id, scope_hops)
     hits: dict[str, float] = {}
     for label in (L.FACT, L.WEB_DOC):
@@ -233,8 +232,9 @@ def compose(
 
     if news_k > 0 and axis in AXIS_INTENT:
         seen = {p.tail.eid for p in structured}
-        news = _scope_fact_paths(driver, asset_id, axis, anchor, n=news_k,
-                                 exclude=seen, scope_hops=max_hops)
+        news = _scope_fact_paths(
+            driver, asset_id, AXIS_NEWS_INTENT.get(axis, AXIS_INTENT[axis]), anchor,
+            n=news_k, exclude=seen, scope_hops=max_hops)
         if news:                                  # 뉴스 슬롯 확보 (구조 하위 교체)
             structured = structured[:k - len(news)] + news
 
