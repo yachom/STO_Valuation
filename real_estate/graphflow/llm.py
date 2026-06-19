@@ -45,7 +45,9 @@ _TIER_SPECS_DEFAULT: dict[str, ProviderSpec] = {
 
 # graphflow 에이전트 → tier (설계 §6 roster). 새 에이전트는 여기 등록.
 AGENT_TO_TIER_DEFAULT: dict[str, str] = {
-    "navigator":         "sonnet",   # frontier 선정 + 검색어 생성
+    "navigator":         "haiku",    # frontier 선정 + 검색어 생성 — 후보는 코드가
+                                     # 점수화·고유명사/중복 검증하므로 LLM은 선택+구문만.
+                                     # 품질 저하 관측 시 복귀: AGENT_TIER_NAVIGATOR=sonnet
     "harvester":         "gpt_mini",  # 뉴스 Fact 추출 — gpt-4o-mini가 하이쿠 대비
                                      # 토큰당 ~6-8배 저렴(입력단가), 추출 품질
                                      # 동등(수치·날짜·confidence). 복귀: AGENT_TIER_HARVESTER=haiku
