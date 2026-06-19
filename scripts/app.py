@@ -314,30 +314,31 @@ with st.sidebar:
     if st.button("① 주소 확인"):
         try:
             from real_estate.location import LocationResolver
-            from real_estate.graphflow.seeder import asset_id_for
             loc = LocationResolver(kakao_api_key=os.environ["KAKAO_API_KEY"],
                                    juso_api_key=os.environ.get("JUSO_API_KEY", "")).resolve(address)
             ss["loc"] = loc
-            ss["asset_id"] = asset_id_for(loc)
         except Exception as exc:
             st.error(f"주소 해소 실패: {exc}")
     if ss.get("loc"):
+        from real_estate.graphflow.seeder import asset_id_for
         loc = ss["loc"]
-        st.success(f"✓ {ss['asset_id']}")
+        aid = asset_id_for(loc)            # loc에서 결정적 유도 (세션 키 의존 X)
+        st.success(f"✓ {aid}")
         st.caption(f"{loc.road_address or loc.jibun_address}\n\n({loc.latitude:.5f}, {loc.longitude:.5f})")
         st.map({"lat": [loc.latitude], "lon": [loc.longitude]}, size=40)
         rounds = st.slider("EXPAND 라운드(뉴스 수집)", 0, 3, 1)
         if st.button("② 보고서 생성", type="primary"):
             d = _driver()
-            out_dir = str(REPORTS / f"ui_{ss['asset_id'].replace(':','_').replace(',','_')}")
+            out_dir = str(REPORTS / f"ui_{aid.replace(':','_').replace(',','_')}")
             st.write("**분석 로그** (에이전트 실시간)")
             box = st.empty()
             from real_estate.graphflow.workflow import run_report_pipeline
             try:
                 final, logs = run_streaming(lambda: run_report_pipeline(
-                    d, asset_id=ss["asset_id"], out_dir=out_dir, db_path=DB_PATH,
+                    d, asset_id=aid, out_dir=out_dir, db_path=DB_PATH,
                     location=loc, expand_rounds=rounds), box)
-                ss["report"] = final["report"]; ss["out_dir"] = out_dir; ss["gen_logs"] = logs
+                ss["report"] = final["report"]; ss["asset_id"] = aid
+                ss["out_dir"] = out_dir; ss["gen_logs"] = logs
                 for k in ("rv_assess", "rv_diff", "qa_hist"):
                     ss.pop(k, None)
                 st.success("✅ 생성 완료")
