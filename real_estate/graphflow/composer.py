@@ -37,6 +37,17 @@ AXIS_INTENT = {
                   "배후수요, 교통 접근성, 개발 호재",
 }
 
+# 뉴스 검색 전용 의도 — 구조(SQLite/공공API)가 *못 가진* 동적·전망 정보로 타겟팅.
+# AXIS_INTENT(공실/임대/매출 — 구조 데이터와 중복 → Writer가 통계를 택해 뉴스 사장)
+# 대신, 뉴스만 줄 수 있는 GAP(개발 호재·입주 기업·신상권 경쟁)을 정조준한다.
+AXIS_NEWS_INTENT = {
+    "tenant": "임차인 입주 기업 이전, 신규 상권 경쟁과 임차 수요 이동, 공실 장기화와 "
+              "임대료 협상, 프랜차이즈 출점·폐업 동향",
+    "esg": "친환경 건축 인증과 신축 동향, 노후 건물 리모델링, 에너지 효율 규제 변화",
+    "commercial": "지역 개발 호재, MICE 복합단지·대형 오피스 신축, 대기업 연구단지 입주, "
+                  "교통 신설, 배후수요 증가, 신상권 형성과 상권 이동",
+}
+
 
 @dataclass
 class Evidence:
@@ -163,7 +174,9 @@ def _scope_fact_paths(
     from real_estate.graphflow.graph.vector_index import search_similar
     from real_estate.graphflow.traversal import _load_nodes, _scope_eids
 
-    qv = embed_one(AXIS_INTENT[axis])
+    # 뉴스는 구조 데이터가 못 가진 GAP(개발/입주/경쟁)으로 검색 — 축 의도(공실/임대)로
+    # 찾으면 구조와 중복돼 Writer가 통계를 택하고 뉴스를 사장한다(진단 결과).
+    qv = embed_one(AXIS_NEWS_INTENT.get(axis, AXIS_INTENT[axis]))
     scope = _scope_eids(driver, asset_id, scope_hops)
     hits: dict[str, float] = {}
     for label in (L.FACT, L.WEB_DOC):
