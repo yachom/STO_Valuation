@@ -117,6 +117,7 @@ class Citation:
     published_at: str | None
     validity_status: str
     is_new: bool                      # 이번 질문의 라이브 확장에서 수집됨
+    url: str | None = None            # 출처 링크 (뉴스 url / 포털 url) — UI 클릭용
 
 
 @dataclass
@@ -315,10 +316,11 @@ class QAResponder(BaseAgent):
                 continue
             out.append(Citation(
                 ref=ev.ref, text=ev.text,
-                source=ev.origin.get("press") or ev.source_kind,
+                source=ev.origin.get("press") or ev.origin.get("source") or ev.source_kind,
                 published_at=ev.published_at,
                 validity_status=ev.validity_status,
-                is_new=ev.collected_by == question_id))
+                is_new=ev.collected_by == question_id,
+                url=ev.origin.get("url")))
         return out
 
     # ── Question 그래프 적재 ─────────────────────────────────
