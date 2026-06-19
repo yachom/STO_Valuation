@@ -20,9 +20,9 @@ from datetime import datetime
 from uuid import uuid4
 
 from neo4j import Driver
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
-from real_estate.graphflow.agents.base import BaseAgent
+from real_estate.graphflow.agents.base import BaseAgent, coerce_json
 from real_estate.graphflow.composer import Evidence, format_evidence, paths_to_evidence
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
@@ -55,6 +55,46 @@ class QAAnswer(BaseModel):
     cited_evidence_indexes: list[int] = Field(description="실제 사용한 evidence 번호들")
     sufficient: bool = Field(
         description="제공된 evidence로 질문에 실질적으로 답할 수 있었으면 true")
+
+
+class RecognizeOutput(BaseModel):
+    relevant_indexes: list[int] = Field(
+        description="질문에 답하는 데 실제로 관련된 evidence 번호들. 애매하면 포함(보수적)")
+
+    @field_validator("relevant_indexes", mode="before")
+    @classmethod
+    def _coerce(cls, v):
+        return coerce_json(v)
+
+
+class _Recognizer(BaseAgent):
+    """HippoRAG2 recognition memory — 검색된 evidence 중 질문 무관분을 LLM(haiku)이 거른다.
+
+    llm_walk가 표면화한 evidence에 주제만 겹치고 실제론 무관한 노드가 섞이면 답변
+    grounding이 흐려진다. 답변 생성 전에 관련성 필터를 한 번 통과시켜 날카롭게 한다.
+    보수적(애매하면 유지) + 결과가 빈약하면 원본 유지(검색 손실 방지).
+    """
+    name = "qa_recognize"
+
+    _SYSTEM = ("질문에 답하는 데 실제로 관련된 evidence만 고르는 인식 필터입니다. "
+               "주제만 겹치고 무관한 항목은 제외하되, 조금이라도 관련되면 포함하세요(보수적).")
+
+    def filter(self, question: str, evidence: list[Evidence]) -> list[Evidence]:
+        if len(evidence) <= 3:                       # 너무 적으면 필터 안 함
+            return evidence
+        lines = [f"[{e.index}] ({e.label}) {e.text[:140]}" for e in evidence]
+        try:
+            out: RecognizeOutput = self.complete(
+                system=self._SYSTEM,
+                user=f"[질문]\n{question}\n\n[evidence]\n" + "\n".join(lines),
+                schema=RecognizeOutput)
+        except Exception as exc:                     # 필터 실패 → 원본 유지
+            emit("qa_recognize_skip", error=str(exc)[:120])
+            return evidence
+        keep = {i for i in out.relevant_indexes}
+        filtered = [e for e in evidence if e.index in keep]
+        emit("qa_recognize", before=len(evidence), after=len(filtered))
+        return filtered if len(filtered) >= 2 else evidence
 
 
 @dataclass
@@ -109,6 +149,10 @@ def _code_sufficient(evidence: list[Evidence]) -> bool:
 class QAResponder(BaseAgent):
     name = "qa"
 
+    def __init__(self):
+        super().__init__()
+        self._recognizer = _Recognizer()
+
     def answer(
         self,
         driver: Driver,
@@ -124,6 +168,7 @@ class QAResponder(BaseAgent):
 
         with node_scope("qa", question=question[:80]):
             evidence = self._retrieve(driver, asset_id, question, k=k, max_hops=max_hops)
+            evidence = self._recognizer.filter(question, evidence)   # HippoRAG2 인식 필터
             expanded = False
             answer: QAAnswer | None = None
 
@@ -140,6 +185,7 @@ class QAResponder(BaseAgent):
                 expanded = True
                 evidence = self._retrieve(driver, asset_id, question,
                                           k=k, max_hops=max_hops)
+                evidence = self._recognizer.filter(question, evidence)
                 if evidence:
                     answer = self._generate(asset_card, question, evidence, question_id)
 

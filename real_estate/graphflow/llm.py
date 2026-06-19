@@ -59,6 +59,7 @@ AGENT_TO_TIER_DEFAULT: dict[str, str] = {
     "auditor":           "sonnet",   # LLM층 모순/과대해석 검토
     "reviser":           "sonnet",   # 발행자 피드백 반영
     "qa":                "sonnet",   # 질의응답
+    "qa_recognize":      "haiku",    # HippoRAG2 recognition memory — 검색 evidence 관련성 필터
 }
 
 
