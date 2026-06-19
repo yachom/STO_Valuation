@@ -16,7 +16,13 @@ from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.navigator import _fetch_props
 from real_estate.graphflow.policies import SemanticPolicy, StaticPolicy
-from real_estate.graphflow.traversal import asset_anchor_eid, semantic_sims, walk
+from real_estate.graphflow.traversal import (
+    EdgeStep,
+    EvidencePath,
+    asset_anchor_eid,
+    semantic_sims,
+    walk,
+)
 from real_estate.graphflow.validity import validity
 
 logger = logging.getLogger("graphflow.composer")
@@ -143,6 +149,45 @@ def _reserve_facts(paths: list, *, k: int, reserve: int) -> list:
     return keep[:k]
 
 
+def _scope_fact_paths(
+    driver: Driver, asset_id: str, axis: str, anchor_eid: str, *,
+    n: int, exclude: set[str], scope_hops: int = 4,
+) -> list:
+    """자산 스코프 내 Fact/WebDoc을 축 의도로 직접 벡터검색 → 상위 n EvidencePath.
+
+    그래프 walk는 뉴스 Fact를 못 표면화한다(MENTIONS 저가중·다홉 → top-k 밖). PPR은
+    hub(WebDoc)에 쏠려 curated 리프를 잃는다. 둘 다 우회 — Fact 임베딩을 축 의도로
+    직접 검색해 '관련 뉴스'를 결정적으로 확보하고 스코프로 한정한다(타 자산 누출 차단).
+    """
+    from real_estate.graphflow.graph.embedder import embed_one
+    from real_estate.graphflow.graph.vector_index import search_similar
+    from real_estate.graphflow.traversal import _load_nodes, _scope_eids
+
+    qv = embed_one(AXIS_INTENT[axis])
+    scope = _scope_eids(driver, asset_id, scope_hops)
+    hits: dict[str, float] = {}
+    for label in (L.FACT, L.WEB_DOC):
+        try:
+            for h in search_similar(driver, label, qv, k=n * 5):
+                if h["eid"] in scope and h["eid"] not in exclude:
+                    hits[h["eid"]] = max(hits.get(h["eid"], 0.0), h["score"])
+        except Exception as e:                       # 인덱스 부재/빈 라벨
+            logger.debug("scope fact search skip %s: %s", label, e)
+    top = sorted(hits.items(), key=lambda kv: (-kv[1], kv[0]))[:n]
+    if not top:
+        return []
+    refs = _load_nodes(driver, [anchor_eid] + [e for e, _ in top])
+    anchor_ref = refs.get(anchor_eid)
+    out = []
+    for eid, score in top:
+        nr = refs.get(eid)
+        if nr is None or anchor_ref is None:
+            continue
+        # 표시용 경로 — 벡터 관련성으로 찾았음을 명시(그래프 경로 아님)
+        out.append(EvidencePath([anchor_ref, nr], [EdgeStep("RELEVANT", "out", score)], score))
+    return out
+
+
 def compose(
     driver: Driver,
     asset_id: str,
@@ -150,15 +195,17 @@ def compose(
     *,
     k: int = 12,
     max_hops: int = 4,
-    fact_reserve: int = 2,
+    fact_reserve: int = 0,
     semantic: bool = True,
     alpha: float = 0.6,
+    news_k: int = 2,
 ) -> list[Evidence]:
-    """축 프로파일 walk → Evidence 목록. 결정적 (보고서 집필용).
+    """축별 증거 = 그래프 walk(구조) + Fact 직접 벡터검색(뉴스) 병합. 결정적.
 
-    semantic: True면 엣지 상수 × 축 의도 임베딩 유사도(SemanticPolicy, 방법1).
-              False면 기존 StaticPolicy(엣지 상수만) — A/B 비교·폴백용.
-    fact_reserve: 뉴스 Fact/WebDoc에 보장할 최소 슬롯 (EXPAND 수집물 표면화).
+    semantic: SemanticPolicy(엣지 prior × 축 의도 코사인, 방법1). False면 StaticPolicy.
+    news_k:   축 의도로 스코프 Fact를 직접 벡터검색해 보장하는 뉴스 슬롯. walk·PPR이
+              못 푸는 뉴스 도달성을 직접 검색으로 해결(2단계 PoC 결론).
+    fact_reserve: walk 경로 내 Fact 보장 슬롯(레거시 폴백, 기본 0 — news_k가 대체).
     """
     anchor = asset_anchor_eid(driver, asset_id)
     if anchor is None:
@@ -168,10 +215,17 @@ def compose(
         policy = SemanticPolicy(axis, sims, alpha=alpha)
     else:
         policy = StaticPolicy(axis)
-    # k보다 넉넉히 뽑아 Fact 슬롯 교체 여지를 둔다.
     paths = walk(driver, [anchor], policy, max_hops=max_hops, k=k * 2)
-    selected = _reserve_facts(paths, k=k, reserve=fact_reserve)
-    out = paths_to_evidence(driver, selected)
+    structured = _reserve_facts(paths, k=k, reserve=fact_reserve) if fact_reserve else paths[:k]
+
+    if news_k > 0 and axis in AXIS_INTENT:
+        seen = {p.tail.eid for p in structured}
+        news = _scope_fact_paths(driver, asset_id, axis, anchor, n=news_k,
+                                 exclude=seen, scope_hops=max_hops)
+        if news:                                  # 뉴스 슬롯 확보 (구조 하위 교체)
+            structured = structured[:k - len(news)] + news
+
+    out = paths_to_evidence(driver, structured)
     n_fact = sum(1 for e in out if e.source_kind in ("news_fact", "news_doc"))
     logger.info("compose(%s, %s, %s): %d evidence (news=%d)", asset_id, axis,
                 policy.name, len(out), n_fact)
