@@ -79,23 +79,65 @@ class Evidence:
         }
 
 
-def _doc_origins(driver: Driver, fact_eids: list[str]) -> dict[str, dict]:
-    """Fact eid → 출처 WebDoc {url,title,press} (첫 문서)."""
-    if not fact_eids:
+def _doc_origins(driver: Driver, doc_eids: list[str]) -> dict[str, dict]:
+    """문서성 노드 eid → origin {url,title,press,provider}.
+
+    Fact → EXTRACTED_FROM 한 WebDoc의 url(뉴스), WebDoc → 자기 url(직접 인용),
+    UserDoc → provider(첨부 자료, url 없음). 출처 링크의 원천 — Streamlit이 클릭
+    가능하게 렌더하려면 모든 문서성 증거가 origin을 가져야 한다.
+    """
+    if not doc_eids:
         return {}
     with driver.session() as s:
         result = s.run(
             f"""
             UNWIND $eids AS eid
-            MATCH (f) WHERE elementId(f) = eid
-            OPTIONAL MATCH (f)-[:{E.EXTRACTED_FROM}]->(d:{L.WEB_DOC})
-            WITH eid, collect(d)[0] AS doc
-            RETURN eid, doc.url AS url, doc.title AS title, doc.press AS press
+            MATCH (n) WHERE elementId(n) = eid
+            OPTIONAL MATCH (n)-[:{E.EXTRACTED_FROM}]->(d:{L.WEB_DOC})
+            WITH eid, n, collect(d)[0] AS doc
+            RETURN eid,
+                   coalesce(doc.url, n.url) AS url,
+                   coalesce(doc.title, n.title) AS title,
+                   coalesce(doc.press, n.press) AS press,
+                   n.provider AS provider
             """,
-            eids=fact_eids,
+            eids=doc_eids,
         )
-        return {r["eid"]: {"url": r["url"], "title": r["title"], "press": r["press"]}
-                for r in result if r["url"]}
+        out = {}
+        for r in result:
+            o = {k: r[k] for k in ("url", "title", "press", "provider") if r[k]}
+            if o:
+                out[r["eid"]] = o
+        return out
+
+
+# 구조(graph_stat) 노드의 출처 — URL은 없지만 어느 데이터 소스/포털에서 왔는지
+# 표기해 Streamlit에서 출처 배지+포털 링크로 렌더할 수 있게 한다 (설계 §10.3 의도).
+_SOURCE_ATTR: dict[str, tuple[str, str]] = {
+    L.TURNOVER_STAT: ("LocalData 지방행정 인허가", "https://www.localdata.go.kr"),
+    L.MARKET_CONTEXT: ("한국부동산원 부동산통계(R-ONE) 임대동향", "https://www.reb.or.kr/r-one"),
+    L.COMMERCIAL_AREA: ("서울 열린데이터광장 상권분석", "https://data.seoul.go.kr"),
+    L.INDUSTRY: ("서울 열린데이터광장 상권 추정매출", "https://data.seoul.go.kr"),
+    L.CERTIFICATION: ("건축물 에너지효율/녹색건축 인증", "https://www.greentogether.go.kr"),
+    L.BUILDING: ("건축HUB 건축물대장", "https://www.eais.go.kr"),
+    L.TENANT: ("카카오맵 장소정보", "https://map.kakao.com"),
+    L.COMPLEX: ("부동산 단지 정보(KB/공공)", ""),
+    L.TRANSIT_STATION: ("대중교통 정류장 정보", ""),
+    L.ADMIN_DONG: ("서울 열린데이터광장 인구통계", "https://data.seoul.go.kr"),
+    L.LEGAL_DONG: ("행정표준코드 법정동", ""),
+    L.DEVELOPMENT_PROJECT: ("정비사업 정보", ""),
+    L.TENANCY_EVENT: ("국토교통부 실거래가(MOLIT)", "https://rt.molit.go.kr"),
+    L.ASSET: ("평가 대상/인접 자산 (카카오·Juso 주소해소)", ""),
+}
+
+
+def _source_origin(label: str) -> dict:
+    """구조 노드의 출처 origin {source, url}. 미등록 라벨은 빈 dict."""
+    attr = _SOURCE_ATTR.get(label)
+    if not attr:
+        return {}
+    src, url = attr
+    return {"source": src, "url": url} if url else {"source": src}
 
 
 def _source_kind(label: str) -> str:
@@ -110,19 +152,22 @@ def paths_to_evidence(driver: Driver, paths) -> list[Evidence]:
     """walk/llm_walk 경로 → Evidence 목록 (E1..En). Composer·QA 공용."""
     tail_eids = [p.tail.eid for p in paths]
     props_map = _fetch_props(driver, tail_eids)
-    origins = _doc_origins(
-        driver, [p.tail.eid for p in paths if p.tail.label == L.FACT])
+    # 문서성 노드(Fact/WebDoc/UserDoc)는 url origin, 구조 노드는 출처 라벨 origin
+    doc_eids = [p.tail.eid for p in paths
+                if p.tail.label in (L.FACT, L.WEB_DOC, L.USER_DOC)]
+    origins = _doc_origins(driver, doc_eids)
 
     out: list[Evidence] = []
     for i, p in enumerate(paths, 1):
         t = p.tail
         props = props_map.get(t.eid, {})
         v = validity(props, label=t.label)
+        origin = origins.get(t.eid) or _source_origin(t.label)
         out.append(Evidence(
             index=i, ref=f"{t.label}:{t.key}", eid=t.eid, label=t.label,
             text=t.card_text, path_str=p.text(), score=p.score,
             source_kind=_source_kind(t.label),
-            origin=origins.get(t.eid, {}),
+            origin=origin,
             published_at=props.get("published_at"),
             valid_until=props.get("valid_until"),
             confidence=props.get("confidence"),

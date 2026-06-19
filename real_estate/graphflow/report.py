@@ -166,11 +166,12 @@ def render_markdown(report: dict) -> str:
     lines.append("---\n\n## 인용 근거 (evidence)\n")
     for ref, ev in report["evidence"].items():
         origin = ev.get("origin") or {}
-        src = origin.get("press") or ev.get("source_kind")
-        url = f" — {origin['url']}" if origin.get("url") else ""
+        src = origin.get("press") or origin.get("source") or ev.get("source_kind")
+        url = f" — [{origin['url']}]({origin['url']})" if origin.get("url") else ""
         date = (ev.get("published_at") or "")[:10]
         vstat = ev["validity"]["status"]
-        lines.append(f"- **{ref}** ({src}, {date}, {vstat}): {ev['text']}{url}")
+        meta = ", ".join(x for x in (src, date, vstat) if x)
+        lines.append(f"- **{ref}** ({meta}): {ev['text']}{url}")
     return "\n".join(lines)
 
 
