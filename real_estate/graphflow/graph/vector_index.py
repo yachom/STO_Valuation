@@ -33,6 +33,9 @@ INDEXED_LABELS = [
     NODE_LABELS.TRANSIT_STATION,
     NODE_LABELS.DEVELOPMENT_PROJECT,
     NODE_LABELS.TENANCY_EVENT,
+    NODE_LABELS.TENANT,           # 입점업체 — 의미검색/하이브리드 retrieval에 필수
+    NODE_LABELS.MARKET_CONTEXT,   # REB 임대시장 환경
+    NODE_LABELS.TURNOVER_STAT,    # 건물 임차 회전율
     # 확장/보고서 단계에서 채워짐 (PR-C~)
     NODE_LABELS.FACT,
     NODE_LABELS.ENTITY,
