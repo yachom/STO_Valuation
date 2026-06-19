@@ -77,3 +77,41 @@ class StaticPolicy:
         if isinstance(anchor, (int, float)):
             score *= 0.4 + 0.6 * max(0.0, min(1.0, float(anchor)))
         return score
+
+
+class SemanticPolicy:
+    """엣지 prior(StaticPolicy) × 노드-목적 의미유사도 정책 (방법1, GraphRAG 1단계).
+
+    엣지 종류 상수만으로는 '이 노드가 목적과 의미적으로 가까운가'를 못 본다(발산
+    상권이든 강남 상권이든 같은 SERVES_DISTRICT면 동급). node_score에 코사인 항을
+    곱해 그 공백을 데이터로 메운다. 결정적(임베딩·스코프 고정) → 보고서 집필에도
+    안전. 엣지 가중은 기존 프로파일을 거친 구조 prior로 재사용하고, 미세조정은
+    의미유사도가 한다 — LinearRAG의 'relation-free + semantic bridging' 사상의
+    경량 1단계 버전(PPR은 2단계, traversal 교체 시).
+
+    sim_by_eid: traversal.semantic_sims 결과 (eid → [0,1] 정규화 유사도).
+    alpha: 의미 비중. score *= (alpha*sim + (1-alpha)) — 1-alpha는 구조적으로
+           유효한 노드가 의미 0이어도 완전히 죽지 않게 하는 바닥값.
+    """
+
+    def __init__(
+        self,
+        profile: str | dict[str, float],
+        sim_by_eid: dict[str, float],
+        *,
+        alpha: float = 0.6,
+        boost: dict[str, float] | None = None,
+    ):
+        self._static = StaticPolicy(profile, boost=boost)
+        self._sim = sim_by_eid
+        self._alpha = _clamp(alpha, 0.0, 1.0)
+        self.name = f"semantic:{self._static.name}"
+
+    def edge_weight(self, rel: str, direction: str) -> float:
+        return self._static.edge_weight(rel, direction)
+
+    def node_score(self, label: str, props: dict) -> float:
+        base = self._static.node_score(label, props)
+        eid = props.get("_eid")
+        sim = self._sim.get(eid, 0.0) if eid else 0.0
+        return base * (self._alpha * sim + (1.0 - self._alpha))

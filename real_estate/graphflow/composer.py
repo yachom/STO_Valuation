@@ -15,11 +15,21 @@ from neo4j import Driver
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.navigator import _fetch_props
-from real_estate.graphflow.policies import StaticPolicy
-from real_estate.graphflow.traversal import asset_anchor_eid, walk
+from real_estate.graphflow.policies import SemanticPolicy, StaticPolicy
+from real_estate.graphflow.traversal import asset_anchor_eid, semantic_sims, walk
 from real_estate.graphflow.validity import validity
 
 logger = logging.getLogger("graphflow.composer")
+
+# 축별 '의도 문장' — SemanticPolicy 목적 벡터의 원천. 14개 엣지 상수표가 못 보는
+# '이 노드가 이 축의 평가 관심사와 가까운가'를 임베딩 유사도로 반영한다.
+AXIS_INTENT = {
+    "tenant": "임차 사업자 안정성, 공실률과 임대료 시장 환경, 업종 회전율과 폐업, "
+              "앵커 테넌트와 입점업체, 임대 수요의 질",
+    "esg": "건물 에너지효율 등급, 녹색건축 인증, 물리적 상태와 준공 연식, 친환경 성능",
+    "commercial": "상권 건강도와 활성도, 유동인구와 추정매출 추이, 주력 업종 구성, "
+                  "배후수요, 교통 접근성, 개발 호재",
+}
 
 
 @dataclass
@@ -141,21 +151,30 @@ def compose(
     k: int = 12,
     max_hops: int = 4,
     fact_reserve: int = 2,
+    semantic: bool = True,
+    alpha: float = 0.6,
 ) -> list[Evidence]:
     """축 프로파일 walk → Evidence 목록. 결정적 (보고서 집필용).
 
+    semantic: True면 엣지 상수 × 축 의도 임베딩 유사도(SemanticPolicy, 방법1).
+              False면 기존 StaticPolicy(엣지 상수만) — A/B 비교·폴백용.
     fact_reserve: 뉴스 Fact/WebDoc에 보장할 최소 슬롯 (EXPAND 수집물 표면화).
     """
     anchor = asset_anchor_eid(driver, asset_id)
     if anchor is None:
         raise ValueError(f"Asset 노드 없음: {asset_id}")
+    if semantic and axis in AXIS_INTENT:
+        sims = semantic_sims(driver, asset_id, AXIS_INTENT[axis], scope_hops=max_hops)
+        policy = SemanticPolicy(axis, sims, alpha=alpha)
+    else:
+        policy = StaticPolicy(axis)
     # k보다 넉넉히 뽑아 Fact 슬롯 교체 여지를 둔다.
-    paths = walk(driver, [anchor], StaticPolicy(axis), max_hops=max_hops, k=k * 2)
+    paths = walk(driver, [anchor], policy, max_hops=max_hops, k=k * 2)
     selected = _reserve_facts(paths, k=k, reserve=fact_reserve)
     out = paths_to_evidence(driver, selected)
     n_fact = sum(1 for e in out if e.source_kind in ("news_fact", "news_doc"))
-    logger.info("compose(%s, %s): %d evidence (news=%d)", asset_id, axis,
-                len(out), n_fact)
+    logger.info("compose(%s, %s, %s): %d evidence (news=%d)", asset_id, axis,
+                policy.name, len(out), n_fact)
     return out
 
 

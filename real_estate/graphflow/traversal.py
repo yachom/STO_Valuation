@@ -133,7 +133,7 @@ def _expand(driver: Driver, eids: list[str]) -> dict[str, list[_Neighbor]]:
                 noderef=NodeRef(r["to_eid"], r["to_label"], str(r["nat_key"]), r["card"]),
                 props={"published_at": r["published_at"], "valid_until": r["valid_until"],
                        "temporal_kind": r["temporal_kind"], "confidence": r["confidence"],
-                       "앵커점수": r["anchor_score"]},
+                       "앵커점수": r["anchor_score"], "_eid": r["to_eid"]},
             )
             out[r["from_eid"]].append(nb)
     return out
@@ -373,6 +373,49 @@ def llm_walk(
     logger.info("llm_walk(%d anchors, hops≤%d) → %d kept", len(anchor_eids),
                 max_hops, len(results))
     return results[:k]
+
+
+def semantic_sims(
+    driver: Driver,
+    asset_id: str,
+    purpose_text: str,
+    *,
+    scope_hops: int = 4,
+) -> dict[str, float]:
+    """자산 스코프 노드들의 card_embedding vs 목적 임베딩 코사인 → eid별 [0,1] 정규화.
+
+    SemanticPolicy의 입력. walk 점수의 노드배수에 곱해져 '엣지 종류 상수'가 못 보는
+    '이 노드가 목적과 의미적으로 가까운가'를 데이터로 반영한다 (방법1, LinearRAG의
+    semantic bridging에 해당). e5 코사인은 스프레드가 좁아 스코프 내 min-max로
+    정규화해 변별력을 준다. 결정적(임베딩·스코프 고정 → 같은 값) → 보고서에도 안전.
+    """
+    from real_estate.graphflow.graph.embedder import embed_one
+
+    pvec = embed_one(purpose_text)
+    pnorm = sum(x * x for x in pvec) ** 0.5 or 1.0
+    with driver.session() as s:
+        rows = s.run(
+            f"""
+            MATCH (a:Asset {{asset_id: $aid}})-[*0..{int(scope_hops)}]-(m)
+            WHERE m.card_embedding IS NOT NULL
+            RETURN DISTINCT elementId(m) AS eid, m.card_embedding AS emb
+            """,
+            aid=asset_id,
+        ).data()
+    sims: dict[str, float] = {}
+    for r in rows:
+        emb = r["emb"]
+        if not emb:
+            continue
+        dot = sum(a * b for a, b in zip(pvec, emb))
+        enorm = sum(x * x for x in emb) ** 0.5 or 1.0
+        sims[r["eid"]] = dot / (pnorm * enorm)
+    if sims:                                   # 스코프 내 min-max 정규화 (변별력)
+        lo, hi = min(sims.values()), max(sims.values())
+        rng = (hi - lo) or 1.0
+        sims = {k: (v - lo) / rng for k, v in sims.items()}
+    logger.info("semantic_sims(%s): %d nodes scored", purpose_text[:24], len(sims))
+    return sims
 
 
 def vector_anchors(
