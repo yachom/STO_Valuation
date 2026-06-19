@@ -213,6 +213,14 @@ def card_for_web_doc(p: dict) -> str:
     return f"뉴스: {title}" + (f" ({meta})." if meta else ".")
 
 
+def card_for_user_doc(p: dict) -> str:
+    """발행자/의뢰자 첨부 자료 카드 (D14). 교차검증 전 잠정 신뢰(provisional)."""
+    prov = p.get("provider") or "발행자 제공 자료"
+    date = (p.get("received_at") or "")[:10]
+    tail = f" (제출 {date})" if date else ""
+    return f"[첨부 자료] {prov}{tail} — 발행자 제공, 교차검증 전 잠정."
+
+
 def card_for_fact(p: dict) -> str:
     # 카드 = 사실 문장 자체 (임베딩 의미 검색의 본체) + 시점 표기
     text = p.get("text", "")
@@ -345,6 +353,7 @@ _BUILDERS = {
     NODE_LABELS.TURNOVER_STAT: card_for_turnover,
     NODE_LABELS.DEVELOPMENT_PROJECT: card_for_development_project,
     NODE_LABELS.WEB_DOC: card_for_web_doc,
+    NODE_LABELS.USER_DOC: card_for_user_doc,
     NODE_LABELS.FACT: card_for_fact,
     NODE_LABELS.ENTITY: card_for_entity,
     NODE_LABELS.REPORT: card_for_report,
