@@ -268,6 +268,20 @@ def link_mention(
 _NAVER_HOSTS = ("news.naver.com", "n.news.naver.com", "m.news.naver.com")
 
 
+def _make_web_search():
+    """Tavily 웹검색 도구 (TAVILY_API_KEY 있을 때만, 없으면 None → graceful skip)."""
+    import os
+    key = os.environ.get("TAVILY_API_KEY")
+    if not key:
+        return None
+    try:
+        from infra.tool.web import TavilyWebSearchTool
+        return TavilyWebSearchTool(key)
+    except Exception as exc:                  # 의존성/초기화 실패 → 네이버만
+        logger.warning("Tavily 초기화 실패 — 네이버만 사용: %s", exc)
+        return None
+
+
 def _existing_doc_hashes(driver: Driver, hashes: list[str]) -> set[str]:
     if not hashes:
         return set()
@@ -301,6 +315,7 @@ class Harvester(BaseAgent):
         self._search = NaverNewsSearchTool()
         self._scrape = NaverNewsScrapeTool()
         self._prefilter = _Prefilter()
+        self._web = _make_web_search()       # Tavily (키 있으면) — 멀티소스 보강
 
     def harvest(
         self,
@@ -380,6 +395,53 @@ class Harvester(BaseAgent):
                 asset_card=asset_card, asset_sigungu=asset_sigungu,
                 collected_by=collected_by,
             )
+
+        # 멀티소스 보강 — Tavily 웹검색(키 있을 때). content 인라인이라 스크랩 불필요.
+        if self._web is not None:
+            self._harvest_web(
+                driver, stats, scope, query=query, query_hash=query_hash,
+                target_label=target_label, target_key=target_key,
+                target_card=target_card, asset_card=asset_card,
+                asset_sigungu=asset_sigungu, collected_by=collected_by)
+
+    # ── 웹검색(Tavily) 1쿼리: content 인라인 → 스크랩 없이 추출 ──
+    def _harvest_web(self, driver, stats, scope, *, query, query_hash,
+                     target_label, target_key, target_card,
+                     asset_card, asset_sigungu, collected_by) -> None:
+        try:
+            found = self._web(query=query, max_results=6, topic="news")
+        except Exception as exc:
+            emit("harvest_skip", reason="web_search_error", query=query, error=str(exc)[:200])
+            return
+        items = [it for it in found["items"] if (it.get("content") or "").strip()]
+        if not items:
+            return
+        pf = [{"title": it["title"], "description": (it.get("content") or "")[:200]}
+              for it in items]
+        keep = self._prefilter.select(query=query, target_card=target_card, items=pf)
+        emit("prefilter_web", query=query, before=len(items), after=len(keep))
+        items = [items[i] for i in keep]
+
+        hashes = [_short_hash(it["link"]) for it in items]
+        existing = _existing_doc_hashes(driver, hashes)
+        scraped = 0
+        for it, url_hash in zip(items, hashes):
+            if scraped >= _MAX_ARTICLES_PER_QUERY:
+                break
+            if url_hash in existing:
+                _write_edges(driver, [SeedEdge(L.QUERY, query_hash, E.RETRIEVED,
+                                               L.WEB_DOC, url_hash)])
+                continue
+            scraped += 1
+            article = {"title": it["title"], "url": it["link"],
+                       "press": it.get("source"), "body": it.get("content"),
+                       "published_at": it.get("pub_date"), "ok": True}
+            self._extract_and_store(
+                driver, stats, scope, article=article, meta=it, url_hash=url_hash,
+                query=query, query_hash=query_hash, target_label=target_label,
+                target_key=target_key, target_card=target_card,
+                asset_card=asset_card, asset_sigungu=asset_sigungu,
+                collected_by=collected_by)
 
     # ── 기사 1건: 추출 + 적재 ───────────────────────────────
     def _extract_and_store(self, driver, stats, scope, *, article, meta, url_hash,
