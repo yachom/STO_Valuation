@@ -375,6 +375,36 @@ def llm_walk(
     return results[:k]
 
 
+def corroboration_scores(
+    driver: Driver,
+    asset_id: str,
+    *,
+    scope_hops: int = 4,
+) -> dict[str, float]:
+    """스코프 노드별 '독립 출처(언론사) 수' — 여러 출처가 보강할수록 강한 노드.
+
+    SemanticPolicy의 corroboration 입력. Fact 총량(에코·재탕 포함)이 아니라 그
+    Fact들이 추출된 WebDoc의 distinct press 수를 센다 — 같은 보도자료 재탕은 1로.
+    전역 mention(타 자산 수집 포함)을 세어 '노드의 절대 강도'를 보되, walk에서
+    의미유사도와 곱해지므로 무관한 강한 노드(타 자산 누출)는 자동 억제된다.
+    """
+    with driver.session() as s:
+        rows = s.run(
+            f"""
+            MATCH (a:Asset {{asset_id: $aid}})-[*0..{int(scope_hops)}]-(n)
+            OPTIONAL MATCH (f:Fact)-[:MENTIONS]->(n)
+            OPTIONAL MATCH (f)-[:EXTRACTED_FROM]->(w:WebDoc)
+            WITH n, count(DISTINCT coalesce(w.press, w.url)) AS press
+            WHERE press > 0
+            RETURN elementId(n) AS eid, press
+            """,
+            aid=asset_id,
+        ).data()
+    out = {r["eid"]: float(r["press"]) for r in rows}
+    logger.info("corroboration_scores(%s): %d nodes with sources", asset_id, len(out))
+    return out
+
+
 def semantic_sims(
     driver: Driver,
     asset_id: str,

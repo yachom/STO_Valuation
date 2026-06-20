@@ -92,6 +92,11 @@ class SemanticPolicy:
     sim_by_eid: traversal.semantic_sims 결과 (eid → [0,1] 정규화 유사도).
     alpha: 의미 비중. score *= (alpha*sim + (1-alpha)) — 1-alpha는 구조적으로
            유효한 노드가 의미 0이어도 완전히 죽지 않게 하는 바닥값.
+    corrob_by_eid: traversal.corroboration_scores 결과 (eid → 독립 출처(언론사) 수).
+           '여러 출처에서 보강된 노드가 강하다'(GraphRAG 1.5단계) — node_score에
+           × (1 + beta·log(1+출처수)). 의미유사도와 곱해지므로 '강하지만 무관한'
+           노드(타 자산 누출)는 sim이 낮아 자동 억제된다. echo(재탕) 방지 위해
+           Fact 총량이 아니라 distinct press 수를 쓴다.
     """
 
     def __init__(
@@ -100,18 +105,30 @@ class SemanticPolicy:
         sim_by_eid: dict[str, float],
         *,
         alpha: float = 0.6,
+        corrob_by_eid: dict[str, float] | None = None,
+        beta: float = 0.35,
         boost: dict[str, float] | None = None,
     ):
         self._static = StaticPolicy(profile, boost=boost)
         self._sim = sim_by_eid
         self._alpha = _clamp(alpha, 0.0, 1.0)
+        self._corrob = corrob_by_eid or {}
+        self._beta = max(0.0, beta)
         self.name = f"semantic:{self._static.name}"
 
     def edge_weight(self, rel: str, direction: str) -> float:
         return self._static.edge_weight(rel, direction)
 
     def node_score(self, label: str, props: dict) -> float:
+        import math
         base = self._static.node_score(label, props)
         eid = props.get("_eid")
         sim = self._sim.get(eid, 0.0) if eid else 0.0
-        return base * (self._alpha * sim + (1.0 - self._alpha))
+        score = base * (self._alpha * sim + (1.0 - self._alpha))
+        if eid and self._corrob:
+            # 독립 출처 보강 부스트 — 단 sim으로 게이트한다(× sim). '강하지만 무관한'
+            # 노드(타 자산 누출)는 sim이 낮아 부스트가 거의 안 먹고, '관련 + 보강'
+            # 노드만 크게 오른다. corroboration이 관련성을 이기지 못하게.
+            press = self._corrob.get(eid, 0.0)
+            score *= 1.0 + self._beta * math.log1p(press) * sim
+        return score
