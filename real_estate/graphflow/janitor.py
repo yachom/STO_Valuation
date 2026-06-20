@@ -305,8 +305,9 @@ def run_janitor(driver: Driver, *, auto: bool = True, dry_run: bool = False) -> 
             stats["facts_moved"] += moved
             stats["entities_superseded"] += 1
         # B. 승격 후 남은 Entity끼리 분열 → 리뷰 큐 (코드 근거 없음, '논현역/신논현역'
-        #    같은 접두 차이 오병합 위험이 커 자동 병합하지 않는다 — §13 보수 기준).
-        #    merge_entities()는 수동 승인용 API로 남겨둔다.
+        #    같은 접두 차이 오병합 위험이 커 여기선 자동 병합하지 않는다 — §13 보수 기준).
+        #    핵심 이름이 정확히 일치하는 '안전' 중복만 run_safe_merges가 EXPAND에서
+        #    자동 병합한다(merge_entities 호출). 나머지는 수동 승인 대기.
         duplicates = find_duplicate_entities(driver)   # 승격된 것 제외 후 재탐지
         stats["duplicates"] = len(duplicates)
         for d in duplicates:

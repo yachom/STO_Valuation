@@ -58,8 +58,6 @@ class CommercialSalesRepository:
         상권코드에 데이터가 없으면 None.
     """
 
-    RECENT_QUARTERS = 4
-
     def __init__(self, db_path):
         """Args: db_path — real_estate.db 파일 경로."""
         self._db_path = db_path

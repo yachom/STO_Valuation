@@ -12,9 +12,7 @@ source_tier=0.8 고정 (공공 1.0/블로그 0.4는 채널 추가 시).
 
 from __future__ import annotations
 
-import hashlib
 import logging
-import re
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Literal
@@ -22,9 +20,8 @@ from typing import Literal
 from neo4j import Driver
 from pydantic import BaseModel, Field, field_validator
 
-from real_estate.graphflow.agents.base import coerce_json
-
-from real_estate.graphflow.agents.base import BaseAgent
+from real_estate.graphflow.agents.base import (BaseAgent, coerce_json,
+                                               normalize_text, short_hash)
 from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import KEY_PROP
@@ -41,15 +38,9 @@ _MAX_ARTICLES_PER_QUERY = 5     # 쿼리당 본문 스크랩·추출 상한 (gpt
 _MAX_FACTS_PER_DOC = 8
 _BODY_TRIM = 3500               # 추출 프롬프트에 넣는 본문 길이 상한
 
-_WS_RE = re.compile(r"\s+")
-
-
-def _norm(s: str) -> str:
-    return _WS_RE.sub("", (s or "").strip().lower())
-
-
-def _short_hash(s: str) -> str:
-    return hashlib.sha256(s.encode("utf-8")).hexdigest()[:16]
+# 공유 헬퍼(agents.base)를 모듈 로컬 이름으로 — 호출부(surface 매칭·문서 해시) 다수.
+_norm = normalize_text
+_short_hash = short_hash
 
 
 # ───────────────────────────────────────────────────────────

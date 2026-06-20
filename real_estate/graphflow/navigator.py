@@ -12,16 +12,14 @@
 
 from __future__ import annotations
 
-import hashlib
 import logging
-import re
 from dataclasses import dataclass, field
 from datetime import datetime
 
 from neo4j import Driver
 from pydantic import BaseModel, Field
 
-from real_estate.graphflow.agents.base import BaseAgent
+from real_estate.graphflow.agents.base import BaseAgent, normalize_text, short_hash
 from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import KEY_PROP
@@ -307,7 +305,7 @@ class Navigator(BaseAgent):
     ) -> list[QueryPlan]:
         """코드 레벨 안전장치 — 고유명사 포함/중복/타깃 실재 검증."""
         by_ref = {c.ref: c for c in candidates}
-        seen_norm = {_normalize_query(q) for q in executed}
+        seen_norm = {normalize_text(q) for q in executed}
         validated: list[QueryPlan] = []
         for plan in plans[:max_targets]:
             cand = by_ref.get(plan.target)
@@ -320,10 +318,10 @@ class Navigator(BaseAgent):
                 if not any(noun in q for noun in cand.proper_nouns):
                     emit("navigator_fix", reason="no_proper_noun", query=q, target=plan.target)
                     q = next((t for t in cand.templates
-                              if _normalize_query(t) not in seen_norm), "")
+                              if normalize_text(t) not in seen_norm), "")
                 if not q:
                     continue
-                norm = _normalize_query(q)
+                norm = normalize_text(q)
                 if norm in seen_norm:
                     emit("navigator_drop", reason="duplicate", query=q)
                     continue
@@ -334,15 +332,9 @@ class Navigator(BaseAgent):
         return validated
 
 
-_WS_RE = re.compile(r"\s+")
-
-
-def _normalize_query(q: str) -> str:
-    return _WS_RE.sub("", q.strip().lower())
-
-
 def query_hash(q: str) -> str:
-    return hashlib.sha256(_normalize_query(q).encode("utf-8")).hexdigest()[:16]
+    """검색어 → 안정적 query_hash (정규화 후 sha256[:16]). Query 노드 키."""
+    return short_hash(normalize_text(q))
 
 
 def write_query_nodes(

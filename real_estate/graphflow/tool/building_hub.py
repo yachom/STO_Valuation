@@ -19,16 +19,6 @@ from real_estate.location import LocationInfo
 
 logger = logging.getLogger("graphflow.tool.building_hub")
 
-_repo: BuildingRegisterRepository | None = None
-
-
-def _get_repo(service_key: str) -> BuildingRegisterRepository:
-    global _repo
-    if _repo is None:
-        client = PublicDataPortalClient(service_key=service_key, api_name=API_NAME)
-        _repo = BuildingRegisterRepository(client=client)
-    return _repo
-
 
 # 표제부 한글 키 → Building 노드 프로퍼티 (보고서 물리 평가에 쓰는 핵심만 발췌)
 _TITLE_TO_PROPS = {
@@ -55,11 +45,11 @@ class BuildingRegisterTool(BaseTool):
 
     def __init__(self, service_key: str):
         super().__init__()
-        self._service_key = service_key
+        client = PublicDataPortalClient(service_key=service_key, api_name=API_NAME)
+        self._repo = BuildingRegisterRepository(client=client)
 
     def _run(self, *, location: LocationInfo):
-        repo = _get_repo(self._service_key)
-        raw = repo.fetch(location)              # {표제부, 층별개요, 지역지구구역}
+        raw = self._repo.fetch(location)        # {표제부, 층별개요, 지역지구구역}
         title = raw.get("표제부") or {}
         props = {}
         for kr, prop in _TITLE_TO_PROPS.items():

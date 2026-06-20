@@ -15,13 +15,31 @@
 
 from __future__ import annotations
 
+import hashlib
 import logging
+import re
 
 from real_estate.graphflow.llm import get_llm, provider_for_agent, system_content
 from real_estate.graphflow.prompts import get_prompt
 from infra.agent.tracing import node_scope, observe
 
 logger = logging.getLogger("graphflow.agent")
+
+
+_WS_RE = re.compile(r"\s+")
+
+
+def normalize_text(s: str) -> str:
+    """공백 제거 + 소문자 — 검색어/표면형(surface) 동일성 비교용 정규화.
+
+    navigator(검색어 중복 판정)·harvester(mention surface 매칭)가 공유한다.
+    """
+    return _WS_RE.sub("", (s or "").strip().lower())
+
+
+def short_hash(s: str, n: int = 16) -> str:
+    """sha256 hexdigest 앞 n자 — 안정적 짧은 식별자(쿼리·팩트·문서·claim 키)."""
+    return hashlib.sha256(s.encode("utf-8")).hexdigest()[:n]
 
 
 def coerce_json(v):

@@ -30,7 +30,7 @@ from neo4j import Driver
 from pydantic import BaseModel, Field
 
 from infra.agent.tracing import emit, node_scope
-from real_estate.graphflow.agents.base import BaseAgent, korean_system_prompt
+from real_estate.graphflow.agents.base import BaseAgent, korean_system_prompt, short_hash
 from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.composer import format_evidence, paths_to_evidence
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
@@ -111,6 +111,26 @@ def _block_of(report: dict, claim_id: str) -> tuple[dict, dict] | None:
     return None
 
 
+def _claim_id(axis: str, text: str) -> str:
+    """axis|text 안정 해시 → claim_id. edit/enrich 양쪽이 같은 규칙을 써야 한다."""
+    return "clm_" + short_hash(f"{axis}|{text}", 10)
+
+
+def _resolve_cites(cites, ev_by_index, report) -> list[str]:
+    """[E#] 인용 인덱스 → evidence ref 리스트. 인용된 evidence를 report 맵에 등록.
+
+    apply_edit(_splice_block)·apply_enrich(_append_block)가 공유 — 두 곳의
+    인용 해소 로직이 갈라지지 않도록 한 곳에 둔다.
+    """
+    refs = []
+    for e in cites:
+        ev = ev_by_index.get(e)
+        if ev is not None:
+            refs.append(ev.ref)
+            report["evidence"].setdefault(ev.ref, ev.to_map_entry())
+    return refs
+
+
 # ───────────────────────────────────────────────────────────
 # Reviser 에이전트
 # ───────────────────────────────────────────────────────────
@@ -186,24 +206,14 @@ class Reviser(BaseAgent):
     @staticmethod
     def _splice_block(report, sec, block, old_claim_ids, edited, ev_by_index):
         """재작성된 block을 report dict에 외과적 반영 — 타깃 block만 교체."""
-        import hashlib
-
-        def cid_of(text):
-            return "clm_" + hashlib.sha256(f"{sec['axis']}|{text}".encode()).hexdigest()[:10]
-
         # 옛 claim 제거
         for cid in old_claim_ids:
             report["claims"].pop(cid, None)
         # 새 claim 적재
         new_ids = []
         for cl in edited.claims:
-            cid = cid_of(cl.text)
-            cites_refs = []
-            for e in cl.cites:
-                ev = ev_by_index.get(e)
-                if ev is not None:
-                    cites_refs.append(ev.ref)
-                    report["evidence"].setdefault(ev.ref, ev.to_map_entry())
+            cid = _claim_id(sec["axis"], cl.text)
+            cites_refs = _resolve_cites(cl.cites, ev_by_index, report)
             report["claims"][cid] = {
                 "text": cl.text, "kind": cl.kind, "axis": sec["axis"],
                 "cites": cites_refs, "derived_from": [], "as_of": cl.as_of,
@@ -256,19 +266,13 @@ class Reviser(BaseAgent):
     @staticmethod
     def _append_block(report, section, edited, ev_by_index):
         """섹션에 새 block 추가 — 기존 block 전부 불변."""
-        import hashlib
         axis = section["axis"]
         n = len(section["blocks"])
         block_id = f"blk_{axis}_{n}"
         new_ids = []
         for cl in edited.claims:
-            cid = "clm_" + hashlib.sha256(f"{axis}|{cl.text}".encode()).hexdigest()[:10]
-            cites_refs = []
-            for e in cl.cites:
-                ev = ev_by_index.get(e)
-                if ev is not None:
-                    cites_refs.append(ev.ref)
-                    report["evidence"].setdefault(ev.ref, ev.to_map_entry())
+            cid = _claim_id(axis, cl.text)
+            cites_refs = _resolve_cites(cl.cites, ev_by_index, report)
             report["claims"][cid] = {
                 "text": cl.text, "kind": cl.kind, "axis": axis,
                 "cites": cites_refs, "derived_from": [], "as_of": cl.as_of,
