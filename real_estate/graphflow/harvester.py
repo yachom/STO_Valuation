@@ -25,6 +25,7 @@ from pydantic import BaseModel, Field, field_validator
 from real_estate.graphflow.agents.base import coerce_json
 
 from real_estate.graphflow.agents.base import BaseAgent
+from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import KEY_PROP
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
@@ -98,14 +99,6 @@ class PrefilterOutput(BaseModel):
         return coerce_json(v)
 
 
-_PREFILTER_SYSTEM = (
-    "당신은 상가 부동산 평가용 기사 선별기입니다. 기사 제목+요약만 보고, "
-    "검색 맥락(자산/타깃 노드)의 평가에 기여할 사실이 들어 있을 법한 기사를 고릅니다.\n"
-    "포함: 해당 상권/지역/업종의 시세·공실·출점·폐업·개발·정책, 시장 통계.\n"
-    "제외: 무관 지역 전용 기사, 기업 홍보, 연예/사건사고, 단순 분양 광고."
-)
-
-
 class _Prefilter(BaseAgent):
     name = "prefilter"
 
@@ -116,31 +109,11 @@ class _Prefilter(BaseAgent):
                 f"[기사 목록]\n" + "\n".join(lines))
         try:
             out: PrefilterOutput = self.complete(
-                system=_PREFILTER_SYSTEM, user=user, schema=PrefilterOutput)
+                system=get_prompt("harvester.prefilter"), user=user, schema=PrefilterOutput)
             return [i for i in out.relevant_indexes if 0 <= i < len(items)]
         except Exception as exc:                  # 필터 실패 → 전체 통과 (수확 보존)
             emit("prefilter_skip", error=str(exc)[:200], query=query)
             return list(range(len(items)))
-
-
-_SYSTEM = (
-    "당신은 상가 부동산 평가를 위한 사실 추출가(Harvester)입니다.\n"
-    "뉴스 기사에서 '검색 맥락(자산/타깃 노드)'의 평가에 기여할 원자적 사실을 "
-    "1문장 단위로 추출합니다.\n"
-    "규칙:\n"
-    "- 기사에 명시된 내용만 추출합니다. 해석/추측/일반론 금지.\n"
-    "- 한 사실에 한 문장. 숫자는 기사 표기 그대로.\n"
-    "- 상대 시점 표현(지난해/올해/이달/최근)은 보도일 기준 절대 연·월로 환산해 "
-    "병기합니다 (예: '지난해(2025년) 공실률이…'). 환산 불가면 보도일을 문장에 명시.\n"
-    "- 사실의 출처 주체가 기사에 있으면 문장에 포함합니다 "
-    "(예: '한국부동산원에 따르면…', 'OO 관계자는 …라고 말했다').\n"
-    "- temporal_kind: 특정 시점의 통계·사건·발언은 dated, 변하지 않는 사실(준공연도, "
-    "위치)만 static, 예정·전망은 forecast.\n"
-    "- 검색 맥락과 무관한 사실(연예/사건사고 등)은 버립니다. 전부 무관하면 빈 배열.\n"
-    "- mentions의 surface는 기사 표기 그대로 적습니다 — 어떤 노드와 연결할지는 "
-    "시스템이 판정하므로 임의로 정규화하지 마세요.\n"
-    "- 원문에 '~까지', '~예정', '한시' 등 유효기간이 명시되면 valid_until로 추출합니다."
-)
 
 
 # ───────────────────────────────────────────────────────────
@@ -456,7 +429,7 @@ class Harvester(BaseAgent):
             f"보도일: {published_at}\n본문:\n{body}"
         )
         try:
-            out: ExtractionOutput = self.complete(system=_SYSTEM, user=user,
+            out: ExtractionOutput = self.complete(system=get_prompt("harvester.system"), user=user,
                                                   schema=ExtractionOutput)
         except Exception as exc:
             emit("harvest_skip", reason="extract_error", url=article.get("url"),
@@ -509,7 +482,7 @@ class Harvester(BaseAgent):
         user = (f"[발행자 제공 자료]\n출처: {provider}\n{context}\n\n"
                 f"본문:\n{text[:_BODY_TRIM]}")
         try:
-            out: ExtractionOutput = self.complete(system=_SYSTEM, user=user,
+            out: ExtractionOutput = self.complete(system=get_prompt("harvester.system"), user=user,
                                                   schema=ExtractionOutput)
         except Exception as exc:
             emit("userdoc_extract_error", error=str(exc)[:200])

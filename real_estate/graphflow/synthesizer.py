@@ -12,6 +12,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 from real_estate.graphflow.agents.base import BaseAgent, korean_system_prompt
+from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.writer import SectionDraft
 
 logger = logging.getLogger("graphflow.synthesizer")
@@ -82,27 +83,8 @@ class Synthesizer(BaseAgent):
     ) -> tuple[OverviewDraft, list[tuple[str, int]]]:
         """Overview 생성. 반환: (draft, C# 글로벌 인덱스 → (axis, claim_idx) 매핑)."""
         sections_text, index_map = _format_sections(sections)
-        system = korean_system_prompt(
-            "종합 평가 작성자(Synthesizer). 3축 섹션을 통합해 Executive Summary, "
-            "축간 인사이트, 그리고 사회적 가치 **등급 판정(루브릭)**을 작성합니다. "
-            "감정평가액 같은 정량 금액은 만들지 마세요 — 대신 정성 **등급**(A+~D)으로 "
-            "사회적 가치를 판정합니다."
-        ) + (
-            "\n출력 규칙:\n"
-            "- factual 주장은 반드시 cites에 근거 섹션 주장 [C#] 번호를 답니다.\n"
-            "- 섹션에 없는 새로운 사실을 만들지 마세요.\n"
-            "- 축간 모순이 보이면 숨기지 말고 명시적으로 다루세요.\n"
-            "\n[루브릭 — 핵심]\n"
-            "- axis_scores: 상권건강도·ESG·물리성능·배후수요·임차안정성 등 축마다 "
-            "grade(A+~D)와 rationale을 매깁니다.\n"
-            "- 등급 근거는 **비교 사실**을 우선 인용하세요 — 섹션에 '자치구 N곳 중 K위', "
-            "'상위 X%', '추세 ±Y%', '최고 등급' 같은 벤치마크가 있으면 그것이 등급의 핵심 근거입니다.\n"
-            "- **데이터가 부재한 축(예: 임차 공실률·임대료·회전율 미수집)은 등급을 보수적으로 "
-            "매기고 rationale에 '핵심 정량 데이터 부재로 잠정 평가'임을 명시**하세요. 없는 걸 "
-            "있는 척 점수화하지 마세요.\n"
-            "- overall_grade: 축 등급을 종합한 단일 판정 + overall_rationale에 결정적 근거.\n"
-            "- 마지막 block 문단은 이 등급 판정을 산문으로 요약(강점/약점/유의점)."
-        )
+        system = (korean_system_prompt(get_prompt("synthesizer.role"))
+                  + get_prompt("synthesizer.rules"))
         user = (f"[평가 대상 자산]\n{asset_card}\n\n"
                 f"[3축 섹션과 주장 목록]\n{sections_text}")
         out: OverviewDraft = self.complete(system=system, user=user, schema=OverviewDraft)

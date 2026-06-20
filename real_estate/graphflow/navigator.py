@@ -22,6 +22,7 @@ from neo4j import Driver
 from pydantic import BaseModel, Field
 
 from real_estate.graphflow.agents.base import BaseAgent
+from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import KEY_PROP
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
@@ -256,21 +257,6 @@ class NavigatorOutput(BaseModel):
     plans: list[QueryPlan] = Field(description="확장할 타깃들 (중요도 순)")
 
 
-_SYSTEM = (
-    "당신은 상가 부동산 평가를 위한 데이터 확장 항해사(Navigator)입니다.\n"
-    "자산 주변 지식 그래프의 frontier 후보 중 '새로운 외부 정보(뉴스)가 평가에 "
-    "기여할' 노드를 고르고, 네이버 뉴스 검색어를 만듭니다.\n"
-    "규칙:\n"
-    "- 후보 목록에 있는 ref만 선택합니다.\n"
-    "- 검색어는 노드의 고유명사(상권명/행정동/업종/건물명 등)를 문자 그대로 포함해야 "
-    "합니다. 포함하지 않은 검색어는 시스템이 폐기합니다.\n"
-    "- '상가 투자 전망' 같은 자산과 무관한 일반론 검색어 금지.\n"
-    "- 이미 실행된 검색어와 같거나 사실상 같은 검색어 금지.\n"
-    "- 템플릿 제안을 그대로 써도 되고, 더 나은 변형(시의성 키워드 추가 등)도 좋습니다.\n"
-    "- 평가 3축(임차 가치/ESG/상권 가치)에 고르게 기여하도록 타깃을 분산하세요."
-)
-
-
 class Navigator(BaseAgent):
     name = "navigator"
 
@@ -305,7 +291,8 @@ class Navigator(BaseAgent):
             f"최대 {max_targets}개 타깃을 고르고, 타깃당 검색어 최대 {queries_per_node}개를 "
             f"만들어 주세요."
         )
-        out: NavigatorOutput = self.complete(system=_SYSTEM, user=user, schema=NavigatorOutput)
+        out: NavigatorOutput = self.complete(
+            system=get_prompt("navigator.system"), user=user, schema=NavigatorOutput)
         return self._validate(out.plans, candidates, executed,
                               max_targets=max_targets, queries_per_node=queries_per_node)
 

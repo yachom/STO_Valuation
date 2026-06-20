@@ -31,6 +31,7 @@ from pydantic import BaseModel, Field
 
 from infra.agent.tracing import emit, node_scope
 from real_estate.graphflow.agents.base import BaseAgent, korean_system_prompt
+from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.composer import format_evidence, paths_to_evidence
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
@@ -133,18 +134,8 @@ class Reviser(BaseAgent):
                 e.index = i
         cited = "\n".join(
             f"- {ref}" for ref in target_claim.get("cites", [])) or "(없음)"
-        system = korean_system_prompt(
-            "발행자 피드백 검수자(Reviser). 발행자의 지적을 무조건 수용하지 말고, "
-            "그래프 증거와 대조해 타당성을 판단합니다. 에이전트도 근거를 인용해야 "
-            "합니다."
-        ) + (
-            "\n입장(stance) 기준:\n"
-            "- agree: 증거가 피드백을 뒷받침하거나, 현 주장이 증거 대비 약함\n"
-            "- disagree: 증거가 피드백과 배치됨 (이 경우 proposal=null)\n"
-            "- partial: 일부만 타당\n"
-            "- inconclusive: 판단할 증거 부족 (확장 필요)\n"
-            "cited_evidence_indexes에 판단 근거 [E#]를 답니다."
-        )
+        system = (korean_system_prompt(get_prompt("reviser.assess_role"))
+                  + get_prompt("reviser.assess_rules"))
         user = (
             f"[현재 주장]\n{target_claim['text']}\n"
             f"종류: {target_claim['kind']}, 현 인용: {cited}\n\n"
@@ -182,14 +173,8 @@ class Reviser(BaseAgent):
         cur_lines = "\n".join(
             f"- ({c['kind']}) {c['text']} [cites: {', '.join(c['cites'])}]"
             for c in cur_claims)
-        system = korean_system_prompt(
-            "발행자 피드백을 반영해 한 문단(block)만 재작성합니다. 표현·구성만 고치고 "
-            "**새로운 사실을 만들지 않습니다** — 기존 인용 증거 범위 안에서만."
-        ) + (
-            "\n규칙:\n- factual 주장은 cites에 기존 [E#] 중에서만 인용 (새 번호 금지).\n"
-            "- 숫자는 증거 그대로. opinion은 derived_from 유지.\n"
-            "- 타깃 문단만 다룹니다."
-        )
+        system = (korean_system_prompt(get_prompt("reviser.edit_role"))
+                  + get_prompt("reviser.edit_rules"))
         user = (
             f"[자산]\n{asset_card}\n\n[현재 문단]\n{block['markdown']}\n\n"
             f"[현재 주장들]\n{cur_lines}\n\n[발행자 피드백]\n{comment}\n\n"
@@ -258,11 +243,8 @@ class Reviser(BaseAgent):
         evidence = self._gather_evidence(
             driver, asset_id, report["claims"][target_claim_id], comment, max_hops=3)
         ev_lines = "\n".join(f"[E{ev.index}] {ev.ref}: {ev.text}" for ev in evidence)
-        system = korean_system_prompt(
-            f"'{axis}' 섹션에 발행자 보강 요청을 반영한 새 문단 1개를 작성합니다. "
-            "기존 문단은 건드리지 않고, 증거에 근거한 내용만 추가합니다."
-        ) + ("\n- factual 주장은 cites에 [E#] 인용 필수. 숫자는 증거 그대로.\n"
-             "- 보강할 증거가 없으면 빈 문단(claims 빈 배열)으로 두세요.")
+        system = (korean_system_prompt(get_prompt("reviser.augment_role", axis=axis))
+                  + get_prompt("reviser.augment_rules"))
         user = (f"[자산]\n{asset_card}\n\n[보강 요청]\n{comment}\n\n"
                 f"[새로 수집·관련 증거]\n{ev_lines}")
         out: _EditedBlock = self.complete(system=system, user=user, schema=_EditedBlock)

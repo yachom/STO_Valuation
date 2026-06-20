@@ -23,6 +23,7 @@ from neo4j import Driver
 from pydantic import BaseModel, Field, field_validator
 
 from real_estate.graphflow.agents.base import BaseAgent, coerce_json
+from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.composer import (
     Evidence,
     _scope_fact_paths,
@@ -88,16 +89,13 @@ class _Recognizer(BaseAgent):
     """
     name = "qa_recognize"
 
-    _SYSTEM = ("질문에 답하는 데 실제로 관련된 evidence만 고르는 인식 필터입니다. "
-               "주제만 겹치고 무관한 항목은 제외하되, 조금이라도 관련되면 포함하세요(보수적).")
-
     def filter(self, question: str, evidence: list[Evidence]) -> list[Evidence]:
         if len(evidence) <= 3:                       # 너무 적으면 필터 안 함
             return evidence
         lines = [f"[{e.index}] ({e.label}) {e.text[:140]}" for e in evidence]
         try:
             out: RecognizeOutput = self.complete(
-                system=self._SYSTEM,
+                system=get_prompt("qa.recognize"),
                 user=f"[질문]\n{question}\n\n[evidence]\n" + "\n".join(lines),
                 schema=RecognizeOutput)
         except Exception as exc:                     # 필터 실패 → 원본 유지
@@ -247,8 +245,7 @@ class QAResponder(BaseAgent):
         # (b) 적응 — 질문 힌트 앵커에서 llm_walk (체인 추적, 기존 강점)
         scope_summary = _scope_map_summary(driver, asset_id)
         hints: AnchorHints = self.complete(
-            system=("질문에서 그래프 검색 힌트를 추출합니다. 스코프 지도에 있는 "
-                    "엔티티명을 우선 사용하고, 없으면 질문의 핵심 키워드를 씁니다."),
+            system=get_prompt("qa.hints"),
             user=f"[질문]\n{question}\n\n[자산 스코프 지도]\n{scope_summary}",
             schema=AnchorHints)
         anchor_eids: list[str] = []
@@ -294,13 +291,7 @@ class QAResponder(BaseAgent):
         new_note = (f"\n참고: {', '.join(new_marks)}는 이 질문을 위해 방금 수집된 "
                     f"근거입니다(검증 1회). 답변에 인용 시 최신 수집 자료임을 표시하세요."
                     if new_marks else "")
-        system = (
-            "당신은 상가 자산 평가 그래프 기반 QA 응답자입니다.\n"
-            "- 제공된 evidence에서만 답합니다. 추측 금지.\n"
-            "- 답변은 5문장 이내, 사용한 근거에 [E#] 인용을 답니다.\n"
-            "- 숫자·날짜는 evidence 그대로. 오래된 증거(DECAYED)는 시점을 명시.\n"
-            "- evidence로 답이 안 되면 sufficient=false로 두고, 무엇이 부족한지 적습니다."
-            + new_note)
+        system = get_prompt("qa.answer") + new_note
         user = (f"[평가 대상 자산]\n{asset_card}\n\n"
                 f"[질문]\n{question}\n\n"
                 f"[evidence]\n{format_evidence(evidence)}")

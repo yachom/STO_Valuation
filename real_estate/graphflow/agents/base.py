@@ -18,6 +18,7 @@ from __future__ import annotations
 import logging
 
 from real_estate.graphflow.llm import get_llm, provider_for_agent, system_content
+from real_estate.graphflow.prompts import get_prompt
 from infra.agent.tracing import node_scope, observe
 
 logger = logging.getLogger("graphflow.agent")
@@ -41,39 +42,16 @@ def coerce_json(v):
     return v
 
 
-DOMAIN_HIERARCHY = """
-도메인 위계 (명시적으로 적용 — 등급 순서 환각 차단):
-
-[BEEC 건물에너지효율등급] 높음 → 낮음
-  1+++등급 > 1++등급 > 1+등급 > 1등급 > 2등급 > 3등급 > 4등급 > 5등급 > 6등급 > 7등급
-  ('+' 수가 많을수록 우수. '1'은 같은 base지만 plus가 우선.)
-
-[G-SEED 녹색건축인증] 높음 → 낮음
-  최우수(그린1등급) > 우수(그린2등급) > 우량(그린3등급) > 일반(그린4등급)
-  (그린N의 N이 작을수록 우수. '우수'가 '우량'보다 높음을 혼동 금지.)
-  '우량 이상' = 우량+우수+최우수. '우수 이상' = 우수+최우수.
-
-[부동산 가치 vs 사회적 가치] 본 평가는 '사회적 가치' 중심.
-  - 임차 사업자 안정성, 상권 건강도, 입지 접근성, 배후수요는 모두 사회적 가치 측면.
-  - 단순 시세·매도가격은 평가의 부산물이며 핵심 결론이 아님.
-"""
+# 프롬프트 문구는 prompts.py(레지스트리)가 단일 진실 — 코드에 박지 않는다.
+# 외부 재노출(agents/__init__) 호환용 상수. 실제 조립은 korean_system_prompt가
+# 매 호출 get_prompt로 하므로 A/B variant(active override)가 반영된다.
+DOMAIN_HIERARCHY = get_prompt("base.domain_hierarchy")
 
 
 def korean_system_prompt(role_description: str) -> str:
     """상가 부동산 사회적 가치 평가 공통 시스템 프롬프트 + 역할 설명."""
-    return (
-        "당신은 한국 상가 부동산의 사회적 가치를 평가하는 보고서 에이전트입니다.\n"
-        "평가 대상은 '상가 건물(주소 단위)'이며, 아파트 단지 데이터는 본 상가의 "
-        "'배후수요(잠재 소비층)' 측정 컨텍스트로만 활용합니다.\n"
-        f"이번 역할: {role_description}\n"
-        "원칙:\n"
-        "- 한국어로 답합니다.\n"
-        "- 모든 주장은 제공된 evidence에서만 끌어옵니다. evidence 밖 사실은 추측하지 마세요.\n"
-        "- 숫자는 evidence에 있는 값만 인용합니다.\n"
-        "- 출처가 부족하면 그렇다고 명시하세요.\n"
-        "- 도메인 위계(아래)를 무시하고 등급/순서를 임의로 추론하지 마세요.\n"
-        + DOMAIN_HIERARCHY
-    )
+    return (get_prompt("base.frame", role=role_description)
+            + get_prompt("base.domain_hierarchy"))
 
 
 def format_paths(paths, *, max_paths: int | None = None) -> str:

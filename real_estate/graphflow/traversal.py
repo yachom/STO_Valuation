@@ -238,18 +238,6 @@ def _scope_eids(driver: Driver, asset_id: str, hops: int) -> set[str]:
 # 점수 산정은 qa_base StaticPolicy(랭킹 일관성) — LLM은 가지치기/확장만 결정.
 # 비결정적이므로 보고서 집필에는 쓰지 않는다 (QA·확장 전용).
 # ───────────────────────────────────────────────────────────
-_JUDGE_SYSTEM = (
-    "당신은 지식 그래프 탐색 판정자입니다. 목적(질문)에 비추어 각 후보 노드를 "
-    "판정합니다:\n"
-    "- keep: 이 노드 자체가 답의 근거가 된다\n"
-    "- expand: 이 노드 너머에 근거가 있을 듯하다 — 이웃을 더 탐색\n"
-    "- both: 근거이면서 더 탐색할 가치도 있다\n"
-    "- drop: 목적과 무관\n"
-    "탐색 예산이 제한적이니 무관한 노드는 과감히 drop하세요. "
-    "목록에 없는 번호는 만들지 마세요."
-)
-
-
 def _get_walk_judge():
     """walk_judge 에이전트 (지연 생성 — traversal은 평소 LLM 무의존)."""
     global _walk_judge
@@ -340,8 +328,9 @@ def llm_walk(
         lines = [f"[{i}] ({p.tail.label}) {p.tail.card_text[:200]}"
                  for i, p in enumerate(ranked)]
         try:
+            from real_estate.graphflow.prompts import get_prompt
             out = judge.complete(
-                system=_JUDGE_SYSTEM,
+                system=get_prompt("walk_judge.system"),
                 user=f"[목적]\n{purpose}\n\n[후보 노드]\n" + "\n".join(lines),
                 schema=_JudgeOutput)
             vmap = {v.index: v.verdict for v in out.verdicts

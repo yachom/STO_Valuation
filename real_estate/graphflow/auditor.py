@@ -22,6 +22,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 from real_estate.graphflow.agents.base import BaseAgent
+from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.composer import Evidence
 from real_estate.graphflow.synthesizer import OverviewDraft
 from real_estate.graphflow.writer import SectionDraft
@@ -133,12 +134,5 @@ class AuditorLLM(BaseAgent):
     name = "auditor"
 
     def review(self, report_text: str) -> AuditNotes:
-        system = (
-            "당신은 상가 부동산 정성 평가 보고서의 검수자(Auditor)입니다.\n"
-            "다음만 찾습니다 (문체 지적 금지):\n"
-            "- contradiction: 축간/문단간 모순 (예: 한쪽은 수요 견조, 한쪽은 공실 급증)\n"
-            "- overreach: 인용 증거 대비 과대 해석 (단발 사례→일반화, 오래된 수치→현재 단정)\n"
-            "- missing_counter: 본문 내 반대 증거가 있는데 결론이 한쪽만 반영\n"
-            "확신 없는 트집은 내지 마세요. high는 보고서 신뢰를 깨는 수준만."
-        )
-        return self.complete(system=system, user=report_text, schema=AuditNotes)
+        return self.complete(system=get_prompt("auditor.system"),
+                             user=report_text, schema=AuditNotes)
