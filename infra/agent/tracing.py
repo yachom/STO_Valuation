@@ -39,6 +39,9 @@ _current_node: contextvars.ContextVar["str | None"] = contextvars.ContextVar(
     "current_node", default=None)
 _current_axis: contextvars.ContextVar["str | None"] = contextvars.ContextVar(
     "current_axis", default=None)
+# trace_context가 건 trace 속성 — LangGraph invoke의 langfuse metadata 변환용.
+_current_trace_attrs: contextvars.ContextVar["dict | None"] = contextvars.ContextVar(
+    "trace_attrs", default=None)
 
 _SIDECAR_DIRS = ("tool_calls", "llm_calls", "sql_calls")
 
@@ -194,28 +197,59 @@ def trace_context(*, name: str | None = None, session_id: str | None = None,
     """Langfuse trace-level 속성을 이 컨텍스트 내 모든 span에 전파. 키 없으면 no-op.
 
     LLM 호출의 CallbackHandler가 만드는 span이 이 속성(session/tags/metadata)을
-    상속한다 → 대시보드에서 자산별·단계별 집계.
+    상속한다 → 대시보드에서 자산별·단계별 집계. 속성은 contextvar에도 저장돼
+    LangGraph 경로가 langchain_trace_metadata로 꺼내 쓴다(아래 함수 참고).
     """
+    token = _current_trace_attrs.set(
+        {"name": name, "session_id": session_id, "tags": tags, "metadata": metadata})
     try:
-        from langfuse import propagate_attributes
-    except Exception:
-        yield
-        return
-    kw: dict = {"as_baggage": True}
-    if name:
-        kw["trace_name"] = name
-    if session_id:
-        kw["session_id"] = session_id
-    if tags:
-        kw["tags"] = list(tags)
-    if metadata:
-        kw["metadata"] = {k: str(v) for k, v in metadata.items() if v is not None}
-    try:
-        with propagate_attributes(**kw):
+        try:
+            from langfuse import propagate_attributes
+        except Exception:
             yield
-    except Exception as e:
-        logger.debug("langfuse trace_context skip: %s", e)
-        yield
+            return
+        kw: dict = {"as_baggage": True}
+        if name:
+            kw["trace_name"] = name
+        if session_id:
+            kw["session_id"] = session_id
+        if tags:
+            kw["tags"] = list(tags)
+        if metadata:
+            kw["metadata"] = {k: str(v) for k, v in metadata.items() if v is not None}
+        try:
+            with propagate_attributes(**kw):
+                yield
+        except Exception as e:
+            logger.debug("langfuse trace_context skip: %s", e)
+            yield
+    finally:
+        _current_trace_attrs.reset(token)
+
+
+def langchain_trace_metadata() -> dict:
+    """현재 trace_context 속성 → LangChain config의 `metadata` dict (langfuse_* 키).
+
+    langfuse v4 LangChain CallbackHandler는 trace 이름/세션/태그를 runnable의
+    metadata['langfuse_trace_name'/'langfuse_session_id'/'langfuse_tags']에서 읽는다
+    (propagate_attributes의 OTel baggage가 아니라). LangGraph는 app.invoke가 만드는
+    루트 span을 핸들러가 명명하므로, 이 dict를 invoke config의 metadata로 넘겨야
+    trace.name이 run_tracer(trace_name=...)대로 잡힌다(안 넘기면 'LangGraph'로 떨어짐).
+
+    활성 trace_context가 없으면 빈 dict — 호출부가 폴백 이름을 정한다.
+    """
+    a = _current_trace_attrs.get() or {}
+    md: dict = {}
+    if a.get("name"):
+        md["langfuse_trace_name"] = a["name"]
+    if a.get("session_id"):
+        md["langfuse_session_id"] = a["session_id"]
+    if a.get("tags"):
+        md["langfuse_tags"] = list(a["tags"])
+    for k, v in (a.get("metadata") or {}).items():
+        if v is not None:
+            md[k] = str(v)
+    return md
 
 
 def add_score(name: str, value, *, data_type: str | None = None,

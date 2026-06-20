@@ -25,7 +25,7 @@ from neo4j import Driver
 
 from real_estate.graphflow.profiles import REPORT_AXES
 from real_estate.graphflow.state import GraphFlowState
-from infra.agent.tracing import make_run_id
+from infra.agent.tracing import langchain_trace_metadata, make_run_id
 
 logger = logging.getLogger("graphflow.workflow")
 
@@ -197,7 +197,14 @@ def run_report_pipeline(
         "expand_budget": expand_budget, "evidence_k": evidence_k,
         "collected_by": make_run_id("exp"),
     }
-    final = app.invoke(initial, config={"callbacks": callbacks})
+    # LangGraph 루트 trace는 핸들러가 metadata['langfuse_*']로 명명한다. 호출부가
+    # run_tracer(trace_name=...)로 감쌌으면 그 값을, 아니면 asset_id로 폴백 —
+    # 둘 다 없으면 trace.name이 'LangGraph'로 떨어지므로 항상 채운다.
+    md = langchain_trace_metadata()
+    md.setdefault("langfuse_trace_name", f"report:{asset_id}")
+    md.setdefault("langfuse_session_id", asset_id)
+    md.setdefault("langfuse_tags", ["report"])
+    final = app.invoke(initial, config={"callbacks": callbacks, "metadata": md})
     logger.info("workflow 완료 — report=%s",
                 (final.get("report") or {}).get("report_id"))
     return final
