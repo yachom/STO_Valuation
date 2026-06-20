@@ -131,17 +131,21 @@ def run_expand(
                 emit("expand_stop", reason="novelty_low", round=rnd, novelty=novelty)
                 break
 
-    # 엔티티 해소 — 수집한 Fact가 이름 약간 다른 스트레이 Entity로 새지 않게
-    # 구조노드로 승격(Janitor §9.2/D15). corroboration의 전제: '발산역' Fact가
-    # 발산역(마곡) 상권 노드를 강화하게. idempotent(merged_into).
-    from real_estate.graphflow.janitor import run_region_promotions
+    # 엔티티 해소 — 수집 Fact가 이름 약간 다른 스트레이 Entity로 새지 않게:
+    #  ① 승격: Entity → 구조노드(상권/행정동/업종/단지) (§9.2/D15)
+    #  ② 안전 병합: 남은 Entity 중 '일반수식어 차이'만 있는 alias를 대표로 (보강 집중)
+    # 위험한 병합(신논현/논현, 특정명사)은 손대지 않음(리뷰 큐). idempotent.
+    from real_estate.graphflow.janitor import run_region_promotions, run_safe_merges
     prom = run_region_promotions(driver)
+    merge = run_safe_merges(driver)
 
     facts_total = sum(r["facts_new"] for r in history)
     add_score("expand_facts", facts_total)
     add_score("expand_rounds_run", len(history))
     add_score("entities_promoted", prom["promoted"])
+    add_score("entities_merged", merge["merged"])
     if history:
         add_score("expand_final_novelty", history[-1]["novelty"])
-    return {"asset_id": asset_id, "rounds_run": len(history), "promotions": prom,
+    return {"asset_id": asset_id, "rounds_run": len(history),
+            "promotions": prom, "merges": merge,
             "queries_total": queries_spent, "history": history}

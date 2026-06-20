@@ -189,6 +189,55 @@ def merge_entities(driver: Driver, keep_id: str, drop_id: str) -> int:
         return n["moved"] if n else 0
 
 
+# 자동 병합 안전 — 행정 접두(시도/구/군)·일반 위치 수식어만 다르면 같은 실체.
+# '신논현역'⊃'논현역'(접두 '신'), '발산역 청년주택'(특정 명사)은 다른 실체라 제외.
+_GENERIC_QUALIFIERS = {"일대", "근처", "인근", "부근", "일원", "주변", "상권",
+                       "역세권", "지역", "쪽", "앞"}
+_SIDO = {"서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기",
+         "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"}
+_ADMIN_SUFFIXES = ("특별자치시", "특별자치도", "특별시", "광역시", "시", "도", "구", "군")
+
+
+def _core_name(name: str) -> str:
+    """행정 접두(시도·구·군)·일반수식어를 떼어낸 핵심 이름 (동/역 등 고유부는 보존)."""
+    toks = (name or "").strip().lower().split()
+    core = [t for t in toks
+            if t not in _GENERIC_QUALIFIERS and t not in _SIDO
+            and not t.endswith(_ADMIN_SUFFIXES)]
+    return "".join(core)
+
+
+def _is_safe_merge(keep_name: str, drop_name: str) -> bool:
+    """행정 접두·일반수식어만 빼면 핵심 이름이 '정확히 일치'할 때만 자동 병합 안전.
+
+    포함관계(⊂)는 허용하지 않는다 — '발산역 청년주택'⊃'발산역', '신논현역'⊃'논현역'
+    같은 다른 실체를 흡수하지 않도록. 핵심 이름 동일성만 신뢰한다.
+    """
+    ck, cd = _core_name(keep_name), _core_name(drop_name)
+    return bool(ck) and len(ck) >= _MIN_NAME_LEN and ck == cd
+
+
+def find_safe_merges(driver: Driver) -> list[dict]:
+    """공통 타깃 + 일반수식어 차이만 있는 Entity 쌍 (자동 병합 안전)."""
+    return [d for d in find_duplicate_entities(driver)
+            if _is_safe_merge(d["keep_name"] or d["keep"], d["drop_name"] or d["drop"])]
+
+
+def run_safe_merges(driver: Driver) -> dict:
+    """안전 중복(일반수식어 차이)만 자동 병합 — 보강을 대표 Entity로 집중.
+
+    승격(run_region_promotions) 후 남은 Entity-Entity 분열 중 안전한 것만. 위험한
+    것은 손대지 않음(리뷰 큐는 run_janitor가 처리). idempotent(merged_into)."""
+    merges = find_safe_merges(driver)
+    moved = 0
+    for m in merges:
+        moved += merge_entities(driver, m["keep"], m["drop"])
+    if merges:
+        emit("janitor_safe_merge", pairs=len(merges), facts_moved=moved)
+        logger.info("안전 병합 %d쌍, Fact %d개 이관", len(merges), moved)
+    return {"merged": len(merges), "facts_moved": moved}
+
+
 # ───────────────────────────────────────────────────────────
 # C. 오병합 탐지 → 리뷰 큐 (자동 처리 안 함)
 # ───────────────────────────────────────────────────────────
