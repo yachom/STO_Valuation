@@ -34,7 +34,7 @@ from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.harvester import load_scope_names
 from real_estate.graphflow.policies import SemanticPolicy
-from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, _write_edges, seed
+from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, write_edges, seed
 from infra.agent.tracing import add_score, emit, node_scope
 from real_estate.graphflow.traversal import (
     asset_anchor_eid,
@@ -331,4 +331,4 @@ class QAResponder(BaseAgent):
             # 확장까지 했는데도 근거 없음 — 자산에 GAP 마킹 (다음 확장의 입력 신호)
             edges.append(SeedEdge(L.QUESTION, question_id, E.GAP_AT, L.ASSET, asset_id))
         seed(sg, driver)
-        _write_edges(driver, edges)
+        write_edges(driver, edges)

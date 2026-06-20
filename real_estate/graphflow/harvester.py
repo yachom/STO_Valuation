@@ -26,7 +26,7 @@ from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import KEY_PROP
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
-from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, _write_edges, seed
+from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, write_edges, seed
 from infra.tool.naver import NaverNewsScrapeTool, NaverNewsSearchTool
 from infra.agent.tracing import emit
 
@@ -344,7 +344,7 @@ class Harvester(BaseAgent):
                 break
             if url_hash in existing:
                 # 기수확 문서 — 새 Query에서 RETRIEVED 엣지만 연결 (재추출 안 함)
-                _write_edges(driver, [SeedEdge(L.QUERY, query_hash, E.RETRIEVED,
+                write_edges(driver, [SeedEdge(L.QUERY, query_hash, E.RETRIEVED,
                                                L.WEB_DOC, url_hash)])
                 continue
             art = self._scrape(url=it["link"])
@@ -393,7 +393,7 @@ class Harvester(BaseAgent):
             if scraped >= _MAX_ARTICLES_PER_QUERY:
                 break
             if url_hash in existing:
-                _write_edges(driver, [SeedEdge(L.QUERY, query_hash, E.RETRIEVED,
+                write_edges(driver, [SeedEdge(L.QUERY, query_hash, E.RETRIEVED,
                                                L.WEB_DOC, url_hash)])
                 continue
             scraped += 1
@@ -454,7 +454,7 @@ class Harvester(BaseAgent):
         stats.new_fact_texts.extend(texts)
 
         seed(sg, driver)                # 신규 노드 MERGE (+카드)
-        _write_edges(driver, edges)     # 기존 노드 향한 엣지 포함
+        write_edges(driver, edges)     # 기존 노드 향한 엣지 포함
         emit("harvest_doc", url=article.get("url"), facts=len(out.facts),
              doc_relevance=out.doc_relevance, query=query)
 
@@ -491,7 +491,7 @@ class Harvester(BaseAgent):
             source_tier=SOURCE_TIER_PROVISIONAL, published_at=now[:10],
             collected_by=collected_by)
         seed(sg, driver)
-        _write_edges(driver, edges)
+        write_edges(driver, edges)
         # 신규 첨부 Fact 임베딩 — assess의 벡터 검색에 잡히도록
         from real_estate.graphflow.graph.vector_index import (
             ensure_vector_index,

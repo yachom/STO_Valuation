@@ -45,13 +45,13 @@ def _get_driver() -> Driver:
 # ───────────────────────────────────────────────────────────
 def seed_node(state: GraphFlowState) -> dict:
     """location이 있으면 스코프 시드 (idempotent). asset_card 확보."""
-    from real_estate.graphflow.report import _asset_card
+    from real_estate.graphflow.report import asset_card_text
     from real_estate.graphflow.seeder import collect_scope, seed
 
     driver = _get_driver()
     if state.get("location") is not None:
         seed(collect_scope(state["location"], state["db_path"]), driver)
-    return {"asset_card": _asset_card(driver, state["asset_id"])}
+    return {"asset_card": asset_card_text(driver, state["asset_id"])}
 
 
 def tenant_node(state: GraphFlowState) -> dict:

@@ -26,7 +26,7 @@ from real_estate.graphflow.composer import Evidence, compose
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.profiles import REPORT_AXES
-from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, _write_edges, seed
+from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, write_edges, seed
 from real_estate.graphflow.synthesizer import Synthesizer
 from infra.agent.tracing import add_score, emit, make_run_id, node_scope
 from real_estate.graphflow.writer import SectionDraft, Writer
@@ -40,7 +40,7 @@ def _claim_id(axis: str, text: str) -> str:
     return "clm_" + hashlib.sha256(f"{axis}|{text}".encode()).hexdigest()[:10]
 
 
-def _asset_card(driver: Driver, asset_id: str) -> str:
+def asset_card_text(driver: Driver, asset_id: str) -> str:
     with driver.session() as s:
         r = s.run(f"MATCH (a:{L.ASSET} {{asset_id: $aid}}) RETURN a.card_text AS c",
                   aid=asset_id).single()
@@ -211,7 +211,7 @@ def write_report_graph(driver: Driver, report: dict) -> None:
             edges.append(SeedEdge(L.CLAIM, cid, E.CITES, L.CLAIM, dcid))
 
     seed(sg, driver)
-    _write_edges(driver, edges)
+    write_edges(driver, edges)
 
 
 def rewrite_report_graph(driver: Driver, report: dict) -> None:
@@ -356,7 +356,7 @@ def generate_report(
     evidence_k: int | None = None,
 ) -> dict:
     """순차 단독 실행 진입점 (LangGraph 없이). 표준 경로는 workflow.py."""
-    asset_card = _asset_card(driver, asset_id)
+    asset_card = asset_card_text(driver, asset_id)
     sections: dict[str, SectionDraft] = {}
     evidence_by_axis: dict[str, list[Evidence]] = {}
     mech_audit: dict[str, list[str]] = {}

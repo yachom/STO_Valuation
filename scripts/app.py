@@ -93,7 +93,7 @@ def _render_report(report: dict):
 
 
 def _render_revise(driver, report, asset_id, out_dir):
-    from real_estate.graphflow.reviser import resolve_feedback, submit_feedback
+    from real_estate.graphflow.feedback import resolve_feedback, submit_feedback
 
     st.caption("발행 담당자: 주장(claim)에 피드백 → 에이전트가 그래프 증거와 대조해 "
                "Assessment 회신 → **합의 시에만** 외과적 수정 (합의 전 보고서 불변).")

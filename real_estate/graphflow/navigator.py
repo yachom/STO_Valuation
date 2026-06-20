@@ -76,7 +76,7 @@ class FrontierCandidate:
         return lp * self.path_score / (1 + self.n_facts) / (1 + 0.5 * self.n_queries)
 
 
-def _fetch_props(driver: Driver, eids: list[str]) -> dict[str, dict]:
+def fetch_props(driver: Driver, eids: list[str]) -> dict[str, dict]:
     """노드 프로퍼티 조회 (card_embedding 제외 — 1024-dim 전송 회피)."""
     if not eids:
         return {}
@@ -219,7 +219,7 @@ def collect_frontier(
             tails[t.eid] = (t.label, t.key, t.card_text, p.score)
 
     eids = list(tails)
-    props_map = _fetch_props(driver, eids)
+    props_map = fetch_props(driver, eids)
     counts = _fetch_evidence_counts(driver, eids)
     asset_props = props_map.get(anchor, {})
 

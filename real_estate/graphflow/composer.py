@@ -14,7 +14,7 @@ from neo4j import Driver
 
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
-from real_estate.graphflow.navigator import _fetch_props
+from real_estate.graphflow.navigator import fetch_props
 from real_estate.graphflow.policies import SemanticPolicy, StaticPolicy
 from real_estate.graphflow.traversal import (
     EdgeStep,
@@ -152,7 +152,7 @@ def _source_kind(label: str) -> str:
 def paths_to_evidence(driver: Driver, paths) -> list[Evidence]:
     """walk/llm_walk 경로 → Evidence 목록 (E1..En). Composer·QA 공용."""
     tail_eids = [p.tail.eid for p in paths]
-    props_map = _fetch_props(driver, tail_eids)
+    props_map = fetch_props(driver, tail_eids)
     # 문서성 노드(Fact/WebDoc/UserDoc)는 url origin, 구조 노드는 출처 라벨 origin
     doc_eids = [p.tail.eid for p in paths
                 if p.tail.label in (L.FACT, L.WEB_DOC, L.USER_DOC)]
@@ -219,10 +219,10 @@ def _scope_fact_paths(
     """
     from real_estate.graphflow.graph.embedder import embed_one
     from real_estate.graphflow.graph.vector_index import search_similar
-    from real_estate.graphflow.traversal import _load_nodes, _scope_eids
+    from real_estate.graphflow.traversal import load_nodes, scope_eids
 
     qv = embed_one(purpose_text)
-    scope = _scope_eids(driver, asset_id, scope_hops)
+    scope = scope_eids(driver, asset_id, scope_hops)
     hits: dict[str, float] = {}
     for label in (L.FACT, L.WEB_DOC):
         try:
@@ -234,7 +234,7 @@ def _scope_fact_paths(
     top = sorted(hits.items(), key=lambda kv: (-kv[1], kv[0]))[:n]
     if not top:
         return []
-    refs = _load_nodes(driver, [anchor_eid] + [e for e, _ in top])
+    refs = load_nodes(driver, [anchor_eid] + [e for e, _ in top])
     anchor_ref = refs.get(anchor_eid)
     out = []
     for eid, score in top:

@@ -508,7 +508,7 @@ def _write_nodes(driver: Driver, nodes: list[SeedNode]) -> int:
     return total
 
 
-def _write_edges(driver: Driver, edges: list[SeedEdge]) -> int:
+def write_edges(driver: Driver, edges: list[SeedEdge]) -> int:
     """(src_label, rel, dst_label)별로 묶어 UNWIND MATCH+MERGE."""
     grouped: dict[tuple, list[SeedEdge]] = {}
     for e in edges:
@@ -543,7 +543,7 @@ def seed(scope: ScopeGraph, driver: Driver, *, embed: bool = False) -> dict:
 
     apply_constraints(driver)
     n_nodes = _write_nodes(driver, scope.nodes)
-    n_edges = _write_edges(driver, scope.edges)
+    n_edges = write_edges(driver, scope.edges)
     result = {"nodes": n_nodes, "edges": n_edges}
 
     if embed:

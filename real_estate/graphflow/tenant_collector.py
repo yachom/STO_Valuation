@@ -231,7 +231,7 @@ def collect_tenants(driver, asset_id: str, *, location, kakao_key: str,
             })
             if tn is not None:
                 # Asset은 노드로 안 넣음(card 덮어쓰기 방지). 기존 Asset을 MATCH하는
-                # 엣지만 추가 — _write_edges는 양끝을 MATCH/MERGE만 한다.
+                # 엣지만 추가 — write_edges는 양끝을 MATCH/MERGE만 한다.
                 sg.edges.append(SeedEdge(
                     src_label=L.ASSET, src_key=asset_id, rel=E.HAS_TENANT,
                     dst_label=L.TENANT, dst_key=t["place_id"]))

@@ -82,7 +82,7 @@ class _Neighbor:
 # ───────────────────────────────────────────────────────────
 # Neo4j 접근
 # ───────────────────────────────────────────────────────────
-def _load_nodes(driver: Driver, eids: list[str]) -> dict[str, NodeRef]:
+def load_nodes(driver: Driver, eids: list[str]) -> dict[str, NodeRef]:
     if not eids:
         return {}
     with driver.session() as s:
@@ -155,7 +155,7 @@ def walk(
     가중치·노드배수가 ≤1이라 경로 연장 시 점수 단조 감소 → 노드별 최고 점수
     경로를 relaxation으로 확정. 동점은 경로 sig로 결정적 선택(재현성).
     """
-    anchors = _load_nodes(driver, anchor_eids)
+    anchors = load_nodes(driver, anchor_eids)
     anchor_set = set(anchors)
 
     best: dict[str, EvidencePath] = {}
@@ -216,7 +216,7 @@ def asset_anchor_eid(driver: Driver, asset_id: str) -> str | None:
         return r["eid"] if r else None
 
 
-def _scope_eids(driver: Driver, asset_id: str, hops: int) -> set[str]:
+def scope_eids(driver: Driver, asset_id: str, hops: int) -> set[str]:
     """Asset에서 hops 이내 노드 eid 집합 (QA 스코프 한정, 설계 §D11)."""
     with driver.session() as s:
         r = s.run(
@@ -233,7 +233,7 @@ def _scope_eids(driver: Driver, asset_id: str, hops: int) -> set[str]:
 # ───────────────────────────────────────────────────────────
 # LLMPolicy 적응 순회 — llm_walk (설계 §5.3, D4)
 #
-# 엔진 프리미티브(_expand/_load_nodes/EvidencePath)는 StaticPolicy walk와
+# 엔진 프리미티브(_expand/load_nodes/EvidencePath)는 StaticPolicy walk와
 # 공유하고, "이 노드를 더 갈까" 판단만 LLM이 홉당 1회 배치로 한다.
 # 점수 산정은 qa_base StaticPolicy(랭킹 일관성) — LLM은 가지치기/확장만 결정.
 # 비결정적이므로 보고서 집필에는 쓰지 않는다 (QA·확장 전용).
@@ -287,7 +287,7 @@ def llm_walk(
     static = StaticPolicy("qa_base")           # 점수 산정용 (판정과 분리)
     judge = _get_walk_judge()
 
-    anchors = _load_nodes(driver, anchor_eids)
+    anchors = load_nodes(driver, anchor_eids)
     best: dict[str, EvidencePath] = {}
     frontier: list[EvidencePath] = []
     for eid, nr in anchors.items():
@@ -469,6 +469,6 @@ def vector_anchors(
 
     ranked = sorted(by_eid.values(), key=lambda h: (-h["score"], h["eid"]))
     if scope_asset_id:
-        in_scope = _scope_eids(driver, scope_asset_id, scope_hops)
+        in_scope = scope_eids(driver, scope_asset_id, scope_hops)
         ranked = [h for h in ranked if h["eid"] in in_scope]
     return [h["eid"] for h in ranked[:k]]
