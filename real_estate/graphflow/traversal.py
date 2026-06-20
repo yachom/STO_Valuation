@@ -385,15 +385,16 @@ def corroboration_scores(
 
     SemanticPolicy의 corroboration 입력. Fact 총량(에코·재탕 포함)이 아니라 그
     Fact들이 추출된 WebDoc의 distinct press 수를 센다 — 같은 보도자료 재탕은 1로.
-    전역 mention(타 자산 수집 포함)을 세어 '노드의 절대 강도'를 보되, walk에서
-    의미유사도와 곱해지므로 무관한 강한 노드(타 자산 누출)는 자동 억제된다.
+    **자산 스코프 내 Fact만** 센다 — 타 자산이 전역 층에 쌓은 보강(예: 강남역 22)이
+    무관한 이 자산에 새지 않도록(스코프 밖 Fact 제외). 즉 '이 자산 평가가 모은
+    증거가 이 노드를 얼마나 보강했나'를 잰다.
     """
     with driver.session() as s:
         rows = s.run(
             f"""
-            MATCH (a:Asset {{asset_id: $aid}})-[*0..{int(scope_hops)}]-(n)
-            OPTIONAL MATCH (f:Fact)-[:MENTIONS]->(n)
-            OPTIONAL MATCH (f)-[:EXTRACTED_FROM]->(w:WebDoc)
+            MATCH (a:Asset {{asset_id: $aid}})-[*0..{int(scope_hops)}]-(f:Fact)
+                  -[:MENTIONS]->(n)
+            MATCH (f)-[:EXTRACTED_FROM]->(w:WebDoc)
             WITH n, count(DISTINCT coalesce(w.press, w.url)) AS press
             WHERE press > 0
             RETURN elementId(n) AS eid, press

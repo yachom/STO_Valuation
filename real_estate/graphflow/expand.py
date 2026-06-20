@@ -131,10 +131,17 @@ def run_expand(
                 emit("expand_stop", reason="novelty_low", round=rnd, novelty=novelty)
                 break
 
+    # 엔티티 해소 — 수집한 Fact가 이름 약간 다른 스트레이 Entity로 새지 않게
+    # 구조노드로 승격(Janitor §9.2/D15). corroboration의 전제: '발산역' Fact가
+    # 발산역(마곡) 상권 노드를 강화하게. idempotent(merged_into).
+    from real_estate.graphflow.janitor import run_region_promotions
+    prom = run_region_promotions(driver)
+
     facts_total = sum(r["facts_new"] for r in history)
     add_score("expand_facts", facts_total)
     add_score("expand_rounds_run", len(history))
+    add_score("entities_promoted", prom["promoted"])
     if history:
         add_score("expand_final_novelty", history[-1]["novelty"])
-    return {"asset_id": asset_id, "rounds_run": len(history),
+    return {"asset_id": asset_id, "rounds_run": len(history), "promotions": prom,
             "queries_total": queries_spent, "history": history}

@@ -256,7 +256,7 @@ def compose(
     fact_reserve: int = 0,
     semantic: bool = True,
     alpha: float = 0.6,
-    corroboration: bool = False,    # 독립 출처 보강 가중 (PoC, 링킹 선결 필요)
+    corroboration: bool = True,     # 독립 출처 보강 가중 (스코프 한정 + sim 게이트)
     news_k: int = 2,
 ) -> list[Evidence]:
     """축별 증거 = 그래프 walk(구조) + Fact 직접 벡터검색(뉴스) 병합. 결정적.
@@ -271,11 +271,10 @@ def compose(
         raise ValueError(f"Asset 노드 없음: {asset_id}")
     if semantic and axis in AXIS_INTENT:
         sims = semantic_sims(driver, asset_id, AXIS_INTENT[axis], scope_hops=max_hops)
-        # corroboration(독립 출처 보강 가중)은 인프라만 준비 — 기본 OFF. PoC(마곡)에서
-        # net-negative 확인: 자산의 진짜 상권은 corrob 0(Fact가 스트레이 Entity로 샘),
-        # 보강된 건 타 자산 누출 노드(강남역 22). 전제인 '엔티티 링킹'을 먼저 고쳐야
-        # 작동한다. corroboration=True로 실험만 가능.
-        corrob = (corroboration_scores(driver, asset_id, scope_hops=max_hops)
+        # corroboration(독립 출처 보강 가중) — 전제였던 엔티티 링킹(Janitor 승격)으로
+        # Fact가 올바른 노드에 붙어 작동. walk보다 한 홉 좁은 스코프로 한정해 타 자산
+        # 전역 보강이 새는 누출(강남역 등)을 차단(검증: 발산역 corrob 4 / 강남역 1).
+        corrob = (corroboration_scores(driver, asset_id, scope_hops=max(2, max_hops - 1))
                   if corroboration else None)
         policy = SemanticPolicy(axis, sims, alpha=alpha, corrob_by_eid=corrob)
     else:

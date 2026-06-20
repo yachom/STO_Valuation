@@ -50,8 +50,16 @@ def _norm(s: str) -> str:
 # ───────────────────────────────────────────────────────────
 # A. 승격 (candidate Entity → 지역/상권/업종/단지 흡수)
 # ───────────────────────────────────────────────────────────
-def find_region_promotions(driver: Driver) -> list[dict]:
-    """이름 포함 근거가 있는 안전한 승격 후보. 자동 처리 대상."""
+def find_region_promotions(driver: Driver, *, min_facts: int = 2) -> list[dict]:
+    """이름 포함 근거 + corroboration이 있는 안전한 승격 후보. 자동 처리 대상.
+
+    이름 포함은 **양방향** — Entity가 타깃을 포함('강남대로상권'⊇'강남대로')하든,
+    타깃이 Entity를 포함('발산역(마곡)'⊇'발산역')하든 같은 실체 근거다(짧은 쪽이
+    _MIN_NAME_LEN 이상). 승격은 그래프 변형이므로 보수적으로:
+      ① 짧은 이름 ⊂ 긴 이름 (양방향)
+      ② n_facts ≥ min_facts (여러 Fact가 보강 — 1건짜리 스트레이 승격 금지)
+      ③ 모호성 방지 — Entity가 자격 타깃을 정확히 1개만 가질 때 (복수면 skip)
+    """
     with driver.session() as s:
         rows = s.run(
             f"""
@@ -62,21 +70,42 @@ def find_region_promotions(driver: Driver) -> list[dict]:
                           t.canonical_name, t.name) AS tname
             WHERE tname IS NOT NULL
             OPTIONAL MATCH (f:{L.FACT})-[:{E.MENTIONS}]->(e)
+            OPTIONAL MATCH (f)-[:{E.EXTRACTED_FROM}]->(w:{L.WEB_DOC})
             RETURN e.entity_id AS eid, e.name AS ename, tl, tname,
-                   elementId(t) AS teid, count(DISTINCT f) AS n_facts
+                   elementId(t) AS teid, count(DISTINCT f) AS n_facts,
+                   count(DISTINCT coalesce(w.press, w.url)) AS n_press
             """,
             safe=list(_SAFE_PROMOTE_LABELS),
         )
-        out = []
+        by_eid: dict[str, list[dict]] = {}
         for r in rows:
             tnorm = _norm(r["tname"])
             enorm = _norm(r["ename"] or r["eid"])
-            # 타깃 이름이 충분히 길고 Entity 이름이 그것을 포함해야 (같은 실체 근거)
-            if len(tnorm) >= _MIN_NAME_LEN and tnorm in enorm:
-                out.append({"eid": r["eid"], "ename": r["ename"], "label": r["tl"],
-                            "tname": r["tname"], "teid": r["teid"],
-                            "n_facts": r["n_facts"]})
-        return out
+            short, long = sorted((tnorm, enorm), key=len)
+            if (len(short) >= _MIN_NAME_LEN and short in long
+                    and r["n_facts"] >= min_facts):
+                by_eid.setdefault(r["eid"], []).append({
+                    "eid": r["eid"], "ename": r["ename"], "label": r["tl"],
+                    "tname": r["tname"], "teid": r["teid"],
+                    "n_facts": r["n_facts"], "n_press": r["n_press"]})
+        # 모호성 방지: 자격 타깃이 정확히 1개인 Entity만 자동 승격
+        return [cands[0] for cands in by_eid.values() if len(cands) == 1]
+
+
+def run_region_promotions(driver: Driver, *, min_facts: int = 2) -> dict:
+    """find + promote 일괄 — 수집 후 엔티티 해소(스트레이 Entity → 구조노드).
+
+    EXPAND 끝/보고서 직전에 호출하면 수집 Fact가 올바른 노드를 강화한다(corroboration
+    의 전제). idempotent — 승격된 Entity는 merged_into로 다음 호출에서 제외.
+    """
+    proms = find_region_promotions(driver, min_facts=min_facts)
+    moved = 0
+    for p in proms:
+        moved += promote_entity(driver, p["eid"], p["teid"])
+    if proms:
+        emit("janitor_promote", entities=len(proms), facts_moved=moved)
+        logger.info("승격 %d Entity → 구조노드, Fact %d개 이관", len(proms), moved)
+    return {"promoted": len(proms), "facts_moved": moved}
 
 
 def promote_entity(driver: Driver, entity_id: str, target_eid: str) -> int:
