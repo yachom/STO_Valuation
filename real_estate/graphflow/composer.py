@@ -251,21 +251,34 @@ def compose(
     asset_id: str,
     axis: str,
     *,
-    k: int = 12,
-    max_hops: int = 4,
-    fact_reserve: int = 0,
-    semantic: bool = True,
-    alpha: float = 0.6,
-    corroboration: bool = True,     # 독립 출처 보강 가중 (스코프 한정 + sim 게이트)
-    news_k: int = 2,
+    k: int | None = None,
+    max_hops: int | None = None,
+    fact_reserve: int | None = None,
+    semantic: bool | None = None,
+    alpha: float | None = None,
+    corroboration: bool | None = None,
+    news_k: int | None = None,
 ) -> list[Evidence]:
     """축별 증거 = 그래프 walk(구조) + Fact 직접 벡터검색(뉴스) 병합. 결정적.
 
+    기본값은 중앙 설정(config.json `retrieval`)에서 온다 — 명시 인자가 있으면
+    그게 우선(실험 러너의 variant override용). 즉 config.json 한 곳에서 검색
+    동작을 바꾸고, A/B는 인자로 덮어쓴다.
+
     semantic: SemanticPolicy(엣지 prior × 축 의도 코사인, 방법1). False면 StaticPolicy.
-    news_k:   축 의도로 스코프 Fact를 직접 벡터검색해 보장하는 뉴스 슬롯. walk·PPR이
-              못 푸는 뉴스 도달성을 직접 검색으로 해결(2단계 PoC 결론).
+    news_k:   축 의도로 스코프 Fact를 직접 벡터검색해 보장하는 뉴스 슬롯.
     fact_reserve: walk 경로 내 Fact 보장 슬롯(레거시 폴백, 기본 0 — news_k가 대체).
     """
+    from real_estate.graphflow.config import get_config
+    r = get_config()["retrieval"]
+    k = r["evidence_k"] if k is None else k
+    max_hops = r["max_hops"] if max_hops is None else max_hops
+    fact_reserve = r["fact_reserve"] if fact_reserve is None else fact_reserve
+    semantic = r["semantic"] if semantic is None else semantic
+    alpha = r["alpha"] if alpha is None else alpha
+    corroboration = r["corroboration"] if corroboration is None else corroboration
+    news_k = r["news_k"] if news_k is None else news_k
+
     anchor = asset_anchor_eid(driver, asset_id)
     if anchor is None:
         raise ValueError(f"Asset 노드 없음: {asset_id}")

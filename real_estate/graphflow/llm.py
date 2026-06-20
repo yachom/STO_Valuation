@@ -32,59 +32,26 @@ class ProviderSpec:
     extra: dict = field(default_factory=dict)
 
 
-# 단일 source of truth. 환경변수로 override 가능.
-_TIER_SPECS_DEFAULT: dict[str, ProviderSpec] = {
-    "opus":   ProviderSpec("anthropic", "claude-opus-4-8",           8000),
-    "sonnet": ProviderSpec("anthropic", "claude-sonnet-4-6",         8000),
-    "haiku":  ProviderSpec("anthropic", "claude-haiku-4-5-20251001", 4096),
-    # 저비용 OpenAI 등급 — 뉴스 Fact 추출(harvester)·사전필터 등 대량 작업용.
-    # 사용: AGENT_TIER_HARVESTER=gpt_mini (OPENAI_API_KEY 필요).
-    "gpt_mini": ProviderSpec("openai", "gpt-4o-mini",                4096),
-}
-
-
-# graphflow 에이전트 → tier (설계 §6 roster). 새 에이전트는 여기 등록.
-AGENT_TO_TIER_DEFAULT: dict[str, str] = {
-    "navigator":         "haiku",    # frontier 선정 + 검색어 생성 — 후보는 코드가
-                                     # 점수화·고유명사/중복 검증하므로 LLM은 선택+구문만.
-                                     # 품질 저하 관측 시 복귀: AGENT_TIER_NAVIGATOR=sonnet
-    "harvester":         "gpt_mini",  # 뉴스 Fact 추출 — gpt-4o-mini가 하이쿠 대비
-                                     # 토큰당 ~6-8배 저렴(입력단가), 추출 품질
-                                     # 동등(수치·날짜·confidence). 복귀: AGENT_TIER_HARVESTER=haiku
-    "prefilter":         "gpt_mini",  # 제목+요약 관련성 사전 필터 — 뉴스 작업, 동일 절감
-    "curator":           "haiku",    # dedup/병합 승격 판정
-    "walk_judge":        "haiku",    # llm_walk 홉당 배치 판정 (keep/expand/drop)
-    "writer":            "sonnet",   # 섹션 집필 (Claim+CITES)
-    "synthesizer":       "opus",     # Overview + 정성 종합
-    "auditor":           "sonnet",   # LLM층 모순/과대해석 검토
-    "reviser":           "sonnet",   # 발행자 피드백 반영
-    "qa":                "sonnet",   # 질의응답
-    "qa_recognize":      "haiku",    # HippoRAG2 recognition memory — 검색 evidence 관련성 필터
-}
+# 모델 티어 spec(tier→provider/model) + 에이전트→tier 매핑은 중앙 설정에서 온다
+# (real_estate/graphflow/config.json). env override(TIER_*_*, AGENT_TIER_*)는
+# config가 적용한다 → 여기선 읽기만. [[feedback-base-llm-pattern]]
 
 
 def _load_tier_specs() -> dict[str, ProviderSpec]:
-    out: dict[str, ProviderSpec] = {}
-    for tier, default in _TIER_SPECS_DEFAULT.items():
-        p = f"TIER_{tier.upper()}_"
-        mt = os.environ.get(p + "MAX_TOKENS")
-        out[tier] = ProviderSpec(
-            provider=os.environ.get(p + "PROVIDER", default.provider),
-            model=os.environ.get(p + "MODEL", default.model),
-            max_tokens=int(mt) if mt else default.max_tokens,
-            base_url=os.environ.get(p + "BASE_URL") or default.base_url,
-            extra=dict(default.extra),
-        )
-    return out
+    from real_estate.graphflow.config import get_config
+    tiers = get_config()["models"]["tiers"]      # env override 적용된 상태
+    return {
+        tier: ProviderSpec(
+            provider=s["provider"], model=s["model"],
+            max_tokens=int(s.get("max_tokens", 4096)),
+            base_url=s.get("base_url"), extra=dict(s.get("extra", {})))
+        for tier, s in tiers.items()
+    }
 
 
 def _load_agent_tier_map() -> dict[str, str]:
-    out = dict(AGENT_TO_TIER_DEFAULT)
-    for agent in AGENT_TO_TIER_DEFAULT:
-        env_key = f"AGENT_TIER_{agent.upper()}"
-        if env_key in os.environ:
-            out[agent] = os.environ[env_key].lower()
-    return out
+    from real_estate.graphflow.config import get_config
+    return dict(get_config()["models"]["agents"])
 
 
 def _build_chat_model(spec: ProviderSpec, callbacks: list,
