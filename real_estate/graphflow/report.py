@@ -270,20 +270,23 @@ def write_axis(
     axis: str,
     *,
     evidence_k: int | None = None,
+    outline: list[str] | None = None,
 ) -> tuple[SectionDraft, list[Evidence], list[str]]:
     """축 1개: compose → write → 기계 검증 → 위반 시 재작성 1회.
 
+    outline(담론 Outliner 논점, PR-4)이 있으면 그 순서로 구성. None이면 기존 고정 구조.
     반환: (최종 draft, evidence, 잔여 위반 — 비면 통과).
     """
     with node_scope(f"write_{axis}"):
         evidence = compose(driver, asset_id, axis, k=evidence_k)
         writer = Writer()
-        draft = writer.write(axis, asset_card, evidence)
+        draft = writer.write(axis, asset_card, evidence, outline=outline)
         violations = audit_section(draft, evidence)
         rewrites = 0
         while violations and rewrites < _MAX_REWRITES:
             emit("audit_mechanical_fail", axis=axis, violations=violations)
-            draft = writer.write(axis, asset_card, evidence, violations=violations)
+            draft = writer.write(axis, asset_card, evidence,
+                                 violations=violations, outline=outline)
             violations = audit_section(draft, evidence)
             rewrites += 1
         return draft, evidence, violations

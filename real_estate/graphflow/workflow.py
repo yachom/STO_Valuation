@@ -100,22 +100,93 @@ def _office_purpose(building_type: dict | None) -> str | None:
             "생성하라(예: '{건물명} 입주 기업', '{건물명} 임차').")
 
 
+def _curation_mode() -> str:
+    from real_estate.graphflow.config import get_config
+    return get_config().get("curation", {}).get("mode", "static")
+
+
 def expand_node(state: GraphFlowState) -> dict:
-    """EXPAND (rounds=0이면 생략). 내부에서 라운드 루프 + novelty 종료.
+    """고정 EXPAND (static/moderated 경로). rounds=0이면 생략.
 
     건물유형이 오피스/혼합이면 navigator에 입주사 식별 purpose를 주입한다(②).
+    'moderated'(PR-2)면 EXPAND 뒤 커버리지 GAP→Moderator→미니EXPAND 재진입을 얹는다.
+    'discourse'(PR-3/6)는 이 노드를 타지 않고 별도 STORM 담론 서브그래프로 라우팅된다
+    (route_after_tenant). 'static'은 기존 결정 경로 100% 그대로.
     """
     rounds = state.get("expand_rounds", 0)
     if rounds <= 0:
         return {"expand_summary": {"rounds_run": 0, "skipped": True}}
+    collected_by = state.get("collected_by", make_run_id("exp"))
     from real_estate.graphflow.expand import run_expand
     summary = run_expand(
         _get_driver(), asset_id=state["asset_id"],
-        collected_by=state.get("collected_by", make_run_id("exp")),
+        collected_by=collected_by,
         rounds=rounds,
         total_query_budget=state.get("expand_budget", 40),
         purpose=_office_purpose(state.get("building_type")))
+
+    if _curation_mode() == "moderated":
+        from real_estate.graphflow.moderator import run_moderated_expand
+        summary["moderator"] = run_moderated_expand(
+            _get_driver(), asset_id=state["asset_id"], collected_by=collected_by)
     return {"expand_summary": summary}
+
+
+# ───────────────────────────────────────────────────────────
+# STORM 담론 노드 (discourse mode, PR-6) — 토폴로지가 곧 논문 다이어그램
+#   perspectives → discourse_round ⟲ moderator → outline
+# 각 노드는 discourse.py의 스테이지를 호출(단일 진실). 사이클은 조건부 엣지.
+# ───────────────────────────────────────────────────────────
+def perspectives_node(state: GraphFlowState) -> dict:
+    """STORM 1단계 — 관점 발견 → 초기 담론 스레드."""
+    from real_estate.graphflow.discourse import perspectives_stage
+    threads = perspectives_stage(
+        _get_driver(), state["asset_id"], state.get("building_type"))
+    return {"discourse_threads": threads, "discourse_round": 0, "moderator_done": False}
+
+
+def discourse_round_node(state: GraphFlowState) -> dict:
+    """STORM Q&A — 한 라운드: 각 관점이 한 턴씩(공유 담론). 사이클로 심화."""
+    from real_estate.graphflow.discourse import discourse_round_stage
+    collected_by = state.get("collected_by", make_run_id("exp"))
+    threads = discourse_round_stage(
+        _get_driver(), state["asset_id"], state["discourse_threads"], collected_by)
+    return {"discourse_threads": threads,
+            "discourse_round": state.get("discourse_round", 0) + 1}
+
+
+def moderator_node(state: GraphFlowState) -> dict:
+    """Co-STORM 모더레이터 — 커버리지 공백 메우고 계속/종료 판정(사이클 게이트)."""
+    from real_estate.graphflow.discourse import discourse_max_rounds, moderator_round_stage
+    collected_by = state.get("collected_by", make_run_id("exp"))
+    res = moderator_round_stage(
+        _get_driver(), state["asset_id"], state.get("discourse_round", 0),
+        discourse_max_rounds(), collected_by)
+    return {"moderator_done": res["done"]}
+
+
+def outline_node(state: GraphFlowState) -> dict:
+    """STORM 아웃라인 — 담론 → 축별 논점. write 노드가 이 순서로 집필."""
+    from real_estate.graphflow.discourse import outline_stage
+    outline = outline_stage(_get_driver(), state["asset_id"], state["discourse_threads"])
+    return {"outline": outline,
+            "expand_summary": {"mode": "discourse",
+                               "rounds_run": state.get("discourse_round", 0)}}
+
+
+def route_after_tenant(state: GraphFlowState) -> str:
+    """discourse mode + 확장 켜짐 → STORM 담론 서브그래프, 아니면 고정 expand 노드."""
+    if _curation_mode() == "discourse" and state.get("expand_rounds", 0) > 0:
+        return "perspectives"
+    return "expand"
+
+
+def route_after_moderator(state: GraphFlowState) -> str:
+    """담론 사이클 종료 판정 — moderator done 또는 max_rounds 도달 → outline, 아니면 계속."""
+    from real_estate.graphflow.discourse import discourse_max_rounds
+    if state.get("moderator_done") or state.get("discourse_round", 0) >= discourse_max_rounds():
+        return "outline"
+    return "discourse_round"
 
 
 def _make_write_node(axis: str):
@@ -123,7 +194,8 @@ def _make_write_node(axis: str):
         from real_estate.graphflow.report import write_axis
         draft, evidence, violations = write_axis(
             _get_driver(), state["asset_id"], state["asset_card"], axis,
-            evidence_k=state.get("evidence_k"))    # None → config.retrieval
+            evidence_k=state.get("evidence_k"),    # None → config.retrieval
+            outline=(state.get("outline") or {}).get(axis))   # discourse면 논점, 아니면 None
         return {"sections": {axis: draft},
                 "evidence_by_axis": {axis: evidence},
                 "mech_audit": {axis: violations}}
@@ -152,10 +224,26 @@ def finalize_node(state: GraphFlowState) -> dict:
 # 그래프 조립
 # ───────────────────────────────────────────────────────────
 def build_report_graph():
+    """LangGraph 조립 — 토폴로지가 곧 흐름의 문서.
+
+        START → seed → tenant ─route─┬─ (static/moderated) → expand ─────────────┐
+                                     └─ (discourse) perspectives                 │
+                                            → discourse_round ⟲ moderator         │
+                                            → outline ──────────────────────────┤
+                                                                                ▼
+                          [write_tenant ∥ write_esg ∥ write_commercial] → synthesize → finalize
+
+    discourse 경로(STORM/Co-STORM)가 노드로 가시화된다. static/moderated는 expand 노드
+    그대로 — route_after_tenant가 mode로 분기, 양 경로는 write로 수렴(diamond).
+    """
     g = StateGraph(GraphFlowState)
     g.add_node("seed", seed_node)
     g.add_node("tenant", tenant_node)
     g.add_node("expand", expand_node)
+    g.add_node("perspectives", perspectives_node)        # STORM 담론 (discourse mode)
+    g.add_node("discourse_round", discourse_round_node)
+    g.add_node("moderator", moderator_node)
+    g.add_node("outline", outline_node)
     for axis in REPORT_AXES:
         g.add_node(f"write_{axis}", _make_write_node(axis))
     g.add_node("synthesize", synthesize_node)
@@ -163,9 +251,17 @@ def build_report_graph():
 
     g.add_edge(START, "seed")
     g.add_edge("seed", "tenant")
-    g.add_edge("tenant", "expand")
-    for axis in REPORT_AXES:                 # fan-out: 3축 병렬
+    # mode 분기: static/moderated → expand, discourse → STORM 담론 서브그래프
+    g.add_conditional_edges("tenant", route_after_tenant,
+                            {"expand": "expand", "perspectives": "perspectives"})
+    # 담론 사이클: perspectives → [discourse_round → moderator]⟲ → outline
+    g.add_edge("perspectives", "discourse_round")
+    g.add_edge("discourse_round", "moderator")
+    g.add_conditional_edges("moderator", route_after_moderator,
+                            {"discourse_round": "discourse_round", "outline": "outline"})
+    for axis in REPORT_AXES:                 # fan-out: 3축 병렬 (양 경로 수렴)
         g.add_edge("expand", f"write_{axis}")
+        g.add_edge("outline", f"write_{axis}")
         g.add_edge(f"write_{axis}", "synthesize")   # fan-in (전 축 완료 대기)
     g.add_edge("synthesize", "finalize")
     g.add_edge("finalize", END)
