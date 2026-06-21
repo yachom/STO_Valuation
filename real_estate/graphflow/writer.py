@@ -48,7 +48,7 @@ class ClaimDraft(BaseModel):
 
 
 class BlockDraft(BaseModel):
-    markdown: str = Field(description="문단 markdown (3~6문장)")
+    markdown: str = Field(description="문단 markdown (4~8문장 — 논점을 충분히 전개, 깊이 우선)")
     claim_indexes: list[int] = Field(
         default_factory=list,
         description="이 문단이 담는 claim들의 인덱스 (claims 배열 0-base)")
@@ -56,7 +56,8 @@ class BlockDraft(BaseModel):
 
 class SectionDraft(BaseModel):
     title: str = Field(description="섹션 제목")
-    blocks: list[BlockDraft] = Field(description="문단 3~5개")
+    blocks: list[BlockDraft] = Field(
+        description="문단 4~7개 (다룰 논점이 많으면 더 — 깊이·완결성 우선)")
     claims: list[ClaimDraft] = Field(description="이 섹션의 모든 주장 (문장 단위)")
 
 
