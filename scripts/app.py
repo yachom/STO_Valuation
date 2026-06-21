@@ -1,13 +1,18 @@
-"""STO 상가 부동산 평가 — Streamlit UI (보고서 생성 → 담당자 수정 → 의뢰자 QA).
+"""STO 상가 부동산 평가 — Streamlit UI (보고서 생성 → 담론 → 담당자 수정 → 의뢰자 QA).
 
-설계 [[tech_graph_stack]]의 'Streamlit + span-level HITL'. 세 흐름을 한 앱으로:
+설계 [[tech_graph_stack]]의 'Streamlit + span-level HITL'. 네 흐름을 한 앱으로:
   1. 📄 보고서   — 주소 → 전체 파이프라인 → 등급·섹션·근거(출처 링크)
-  2. ✍️ 발행 담당자 — claim 선택 → 피드백(edit/challenge/enrich) → Assessment(증거 대조)
+  2. 🧠 담론(STORM) — discourse 모드의 관점 발견·페르소나 라운드테이블 Q&A·아웃라인 표시
+  3. ✍️ 발행 담당자 — claim 선택 → 피드백(edit/challenge/enrich) → Assessment(증거 대조)
                      → 수용/철회/재반박 (합의 전 보고서 불변, 수용 시 외과적 수정)
-  3. 💬 의뢰자 QA  — 질문 → 하이브리드 검색 답변 + 인용(출처 링크)
+  4. 💬 의뢰자 QA  — 질문 → 하이브리드 검색 답변 + 인용(출처 링크)
+
+큐레이션 모드(사이드바): static(기존·결정적) / moderated(+커버리지 GAP 재진입) /
+discourse(STORM 담론 — 관점발견→라운드테이블→스니펫 모더레이터→아웃라인).
 
 실행:  streamlit run scripts/app.py
-필요 env: KAKAO/JUSO/ANTHROPIC/NEO4J (+확장 시 NAVER, +Tavily 선택)
+필요 env: KAKAO/JUSO/ANTHROPIC/NEO4J. moderated/discourse는 +OPENAI(gpt_mini)·NAVER 검색
+(+TAVILY 선택 — 일반 웹 모달리티). 라운드 0이면 수집 없이 기존 그래프로만 집필.
 """
 
 from __future__ import annotations
@@ -194,6 +199,44 @@ def _render_qa(driver, asset_id):
                 st.markdown(f"{vb} **`{c.ref}`** ({c.source}{new}){link}\n\n> {c.text}")
 
 
+def _render_discourse(disc: dict):
+    """discourse 모드의 STORM 담론 — 관점(페르소나)·라운드테이블 Q&A·아웃라인."""
+    mode = disc.get("mode", "static")
+    st.caption(f"이 보고서의 큐레이션 모드: **{mode}**")
+    threads = disc.get("threads") or []
+    outline = disc.get("outline") or {}
+    if mode != "discourse" or not threads:
+        st.info("STORM 담론은 **discourse 모드**에서 생성됩니다. 사이드바에서 "
+                "'discourse'를 선택하고 라운드 ≥1로 재생성하면 — 관점 발견, 전문가 "
+                "페르소나 라운드테이블 Q&A, 담론→아웃라인이 여기 표시됩니다.")
+        return
+
+    base = {"tenant", "esg", "commercial"}
+    discovered = [t for t in threads if t.get("label") not in base]
+    st.markdown(f"**관점 {len(threads)}개** — 3축 척추 ⚓ + 발견 🔸{len(discovered)}개 "
+                "(각 전문가 페르소나가 라운드마다 질문, 다른 전문가 발견을 참조)")
+    for t in threads:
+        is_disc = t.get("label") not in base
+        tag = "🔸발견" if is_disc else "⚓척추"
+        qa = t.get("qa", [])
+        with st.expander(f"{tag} · [{t.get('axis')}] {t.get('persona') or t.get('label')} "
+                         f"— {len(qa)}턴"):
+            if t.get("focus"):
+                st.caption(t["focus"])
+            for i, x in enumerate(qa, 1):
+                st.markdown(f"**Q{i}.** {x.get('q','')}")
+                st.markdown(f"> {x.get('a','')}")
+            if not qa:
+                st.caption("(수집 없음 — 검색으로 답할 근거를 못 찾음)")
+
+    if outline:
+        st.markdown("##### 📋 담론 → 아웃라인 (writer 집필 입력)")
+        for ax, pts in outline.items():
+            st.markdown(f"**[{ax}]**")
+            for p in pts:
+                st.markdown(f"- {p}")
+
+
 # ── 메인 ─────────────────────────────────────────────────────
 st.title("🏢 STO 상가 부동산 정성 평가")
 ss = st.session_state
@@ -201,26 +244,44 @@ ss = st.session_state
 with st.sidebar:
     st.header("보고서 생성")
     address = st.text_input("평가 대상 주소", "서울 강서구 마곡동 774-1")
-    rounds = st.slider("EXPAND 라운드 (뉴스 수집)", 0, 3, 1,
-                       help="0=기존 그래프만(빠름), 1~3=뉴스 수집(수 분 소요)")
+    rounds = st.slider("EXPAND 라운드 (수집)", 0, 3, 1,
+                       help="0=기존 그래프만(빠름), 1~3=뉴스·웹 수집(수 분 소요)")
+    _MODES = {
+        "static": "static — 기존·빠름·결정적",
+        "moderated": "moderated — +커버리지 GAP 재진입",
+        "discourse": "discourse — STORM 담론(관점·라운드테이블·스니펫 모더레이터)",
+    }
+    mode = st.selectbox("큐레이션 모드", list(_MODES), format_func=_MODES.get,
+                        help="discourse=논문형 다중 전문가 담론. 라운드 ≥1 필요.")
+    if mode != "static":
+        st.caption("⚠️ moderated/discourse는 뉴스·웹 수집으로 **수 분 소요 + LLM 비용↑** "
+                   "(OPENAI·NAVER 키 필요, +TAVILY 선택). 라운드 0이면 적용 안 됨.")
+
     if st.button("🚀 보고서 생성", type="primary"):
         try:
             d = _driver()
             loc, aid = _resolve(address)
             out_dir = str(REPORTS / f"ui_{aid.replace(':', '_').replace(',', '_')}")
-            with st.status("보고서 생성 중…", expanded=True) as status:
+            from real_estate.graphflow.config import set_active_override
+            set_active_override({"curation": {"mode": mode}})   # 모드 적용(라우팅)
+            steps = ("시드 → 테넌트 → 관점발견 → 라운드테이블 → 모더레이터 → 아웃라인 → 집필 …"
+                     if mode == "discourse"
+                     else "시드 → 테넌트 → 확장 → 3축 집필 → 종합 …")
+            with st.status(f"보고서 생성 중… (모드: {mode})", expanded=True) as status:
                 status.write(f"주소 해소: {aid}")
                 from real_estate.graphflow.workflow import run_report_pipeline
-                status.write("시드 → 테넌트 수집 → 확장 → 3축 집필 → 종합 …")
+                status.write(steps)
                 with _trace("rpt", session_id=aid, trace_name=f"report:{address}",
-                            tags=["report", "ui"],
-                            metadata={"rounds": rounds, "asset_id": aid}):
+                            tags=["report", "ui", mode],
+                            metadata={"rounds": rounds, "mode": mode, "asset_id": aid}):
                     final = run_report_pipeline(
                         d, asset_id=aid, out_dir=out_dir, db_path=DB_PATH,
                         location=loc, expand_rounds=rounds)
                 ss["report"] = final["report"]
                 ss["asset_id"] = aid
                 ss["out_dir"] = out_dir
+                ss["discourse"] = {"mode": mode, "outline": final.get("outline"),
+                                   "threads": final.get("discourse_threads")}
                 ss.pop("rv_assess", None)
                 ss.pop("qa_res", None)
                 status.update(label="✅ 보고서 생성 완료", state="complete")
@@ -235,10 +296,13 @@ if not ss.get("report"):
     st.info("← 사이드바에서 주소를 입력하고 **보고서 생성**을 누르세요.")
 else:
     d = _driver()
-    t1, t2, t3 = st.tabs(["📄 보고서", "✍️ 발행 담당자 (수정)", "💬 의뢰자 QA"])
+    t1, t2, t3, t4 = st.tabs(
+        ["📄 보고서", "🧠 담론(STORM)", "✍️ 발행 담당자 (수정)", "💬 의뢰자 QA"])
     with t1:
         _render_report(ss["report"])
     with t2:
-        _render_revise(d, ss["report"], ss["asset_id"], ss["out_dir"])
+        _render_discourse(ss.get("discourse") or {})
     with t3:
+        _render_revise(d, ss["report"], ss["asset_id"], ss["out_dir"])
+    with t4:
         _render_qa(d, ss["asset_id"])
