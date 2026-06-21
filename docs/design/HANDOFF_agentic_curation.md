@@ -9,11 +9,12 @@
 
 ```bash
 git fetch origin
-git checkout yachom/feature/agentic-report   # 설계 + writer ① 가 여기 있음
+git checkout yachom/feature/agentic-report   # 모든 것이 여기 모임: 설계 + writer ① + langfuse 헬퍼 + main
 git pull
 # 이 위에서 PR-2 구현 브랜치를 딴다:
 git checkout -b yachom/feature/storm-moderator
 ```
+`agentic-report`는 main을 병합해 **refactor·langfuse·writer ①·설계·인계를 전부 포함** — 이 브랜치 하나만 보면 됨.
 설계 정독: `docs/design/agentic_curation.md` + `docs/design/graph_native_flow.md`의 결정 로그 **D17~D22**.
 
 ---
@@ -22,17 +23,17 @@ git checkout -b yachom/feature/storm-moderator
 
 | 브랜치 | 내용 | origin | 상태 |
 |---|---|---|---|
-| `main` | graphflow 전체 + refactor(死코드·헬퍼·reviser 분리·심볼 승격) | ✅ 푸시됨 (7be94f1) | 동기화 |
-| `yachom/fix/langfuse-trace-name` | trace.name 회귀 수정(2커밋: 830fba6 run_report metadata, 036192a Streamlit 4동작 래핑) | ✅ 푸시함 | **미병합** — 병합 대기 |
-| `yachom/feature/agentic-report` | writer ① 깊이 캡 완화 + STORM 설계 문서(3커밋) | ✅ 푸시함 | **작업 브랜치** |
+| `main` | graphflow 전체 + refactor + **langfuse trace.name 수정(병합됨)** | ✅ 푸시됨 (036192a) | 동기화 |
+| `yachom/fix/langfuse-trace-name` | trace.name 회귀 수정 (2커밋) | ✅ | **main 병합 완료** — 보존(삭제 가능) |
+| `yachom/feature/agentic-report` | writer ① + STORM 설계 + 인계 + **main 병합(langfuse 포함)** | ✅ 푸시함 | **작업 브랜치 — 전부 포함** |
 
-- **main은 origin과 일치.** graphflow 전체가 main에 있음(과거 `central-config` 브랜치에서 fast-forward 병합됨).
-- 위 2개 작업 브랜치는 이번에 origin에 push 완료 → **어느 환경에서도 fetch 가능.**
+- **main = origin 일치 (036192a).** refactor + langfuse 수정 포함. graphflow 전체가 main에 있음.
+- **`agentic-report`는 main을 병합**해 langfuse 헬퍼·writer ①·설계·인계를 모두 포함 → 다음 세션은 이 브랜치 하나로 STORM 시작.
 - **커밋 제외 영구 규칙**: `.env.example`, `STO_valuation_orgin`, `CLAUDE.md`(untracked). 작업트리에 항상 M/?? 로 남지만 **절대 커밋하지 말 것.**
 
-### 병합 결정 (대기 — 사용자 확인 필요)
-- 권장: `langfuse-trace-name`은 독립·검증완료라 **main에 병합 가능**. (CLAUDE.md 워크플로우는 통합 브랜치 `yachom/integration/main-sync` 경유지만, 이전에 사용자가 refactor는 main 직접 병합을 선택한 전례 있음 — 다음 세션에서 사용자에게 재확인.)
-- `agentic-report`의 writer ①·설계 문서도 안전. STORM **구현**은 PR 단위로 이후 병합.
+### 병합 상태
+- ✅ `langfuse-trace-name` → **main 병합·푸시 완료** (036192a). langfuse 헬퍼를 main·agentic-report에서 바로 사용 가능.
+- `agentic-report`는 main 병합 완료. STORM 구현은 이 브랜치에서 PR 브랜치를 따서 진행, 완료분은 PR 단위로 main 병합.
 
 ## 2. 코드 작동 상태 (점검 결과)
 
@@ -88,7 +89,7 @@ python -m scripts.try_report "서울 강서구 마곡동 774-1"   # trace_name=r
 - **그래프/walk**: `traversal.py`(walk 엔진), `policies.py`(StaticPolicy/SemanticPolicy, WalkPolicy Protocol). 보고서=결정적 정책. `llm_walk`는 QA/revise 전용(비결정적).
 - **수집**: `expand.run_expand`, `navigator.py`(frontier+검색어), `harvester.py`(추출+link_mention 오염방지), `curator.py`(novelty 중복제거).
 - **아키텍처 현실**: `bind_tools`/LLM 함수호출 **전무**. 도구(BaseTool: building_*, naver, web)는 전부 Python 명령형 호출. 자율 데이터 획득=검색뿐(D22).
-- **트레이싱**: `infra/agent/tracing.py`. `run_tracer(run_id, db_path, trace_name=, session_id=, tags=)`로 감싸면 Langfuse trace.name + 사이드카. ⚠️ **새 LangGraph `app.invoke`를 추가하면** `langchain_trace_metadata()`를 invoke config의 metadata로 넘겨야 trace.name이 붙음 — 이 헬퍼는 **`langfuse-trace-name` 브랜치에만** 있음(아직 main/agentic-report엔 없음). STORM이 새 invoke를 만들면 그 브랜치를 먼저 병합하거나 헬퍼를 가져올 것.
+- **트레이싱**: `infra/agent/tracing.py`. `run_tracer(run_id, db_path, trace_name=, session_id=, tags=)`로 감싸면 Langfuse trace.name + 사이드카. ⚠️ **새 LangGraph `app.invoke`를 추가하면** `langchain_trace_metadata()`(infra/agent/tracing.py)를 invoke config의 `metadata`로 넘겨야 trace.name이 붙음. 이 헬퍼는 **이제 main·agentic-report에 있음**(langfuse 병합 완료) → 바로 사용. 참고 패턴: `workflow.run_report_pipeline`(metadata 주입 + asset_id 폴백).
 
 ## 6. 컨벤션 / 함정
 
