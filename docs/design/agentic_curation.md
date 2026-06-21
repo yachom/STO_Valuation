@@ -66,9 +66,17 @@ Writer(아웃라인 노드별 집필 — grounded, ① 깊이 캡 완화) → SY
 ```
 
 ### P1. Perspectivist (관점 발견) — STORM 관점 단계
-- 입력: asset_card + building_type(이미 보유) + 스코프 그래프 요약.
-- 출력: 평가 관점 N개(각 관점 = label + 탐색 의도). 오피스면 "입주사 신용도/공실 추세/교통 호재", 근린상가면 "배후 아파트 입주/업종 회전/유동인구".
-- 3축은 관점을 묶는 상위 카테고리로 유지(보고서 목차 호환) — 관점은 그 아래 동적 슬롯.
+- **3축 = 고정 척추 (버리지 않음).** tenant/esg/commercial은 구조화 데이터 소스에 1:1 매핑(tenant←tenants/turnover/reb_lease, esg←building_register, commercial←commercial_sales/area)되므로 결정적으로 유지 — 보고서 목차의 뼈대.
+- **발견 관점 = 추가 보충 (additive, 상한 N).** Perspectivist는 building_type 기반으로 *추가* 관점을 발견(오피스면 "입주사 신용도/교통 호재", 근린상가면 "배후 아파트 입주"). 부모 축에 붙여 심화하거나 독립 '특이사항' 섹션으로. **3축을 대체하지 않고 얹는다.**
+- **발견 관점은 검색으로만 채운다 (D22).** 구조화 소스는 3축에 고정 배선돼 있고 LLM-callable 도구가 아니므로, 추가 관점의 증거는 Questioner→Researcher→harvester(검색)가 공급. 이것이 도구 현실에 맞는 유일한 자율 획득 경로.
+
+> **도구 현실 (D22) — 왜 완전 자율이 아닌가.** 자율 구동 가능한 데이터 획득은
+> 검색(naver/web)뿐이다. 구조화 소스(building_register·tenants·turnover·
+> commercial_sales·reb_lease)는 seed/tenant에 고정 배선된 명령형 호출이고
+> bind_tools(LLM 함수호출)는 시스템에 없다. 자산당 구조화 데이터는 유한·고정이라
+> '도구 선택' 여지가 작다 → **3축=구조화 척추(결정적) + 검색 기반 발견 관점
+> (에이전틱·보충)**. 완전 tool-agent(repository→BaseTool+bind_tools)는 ROI가 낮아
+> 보류. 에이전틱 가치는 도구 라우팅이 아니라 *무엇을 검색할지·언제 충분한지*에 있다.
 
 ### P2. Questioner ↔ Researcher (시뮬레이션 Q&A) — STORM 대화 단계
 - **Questioner**(관점 페르소나): 관점에 비춰 답이 필요한 질문 생성. navigator의 frontier-walk를 *질문 주도*로 대체.
