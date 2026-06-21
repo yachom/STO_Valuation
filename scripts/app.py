@@ -48,6 +48,16 @@ def _resolve(address: str):
     return loc, asset_id_for(loc)
 
 
+def _trace(prefix: str, **attrs):
+    """UI 동작 1건을 run_tracer로 감싼다 — Langfuse trace.name·세션·사이드카 부착.
+
+    try_*.py 스크립트와 동일 패턴. Streamlit/직접호출 경로가 이름 없는 'LangGraph'
+    /null trace로 떨어지지 않도록, 보고서·QA·수정 각 동작을 이걸로 감싼다.
+    """
+    from infra.agent.tracing import make_run_id, run_tracer
+    return run_tracer(make_run_id(prefix), DB_PATH, **attrs)
+
+
 # ── 렌더 헬퍼 ────────────────────────────────────────────────
 def _validity_badge(status: str) -> str:
     return {"VALID": "🟢", "DECAYED": "🟡", "EXPIRED": "🔴"}.get(status, "⚪")
@@ -112,8 +122,10 @@ def _render_revise(driver, report, asset_id, out_dir):
     if st.button("피드백 제출 → 평가 받기", type="primary", disabled=not comment):
         with st.spinner("에이전트가 그래프 증거와 대조 중…"):
             atts = [{"text": attach, "provider": "발행자 제공"}] if attach.strip() else None
-            res = submit_feedback(driver, report, asset_id, target_id=target_id,
-                                  kind=kind, comment=comment, attachments=atts)
+            with _trace("rev", session_id=asset_id, trace_name=f"revise:{kind}",
+                        tags=["revise", "ui"]):
+                res = submit_feedback(driver, report, asset_id, target_id=target_id,
+                                      kind=kind, comment=comment, attachments=atts)
         st.session_state["rv_assess"] = res
 
     res = st.session_state.get("rv_assess")
@@ -131,11 +143,14 @@ def _render_revise(driver, report, asset_id, out_dir):
         if c3.button("↩ 재반박"): decision = "rebut"
         if decision:
             with st.spinner(f"{decision} 처리 중…"):
-                out = resolve_feedback(
-                    driver, report, asset_id, feedback_id=res["feedback_id"],
-                    target_claim_id=res["_target_claim_id"], kind=kind,
-                    comment=comment, decision=decision, out_dir=out_dir,
-                    rebut_comment=comment)
+                with _trace("rev", session_id=asset_id,
+                            trace_name=f"revise:{kind}:{decision}",
+                            tags=["revise", "ui"]):
+                    out = resolve_feedback(
+                        driver, report, asset_id, feedback_id=res["feedback_id"],
+                        target_claim_id=res["_target_claim_id"], kind=kind,
+                        comment=comment, decision=decision, out_dir=out_dir,
+                        rebut_comment=comment)
             if out.get("report_changed"):
                 st.session_state["report"] = out["report"]
                 st.success(f"수정 적용 → 새 버전 {out['version']} (타깃 외 불변)")
@@ -158,7 +173,9 @@ def _render_qa(driver, asset_id):
     expand = st.checkbox("근거 부족 시 라이브 확장(웹 검색)", value=False)
     if st.button("질문하기", type="primary", disabled=not q):
         with st.spinner("그래프 검색·답변 생성 중…"):
-            res = QAResponder().answer(driver, asset_id, q, allow_expand=expand)
+            with _trace("qa", session_id=asset_id, trace_name=f"qa:{q[:30]}",
+                        tags=["qa", "ui"]):
+                res = QAResponder().answer(driver, asset_id, q, allow_expand=expand)
         st.session_state["qa_res"] = res
 
     res = st.session_state.get("qa_res")
@@ -195,9 +212,12 @@ with st.sidebar:
                 status.write(f"주소 해소: {aid}")
                 from real_estate.graphflow.workflow import run_report_pipeline
                 status.write("시드 → 테넌트 수집 → 확장 → 3축 집필 → 종합 …")
-                final = run_report_pipeline(
-                    d, asset_id=aid, out_dir=out_dir, db_path=DB_PATH,
-                    location=loc, expand_rounds=rounds)
+                with _trace("rpt", session_id=aid, trace_name=f"report:{address}",
+                            tags=["report", "ui"],
+                            metadata={"rounds": rounds, "asset_id": aid}):
+                    final = run_report_pipeline(
+                        d, asset_id=aid, out_dir=out_dir, db_path=DB_PATH,
+                        location=loc, expand_rounds=rounds)
                 ss["report"] = final["report"]
                 ss["asset_id"] = aid
                 ss["out_dir"] = out_dir
