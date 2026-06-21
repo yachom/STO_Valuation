@@ -19,8 +19,23 @@
       "auditor":      "sonnet",
       "reviser":      "sonnet",
       "qa":           "sonnet",
-      "qa_recognize": "haiku"
+      "qa_recognize": "haiku",
+      "moderator":    "haiku",
+      "perspectivist": "sonnet",
+      "questioner":   "haiku",
+      "researcher":   "gpt_mini",
+      "outliner":     "sonnet"
     }
+  },
+
+  "curation": {
+    "mode": "static",
+    "moderator_max_rounds": 2,
+    "moderator_budget_per_round": 6,
+    "moderator_max_questions": 3,
+    "perspectives_max": 2,
+    "turns_per_perspective": 2,
+    "research_budget": 3
   },
 
   "retrieval": {

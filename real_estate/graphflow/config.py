@@ -39,7 +39,9 @@ _DEFAULTS: dict[str, Any] = {
             "navigator": "haiku", "harvester": "gpt_mini", "prefilter": "gpt_mini",
             "curator": "haiku", "walk_judge": "haiku", "writer": "sonnet",
             "synthesizer": "opus", "auditor": "sonnet", "reviser": "sonnet",
-            "qa": "sonnet", "qa_recognize": "haiku",
+            "qa": "sonnet", "qa_recognize": "haiku", "moderator": "haiku",
+            "perspectivist": "sonnet", "questioner": "haiku", "researcher": "gpt_mini",
+            "outliner": "sonnet",
         },
     },
     "retrieval": {
@@ -49,6 +51,12 @@ _DEFAULTS: dict[str, Any] = {
     "expand": {
         "rounds": 2, "frontier_max": 12, "queries_per_node": 3,
         "total_query_budget": 100, "novelty_threshold": 0.1,
+    },
+    # 담론 큐레이션 (STORM/Co-STORM, D17~D22). static=기존 결정 경로 불변.
+    "curation": {
+        "mode": "static", "moderator_max_rounds": 2,
+        "moderator_budget_per_round": 6, "moderator_max_questions": 3,
+        "perspectives_max": 2, "turns_per_perspective": 2, "research_budget": 3,
     },
 }
 
