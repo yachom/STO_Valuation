@@ -6,8 +6,10 @@
     - 포함 관계 등 이름 유사뿐                         → Entity 신설 + SAME_AS_CANDIDATE
     - 불일치 / code_clues(시군구) 모순                 → Entity 단독 (MENTIONS→Entity)
 
-confidence = source_tier × extraction_confidence (§9.3). PR-C는 뉴스만이라
-source_tier=0.8 고정 (공공 1.0/블로그 0.4는 채널 추가 시).
+confidence = source_tier × extraction_confidence (§9.3). 채널(vertical)마다
+출처 신뢰 prior(source_tier)가 다르다 — news=高, webkr=中高, blog=中,
+cafe/kin=低. 저신뢰 소스는 자동으로 낮은 confidence를 받아 기존 confidence
+게이트·corroboration이 down-weight한다. 티어 매핑은 _SOURCE_TIER 한 곳에 둔다.
 """
 
 from __future__ import annotations
@@ -27,13 +29,40 @@ from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import KEY_PROP
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, write_edges, seed
-from infra.tool.naver import NaverNewsScrapeTool, NaverNewsSearchTool
+from infra.tool.naver import (
+    NaverNewsScrapeTool,
+    NaverNewsSearchTool,
+    NaverVerticalSearchTool,
+)
 from infra.agent.tracing import emit
 
 logger = logging.getLogger("graphflow.harvester")
 
-SOURCE_TIER_NEWS = 0.8          # 주요 언론 (§9.3). 공공 1.0 / 블로그 0.4은 채널 추가 시
+SOURCE_TIER_NEWS = 0.8          # 주요 언론 (§9.3). news 스크랩 경로 앵커 — 불변
 SOURCE_TIER_PROVISIONAL = 0.5   # 발행자 제공 자료 — 교차 검증 전 (§10.5, D14)
+
+# ── 출처 신뢰 티어 (confidence = source_tier × extraction_confidence) ──
+# 채널별 신뢰 prior. news(0.8)를 앵커로, 결정 확정된 상대 배수
+# (news×1.0 / web×0.85 / blog×0.7 / cafe·kin×0.55)를 곱해 절대 티어로 환산한다.
+# 한 곳(이 dict)에서만 조정 → 저신뢰 소스가 자동으로 낮은 confidence를 받고
+# 기존 게이트·corroboration이 down-weight한다.
+SOURCE_TIER_WEB = round(SOURCE_TIER_NEWS * 0.85, 3)    # 일반 웹(Tavily)·webkr = 0.68
+SOURCE_TIER_BLOG = round(SOURCE_TIER_NEWS * 0.70, 3)   # 블로그 = 0.56
+SOURCE_TIER_FORUM = round(SOURCE_TIER_NEWS * 0.55, 3)  # 카페·지식iN = 0.44
+
+# source kind(=수집 채널) → 티어. _harvest_snippets 가 vertical 별로 참조.
+_SOURCE_TIER = {
+    "news": SOURCE_TIER_NEWS,           # 0.8  (스크랩 경로, 별도 처리)
+    "web": SOURCE_TIER_WEB,             # 0.68 (Tavily general)
+    "webkr": SOURCE_TIER_WEB,           # 0.68 (네이버 웹문서)
+    "blog": SOURCE_TIER_BLOG,           # 0.56
+    "cafearticle": SOURCE_TIER_FORUM,   # 0.44
+    "kin": SOURCE_TIER_FORUM,           # 0.44 (지식iN)
+}
+
+# 스니펫(스크랩 불필요) vertical 들 — news 는 스크랩 경로라 제외.
+_SNIPPET_VERTICALS = ("webkr", "blog", "cafearticle")
+
 _MAX_ARTICLES_PER_QUERY = 5     # 쿼리당 본문 스크랩·추출 상한 (gpt-mini 저비용 → 공격적 수집)
 _MAX_FACTS_PER_DOC = 8
 _BODY_TRIM = 3500               # 추출 프롬프트에 넣는 본문 길이 상한
@@ -291,6 +320,7 @@ class Harvester(BaseAgent):
         super().__init__()
         self._search = NaverNewsSearchTool()
         self._scrape = NaverNewsScrapeTool()
+        self._vertical = NaverVerticalSearchTool()   # blog/cafe/web 스니펫(스크랩 불필요)
         self._prefilter = _Prefilter()
         self._web = _make_web_search()       # Tavily (키 있으면) — 멀티소스 보강
 
@@ -382,9 +412,16 @@ class Harvester(BaseAgent):
                 collected_by=collected_by,
             )
 
-        # 멀티소스 보강 — Tavily 일반 웹검색(키 있을 때). 네이버 뉴스가 못 보는
-        # 모달리티(블로그·실거래·상권 정보·지역 글)를 메운다. content 인라인 → 스크랩 불필요.
-        if self._web is not None:
+        # 멀티소스 보강 — 스니펫 채널(스크랩 불필요). 네이버 뉴스가 못 보는
+        # 모달리티(블로그·카페·웹문서·실거래·지역 글)를 메운다. description/content
+        # 인라인 스니펫을 그대로 문서 본문으로 사용. 채널별 신뢰 prior(_SOURCE_TIER)로
+        # down-weight되므로 저신뢰 채널도 가산적으로 수집.
+        self._harvest_naver_verticals(
+            driver, stats, scope, query=query, query_hash=query_hash,
+            target_label=target_label, target_key=target_key,
+            target_card=target_card, asset_card=asset_card,
+            asset_sigungu=asset_sigungu, collected_by=collected_by)
+        if self._web is not None:                 # Tavily 일반 웹(키 있을 때)
             self._harvest_web(
                 driver, stats, scope, query=query, query_hash=query_hash,
                 target_label=target_label, target_key=target_key,
@@ -402,40 +439,87 @@ class Harvester(BaseAgent):
         except Exception as exc:
             emit("harvest_skip", reason="web_search_error", query=query, error=str(exc)[:200])
             return
-        items = [it for it in found["items"] if (it.get("content") or "").strip()]
-        if not items:
-            return
-        pf = [{"title": it["title"], "description": (it.get("content") or "")[:200]}
-              for it in items]
-        keep = self._prefilter.select(query=query, target_card=target_card, items=pf)
-        emit("prefilter_web", query=query, before=len(items), after=len(keep))
-        items = [items[i] for i in keep]
+        # Tavily 결과 → 공통 스니펫 article shape (content가 본문).
+        docs = [
+            {"title": it.get("title"), "url": it.get("link"),
+             "press": it.get("source"), "body": it.get("content"),
+             "published_at": it.get("pub_date"),
+             "snippet": (it.get("content") or "")[:200]}
+            for it in found["items"] if (it.get("content") or "").strip()
+        ]
+        self._ingest_snippet_docs(
+            driver, stats, scope, docs=docs, source_tier=SOURCE_TIER_WEB,
+            emit_label="web", query=query, query_hash=query_hash,
+            target_label=target_label, target_key=target_key, target_card=target_card,
+            asset_card=asset_card, asset_sigungu=asset_sigungu, collected_by=collected_by)
 
-        hashes = [_short_hash(it["link"]) for it in items]
+    # ── 네이버 비뉴스 vertical(blog/cafe/webkr) 1쿼리: 스니펫 인라인 → 스크랩 없이 추출 ──
+    def _harvest_naver_verticals(self, driver, stats, scope, *, query, query_hash,
+                                 target_label, target_key, target_card,
+                                 asset_card, asset_sigungu, collected_by) -> None:
+        for vertical in _SNIPPET_VERTICALS:
+            try:
+                found = self._vertical(query=query, vertical=vertical, display=10, sort="sim")
+            except Exception as exc:
+                emit("harvest_skip", reason="vertical_search_error", vertical=vertical,
+                     query=query, error=str(exc)[:200])
+                continue
+            # description(스니펫)이 곧 본문. 출처명은 press 자리에 표기.
+            docs = [
+                {"title": it.get("title"), "url": it.get("link"),
+                 "press": it.get("source_name"), "body": it.get("description"),
+                 "published_at": it.get("posted_at"),
+                 "snippet": (it.get("description") or "")[:200]}
+                for it in found["items"] if (it.get("description") or "").strip()
+            ]
+            self._ingest_snippet_docs(
+                driver, stats, scope, docs=docs,
+                source_tier=_SOURCE_TIER.get(vertical, SOURCE_TIER_FORUM),
+                emit_label=f"naver_{vertical}", query=query, query_hash=query_hash,
+                target_label=target_label, target_key=target_key, target_card=target_card,
+                asset_card=asset_card, asset_sigungu=asset_sigungu,
+                collected_by=collected_by)
+
+    # ── 스니펫 문서 묶음 적재 (Tavily·네이버 vertical 공용) ──
+    # 스크랩 불필요한 소스의 공통 골격: prefilter → 중복 dedup → 추출/적재.
+    # article 은 {title,url,press,body,published_at,snippet} (snippet=prefilter용 요약).
+    def _ingest_snippet_docs(self, driver, stats, scope, *, docs, source_tier,
+                             emit_label, query, query_hash, target_label, target_key,
+                             target_card, asset_card, asset_sigungu, collected_by) -> None:
+        if not docs:
+            return
+        pf = [{"title": d["title"], "description": d["snippet"]} for d in docs]
+        keep = self._prefilter.select(query=query, target_card=target_card, items=pf)
+        emit(f"prefilter_{emit_label}", query=query, before=len(docs), after=len(keep))
+        docs = [docs[i] for i in keep]
+        if not docs:
+            return
+
+        hashes = [_short_hash(d["url"]) for d in docs]
         existing = _existing_doc_hashes(driver, hashes)
-        scraped = 0
-        for it, url_hash in zip(items, hashes):
-            if scraped >= _MAX_ARTICLES_PER_QUERY:
+        stored = 0
+        for d, url_hash in zip(docs, hashes):
+            if stored >= _MAX_ARTICLES_PER_QUERY:
                 break
             if url_hash in existing:
                 write_edges(driver, [SeedEdge(L.QUERY, query_hash, E.RETRIEVED,
                                                L.WEB_DOC, url_hash)])
                 continue
-            scraped += 1
-            article = {"title": it["title"], "url": it["link"],
-                       "press": it.get("source"), "body": it.get("content"),
-                       "published_at": it.get("pub_date"), "ok": True}
+            stored += 1
+            article = {"title": d["title"], "url": d["url"], "press": d["press"],
+                       "body": d["body"], "published_at": d["published_at"], "ok": True}
             self._extract_and_store(
-                driver, stats, scope, article=article, meta=it, url_hash=url_hash,
+                driver, stats, scope, article=article, meta=d, url_hash=url_hash,
                 query=query, query_hash=query_hash, target_label=target_label,
                 target_key=target_key, target_card=target_card,
                 asset_card=asset_card, asset_sigungu=asset_sigungu,
-                collected_by=collected_by)
+                collected_by=collected_by, source_tier=source_tier)
 
     # ── 기사 1건: 추출 + 적재 ───────────────────────────────
     def _extract_and_store(self, driver, stats, scope, *, article, meta, url_hash,
                            query, query_hash, target_label, target_key, target_card,
-                           asset_card, asset_sigungu, collected_by) -> None:
+                           asset_card, asset_sigungu, collected_by,
+                           source_tier=SOURCE_TIER_NEWS) -> None:
         published_at = article.get("published_at") or meta.get("pub_date") or ""
         body = (article.get("body") or "")[:_BODY_TRIM]
         user = (
@@ -458,7 +542,7 @@ class Harvester(BaseAgent):
         doc = sg.add_node(L.WEB_DOC, url_hash, {
             "title": article.get("title"), "url": article.get("url"),
             "press": article.get("press"), "published_at": published_at,
-            "source_tier": SOURCE_TIER_NEWS,
+            "source_tier": source_tier,
             "doc_relevance": out.doc_relevance,
             "fetched_at": datetime.now().isoformat(timespec="seconds"),
             "collected_by": collected_by,
@@ -470,7 +554,7 @@ class Harvester(BaseAgent):
         counts, texts = store_extracted_facts(
             sg, edges, out.facts[:_MAX_FACTS_PER_DOC], scope=scope,
             asset_sigungu=asset_sigungu, source_label=L.WEB_DOC, source_key=url_hash,
-            source_tier=SOURCE_TIER_NEWS, published_at=published_at,
+            source_tier=source_tier, published_at=published_at,
             collected_by=collected_by)
         stats.facts_new += counts["facts"]
         stats.entities_new += counts["entities"]

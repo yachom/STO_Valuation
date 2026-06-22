@@ -14,6 +14,10 @@ from infra.external.naver_search.news_search import (
     NewsMetadata,
     fetch_news_metadata,
 )
+from infra.external.naver_search.vertical_search import (
+    VerticalItem,
+    fetch_vertical_metadata,
+)
 
 __all__ = [
     "NaverSearchClient",
@@ -26,4 +30,6 @@ __all__ = [
     "NaverRateLimited",
     "NewsMetadata",
     "fetch_news_metadata",
+    "VerticalItem",
+    "fetch_vertical_metadata",
 ]

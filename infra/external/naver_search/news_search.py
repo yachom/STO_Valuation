@@ -2,29 +2,13 @@
 
 from __future__ import annotations
 
-import html
-import re
 from dataclasses import asdict, dataclass
-from email.utils import parsedate_to_datetime
 
+from infra.external.naver_search._text import normalize_pub_date as _normalize_pub_date
+from infra.external.naver_search._text import strip_html as _strip_html
 from infra.external.naver_search.client import NaverSearchClient
 
 _NEWS_API_URL = "https://openapi.naver.com/v1/search/news.json"
-
-_TAG_RE = re.compile(r"<[^>]+>")
-
-
-def _strip_html(text: str) -> str:
-    return html.unescape(_TAG_RE.sub("", text or "")).strip()
-
-
-def _normalize_pub_date(value: str) -> str:
-    if not value:
-        return ""
-    try:
-        return parsedate_to_datetime(value).isoformat()
-    except (TypeError, ValueError):
-        return value
 
 
 @dataclass(frozen=True)
