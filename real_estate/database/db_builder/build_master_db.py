@@ -697,13 +697,20 @@ def build_kb_complex_raw(conn, inv_df):
 # ===========================================================================
 # Section 4: 매칭 (후보 페어 → 스코어링 → greedy 결정 → 잔여)
 # ===========================================================================
-def run_matching(seoul_df, kb_df):
+def generate_candidates(seoul_df, kb_df):
+    """좌표 유효 필터 + bbox·haversine 후보 페어 생성 (순수, IO 없음).
+
+    반환:
+        pairs_df    {kb_id, seoul_code, distance_m} 후보 페어
+        kb_idx      kb_df 를 단지기본일련번호로 인덱싱 (스코어링·master 빌드 재사용)
+        seoul_idx   seoul_df 를 complex_code 로 인덱싱
+        n_kb_valid  / n_seoul_valid   유효 좌표 행 수 (호출 측 로깅용)
+    """
     # 좌표 유효 필터
     kb_valid = kb_df.dropna(subset=["wgs84위도", "wgs84경도"]).copy()
     kb_valid = kb_valid[(kb_valid["wgs84위도"] != 0) & (kb_valid["wgs84경도"] != 0)]
     seoul_valid = seoul_df.dropna(subset=["latitude", "longitude"]).copy()
     seoul_valid = seoul_valid[(seoul_valid["latitude"] != 0) & (seoul_valid["longitude"] != 0)]
-    print(f"[Section 4] 유효 좌표 KB={len(kb_valid)} / Seoul={len(seoul_valid)}")
 
     # 후보 페어 (bbox + haversine)
     kb_xy = kb_valid.rename(columns={
@@ -726,13 +733,19 @@ def run_matching(seoul_df, kb_df):
                               "seoul_code": str(s_code[j]),
                               "distance_m": d})
     pairs_df = pd.DataFrame(pairs)
-    print(f"  후보 페어: {len(pairs_df)}")
 
     # 인덱스 (스코어링 + master 빌드에서 재사용)
     kb_idx    = kb_df.set_index("단지기본일련번호")
     seoul_idx = seoul_df.set_index("complex_code")
 
-    # 스코어링
+    return pairs_df, kb_idx, seoul_idx, len(kb_valid), len(seoul_valid)
+
+
+def score_pairs(pairs_df, kb_idx, seoul_idx):
+    """후보 페어마다 거리·주소·이름·세대수·준공 가중 점수 계산 (순수, IO 없음).
+
+    반환: score 내림차순 정렬된 scored_df.
+    """
     def _score_pair(kb_id, se_code, distance_m):
         kb = kb_idx.loc[kb_id]; se = seoul_idx.loc[se_code]
         s_dist = max(0.0, 1 - distance_m / MATCH_RADIUS_M)
@@ -781,9 +794,14 @@ def run_matching(seoul_df, kb_df):
     scored_df = (pd.DataFrame(scored)
                  .sort_values("score", ascending=False)
                  .reset_index(drop=True))
-    print(f"  스코어링: {len(scored_df)} 페어")
+    return scored_df
 
-    # Greedy 결정
+
+def greedy_select(scored_df):
+    """점수 내림차순으로 1:1 그리디 매칭 + 임계 분류 + 동점 review 플래그 (순수, IO 없음).
+
+    반환: matched_df (kb_id·seoul_code 각각 1회만 사용).
+    """
     def _classify(distance_m, score):
         for max_d, min_s, method, nr in THRESHOLDS:
             if distance_m <= max_d and score >= min_s:
@@ -817,7 +835,24 @@ def run_matching(seoul_df, kb_df):
             "completion_diff_months": r.completion_diff_months,
         })
         used_kb.add(r.kb_id); used_se.add(r.seoul_code)
-    matched_df = pd.DataFrame(matches)
+    return pd.DataFrame(matches)
+
+
+def run_matching(seoul_df, kb_df):
+    """후보생성 → 스코어링 → 그리디 선택 오케스트레이션.
+
+    순수 함수 3개(generate_candidates/score_pairs/greedy_select)를 순서대로 호출하고
+    진행 로그·잔여 계산만 여기서 한다. 반환·동작은 분해 전과 동일하다.
+    """
+    pairs_df, kb_idx, seoul_idx, n_kb_valid, n_seoul_valid = generate_candidates(
+        seoul_df, kb_df)
+    print(f"[Section 4] 유효 좌표 KB={n_kb_valid} / Seoul={n_seoul_valid}")
+    print(f"  후보 페어: {len(pairs_df)}")
+
+    scored_df = score_pairs(pairs_df, kb_idx, seoul_idx)
+    print(f"  스코어링: {len(scored_df)} 페어")
+
+    matched_df = greedy_select(scored_df)
     print(f"  매칭: {len(matched_df)}")
     if not matched_df.empty:
         print(f"  method: {dict(matched_df['method'].value_counts())}")
