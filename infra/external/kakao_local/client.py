@@ -13,13 +13,11 @@ credentials 객체가 불필요), defer-base 원칙에 따라 별도 credentials
 
 from __future__ import annotations
 
-import json
 import logging
-import time
-import urllib.error
 import urllib.parse
 import urllib.request
 
+from infra.external import _http
 from infra.gateway import APIGateway, get_default
 
 logger = logging.getLogger("external.kakao_local")
@@ -85,28 +83,29 @@ class KakaoLocalClient:
         request.add_header("Authorization", "KakaoAK " + self.rest_key)
         label = f"GET {url.rsplit('/', 1)[-1]}"
 
-        self._gateway.wait(self.API_NAME)
-        started_at = time.monotonic()
-        try:
-            with urllib.request.urlopen(request, timeout=self.timeout) as resp:
-                status = resp.getcode()
-                raw = resp.read().decode("utf-8")
-        except urllib.error.HTTPError as exc:
-            status = exc.code
-            raw = exc.read().decode("utf-8", errors="replace")
-            logger.warning("%s -> HTTP %s: %s", label, status, raw[:200])
-            raise KakaoLocalError(f"Kakao Local 호출 실패 (HTTP {status})",
-                                  status=status, response_body=raw[:500]) from exc
-        except urllib.error.URLError as exc:
-            logger.warning("%s -> 네트워크 오류: %s", label, exc.reason)
-            raise KakaoLocalError(f"네트워크 오류: {exc.reason}") from exc
+        def _on_http_error(status: int, body: str) -> BaseException:
+            logger.warning("%s -> HTTP %s: %s", label, status, body[:200])
+            return KakaoLocalError(f"Kakao Local 호출 실패 (HTTP {status})",
+                                   status=status, response_body=body[:500])
 
-        elapsed_ms = int((time.monotonic() - started_at) * 1000)
-        try:
-            parsed = json.loads(raw)
-        except json.JSONDecodeError as exc:
-            raise KakaoLocalError("응답 JSON 파싱 실패", status=status,
-                                  response_body=raw[:500]) from exc
+        def _on_url_error(reason: str) -> BaseException:
+            logger.warning("%s -> 네트워크 오류: %s", label, reason)
+            return KakaoLocalError(f"네트워크 오류: {reason}")
+
+        status, raw, elapsed_ms = _http.timed_urlopen(
+            request,
+            api_name=self.API_NAME,
+            gateway=self._gateway,
+            timeout=self.timeout,
+            on_http_error=_on_http_error,
+            on_url_error=_on_url_error,
+        )
+
+        parsed = _http.parse_json(
+            raw,
+            on_error=lambda exc: KakaoLocalError(
+                "응답 JSON 파싱 실패", status=status, response_body=raw[:500]),
+        )
         n = len((parsed.get("documents") or [])) if isinstance(parsed, dict) else 0
         logger.info("%s -> %s (%dms, %d건)", label, status, elapsed_ms, n)
         return parsed

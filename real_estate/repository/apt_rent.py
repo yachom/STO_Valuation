@@ -4,7 +4,8 @@
 """
 
 import logging
-import sqlite3
+
+from real_estate.repository._db import connection
 
 logger = logging.getLogger("repository.apt_rent")
 
@@ -36,12 +37,9 @@ class AptRentTransactionRepository:
         sql += " ORDER BY deal_year_month DESC, deal_day DESC LIMIT ?"
         params.append(limit)
 
-        conn = sqlite3.connect(self._db_path)
-        try:
+        with connection(self._db_path) as conn:
             cur = conn.execute(sql, params)
             return [_row_to_dict(row) for row in cur.fetchall()]
-        finally:
-            conn.close()
 
     def jeonse_wolse_ratio(
         self,
@@ -71,8 +69,7 @@ class AptRentTransactionRepository:
             params.append(ymd_to)
         where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
 
-        conn = sqlite3.connect(self._db_path)
-        try:
+        with connection(self._db_path) as conn:
             cur = conn.execute(
                 f"""
                 SELECT
@@ -87,8 +84,6 @@ class AptRentTransactionRepository:
                 params,
             )
             row = cur.fetchone()
-        finally:
-            conn.close()
 
         jeonse = int(row[0] or 0)
         wolse = int(row[1] or 0)

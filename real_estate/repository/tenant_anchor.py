@@ -117,6 +117,95 @@ def _industry_match(name: str, category: str, top_industries: list[str]) -> bool
     return False
 
 
+def _extract_signals(tenants: list[dict], *, top_industries: list[str],
+                     lic_idx: dict[str, object], use_turnover: bool,
+                     today: date) -> list[dict]:
+    """입점업체별 원천 신호를 추출한다 (순수 — DB/IO 없음).
+
+    카카오 리뷰(집객·평점)·브랜드·업종매칭에 더해, 인허가 결합 시 상호
+    매칭으로 면적·영업연수를 보탠다. 정규화 전 raw 값을 담은 row 리스트 반환.
+    """
+    rows = []
+    for t in tenants:
+        rv = t.get("리뷰") or {}
+        후기 = rv.get("후기수") or 0
+        블로그 = rv.get("블로그리뷰수") or 0
+        평점 = rv.get("평점")
+        traffic_raw = math.log1p(후기) + math.log1p(블로그)
+        lic = _match_license(t.get("상호", ""), lic_idx) if use_turnover else None
+        면적 = getattr(lic, "면적", None) if lic else None
+        인허가일 = getattr(lic, "인허가일자", None) if lic else None
+        영업연수 = (round((today - 인허가일).days / 365.25, 1)
+                  if 인허가일 else None)
+        rows.append({
+            "t": t, "후기": 후기, "블로그": 블로그, "평점": 평점,
+            "traffic_raw": traffic_raw,
+            "brand": _is_brand(t.get("상호", ""), t.get("카테고리", "")),
+            "industry": _industry_match(t.get("상호", ""), t.get("카테고리", ""),
+                                        top_industries),
+            "면적": 면적, "영업연수": 영업연수, "matched": lic is not None,
+        })
+    return rows
+
+
+def _normalize(rows: list[dict]) -> tuple[float, float]:
+    """정규화 기준(건물 내 최대 트래픽·면적)을 구한다 (순수 — DB/IO 없음).
+
+    0 분모 방지를 위해 최댓값이 0이면 1.0으로 떨어뜨린다.
+    """
+    max_traffic = max((r["traffic_raw"] for r in rows), default=0.0) or 1.0
+    max_area = max((r["면적"] for r in rows if r["면적"]), default=0.0) or 1.0
+    return max_traffic, max_area
+
+
+def _compute_scores(rows: list[dict], *, max_traffic: float, max_area: float,
+                    w: dict, use_turnover: bool) -> list[dict]:
+    """row별 가중합 앵커점수를 계산해 결과 dict 리스트를 만든다 (순수 — DB/IO 없음).
+
+    면적·존속은 매칭된 가게에만(미매칭=0, 양의 신호라 페널티 아님).
+    정렬·등급 부여 전 상태의 항목 리스트를 반환한다.
+    """
+    scored = []
+    for r in rows:
+        traffic_n = r["traffic_raw"] / max_traffic
+        rating_n = (r["평점"] / 5.0) if r["평점"] else 0.5  # 무평점=중립
+        score = (w["집객"] * traffic_n + w["평점"] * rating_n
+                 + w["브랜드"] * (1.0 if r["brand"] else 0.0)
+                 + w["업종매칭"] * (1.0 if r["industry"] else 0.0))
+        if use_turnover:
+            area_n = (r["면적"] / max_area) if r["면적"] else 0.0
+            tenure_n = (min(r["영업연수"] / _TENURE_CAP_YEARS, 1.0)
+                        if r["영업연수"] else 0.0)
+            score += w["면적"] * area_n + w["존속"] * tenure_n
+        item = dict(r["t"])
+        item["앵커점수"] = round(score, 4)
+        item["신호"] = {"후기수": r["후기"], "블로그리뷰수": r["블로그"],
+                       "평점": r["평점"], "브랜드": r["brand"],
+                       "업종매칭": r["industry"], "면적": r["면적"],
+                       "영업연수": r["영업연수"], "인허가매칭": r["matched"]}
+        scored.append(item)
+    return scored
+
+
+def _rank_and_grade(scored: list[dict]) -> list[dict]:
+    """앵커점수 내림차순 정렬 후 등급을 매긴다 (순수 — DB/IO 없음).
+
+    상위 20%는 "앵커"(점수 ≥0.3 컷), 그 다음 30%는 "주요", 나머지는 "일반".
+    입력 리스트를 제자리 정렬·수정하고 같은 리스트를 반환한다.
+    """
+    scored.sort(key=lambda x: x["앵커점수"], reverse=True)
+
+    n = len(scored)
+    for i, item in enumerate(scored):
+        if i < max(1, round(n * 0.2)) and item["앵커점수"] >= 0.3:
+            item["앵커등급"] = "앵커"
+        elif i < max(1, round(n * 0.5)):
+            item["앵커등급"] = "주요"
+        else:
+            item["앵커등급"] = "일반"
+    return scored
+
+
 def score_tenants(tenants: list[dict], *, top_industries: list[str] | None = None,
                   licenses: list | None = None, weights: dict | None = None,
                   today: date | None = None) -> list[dict]:
@@ -142,62 +231,11 @@ def score_tenants(tenants: list[dict], *, top_industries: list[str] | None = Non
     use_turnover = bool(lic_idx)
     w = {**(_TURNOVER_WEIGHTS if use_turnover else _DEFAULT_WEIGHTS), **(weights or {})}
 
-    # 1) 원천 신호 추출
-    rows = []
-    for t in tenants:
-        rv = t.get("리뷰") or {}
-        후기 = rv.get("후기수") or 0
-        블로그 = rv.get("블로그리뷰수") or 0
-        평점 = rv.get("평점")
-        traffic_raw = math.log1p(후기) + math.log1p(블로그)
-        lic = _match_license(t.get("상호", ""), lic_idx) if use_turnover else None
-        면적 = getattr(lic, "면적", None) if lic else None
-        인허가일 = getattr(lic, "인허가일자", None) if lic else None
-        영업연수 = (round((today - 인허가일).days / 365.25, 1)
-                  if 인허가일 else None)
-        rows.append({
-            "t": t, "후기": 후기, "블로그": 블로그, "평점": 평점,
-            "traffic_raw": traffic_raw,
-            "brand": _is_brand(t.get("상호", ""), t.get("카테고리", "")),
-            "industry": _industry_match(t.get("상호", ""), t.get("카테고리", ""),
-                                        top_industries),
-            "면적": 면적, "영업연수": 영업연수, "matched": lic is not None,
-        })
-
-    # 2) 정규화 기준 (건물 내 최대 대비)
-    max_traffic = max((r["traffic_raw"] for r in rows), default=0.0) or 1.0
-    max_area = max((r["면적"] for r in rows if r["면적"]), default=0.0) or 1.0
-
-    # 3) 가중합 — 면적·존속은 매칭된 가게에만(미매칭=0, 양의 신호라 페널티 아님)
-    scored = []
-    for r in rows:
-        traffic_n = r["traffic_raw"] / max_traffic
-        rating_n = (r["평점"] / 5.0) if r["평점"] else 0.5  # 무평점=중립
-        score = (w["집객"] * traffic_n + w["평점"] * rating_n
-                 + w["브랜드"] * (1.0 if r["brand"] else 0.0)
-                 + w["업종매칭"] * (1.0 if r["industry"] else 0.0))
-        if use_turnover:
-            area_n = (r["면적"] / max_area) if r["면적"] else 0.0
-            tenure_n = (min(r["영업연수"] / _TENURE_CAP_YEARS, 1.0)
-                        if r["영업연수"] else 0.0)
-            score += w["면적"] * area_n + w["존속"] * tenure_n
-        item = dict(r["t"])
-        item["앵커점수"] = round(score, 4)
-        item["신호"] = {"후기수": r["후기"], "블로그리뷰수": r["블로그"],
-                       "평점": r["평점"], "브랜드": r["brand"],
-                       "업종매칭": r["industry"], "면적": r["면적"],
-                       "영업연수": r["영업연수"], "인허가매칭": r["matched"]}
-        scored.append(item)
-
-    scored.sort(key=lambda x: x["앵커점수"], reverse=True)
-
-    # 4) 등급 — 상위 20%/그 다음 30% (최소 컷 적용)
-    n = len(scored)
-    for i, item in enumerate(scored):
-        if i < max(1, round(n * 0.2)) and item["앵커점수"] >= 0.3:
-            item["앵커등급"] = "앵커"
-        elif i < max(1, round(n * 0.5)):
-            item["앵커등급"] = "주요"
-        else:
-            item["앵커등급"] = "일반"
-    return scored
+    # 1) 원천 신호 추출 → 2) 정규화 기준 → 3) 가중합 → 4) 정렬·등급
+    rows = _extract_signals(tenants, top_industries=top_industries,
+                            lic_idx=lic_idx, use_turnover=use_turnover,
+                            today=today)
+    max_traffic, max_area = _normalize(rows)
+    scored = _compute_scores(rows, max_traffic=max_traffic, max_area=max_area,
+                             w=w, use_turnover=use_turnover)
+    return _rank_and_grade(scored)

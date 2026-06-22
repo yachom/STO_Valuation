@@ -232,6 +232,19 @@ def link_mention(
 _NAVER_HOSTS = ("news.naver.com", "n.news.naver.com", "m.news.naver.com")
 
 
+def _broaden_query(query: str) -> str | None:
+    """0건 쿼리 축약 — 앞 2어절(보통 고유명사+핵심어)만 남긴다. 이미 짧으면 None.
+
+    navigator가 짧게 만들도록 고쳤지만(_MAX_QUERY_WORDS), 그래도 0건이 남으면
+    마지막 안전망. 키워드 검색은 토큰이 적을수록 매칭 확률이 높다.
+    """
+    toks = query.split()
+    if len(toks) <= 2:
+        return None
+    bq = " ".join(toks[:2])
+    return bq if bq != query else None
+
+
 def _make_web_search():
     """Tavily 웹검색 도구 (TAVILY_API_KEY 있을 때만, 없으면 None → graceful skip)."""
     import os
@@ -318,6 +331,15 @@ class Harvester(BaseAgent):
                            asset_card, asset_sigungu, collected_by) -> None:
         try:
             found = self._search(query=query, display=10, sort="sim")
+            if found["n_results"] == 0:
+                # 0건 폴백 — 앞 핵심어로 축약해 1회 재시도 (마지막 안전망).
+                bq = _broaden_query(query)
+                if bq:
+                    f2 = self._search(query=bq, display=10, sort="sim")
+                    if f2["n_results"] > 0:
+                        emit("harvest_broaden", original=query[:60], broadened=bq,
+                             n=f2["n_results"])
+                        found, query = f2, bq
         except Exception as exc:
             emit("harvest_skip", reason="search_error", query=query, error=str(exc)[:200])
             return
@@ -360,7 +382,8 @@ class Harvester(BaseAgent):
                 collected_by=collected_by,
             )
 
-        # 멀티소스 보강 — Tavily 웹검색(키 있을 때). content 인라인이라 스크랩 불필요.
+        # 멀티소스 보강 — Tavily 일반 웹검색(키 있을 때). 네이버 뉴스가 못 보는
+        # 모달리티(블로그·실거래·상권 정보·지역 글)를 메운다. content 인라인 → 스크랩 불필요.
         if self._web is not None:
             self._harvest_web(
                 driver, stats, scope, query=query, query_hash=query_hash,
@@ -368,12 +391,14 @@ class Harvester(BaseAgent):
                 target_card=target_card, asset_card=asset_card,
                 asset_sigungu=asset_sigungu, collected_by=collected_by)
 
-    # ── 웹검색(Tavily) 1쿼리: content 인라인 → 스크랩 없이 추출 ──
+    # ── 일반 웹검색(Tavily) 1쿼리: content 인라인 → 스크랩 없이 추출 ──
     def _harvest_web(self, driver, stats, scope, *, query, query_hash,
                      target_label, target_key, target_card,
                      asset_card, asset_sigungu, collected_by) -> None:
         try:
-            found = self._web(query=query, max_results=6, topic="news")
+            # topic='general' — 일반 웹(블로그·실거래·상권·지역 글). 'news'는 한국어
+            # 쿼리에 무관한 영어 뉴스를 반환해 역효과(네이버 뉴스가 뉴스 모달리티 담당).
+            found = self._web(query=query, max_results=6, topic="general")
         except Exception as exc:
             emit("harvest_skip", reason="web_search_error", query=query, error=str(exc)[:200])
             return

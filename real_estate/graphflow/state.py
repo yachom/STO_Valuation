@@ -36,6 +36,12 @@ class GraphFlowState(TypedDict, total=False):
     building_type: dict        # 건물유형 분류(상가형/오피스형/혼합형) + 앵커전략
     tenant_summary: dict       # 입점업체 수집 결과 (count/anchors/collected_at)
     expand_summary: dict
+    outline: dict              # axis → list[논점] (discourse mode의 Outliner 산출, PR-4)
+
+    # ── 담론 사이클 (discourse mode, PR-6) — LangGraph 노드 간 흐르는 STORM 상태 ──
+    discourse_threads: list    # [{axis, label, focus, qa:[{q,a}], done}] — 관점별 공유 스레드
+    discourse_round: int       # 담론 라운드 카운터 (사이클 종료 판정)
+    moderator_done: bool       # Moderator가 종료 판정 → 사이클 탈출
     sections: Annotated[dict, merge_dicts]          # axis → SectionDraft
     evidence_by_axis: Annotated[dict, merge_dicts]  # axis → list[Evidence]
     mech_audit: Annotated[dict, merge_dicts]        # axis → 잔여 위반 목록

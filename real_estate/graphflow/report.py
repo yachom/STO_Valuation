@@ -25,6 +25,7 @@ from real_estate.graphflow.auditor import AuditorLLM, audit_overview, audit_sect
 from real_estate.graphflow.composer import Evidence, compose
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
+from real_estate.graphflow.graph.queries import asset_card
 from real_estate.graphflow.profiles import REPORT_AXES
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, write_edges, seed
 from real_estate.graphflow.synthesizer import Synthesizer
@@ -41,12 +42,8 @@ def _claim_id(axis: str, text: str) -> str:
 
 
 def asset_card_text(driver: Driver, asset_id: str) -> str:
-    with driver.session() as s:
-        r = s.run(f"MATCH (a:{L.ASSET} {{asset_id: $aid}}) RETURN a.card_text AS c",
-                  aid=asset_id).single()
-        if r is None:
-            raise ValueError(f"Asset 노드 없음: {asset_id}")
-        return r["c"] or asset_id
+    """Asset 카드 (시드 선행 필수 — 없으면 ValueError). 그래프 조회는 graph.queries에 통합."""
+    return asset_card(driver, asset_id, required=True)
 
 
 # ───────────────────────────────────────────────────────────
@@ -270,20 +267,23 @@ def write_axis(
     axis: str,
     *,
     evidence_k: int | None = None,
+    outline: list[str] | None = None,
 ) -> tuple[SectionDraft, list[Evidence], list[str]]:
     """축 1개: compose → write → 기계 검증 → 위반 시 재작성 1회.
 
+    outline(담론 Outliner 논점, PR-4)이 있으면 그 순서로 구성. None이면 기존 고정 구조.
     반환: (최종 draft, evidence, 잔여 위반 — 비면 통과).
     """
     with node_scope(f"write_{axis}"):
         evidence = compose(driver, asset_id, axis, k=evidence_k)
         writer = Writer()
-        draft = writer.write(axis, asset_card, evidence)
+        draft = writer.write(axis, asset_card, evidence, outline=outline)
         violations = audit_section(draft, evidence)
         rewrites = 0
         while violations and rewrites < _MAX_REWRITES:
             emit("audit_mechanical_fail", axis=axis, violations=violations)
-            draft = writer.write(axis, asset_card, evidence, violations=violations)
+            draft = writer.write(axis, asset_card, evidence,
+                                 violations=violations, outline=outline)
             violations = audit_section(draft, evidence)
             rewrites += 1
         return draft, evidence, violations

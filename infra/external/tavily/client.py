@@ -13,10 +13,10 @@ from __future__ import annotations
 
 import json
 import logging
-import urllib.error
 import urllib.request
 from dataclasses import dataclass
 
+from infra.external import _http
 from infra.gateway import APIGateway, get_default
 
 logger = logging.getLogger("external.tavily")
@@ -69,23 +69,23 @@ class TavilyClient:
         }
         if days is not None:
             body["days"] = days
-        self._gateway.wait(self.API_NAME)
         req = urllib.request.Request(
-            self.URL, data=json.dumps(body).encode("utf-8"),
+            self.URL,
             headers={"Content-Type": "application/json",
                      "Authorization": f"Bearer {self.api_key}"},
             method="POST")
-        try:
-            raw = urllib.request.urlopen(req, timeout=self.timeout).read().decode("utf-8")
-        except urllib.error.HTTPError as exc:
-            detail = exc.read().decode("utf-8", "replace")[:160]
-            raise TavilyError(f"Tavily HTTP {exc.code}: {detail}", status=exc.code) from exc
-        except urllib.error.URLError as exc:
-            raise TavilyError(f"네트워크 오류: {exc.reason}") from exc
-        try:
-            data = json.loads(raw)
-        except json.JSONDecodeError as exc:
-            raise TavilyError(f"JSON 파싱 실패: {raw[:160]}") from exc
+        _, raw, _ = _http.timed_urlopen(
+            req,
+            api_name=self.API_NAME,
+            gateway=self._gateway,
+            timeout=self.timeout,
+            on_http_error=lambda status, b: TavilyError(
+                f"Tavily HTTP {status}: {b[:160]}", status=status),
+            on_url_error=lambda reason: TavilyError(f"네트워크 오류: {reason}"),
+            data=json.dumps(body).encode("utf-8"),
+        )
+        data = _http.parse_json(
+            raw, on_error=lambda exc: TavilyError(f"JSON 파싱 실패: {raw[:160]}"))
 
         out: list[WebResult] = []
         for r in data.get("results", []):

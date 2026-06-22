@@ -47,6 +47,11 @@ _FRONTIER_LABEL_PRIORITY = {
     L.COMPLEX: 0.35,   # 배후수요 아파트 — 보조 (시세 뉴스 예산 독식 억제)
 }
 
+# 검색어 길이 상한 (어절). 네이버 뉴스는 키워드 검색이라 긴 문장형 쿼리는 0건이
+# 된다(실측: 9어절 쿼리 다수가 0건, 작동한 건 전부 ≤5어절). 초과 쿼리는 _validate가
+# 해당 노드의 짧은 템플릿으로 폴백 — 길이 안전장치도 코드에 둔다(프롬프트만 믿지 않음).
+_MAX_QUERY_WORDS = 6
+
 
 # ───────────────────────────────────────────────────────────
 # frontier 후보
@@ -247,7 +252,7 @@ def collect_frontier(
 # ───────────────────────────────────────────────────────────
 class QueryPlan(BaseModel):
     target: str = Field(description="후보 목록의 ref 그대로 (예: 'CommercialArea:3120189')")
-    queries: list[str] = Field(description="네이버 뉴스 검색어 1~2개. 반드시 해당 노드의 고유명사를 문자 그대로 포함")
+    queries: list[str] = Field(description="네이버 뉴스 검색어 1~2개. 핵심명사 2~3개·6어절 이하로 짧게(긴 문장형은 0건). 반드시 해당 노드의 고유명사를 문자 그대로 포함")
     why: str = Field(description="이 노드를 지금 더 파야 하는 이유 한 문장")
 
 
@@ -315,8 +320,14 @@ class Navigator(BaseAgent):
             queries: list[str] = []
             for q in plan.queries[:queries_per_node]:
                 q = q.strip()
-                if not any(noun in q for noun in cand.proper_nouns):
-                    emit("navigator_fix", reason="no_proper_noun", query=q, target=plan.target)
+                # 고유명사 누락 또는 길이 초과 → 해당 노드의 짧은 템플릿으로 폴백.
+                # (긴 쿼리는 네이버에서 0건 → 검색이 헛돔. 코드 레벨 안전장치.)
+                no_noun = not any(noun in q for noun in cand.proper_nouns)
+                too_long = len(q.split()) > _MAX_QUERY_WORDS
+                if no_noun or too_long:
+                    emit("navigator_fix",
+                         reason="too_long" if too_long else "no_proper_noun",
+                         query=q, target=plan.target)
                     q = next((t for t in cand.templates
                               if normalize_text(t) not in seen_norm), "")
                 if not q:

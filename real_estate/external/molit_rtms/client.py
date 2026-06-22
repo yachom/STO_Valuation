@@ -31,11 +31,11 @@ gateway rate-limit 키는 api_name과 일치 (예: "molit_real_transaction").
 from __future__ import annotations
 
 import logging
-import time
 import xml.etree.ElementTree as ET
 
 import requests
 
+from infra.external import _http
 from infra.gateway import APIGateway, get_default
 from real_estate.external.molit_rtms.exceptions import MolitRtmsError
 
@@ -99,21 +99,21 @@ class MolitRtmsClient:
         if extra_params:
             params.update({k: str(v) for k, v in extra_params.items()})
 
-        self._gateway.wait(self._api_name)
-        started_at = time.monotonic()
-        try:
-            response = requests.get(endpoint, params=params, timeout=self._timeout)
-        except Exception as exc:
+        def _on_net_error(exc: Exception) -> BaseException:
             self._logger.warning("GET %s -> 네트워크 오류: %s", endpoint, exc)
-            raise MolitRtmsError(
+            return MolitRtmsError(
                 f"MOLIT RTMS 호출 실패: {exc}",
                 api_name=self._api_name,
                 endpoint=endpoint,
-            ) from exc
+            )
 
-        elapsed_ms = int((time.monotonic() - started_at) * 1000)
-        status = response.status_code
-        body_text = response.text
+        status, body_text, elapsed_ms = _http.timed_requests_get(
+            requests, endpoint, params,
+            api_name=self._api_name,
+            gateway=self._gateway,
+            timeout=self._timeout,
+            on_error=_on_net_error,
+        )
 
         try:
             root = ET.fromstring(body_text)

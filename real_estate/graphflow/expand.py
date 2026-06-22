@@ -4,9 +4,9 @@
     Navigator(frontier 선정+검색어, LLM 1회)
       → Harvester(검색→스크랩→추출→연결, 기사당 LLM 1회)
       → Curator(임베딩+novelty)
-    novelty < 0.3 또는 예산 소진 시 조기 종료.
+    novelty가 임계 미만이거나 예산 소진 시 조기 종료.
 
-예산 (설계 §8.1): 라운드 ≤3, 라운드당 frontier ≤8, 노드당 검색어 ≤2, 총 검색 ≤40.
+예산·라운드·novelty 임계의 기본값은 중앙 설정 config.json `expand`에서 온다.
 QA 라이브 확장(D7)은 이 함수를 축소 예산(rounds=1, frontier≤2, 총≤3)으로 호출한다.
 """
 
@@ -17,7 +17,7 @@ import logging
 from neo4j import Driver
 
 from real_estate.graphflow.curator import curate_round, fetch_fact_embeddings
-from real_estate.graphflow.graph.schema import NODE_LABELS as L
+from real_estate.graphflow.graph.queries import asset_card_and_sigungu
 from real_estate.graphflow.harvester import Harvester
 from real_estate.graphflow.navigator import (
     Navigator,
@@ -29,39 +29,35 @@ from infra.agent.tracing import add_score, emit, node_scope
 
 logger = logging.getLogger("graphflow.expand")
 
-# 수집은 싸다(harvester/prefilter=gpt-mini) → 그래프를 살찌우는 쪽으로 공격적
-# 수집. 멀티홉 표면화 정교화는 별개 과제. novelty 조기종료를 낮춰(0.3→0.1) 같은
-# 얘기 재탕이 명확할 때만 멈추고, 라운드/예산 상한은 run_expand 기본값에서 상향.
-NOVELTY_THRESHOLD = 0.1
-
-
-def _asset_summary(driver: Driver, asset_id: str) -> tuple[str, str | None]:
-    with driver.session() as s:
-        r = s.run(
-            f"MATCH (a:{L.ASSET} {{asset_id: $aid}}) "
-            f"RETURN a.card_text AS card, a.sigungu AS sigungu",
-            aid=asset_id,
-        ).single()
-        if r is None:
-            raise ValueError(f"Asset 노드 없음: {asset_id} — Seeder 먼저 실행")
-        return r["card"] or asset_id, r["sigungu"]
-
 
 def run_expand(
     driver: Driver,
     *,
     asset_id: str,
     collected_by: str,
-    rounds: int = 3,
-    frontier_max: int = 12,
-    queries_per_node: int = 3,
-    total_query_budget: int = 100,
-    novelty_threshold: float = NOVELTY_THRESHOLD,
+    rounds: int | None = None,
+    frontier_max: int | None = None,
+    queries_per_node: int | None = None,
+    total_query_budget: int | None = None,
+    novelty_threshold: float | None = None,
     scope_hops: int = 3,
     purpose: str | None = None,    # QA 미니 EXPAND: 질문 구동 (§8.5, D7)
 ) -> dict:
-    """EXPAND 실행. 반환: 라운드별 통계 요약."""
-    asset_card, asset_sigungu = _asset_summary(driver, asset_id)
+    """EXPAND 실행. 반환: 라운드별 통계 요약.
+
+    기본값(rounds·frontier·예산·novelty 임계)은 중앙 설정 config.json `expand`에서
+    온다 — 명시 인자가 있으면 그게 우선(QA·moderator의 축소 예산 override). 즉
+    config 한 곳에서 EXPAND 동작을 바꾸고, 호출부 인자로 덮어쓴다. composer.compose 패턴.
+    """
+    from real_estate.graphflow.config import get_config
+    e = get_config()["expand"]
+    rounds = e["rounds"] if rounds is None else rounds
+    frontier_max = e["frontier_max"] if frontier_max is None else frontier_max
+    queries_per_node = e["queries_per_node"] if queries_per_node is None else queries_per_node
+    total_query_budget = e["total_query_budget"] if total_query_budget is None else total_query_budget
+    novelty_threshold = e["novelty_threshold"] if novelty_threshold is None else novelty_threshold
+
+    asset_card, asset_sigungu = asset_card_and_sigungu(driver, asset_id)
     navigator = Navigator()
     harvester = Harvester()
 

@@ -5,7 +5,8 @@ location → master_complex_id 해석은 호출자(서비스/에이전트 툴 �
 """
 
 import logging
-import sqlite3
+
+from real_estate.repository._db import connection
 
 logger = logging.getLogger("repository.apt_sale")
 
@@ -21,8 +22,7 @@ class AptSaleTransactionRepository:
         limit: int = 50,
     ) -> list[dict]:
         """특정 마스터 단지의 최근 매매 거래 N건. 최신순."""
-        conn = sqlite3.connect(self._db_path)
-        try:
+        with connection(self._db_path) as conn:
             cur = conn.execute(
                 """
                 SELECT deal_year_month, deal_day, deal_amount, apt_name,
@@ -36,8 +36,6 @@ class AptSaleTransactionRepository:
                 (master_complex_id, limit),
             )
             return [_row_to_dict(row) for row in cur.fetchall()]
-        finally:
-            conn.close()
 
     def fetch_recent_in_lawd(
         self,
@@ -48,8 +46,7 @@ class AptSaleTransactionRepository:
         limit: int = 500,
     ) -> list[dict]:
         """특정 시군구의 거래 내역. ymd 범위 inclusive (YYYYMM)."""
-        conn = sqlite3.connect(self._db_path)
-        try:
+        with connection(self._db_path) as conn:
             cur = conn.execute(
                 """
                 SELECT deal_year_month, deal_day, deal_amount, apt_name,
@@ -65,13 +62,10 @@ class AptSaleTransactionRepository:
                 (lawd_cd, ymd_from, ymd_to, limit),
             )
             return [_row_to_dict(row) for row in cur.fetchall()]
-        finally:
-            conn.close()
 
     def summary_by_complex_id(self, master_complex_id: int) -> dict:
         """단지별 거래 요약 (건수, 평균 금액, 최근 거래일)."""
-        conn = sqlite3.connect(self._db_path)
-        try:
+        with connection(self._db_path) as conn:
             cur = conn.execute(
                 """
                 SELECT COUNT(*) AS n,
@@ -84,8 +78,6 @@ class AptSaleTransactionRepository:
                 (master_complex_id,),
             )
             row = cur.fetchone()
-        finally:
-            conn.close()
         if row is None or row[0] == 0:
             return {"transaction_count": 0, "avg_amount": None, "latest_deal_ymd": None}
         n, avg_amount, latest = row

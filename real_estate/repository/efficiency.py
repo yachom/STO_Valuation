@@ -5,9 +5,9 @@ real_estate.db에서 조회해 dict로 반환한다.
 """
 
 import logging
-import sqlite3
 
 from real_estate.location import LocationInfo
+from real_estate.repository._db import connection
 
 logger = logging.getLogger("repository.efficiency")
 
@@ -65,8 +65,7 @@ class EnergyEfficiencyGradeRepository:
 
         # 2) 자기 DB에서 조회.
         #    같은 지번에 여러 인증이 있을 수 있어 최신 1건만 고른다.
-        conn = sqlite3.connect(self._db_path)
-        try:
+        with connection(self._db_path) as conn:
             cursor = conn.execute(
                 """
                 SELECT grd_name, primary_energy_req, energy_reduce_rate,
@@ -86,8 +85,6 @@ class EnergyEfficiencyGradeRepository:
                 (location.jibun_address,),
             )
             row = cursor.fetchone()
-        finally:
-            conn.close()
 
         # 3) 약속된 스키마에 맞춰 dict 조립.
         if row is None:

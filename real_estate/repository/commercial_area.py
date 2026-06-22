@@ -31,9 +31,9 @@
 
 import json
 import logging
-import sqlite3
 
 from real_estate.location import LocationInfo
+from real_estate.repository._db import connection
 
 logger = logging.getLogger("repository.commercial_area")
 
@@ -182,8 +182,7 @@ class CommercialAreaRepository:
         lat = location.latitude
 
         # DB 연결. 읽기 전용으로 연다.
-        conn = sqlite3.connect(self._db_path)
-        try:
+        with connection(self._db_path) as conn:
             # 1) 건물이 속한 상권들을 찾는다 (겹치면 여러 개).
             matched_areas = self._find_areas(conn, lon, lat)
 
@@ -214,8 +213,6 @@ class CommercialAreaRepository:
             #    안 속하는 건물이 있다. 이때 행정동 단위 데이터를 쓴다.
             #    행정동은 서울 전역을 빈틈없이 분할하므로 누락이 없다.
             return self._fetch_by_dong(conn, location)
-        finally:
-            conn.close()
 
     def _fetch_by_dong(self, conn, location) -> dict:
         """행정동 단위로 인구 정보를 조회한다 (내부 메서드 — 폴백).
