@@ -14,11 +14,10 @@ from __future__ import annotations
 
 import json
 import logging
-import time
-import urllib.error
 import urllib.parse
 import urllib.request
 
+from infra.external import _http
 from infra.external.naver_search.credentials import NaverCredentials
 from infra.external.naver_search.exceptions import (
     NaverAPIError,
@@ -76,34 +75,38 @@ class NaverSearchClient:
         return self._send(request, data=data, label=f"POST {url}")
 
     def _send(self, request, *, data: bytes | None = None, label: str) -> dict:
-        self._gateway.wait(self.API_NAME)
-        started_at = time.monotonic()
-        try:
-            with urllib.request.urlopen(request, data=data, timeout=self.timeout) as resp:
-                status = resp.getcode()
-                raw = resp.read().decode("utf-8")
-        except urllib.error.HTTPError as exc:
-            elapsed_ms = int((time.monotonic() - started_at) * 1000)
-            status = exc.code
-            raw = exc.read().decode("utf-8", errors="replace")
-            logger.warning("%s -> HTTP %s (%dms): %s", label, status, elapsed_ms, raw[:200])
-            self._raise_for_error(status, raw)
-        except urllib.error.URLError as exc:
-            elapsed_ms = int((time.monotonic() - started_at) * 1000)
-            logger.warning("%s -> 네트워크 오류 (%dms): %s", label, elapsed_ms, exc.reason)
-            raise NaverAPIError(f"네트워크 오류: {exc.reason}") from exc
+        def _on_http_error(status: int, body: str) -> BaseException:
+            logger.warning("%s -> HTTP %s: %s", label, status, body[:200])
+            # _raise_for_error 가 직접 raise 하므로 여기서 잡아 예외 객체로 변환.
+            try:
+                self._raise_for_error(status, body)
+            except NaverAPIError as built:
+                return built
+            return NaverAPIError(f"Naver API 호출 실패 (HTTP {status})", status=status)
 
-        elapsed_ms = int((time.monotonic() - started_at) * 1000)
+        def _on_url_error(reason: str) -> BaseException:
+            logger.warning("%s -> 네트워크 오류: %s", label, reason)
+            return NaverAPIError(f"네트워크 오류: {reason}")
 
-        try:
-            parsed = json.loads(raw)
-        except json.JSONDecodeError as exc:
+        status, raw, elapsed_ms = _http.timed_urlopen(
+            request,
+            api_name=self.API_NAME,
+            gateway=self._gateway,
+            timeout=self.timeout,
+            on_http_error=_on_http_error,
+            on_url_error=_on_url_error,
+            data=data,
+        )
+
+        def _on_json_error(exc):
             logger.warning("%s -> JSON 파싱 실패 (%dms)", label, elapsed_ms)
-            raise NaverAPIError(
+            return NaverAPIError(
                 "응답 JSON 파싱 실패",
                 status=status,
                 response_body=raw[:500],
-            ) from exc
+            )
+
+        parsed = _http.parse_json(raw, on_error=_on_json_error)
 
         if isinstance(parsed, dict) and parsed.get("errorCode"):
             logger.warning(

@@ -18,12 +18,11 @@ client 인스턴스는 한 family당 하나를 두는 게 안전하다. 생성 �
 
 from __future__ import annotations
 
-import json
 import logging
-import time
 
 import requests
 
+from infra.external import _http
 from infra.external.public_data_portal.exceptions import PublicDataPortalError
 from infra.gateway import APIGateway, get_default
 
@@ -54,37 +53,37 @@ class PublicDataPortalClient:
             **params,
         }
 
-        self._gateway.wait(self._api_name)
-        started_at = time.monotonic()
-        try:
-            response = requests.get(endpoint, params=merged, timeout=self._timeout)
-        except Exception as exc:
+        def _on_net_error(exc: Exception) -> BaseException:
             self._logger.warning("GET %s -> 네트워크 오류: %s", endpoint, exc)
-            raise PublicDataPortalError(
+            return PublicDataPortalError(
                 f"공공데이터포털 호출 실패: {exc}",
                 api_name=self._api_name,
                 endpoint=endpoint,
-            ) from exc
+            )
 
-        elapsed_ms = int((time.monotonic() - started_at) * 1000)
-        status = response.status_code
-        body_text = response.text
+        status, body_text, elapsed_ms = _http.timed_requests_get(
+            requests, endpoint, merged,
+            api_name=self._api_name,
+            gateway=self._gateway,
+            timeout=self._timeout,
+            on_error=_on_net_error,
+        )
 
-        try:
-            data = json.loads(body_text)
-        except json.JSONDecodeError as exc:
+        def _on_json_error(exc):
             self._logger.warning(
                 "GET %s -> JSON 파싱 실패 (%dms, status=%s)",
                 endpoint, elapsed_ms, status,
             )
-            raise PublicDataPortalError(
+            return PublicDataPortalError(
                 "공공데이터포털이 JSON이 아닌 응답을 반환했습니다. "
                 "(키 오류 또는 서버 오류 가능) 응답 원문: "
                 f"{body_text[:500]}",
                 api_name=self._api_name,
                 endpoint=endpoint,
                 status=status,
-            ) from exc
+            )
+
+        data = _http.parse_json(body_text, on_error=_on_json_error)
 
         header = data.get("response", {}).get("header", {})
         result_code = header.get("resultCode")

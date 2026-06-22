@@ -18,13 +18,11 @@
 from __future__ import annotations
 
 import datetime as _dt
-import json
 import logging
-import urllib.error
 import urllib.parse
-import urllib.request
 from dataclasses import dataclass
 
+from infra.external import _http
 from infra.gateway import APIGateway, get_default
 
 logger = logging.getLogger("external.localdata")
@@ -88,15 +86,10 @@ class LocalDataClient:
             road_address: 도로명 LIKE 필터 (예: "강서로 385").
             max_rows: 최대 수집 건수.
         """
-        rows: list[dict] = []
-        page = 1
-        while len(rows) < max_rows:
-            size = min(100, max_rows - len(rows))
-            batch, total = self._call(service, road_address, page, size)
-            rows.extend(batch)
-            if not batch or len(rows) >= total:
-                break
-            page += 1
+        rows = _http.paginate(
+            lambda page, size: self._call(service, road_address, page, size),
+            max_rows=max_rows, page_size=100,
+        )
         return [self._normalize(r) for r in rows]
 
     def _call(self, service: str, road: str, page: int, size: int) -> tuple[list, int]:
@@ -105,19 +98,18 @@ class LocalDataClient:
             "returnType": "json", "cond[ROAD_NM_ADDR::LIKE]": road,
         }
         url = f"{self.BASE}/{service}/info?{urllib.parse.urlencode(params)}"
-        self._gateway.wait(self.API_NAME)
-        try:
-            raw = urllib.request.urlopen(url, timeout=self.timeout).read().decode("utf-8")
-        except urllib.error.HTTPError as exc:
-            body = exc.read().decode("utf-8", "replace")
-            raise LocalDataError(f"LocalData HTTP {exc.code}: {body[:120]}",
-                                 status=exc.code) from exc
-        except urllib.error.URLError as exc:
-            raise LocalDataError(f"네트워크 오류: {exc.reason}") from exc
-        try:
-            body = json.loads(raw).get("response", {}).get("body", {})
-        except json.JSONDecodeError as exc:
-            raise LocalDataError(f"JSON 파싱 실패: {raw[:120]}") from exc
+        _, raw, _ = _http.timed_urlopen(
+            url,
+            api_name=self.API_NAME,
+            gateway=self._gateway,
+            timeout=self.timeout,
+            on_http_error=lambda status, b: LocalDataError(
+                f"LocalData HTTP {status}: {b[:120]}", status=status),
+            on_url_error=lambda reason: LocalDataError(f"네트워크 오류: {reason}"),
+        )
+        parsed = _http.parse_json(
+            raw, on_error=lambda exc: LocalDataError(f"JSON 파싱 실패: {raw[:120]}"))
+        body = parsed.get("response", {}).get("body", {})
         items = (body.get("items") or {}).get("item") or []
         if isinstance(items, dict):
             items = [items]

@@ -13,11 +13,9 @@ from __future__ import annotations
 
 import json
 import logging
-import time
-import urllib.error
 import urllib.parse
-import urllib.request
 
+from infra.external import _http
 from infra.gateway import APIGateway, get_default
 
 logger = logging.getLogger("external.reb_rone")
@@ -81,30 +79,23 @@ class RebRoneClient:
 
     # ── 내부 ──────────────────────────────────────────────────────
     def _paged(self, op: str, params: dict, *, max_rows: int = 1000) -> list[dict]:
-        rows: list[dict] = []
-        page = 1
-        while len(rows) < max_rows:
-            size = min(_MAX_PSIZE, max_rows - len(rows))
-            batch, total = self._call(op, params, page, size)
-            rows.extend(batch)
-            if not batch or len(rows) >= total:
-                break
-            page += 1
-        return rows
+        return _http.paginate(
+            lambda page, size: self._call(op, params, page, size),
+            max_rows=max_rows, page_size=_MAX_PSIZE,
+        )
 
     def _call(self, op: str, params: dict, page: int, size: int) -> tuple[list, int]:
         q = {"KEY": self.key, "Type": "json", "pIndex": page, "pSize": size, **params}
         # 엔드포인트는 .do 접미사 필요 (명세서엔 생략돼 있으나 실제 호출은 .do).
         url = f"{self.BASE}/{op}.do?{urllib.parse.urlencode(q)}"
-        self._gateway.wait(self.API_NAME)
-        t0 = time.monotonic()
-        try:
-            with urllib.request.urlopen(url, timeout=self.timeout) as resp:
-                raw = resp.read().decode("utf-8")
-        except urllib.error.HTTPError as exc:
-            raise RebRoneError(f"REB HTTP {exc.code}", code=exc.code) from exc
-        except urllib.error.URLError as exc:
-            raise RebRoneError(f"네트워크 오류: {exc.reason}") from exc
+        _, raw, elapsed = _http.timed_urlopen(
+            url,
+            api_name=self.API_NAME,
+            gateway=self._gateway,
+            timeout=self.timeout,
+            on_http_error=lambda status, b: RebRoneError(f"REB HTTP {status}", code=status),
+            on_url_error=lambda reason: RebRoneError(f"네트워크 오류: {reason}"),
+        )
 
         data = json.loads(raw)
         blocks = data.get(op)
@@ -122,6 +113,5 @@ class RebRoneClient:
             raise RebRoneError(f"REB {code}: {result.get('MESSAGE')}", code=code)
         rows = [r for b in blocks if "row" in b for r in b["row"]]
         total = int(head.get("list_total_count") or len(rows))
-        elapsed = int((time.monotonic() - t0) * 1000)
         logger.info("%s p%d/%d -> %d행/%d (%dms)", op, page, size, len(rows), total, elapsed)
         return rows, total
