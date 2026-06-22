@@ -19,9 +19,9 @@ commercial_estimated_sales)를 읽어, 상권의 업종별 매출 구조를 반�
 """
 
 import logging
-import sqlite3
 
 from real_estate.location import LocationInfo
+from real_estate.repository._db import connection
 
 logger = logging.getLogger("repository.commercial_sales")
 
@@ -72,11 +72,8 @@ class CommercialSalesRepository:
         Returns:
             업종 매출 dict (클래스 docstring 스키마). 데이터 없으면 None.
         """
-        conn = sqlite3.connect(self._db_path)
-        try:
+        with connection(self._db_path) as conn:
             return self._top_industries(conn, trdar_cd, top_n)
-        finally:
-            conn.close()
 
     def fetch(self, location: LocationInfo, *, top_n: int = 10) -> dict:
         """좌표가 속한 상권(들)의 업종 매출을 반환한다 (standalone 편의).
@@ -95,12 +92,9 @@ class CommercialSalesRepository:
         codes = [a["상권코드"] for a in area_result.get("상권목록", [])
                  if a.get("상권코드")]
 
-        conn = sqlite3.connect(self._db_path)
-        try:
+        with connection(self._db_path) as conn:
             areas = [self._top_industries(conn, cd, top_n) for cd in codes]
             areas = [a for a in areas if a is not None]
-        finally:
-            conn.close()
         return {"매칭상권수": len(areas), "상권목록": areas}
 
     # ── 내부 ──────────────────────────────────────────────────────

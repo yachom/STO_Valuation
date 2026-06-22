@@ -10,9 +10,9 @@ real_estate.db의 complex_master 테이블을 읽어, 건물 주변(반경 내)
 
 import logging
 import math
-import sqlite3
 
 from real_estate.location import LocationInfo
+from real_estate.repository._db import connection
 
 logger = logging.getLogger("repository.nearby_apartment")
 
@@ -72,11 +72,8 @@ class NearbyApartmentRepository:
         lat = location.latitude
         lon = location.longitude
 
-        conn = sqlite3.connect(self._db_path)
-        try:
+        with connection(self._db_path) as conn:
             complexes = self._find_complexes(conn, lat, lon)
-        finally:
-            conn.close()
 
         total_households = sum(c["세대수"] for c in complexes if c["세대수"])
 
