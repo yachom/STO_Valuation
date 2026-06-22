@@ -31,7 +31,7 @@ from real_estate.graphflow.composer import (
     paths_to_evidence,
 )
 from real_estate.graphflow.config import get_config
-from real_estate.graphflow.graph.schema import NODE_LABELS as L
+from real_estate.graphflow.graph.queries import asset_card as _asset_card
 from real_estate.graphflow.moderator import Moderator
 from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.traversal import asset_anchor_eid
@@ -203,13 +203,6 @@ class Outliner(BaseAgent):
 # ───────────────────────────────────────────────────────────
 # 담론 루프 오케스트레이션
 # ───────────────────────────────────────────────────────────
-def _asset_card(driver: Driver, asset_id: str) -> str:
-    with driver.session() as s:
-        r = s.run(f"MATCH (a:{L.ASSET} {{asset_id: $aid}}) RETURN a.card_text AS c",
-                  aid=asset_id).single()
-    return (r["c"] if r else None) or asset_id
-
-
 def _building_type_summary(bt: dict | None) -> str:
     if not bt:
         return "미분류"

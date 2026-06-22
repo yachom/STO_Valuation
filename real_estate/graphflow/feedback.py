@@ -201,6 +201,44 @@ def submit_feedback(driver: Driver, report: dict, asset_id: str, *,
             "status": ASSESSED, "_target_claim_id": resolved[0]}
 
 
+def _apply_accept(driver: Driver, report: dict, asset_id: str, *,
+                  feedback_id: str, target_claim_id: str, kind: str, comment: str,
+                  out_dir: str, asset_card: str | None) -> dict:
+    """accept(합의) → 외과적 수정(edit/challenge/enrich) → 새 버전 발행.
+
+    resolve_feedback의 accept 분기를 분리 — resolve_feedback은 결정 디스패치만 담당.
+    """
+    _set_status(driver, feedback_id, AGREED)
+    with node_scope("reviser_apply", kind=kind):
+        if asset_card is None:
+            asset_card = asset_card_text(driver, asset_id)
+        reviser = Reviser()
+        _, target_claim = _resolve_target_claim(report, target_claim_id) or (None, None)
+        if kind == "edit":
+            evidence = reviser._gather_evidence(driver, asset_id, target_claim,
+                                                comment, max_hops=3)
+            report = reviser.apply_edit(report, asset_card, target_claim_id,
+                                        comment, evidence)
+        elif kind == "challenge":
+            report = reviser.apply_challenge(driver, report, asset_id, target_claim_id,
+                                             comment, asset_card, collected_by=feedback_id)
+        elif kind == "enrich":
+            report = reviser.apply_enrich(driver, report, asset_id, target_claim_id,
+                                          comment, asset_card, collected_by=feedback_id)
+
+        new_target = report.pop("_last_target_claim_id", None)
+        bump_version(report, notes=f"[{kind}] {comment[:60]}")
+        save_report_files(report, out_dir)
+        rewrite_report_graph(driver, report)
+        _reconnect_target(driver, feedback_id, new_target)   # TARGETS 보존
+        _set_status(driver, feedback_id, APPLIED,
+                    resulted_in_version=report["version_id"])
+        emit("feedback_applied", feedback_id=feedback_id, kind=kind,
+             version=report["version_id"])
+    return {"status": APPLIED, "report_changed": True,
+            "version": report["version_id"], "report": report}
+
+
 def resolve_feedback(driver: Driver, report: dict, asset_id: str, *,
                      feedback_id: str, target_claim_id: str, kind: str,
                      comment: str, decision: str, out_dir: str,
@@ -236,34 +274,6 @@ def resolve_feedback(driver: Driver, report: dict, asset_id: str, *,
                 "report": report}
     if decision != "accept":
         raise ValueError(f"decision은 accept/withdraw/dispute/rebut — {decision}")
-
-    # ── accept: agreed → 외과적 수정 → 새 버전 ──
-    _set_status(driver, feedback_id, AGREED)
-    with node_scope("reviser_apply", kind=kind):
-        if asset_card is None:
-            asset_card = asset_card_text(driver, asset_id)
-        reviser = Reviser()
-        _, target_claim = _resolve_target_claim(report, target_claim_id) or (None, None)
-        if kind == "edit":
-            evidence = reviser._gather_evidence(driver, asset_id, target_claim,
-                                                comment, max_hops=3)
-            report = reviser.apply_edit(report, asset_card, target_claim_id,
-                                        comment, evidence)
-        elif kind == "challenge":
-            report = reviser.apply_challenge(driver, report, asset_id, target_claim_id,
-                                             comment, asset_card, collected_by=feedback_id)
-        elif kind == "enrich":
-            report = reviser.apply_enrich(driver, report, asset_id, target_claim_id,
-                                          comment, asset_card, collected_by=feedback_id)
-
-        new_target = report.pop("_last_target_claim_id", None)
-        bump_version(report, notes=f"[{kind}] {comment[:60]}")
-        save_report_files(report, out_dir)
-        rewrite_report_graph(driver, report)
-        _reconnect_target(driver, feedback_id, new_target)   # TARGETS 보존
-        _set_status(driver, feedback_id, APPLIED,
-                    resulted_in_version=report["version_id"])
-        emit("feedback_applied", feedback_id=feedback_id, kind=kind,
-             version=report["version_id"])
-    return {"status": APPLIED, "report_changed": True,
-            "version": report["version_id"], "report": report}
+    return _apply_accept(driver, report, asset_id, feedback_id=feedback_id,
+                         target_claim_id=target_claim_id, kind=kind, comment=comment,
+                         out_dir=out_dir, asset_card=asset_card)

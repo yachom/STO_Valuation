@@ -122,7 +122,7 @@ def expand_node(state: GraphFlowState) -> dict:
         _get_driver(), asset_id=state["asset_id"],
         collected_by=collected_by,
         rounds=rounds,
-        total_query_budget=state.get("expand_budget", 40),
+        total_query_budget=state.get("expand_budget"),   # None → config.expand
         purpose=_office_purpose(state.get("building_type")))
 
     if _curation_mode() == "moderated":
@@ -276,7 +276,7 @@ def run_report_pipeline(
     db_path: str = "",
     location=None,
     expand_rounds: int = 0,
-    expand_budget: int = 100,     # 공격적 수집 — 그래프 적재 우선 (gpt-mini 저비용)
+    expand_budget: int | None = None,   # None → config.expand.total_query_budget
     evidence_k: int | None = None,
 ) -> GraphFlowState:
     """워크플로우 1회 실행. Langfuse 콜백 자동 부착."""

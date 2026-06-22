@@ -25,6 +25,7 @@ from real_estate.graphflow.auditor import AuditorLLM, audit_overview, audit_sect
 from real_estate.graphflow.composer import Evidence, compose
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
+from real_estate.graphflow.graph.queries import asset_card
 from real_estate.graphflow.profiles import REPORT_AXES
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, write_edges, seed
 from real_estate.graphflow.synthesizer import Synthesizer
@@ -41,12 +42,8 @@ def _claim_id(axis: str, text: str) -> str:
 
 
 def asset_card_text(driver: Driver, asset_id: str) -> str:
-    with driver.session() as s:
-        r = s.run(f"MATCH (a:{L.ASSET} {{asset_id: $aid}}) RETURN a.card_text AS c",
-                  aid=asset_id).single()
-        if r is None:
-            raise ValueError(f"Asset 노드 없음: {asset_id}")
-        return r["c"] or asset_id
+    """Asset 카드 (시드 선행 필수 — 없으면 ValueError). 그래프 조회는 graph.queries에 통합."""
+    return asset_card(driver, asset_id, required=True)
 
 
 # ───────────────────────────────────────────────────────────

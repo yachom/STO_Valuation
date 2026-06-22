@@ -52,6 +52,11 @@ _DEFAULTS: dict[str, Any] = {
         "rounds": 2, "frontier_max": 12, "queries_per_node": 3,
         "total_query_budget": 100, "novelty_threshold": 0.1,
     },
+    # QA 충분성 판정 임계 + 미니 EXPAND 축소 예산 (D7).
+    "qa": {
+        "min_evidence": 2, "min_top_score": 0.12,
+        "mini_expand": {"rounds": 1, "frontier_max": 2, "total_query_budget": 3},
+    },
     # 담론 큐레이션 (STORM/Co-STORM, D17~D22). static=기존 결정 경로 불변.
     "curation": {
         "mode": "static", "moderator_max_rounds": 2,

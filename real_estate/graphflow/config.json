@@ -55,5 +55,11 @@
     "queries_per_node":   3,
     "total_query_budget": 100,
     "novelty_threshold":  0.1
+  },
+
+  "qa": {
+    "min_evidence":  2,
+    "min_top_score": 0.12,
+    "mini_expand":   {"rounds": 1, "frontier_max": 2, "total_query_budget": 3}
   }
 }

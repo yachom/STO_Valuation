@@ -30,7 +30,7 @@ from real_estate.graphflow.coverage import (
     coverage_summary_text,
     emit_coverage_scores,
 )
-from real_estate.graphflow.graph.schema import NODE_LABELS as L
+from real_estate.graphflow.graph.queries import asset_card as _asset_card
 from real_estate.graphflow.prompts import get_prompt
 from infra.agent.tracing import add_score, emit, node_scope
 
@@ -95,13 +95,6 @@ class Moderator(BaseAgent):
 # ───────────────────────────────────────────────────────────
 # GAP → 미니 EXPAND 재진입 루프
 # ───────────────────────────────────────────────────────────
-def _asset_card(driver: Driver, asset_id: str) -> str:
-    with driver.session() as s:
-        r = s.run(f"MATCH (a:{L.ASSET} {{asset_id: $aid}}) RETURN a.card_text AS c",
-                  aid=asset_id).single()
-    return (r["c"] if r else None) or asset_id
-
-
 def run_moderated_expand(
     driver: Driver,
     *,

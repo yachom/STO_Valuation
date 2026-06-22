@@ -23,6 +23,7 @@ from neo4j import Driver
 from pydantic import BaseModel, Field, field_validator
 
 from real_estate.graphflow.agents.base import BaseAgent, coerce_json
+from real_estate.graphflow.config import get_config
 from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.composer import (
     Evidence,
@@ -32,6 +33,7 @@ from real_estate.graphflow.composer import (
 )
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
+from real_estate.graphflow.graph.queries import asset_card as _asset_card
 from real_estate.graphflow.harvester import load_scope_names
 from real_estate.graphflow.policies import SemanticPolicy
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, write_edges, seed
@@ -46,11 +48,7 @@ from real_estate.graphflow.traversal import (
 
 logger = logging.getLogger("graphflow.qa")
 
-# 코드 충분성 판정 임계 — 미달이면 미니 EXPAND 발동
-_MIN_EVIDENCE = 2
-_MIN_TOP_SCORE = 0.12
-
-_MINI_EXPAND_BUDGET = dict(rounds=1, frontier_max=2, total_query_budget=3)
+# 코드 충분성 판정 임계 + 미니 EXPAND 축소 예산은 중앙 설정 config.json `qa`에서 (get_config).
 
 
 # ───────────────────────────────────────────────────────────
@@ -143,15 +141,9 @@ def _scope_map_summary(driver: Driver, asset_id: str, *, cap_per_label: int = 12
     return "\n".join(lines) if lines else "(스코프 비어 있음)"
 
 
-def _asset_card(driver: Driver, asset_id: str) -> str:
-    with driver.session() as s:
-        r = s.run(f"MATCH (a:{L.ASSET} {{asset_id: $aid}}) RETURN a.card_text AS c",
-                  aid=asset_id).single()
-        return (r["c"] if r else None) or asset_id
-
-
 def _code_sufficient(evidence: list[Evidence]) -> bool:
-    return len(evidence) >= _MIN_EVIDENCE and evidence[0].score >= _MIN_TOP_SCORE
+    q = get_config()["qa"]
+    return len(evidence) >= q["min_evidence"] and evidence[0].score >= q["min_top_score"]
 
 
 # ───────────────────────────────────────────────────────────
@@ -192,7 +184,7 @@ class QAResponder(BaseAgent):
                      reason="code_insufficient" if answer is None else "llm_insufficient")
                 from real_estate.graphflow.expand import run_expand
                 run_expand(driver, asset_id=asset_id, collected_by=question_id,
-                           purpose=question, **_MINI_EXPAND_BUDGET)
+                           purpose=question, **get_config()["qa"]["mini_expand"])
                 expanded = True
                 evidence = self._retrieve(driver, asset_id, question,
                                           k=k, max_hops=max_hops)
