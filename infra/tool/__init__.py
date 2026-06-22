@@ -5,6 +5,10 @@ naver: 네이버 뉴스 검색/스크랩 — 부동산·음악저작권 등 자�
 
 자산 전용 도구(예: 부동산 건축HUB 대장)는 <asset>/graphflow/tool/에 둔다.
 각 자산은 두 곳(infra/tool 공통 + <asset>/.../tool 전용)에서 도구를 import한다.
+
+옵션 채널(web=Tavily 키필요 / ddgs=DuckDuckGo 무키)은 3rd-party 의존이라
+여기서 eager export하지 않는다 — 사용처에서 lazy import해 graceful skip한다
+(infra.tool.web / infra.tool.ddgs 직접 import).
 """
 
 from infra.tool.base import BaseTool

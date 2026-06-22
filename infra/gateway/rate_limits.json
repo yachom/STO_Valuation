@@ -1,7 +1,9 @@
 {
   "naver_search": { "min_interval_seconds": 0.2 },
   "naver_news_scraper": { "min_interval_seconds": 1.0 },
+  "ddgs": { "min_interval_seconds": 1.5 },
   "building_hub": { "min_interval_seconds": 0.5 },
+  "building_energy": { "min_interval_seconds": 0.3 },
   "kakao_local": { "min_interval_seconds": 0.05 },
   "juso_addr_link": { "min_interval_seconds": 0.2 },
   "kb_land": { "min_interval_seconds": 0.3 },
