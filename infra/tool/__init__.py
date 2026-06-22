@@ -8,6 +8,15 @@ naver: 네이버 뉴스 검색/스크랩 — 부동산·음악저작권 등 자�
 """
 
 from infra.tool.base import BaseTool
-from infra.tool.naver import NaverNewsScrapeTool, NaverNewsSearchTool
+from infra.tool.naver import (
+    NaverNewsScrapeTool,
+    NaverNewsSearchTool,
+    NaverVerticalSearchTool,
+)
 
-__all__ = ["BaseTool", "NaverNewsSearchTool", "NaverNewsScrapeTool"]
+__all__ = [
+    "BaseTool",
+    "NaverNewsSearchTool",
+    "NaverNewsScrapeTool",
+    "NaverVerticalSearchTool",
+]
