@@ -80,6 +80,19 @@ def card_for_building(p: dict) -> str:
         spec.append(f"{p['approved_at']} 사용승인")
     if p.get("energy_grade"):
         spec.append(f"에너지효율 {p['energy_grade']}등급")
+    if p.get("energy_primary_kwh_sqm"):
+        # 실사용(전기+가스) 1차에너지 → 추정 등급. 공식 인증(설계기준 energy_grade)과 구분해 '추정' 명시.
+        spec.append(f"에너지효율 추정 {p.get('energy_grade_est')}등급"
+                    f"(1차에너지 {p['energy_primary_kwh_sqm']}kWh/㎡·년, "
+                    f"{p.get('energy_year', '')} 실사용 전기+가스)")
+    if p.get("seismic_design_applied") is not None:
+        # 물리리스크(지진) — 내진설계 적용여부. 노후(준공연도)와 함께 평가.
+        sd = str(p["seismic_design_applied"]).strip()
+        seismic = "내진설계 적용" if sd in ("1", "Y", "y") else "내진설계 미적용"
+        ab = p.get("seismic_ability")
+        if ab and str(ab).strip():
+            seismic += f"(내진능력 {str(ab).strip()})"
+        spec.append(seismic)
     spec_s = " — " + ", ".join(spec) if spec else ""
     return f"{head}{spec_s}. 건물관리번호 {p.get('bdmgt_sn', '')}."
 

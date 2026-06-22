@@ -225,6 +225,9 @@ def _collect_location_anchors(sg, conn, asset, loc, building_hub_key="") -> None
         # 건축HUB 대장 보강 (표제부 → 연면적·층수·용도·준공·에너지등급)
         if building_hub_key:
             bprops.update(_fetch_building_register(loc, building_hub_key))
+            # 건물에너지(가스) — 연면적 확보 후 원단위 계산 (ESG-E 정량 지표)
+            bprops.update(_fetch_building_energy(loc, building_hub_key,
+                                                 bprops.get("total_area_sqm")))
         building = sg.add_node(L.BUILDING, loc.bd_mgt_sn, bprops)
         sg.add_edge(asset, E.ANCHORS, building)
         sg.add_edge(building, E.LOCATED_IN, legal)
@@ -238,6 +241,34 @@ def _fetch_building_register(loc: LocationInfo, key: str) -> dict:
         return result.get("building_props", {})
     except Exception as exc:
         logger.warning("건축HUB 보강 실패 (계속 진행): %s", exc)
+        return {}
+
+
+def _fetch_building_energy(loc: LocationInfo, key: str, total_area_sqm) -> dict:
+    """건축HUB 건물에너지(전기+가스) → Building 에너지 프로퍼티. best-effort (빈 dict).
+
+    전기+가스 연 사용량을 1차에너지 환산(전기 2.75/가스 1.1) 후 연면적으로 나눠 실사용
+    추정 등급 — ESG-E 정량 grounding. 전기가 등급을 좌우하므로 반드시 둘 다 합산한다.
+    키는 building_hub와 동일(DATA_GO_KR).
+    """
+    try:
+        from datetime import date
+        from infra.external.public_data_portal import PublicDataPortalClient
+        from real_estate.external.building_energy import (
+            API_NAME, BuildingEnergyRepository, primary_energy_assessment)
+        repo = BuildingEnergyRepository(
+            PublicDataPortalClient(service_key=key, api_name=API_NAME))
+        e = repo.fetch_energy(loc, this_year=date.today().year)
+        if not (e.get("gas_kwh") or e.get("elec_kwh")):
+            return {}
+        props = {"gas_annual_kwh": e.get("gas_kwh"), "elec_annual_kwh": e.get("elec_kwh"),
+                 "energy_year": e.get("year")}
+        if total_area_sqm:
+            props.update(primary_energy_assessment(
+                e.get("gas_kwh", 0), e.get("elec_kwh", 0), float(total_area_sqm)))
+        return props
+    except Exception as exc:
+        logger.warning("건물에너지 보강 실패 (계속 진행): %s", exc)
         return {}
 
 
