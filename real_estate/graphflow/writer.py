@@ -33,16 +33,35 @@ AXIS_FOCUS = {
 }
 
 
+class Computation(BaseModel):
+    """파생수치 산식 — 본문 숫자가 인용 증거 값들의 계산 결과일 때 첨부.
+
+    LLM이 머릿속 산수로 낸 숫자는 신뢰하지 않는다(환각 위험). 산식과 결과를 같이
+    내면 Auditor가 코드로 재계산해 검증한다(a-2): ① expression의 입력 숫자가 인용
+    증거에 실재하는지 ② expression을 평가한 값이 result와 일치하는지. 둘 다 통과해야
+    본문의 파생수치가 인정된다.
+    """
+    expression: str = Field(
+        description="산식 — 인용 증거에 있는 원 숫자와 + - * / ( ) 만 사용. 예: '829924 / 33880'")
+    result: float = Field(description="이 산식을 계산한 결과값 (본문에 쓰는 파생수치의 출처)")
+
+
 class ClaimDraft(BaseModel):
     text: str = Field(description="주장 한 문장 (한국어)")
-    kind: Literal["factual", "opinion"] = Field(
-        description="factual=증거에 직접 근거한 사실 / opinion=사실들에서 도출한 해석·판단")
+    kind: Literal["factual", "opinion", "gap"] = Field(
+        description="factual=증거에 직접 근거한 사실 / opinion=사실들에서 도출한 해석·판단 / "
+                    "gap=증거가 다루지 않는 정보의 부재·유보 진술('~자료는 증거에 없다/부족하다', "
+                    "'확인되지 않아 유보'). gap은 cites·derived_from가 불요하나 수치를 담을 수 없다")
     cites: list[int] = Field(
         default_factory=list,
-        description="근거 evidence 번호들 (E3이면 3). factual은 1개 이상 필수")
+        description="근거 evidence 번호들 (E3이면 3). factual은 1개 이상 필수 (gap·opinion은 불요)")
     derived_from: list[int] = Field(
         default_factory=list,
         description="opinion일 때 — 이 출력의 claims 배열에서 근거가 되는 claim 인덱스(0-base)")
+    computations: list[Computation] = Field(
+        default_factory=list,
+        description="본문에 비율·배수·백분율·단위환산·반올림 등 '계산한' 수치가 있으면 각각 산식 첨부. "
+                    "증거에 그대로 있는 값을 직접 인용한 경우엔 불요")
     as_of: str | None = Field(
         default=None, description="주장의 기준 시점 (인용 증거의 보도/기준 시점, 예: 2025-04)")
 

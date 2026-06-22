@@ -16,6 +16,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 
@@ -91,6 +92,7 @@ def _assemble(
                 "cites": cites_refs,
                 "derived_from": [claim_ids[(axis, j)] for j in cl.derived_from
                                  if (axis, j) in claim_ids],
+                "computations": [c.model_dump() for c in getattr(cl, "computations", [])],
                 "as_of": cl.as_of, "block_id": claim_block.get(i),
             }
         sections_json.append({
@@ -141,7 +143,9 @@ def _assemble(
     }
 
 
-def render_markdown(report: dict) -> str:
+def render_markdown(report: dict, *, annotate_blocks: bool = False) -> str:
+    """보고서 dict → markdown. annotate_blocks면 각 섹션 문단 앞에 [#block_id] 앵커를
+    붙인다 — LLM 감사가 수정 대상 블록(fix_target)을 지목하는 용도(저장본은 False)."""
     lines = [f"# 상가 자산 정성 평가 보고서", f"",
              f"- report: `{report['report_id']}` ({report['version_id']})",
              f"- asset: `{report['asset_id']}`",
@@ -158,6 +162,8 @@ def render_markdown(report: dict) -> str:
     for sec in report["sections"]:
         lines.append(f"## [{sec['axis']}] {sec['title']}\n")
         for b in sec["blocks"]:
+            if annotate_blocks:
+                lines.append(f"[#{b['block_id']}]")
             lines.append(b["markdown"])
             lines.append("")
     lines.append("---\n\n## 인용 근거 (evidence)\n")
@@ -305,6 +311,79 @@ def synthesize_overview(asset_card: str, sections: dict[str, SectionDraft]):
         return overview, index_map, violations
 
 
+def _n_high(notes) -> int:
+    return sum(1 for i in notes.issues if i.severity == "high")
+
+
+def _resolve_section_block(report: dict, block_id: str):
+    """fix_target block_id → (axis, 대표 claim_id). overview·미발견은 None."""
+    if not block_id or block_id.startswith("blk_overview"):
+        return None
+    for sec in report["sections"]:
+        if sec["axis"] == "overview":
+            continue
+        for b in sec["blocks"]:
+            if b["block_id"] == block_id and b.get("claim_ids"):
+                return sec["axis"], b["claim_ids"][0]
+    return None
+
+
+def _audit_fix_directive(issue) -> str:
+    return (f"[LLM 감사 지적 — {issue.kind}] {issue.description}\n"
+            f"이 지적을 반영해 문단을 수정하세요. 새 사실을 만들지 말고, 기존 인용 증거 "
+            f"범위 안에서 단정 완화·반대 증거 반영·축간 모순 해소만 합니다.")
+
+
+def _revise_audit_high(driver, asset_id, report, evidence_by_axis, auditor, notes):
+    """LLM 감사 high 이슈를 Reviser로 1패스 외과 수정 → 재감사 → 개선 시에만 채택(무회귀).
+
+    설계 b-ⓐ: auditor는 내부 신뢰 신호라 reviser.assess(맹신 금지)를 생략하고
+    apply_edit로 바로 해당 블록만 수정한다. 섹션 블록 타깃만 고친다 — overview 블록은
+    Reviser의 [E#] 인용 체계와 안 맞아 제외(로그만). reviser.edit_rules가 '새 사실 금지·
+    기존 E# 내'를 강제하므로 grounding은 보존된다.
+    """
+    targets = []
+    for iss in notes.issues:
+        if iss.severity != "high":
+            continue
+        loc = _resolve_section_block(report, iss.fix_target)
+        if loc is None:
+            emit("audit_llm_fix_skip", reason="no_section_target",
+                 location=iss.location[:60], target=iss.fix_target)
+            continue
+        targets.append((iss, loc))
+    if not targets:
+        return notes
+
+    from real_estate.graphflow.reviser import Reviser
+    snapshot = deepcopy(report)
+    asset_card = asset_card_text(driver, asset_id)
+    reviser = Reviser()
+    applied = 0
+    for iss, (axis, cid) in targets:
+        evidence = evidence_by_axis.get(axis) or []
+        if not evidence:
+            continue
+        try:
+            reviser.apply_edit(report, asset_card, cid, _audit_fix_directive(iss), evidence)
+            applied += 1
+        except Exception as exc:
+            logger.warning("audit revise 실패 (axis=%s): %s", axis, str(exc)[:120])
+    report.pop("_last_target_claim_id", None)
+    if not applied:
+        return notes
+
+    notes2 = auditor.review(render_markdown(report, annotate_blocks=True))
+    before, after = _n_high(notes), _n_high(notes2)
+    if after < before:                       # 개선됐을 때만 채택
+        emit("audit_llm_revised", high_before=before, high_after=after, applied=applied)
+        return notes2
+    report.clear()                           # 무개선/회귀 → 원복 (호출부 dict 참조 보존)
+    report.update(snapshot)
+    emit("audit_llm_revise_noop", high_before=before, high_after=after, applied=applied)
+    return notes
+
+
 def finalize_report(
     driver: Driver,
     asset_id: str,
@@ -316,15 +395,17 @@ def finalize_report(
     *,
     out_dir: str | Path,
 ) -> dict:
-    """조립 → LLM층 감사 → 파일 저장 → Report 서브그래프 적재."""
+    """조립 → LLM층 감사(+high 이슈 revise 1패스) → 파일 저장 → Report 서브그래프 적재."""
     report_id = make_run_id("rpt")
     report = _assemble(report_id, asset_id, sections, overview, index_map,
                        evidence_by_axis, audit={"mechanical": mech_audit})
-    md = render_markdown(report)
 
     with node_scope("audit_llm"):
-        notes = AuditorLLM().review(md)
+        auditor = AuditorLLM()
+        notes = auditor.review(render_markdown(report, annotate_blocks=True))
+        notes = _revise_audit_high(driver, asset_id, report, evidence_by_axis, auditor, notes)
         report["audit"]["llm"] = notes.model_dump()
+    md = render_markdown(report)        # revise 반영된 최종본
 
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
