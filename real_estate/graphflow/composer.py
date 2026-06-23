@@ -217,7 +217,7 @@ def _scope_fact_paths(
     직접 검색해 '관련 뉴스/사실'을 결정적으로 확보하고 스코프로 한정한다(타 자산 누출
     차단). purpose_text: 보고서=AXIS_NEWS_INTENT, QA=질문. 공용.
     """
-    from real_estate.graphflow.graph.embedder import embed_one
+    from infra.graph.embedder import embed_one
     from real_estate.graphflow.graph.vector_index import search_similar
     from real_estate.graphflow.traversal import load_nodes, scope_eids
 

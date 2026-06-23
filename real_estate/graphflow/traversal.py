@@ -12,12 +12,16 @@
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass, field
 
 from neo4j import Driver
 
+from infra.graph.embedder import embed_one
+from infra.graph.walk import EdgeStep, EvidencePath, NodeRef  # noqa: F401  (호환 재노출)
+from infra.graph.walk import _expand as _infra_expand
+from infra.graph.walk import load_nodes as _infra_load_nodes
+from infra.graph.walk import walk as _infra_walk
 from real_estate.graphflow.graph.schema import KEY_PROP
-from real_estate.graphflow.policies import WalkPolicy
+from real_estate.graphflow.policies import WalkPolicy  # noqa: F401  (호환 재노출)
 
 logger = logging.getLogger("graphflow.walk")
 
@@ -25,123 +29,20 @@ _EPS = 1e-12
 
 
 # ───────────────────────────────────────────────────────────
-# 자료구조
-# ───────────────────────────────────────────────────────────
-@dataclass(frozen=True)
-class NodeRef:
-    eid: str
-    label: str
-    key: str
-    card_text: str
-
-
-@dataclass(frozen=True)
-class EdgeStep:
-    rel: str
-    direction: str   # 'out' | 'in' (순회 방향 기준)
-    weight: float
-
-
-@dataclass
-class EvidencePath:
-    nodes: list[NodeRef]              # [anchor, ..., tail]
-    edges: list[EdgeStep]            # len == len(nodes) - 1
-    score: float
-
-    @property
-    def tail(self) -> NodeRef:
-        return self.nodes[-1]
-
-    @property
-    def sig(self) -> tuple:
-        """경로 식별자 (동점 tie-break / 재현성용)."""
-        return tuple(n.key for n in self.nodes)
-
-    @property
-    def hops(self) -> int:
-        return len(self.edges)
-
-    def text(self) -> str:
-        """LLM 컨텍스트용 직렬화 — 카드 체인 + 관계/방향 (§5.5)."""
-        lines = [self.nodes[0].card_text]
-        for i, e in enumerate(self.edges):
-            nxt = self.nodes[i + 1]
-            arrow = f"—[{e.rel}]→" if e.direction == "out" else f"←[{e.rel}]—"
-            lines.append(f"   {arrow} {nxt.card_text}")
-        return "\n".join(lines)
-
-
-@dataclass
-class _Neighbor:
-    rel: str
-    direction: str
-    noderef: NodeRef
-    props: dict = field(default_factory=dict)
-
-
-# ───────────────────────────────────────────────────────────
-# Neo4j 접근
+# 엔진 래퍼 — infra.graph.walk 엔진에 도메인 KEY_PROP를 주입한다.
+# 기존 호출부(`walk(driver, anchors, policy)` / `load_nodes(driver, eids)`)는 변경 없음.
+# NodeRef/EdgeStep/EvidencePath/WalkPolicy는 위에서 재노출(import) — 기존
+# `from real_estate.graphflow.traversal import EvidencePath, NodeRef` 호출부 호환.
 # ───────────────────────────────────────────────────────────
 def load_nodes(driver: Driver, eids: list[str]) -> dict[str, NodeRef]:
-    if not eids:
-        return {}
-    with driver.session() as s:
-        result = s.run(
-            """
-            UNWIND $eids AS eid
-            MATCH (n) WHERE elementId(n) = eid
-            RETURN eid AS eid, labels(n)[0] AS label,
-                   coalesce(n.card_text, '') AS card,
-                   n[$keymap[labels(n)[0]]] AS nat_key
-            ORDER BY eid
-            """,
-            eids=eids, keymap=KEY_PROP,
-        )
-        return {
-            r["eid"]: NodeRef(r["eid"], r["label"], str(r["nat_key"]), r["card"])
-            for r in result
-        }
+    return _infra_load_nodes(driver, eids, KEY_PROP)
 
 
-def _expand(driver: Driver, eids: list[str]) -> dict[str, list[_Neighbor]]:
-    """frontier eid들의 1홉 이웃(양방향). card_embedding은 전송하지 않는다."""
-    if not eids:
-        return {}
-    out: dict[str, list[_Neighbor]] = {e: [] for e in eids}
-    with driver.session() as s:
-        result = s.run(
-            """
-            UNWIND $eids AS eid
-            MATCH (n) WHERE elementId(n) = eid
-            MATCH (n)-[r]-(m)
-            WITH eid, r, n, m, labels(m)[0] AS lbl
-            RETURN eid AS from_eid, type(r) AS rel, startNode(r) = n AS outgoing,
-                   elementId(m) AS to_eid, lbl AS to_label,
-                   coalesce(m.card_text, '') AS card,
-                   m[$keymap[lbl]] AS nat_key,
-                   m.published_at AS published_at, m.valid_until AS valid_until,
-                   m.temporal_kind AS temporal_kind, m.confidence AS confidence,
-                   m.`앵커점수` AS anchor_score
-            ORDER BY from_eid, to_eid, rel
-            """,
-            eids=eids, keymap=KEY_PROP,
-        )
-        for r in result:
-            nb = _Neighbor(
-                rel=r["rel"],
-                direction="out" if r["outgoing"] else "in",
-                noderef=NodeRef(r["to_eid"], r["to_label"], str(r["nat_key"]), r["card"]),
-                props={"published_at": r["published_at"], "valid_until": r["valid_until"],
-                       "temporal_kind": r["temporal_kind"], "confidence": r["confidence"],
-                       "앵커점수": r["anchor_score"], "_eid": r["to_eid"]},
-            )
-            out[r["from_eid"]].append(nb)
-    return out
+def _expand(driver: Driver, eids: list[str]) -> dict:
+    """frontier eid들의 1홉 이웃(양방향). KEY_PROP 주입 후 infra 엔진에 위임."""
+    return _infra_expand(driver, eids, KEY_PROP)
 
 
-# ───────────────────────────────────────────────────────────
-# walk 엔진
-# ───────────────────────────────────────────────────────────
 def walk(
     driver: Driver,
     anchor_eids: list[str],
@@ -150,57 +51,9 @@ def walk(
     max_hops: int = 3,
     k: int = 12,
 ) -> list[EvidencePath]:
-    """앵커에서 max_hops 이내 가중 BFS로 증거 경로 top-k 반환.
-
-    가중치·노드배수가 ≤1이라 경로 연장 시 점수 단조 감소 → 노드별 최고 점수
-    경로를 relaxation으로 확정. 동점은 경로 sig로 결정적 선택(재현성).
-    """
-    anchors = load_nodes(driver, anchor_eids)
-    anchor_set = set(anchors)
-
-    best: dict[str, EvidencePath] = {}
-    frontier: list[EvidencePath] = []
-    for eid, nr in anchors.items():
-        p = EvidencePath([nr], [], 1.0)
-        best[eid] = p
-        frontier.append(p)
-
-    for _ in range(max_hops):
-        if not frontier:
-            break
-        neighbors = _expand(driver, [p.tail.eid for p in frontier])
-        chosen: dict[str, EvidencePath] = {}   # 이번 홉에 best가 갱신된 노드 → 재확장 대상
-        for p in frontier:
-            path_eids = {n.eid for n in p.nodes}
-            for nb in neighbors.get(p.tail.eid, []):
-                if nb.noderef.eid in path_eids:        # 같은 경로 내 재방문 금지
-                    continue
-                w = policy.edge_weight(nb.rel, nb.direction)
-                if w <= 0:
-                    continue
-                score = p.score * w * policy.node_score(nb.noderef.label, nb.props)
-                npath = EvidencePath(
-                    p.nodes + [nb.noderef],
-                    p.edges + [EdgeStep(nb.rel, nb.direction, w)],
-                    score,
-                )
-                cur = best.get(nb.noderef.eid)
-                better = (
-                    cur is None
-                    or score > cur.score + _EPS
-                    or (abs(score - cur.score) <= _EPS and npath.sig < cur.sig)
-                )
-                if better:
-                    best[nb.noderef.eid] = npath
-                    prev = chosen.get(nb.noderef.eid)
-                    if prev is None or score > prev.score + _EPS:
-                        chosen[nb.noderef.eid] = npath
-        frontier = list(chosen.values())
-
-    results = [p for eid, p in best.items() if eid not in anchor_set]
-    results.sort(key=lambda p: (-p.score, p.tail.label, p.tail.key))
-    logger.info("walk(%s, hops=%d) → %d paths", policy.name, max_hops, len(results))
-    return results[:k]
+    """앵커에서 max_hops 이내 가중 BFS로 증거 경로 top-k 반환 (KEY_PROP 주입)."""
+    return _infra_walk(driver, anchor_eids, policy, key_props=KEY_PROP,
+                       max_hops=max_hops, k=k)
 
 
 # ───────────────────────────────────────────────────────────
@@ -409,7 +262,7 @@ def semantic_sims(
     semantic bridging에 해당). e5 코사인은 스프레드가 좁아 스코프 내 min-max로
     정규화해 변별력을 준다. 결정적(임베딩·스코프 고정 → 같은 값) → 보고서에도 안전.
     """
-    from real_estate.graphflow.graph.embedder import embed_one
+    from infra.graph.embedder import embed_one
 
     pvec = embed_one(purpose_text)
     pnorm = sum(x * x for x in pvec) ** 0.5 or 1.0
@@ -453,7 +306,7 @@ def vector_anchors(
     (초기 탐색은 자산 스코프가 전부, 설계 §D11). 임베딩 미적재 라벨/없는 인덱스는
     건너뛴다.
     """
-    from real_estate.graphflow.graph.embedder import embed_one
+    from infra.graph.embedder import embed_one
     from real_estate.graphflow.graph.vector_index import INDEXED_LABELS, search_similar
 
     qv = embed_one(query)

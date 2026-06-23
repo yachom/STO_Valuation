@@ -15,7 +15,7 @@ import logging
 
 from neo4j import Driver
 
-from real_estate.graphflow.graph.embedder import embed_texts
+from infra.graph.embedder import embed_texts
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.graph.vector_index import (
     ensure_vector_index,

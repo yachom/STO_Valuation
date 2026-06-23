@@ -38,7 +38,7 @@ def main() -> int:
             print(f"ERROR: .env에 {key} 필요", file=sys.stderr)
             return 2
 
-    from real_estate.graphflow.graph.driver import close_neo4j_driver, get_neo4j_driver
+    from infra.graph.driver import close_neo4j_driver, get_neo4j_driver
     from real_estate.graphflow.qa import QAResponder
     from real_estate.graphflow.seeder import asset_id_for
     from infra.agent.tracing import make_run_id, run_tracer

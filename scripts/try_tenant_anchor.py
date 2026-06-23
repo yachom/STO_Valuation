@@ -40,7 +40,7 @@ def main() -> int:
 
     from real_estate.location import LocationResolver
     from real_estate.graphflow.seeder import asset_id_for, collect_scope, seed
-    from real_estate.graphflow.graph.driver import get_neo4j_driver
+    from infra.graph.driver import get_neo4j_driver
     from real_estate.graphflow.tenant_collector import collect_tenants
 
     resolver = LocationResolver(kakao_api_key=os.environ["KAKAO_API_KEY"],

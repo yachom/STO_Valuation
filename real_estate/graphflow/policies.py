@@ -11,22 +11,8 @@
 
 from __future__ import annotations
 
-from typing import Protocol, runtime_checkable
-
+from infra.graph.walk import WalkPolicy  # noqa: F401  (구체 정책의 프로토콜 — 재노출)
 from real_estate.graphflow.profiles import DEFAULT_WEIGHT, PROFILES
-
-
-@runtime_checkable
-class WalkPolicy(Protocol):
-    name: str
-
-    def edge_weight(self, rel: str, direction: str) -> float:
-        """엣지 종류(+방향)의 통과 가중치. 0 이하면 walk가 가지를 친다."""
-        ...
-
-    def node_score(self, label: str, props: dict) -> float:
-        """도착 노드의 신뢰/유효성 배수 (0~1). 경로 점수에 곱해진다."""
-        ...
 
 
 def _clamp(v: float, lo: float, hi: float) -> float:

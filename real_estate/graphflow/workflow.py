@@ -35,7 +35,7 @@ _driver: Driver | None = None        # 노드 공유 (Driver는 스레드 안전
 def _get_driver() -> Driver:
     global _driver
     if _driver is None:
-        from real_estate.graphflow.graph.driver import get_neo4j_driver
+        from infra.graph.driver import get_neo4j_driver
         _driver = get_neo4j_driver()
     return _driver
 

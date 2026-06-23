@@ -4,7 +4,7 @@
 둔다. 노드 키는 SQLite 자연 키를 그대로 써서 양방향 traceability를 유지한다.
 """
 
-from real_estate.graphflow.graph.driver import close_neo4j_driver, get_neo4j_driver
+from infra.graph.driver import close_neo4j_driver, get_neo4j_driver
 from real_estate.graphflow.graph.schema import (
     CONSTRAINTS,
     EDGE_TYPES,

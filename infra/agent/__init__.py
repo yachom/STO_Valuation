@@ -1,8 +1,9 @@
 """infra/agent — 자산 무관 LLM 에이전트 인프라.
 
-현재는 트레이싱(로컬 사이드카 + Langfuse 통합)만. BaseAgent/llm 매니저는 도메인
-에이전트 tier 설정과 묶여 있어 자산 패키지(<asset>/graphflow)에 둔다 — 2번째
-자산에서 공통 패턴이 확인되면 그때 이리로 추출한다 ([[feedback-defer-base-client]]).
+LLM 매니저(llm.get_llm), BaseAgent 메커니즘(base), 트레이싱(tracing — 로컬
+사이드카 + Langfuse). 도메인 프롬프트·에이전트 tier 매핑은 각 자산이 소유하고
+(config/·<asset>/graphflow/prompts), 여기엔 자산 무관 메커니즘만 둔다. 2번째 자산
+(music_copyright) 도입 시점에 graph/walk와 함께 추출 ([[feedback-defer-base-client]]).
 """
 
 from infra.agent.tracing import (

@@ -95,7 +95,7 @@ def main() -> int:
         print("(dry-run: Neo4j 적재 생략)")
         return 0
 
-    from real_estate.graphflow.graph.driver import close_neo4j_driver, get_neo4j_driver
+    from infra.graph.driver import close_neo4j_driver, get_neo4j_driver
     from real_estate.graphflow.seeder import seed
 
     print("Neo4j 적재 중...")

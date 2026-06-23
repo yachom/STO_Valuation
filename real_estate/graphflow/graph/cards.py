@@ -379,9 +379,10 @@ _BUILDERS = {
 
 
 def build_card(label: str, props: dict) -> str:
-    """라벨+프로퍼티로 카드 텍스트 생성. 빌더 미정의 라벨은 빈 문자열."""
-    builder = _BUILDERS.get(label)
-    if builder is None:
-        logger.warning("카드 빌더 미정의: %s", label)
-        return ""
-    return builder(props)
+    """라벨+프로퍼티로 카드 텍스트 생성. 빌더 미정의 라벨은 빈 문자열.
+
+    부동산 빌더 MAP(_BUILDERS)을 infra 레지스트리 메커니즘에 주입한다 — 호출부 변경 없음.
+    """
+    from infra.graph.cards import build_card as _build_card
+
+    return _build_card(label, props, _BUILDERS)

@@ -77,7 +77,7 @@ def main() -> int:
     asset_id = asset_id_for(location)
     print(f"  asset_id={asset_id}")
 
-    from real_estate.graphflow.graph.driver import close_neo4j_driver, get_neo4j_driver
+    from infra.graph.driver import close_neo4j_driver, get_neo4j_driver
     driver = get_neo4j_driver()
     try:
         need_embed = bool(args.question)   # 벡터 앵커는 임베딩 필요
