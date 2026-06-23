@@ -82,16 +82,18 @@ def main() -> int:
 
     driver = get_neo4j_driver()
     run_id = make_run_id("full")
-    sidecar = DB_PATH.parent / "reports" / run_id
+    sidecar = OUT_DIR / run_id      # == tracer.run_dir (보고서·트레이스 모두 여기로)
     log.info("사이드카: %s", sidecar)
     try:
         with run_tracer(run_id, DB_PATH, session_id=asset_id,
                         trace_name=f"full:{address[:30]}", tags=["full", "discourse"],
                         metadata={"asset_id": asset_id, "mode": "discourse",
-                                  "address": address}):
+                                  "address": address}) as tracer:
+            # 보고서는 이 run의 사이드카(reports/full_{run_id}/)에 저장 — reports/ 루트에
+            # 떠다니는 loose report.{md,json}로 매 실행 덮어쓰지 않도록 run_dir로 라우팅.
             state = run_report_pipeline(
-                driver, asset_id=asset_id, out_dir=str(OUT_DIR), db_path=str(DB_PATH),
-                location=location, expand_rounds=2)
+                driver, asset_id=asset_id, out_dir=str(tracer.run_dir),
+                db_path=str(DB_PATH), location=location, expand_rounds=2)
 
         report = state.get("report") or {}
         es = state.get("expand_summary") or {}
@@ -100,7 +102,7 @@ def main() -> int:
         print(f"✅ 완료 — REPORT_ID: {report.get('report_id')}")
         print(f"   사이드카(상세로그): {sidecar}")
         if report.get("report_id"):
-            print(f"   보고서 파일: {OUT_DIR / report['report_id']}")
+            print(f"   보고서 파일: {sidecar / 'report.md'}, {sidecar / 'report.json'}")
         print(f"   EXPAND mode: {es.get('mode')} | 발견관점: {es.get('perspectives_discovered')}")
         print(f"   아웃라인 축: { {ax: len(pts) for ax, pts in outline.items()} }")
         val = (report.get("valuation") or {})
