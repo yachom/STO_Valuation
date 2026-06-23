@@ -283,6 +283,11 @@ def run_report_pipeline(
     global _driver
     _driver = driver
 
+    # Slack 에러 알림(선택). webhook env 없으면 silent no-op — 기본 동작 무변경.
+    # 멱등이므로 매 실행 호출해도 핸들러는 1회만 설치된다.
+    from infra.notify import enable_slack_alerting
+    enable_slack_alerting()
+
     from infra.agent.llm import get_langfuse_handler
     callbacks = [h for h in [get_langfuse_handler()] if h is not None]
 
