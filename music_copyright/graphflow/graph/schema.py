@@ -39,6 +39,11 @@ class NODE_LABELS:
     ENTITY = "Entity"            # 라벨 매칭 실패 추출 엔티티 — entity_id
     QUERY = "Query"              # 실행한 검색어 — query_hash
 
+    # ── 보고서 grounding (real_estate와 동일 — 보고서가 그래프의 1급 시민) ──
+    REPORT = "Report"            # 생성된 보고서 — report_id
+    REPORT_SECTION = "ReportSection"  # 축 섹션 — section_id
+    CLAIM = "Claim"              # 주장(문장 단위) — claim_id
+
 
 # ───────────────────────────────────────────────────────────
 # 엣지 타입 상수 — placeholder 집합
@@ -57,7 +62,12 @@ class EDGE_TYPES:
     EXTRACTED_FROM = "EXTRACTED_FROM"  # Fact → WebDoc
     MENTIONS = "MENTIONS"            # Fact → 노드 일반 (확정 연결)
     SAME_AS_CANDIDATE = "SAME_AS_CANDIDATE"  # Entity → 노드 일반 (미확정)
-    ABOUT = "ABOUT"                  # WebDoc → Entity|노드 일반
+    ABOUT = "ABOUT"                  # WebDoc|Report → Entity|Work|노드 일반
+
+    # 보고서 grounding
+    HAS_SECTION = "HAS_SECTION"      # Report → ReportSection
+    HAS_CLAIM = "HAS_CLAIM"          # ReportSection → Claim
+    CITES = "CITES"                  # Claim → 노드 일반 (증거)
 
 
 # ───────────────────────────────────────────────────────────
@@ -74,6 +84,9 @@ _UNIQUE_KEYS: list[tuple[str, str]] = [
     (NODE_LABELS.FACT, "fact_id"),
     (NODE_LABELS.ENTITY, "entity_id"),
     (NODE_LABELS.QUERY, "query_hash"),
+    (NODE_LABELS.REPORT, "report_id"),
+    (NODE_LABELS.REPORT_SECTION, "section_id"),
+    (NODE_LABELS.CLAIM, "claim_id"),
 ]
 
 

@@ -224,6 +224,7 @@ real_estate/database/db_builder/*.xlsx
 real_estate/database/db_builder/*.xls
 # graphflow run 산출물 (trace/사이드카) — 커밋 대상 아님
 real_estate/database/DB/reports/
+music_copyright/reports/
 
 # 원본 백업
 STO_valuation_orgin/

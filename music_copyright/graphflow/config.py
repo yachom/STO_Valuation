@@ -40,9 +40,11 @@ _DEFAULTS: dict[str, Any] = {
         },
         # 음악 에이전트 → 티어. config/models.json의 agents에도 등록해야 env override가
         # 일관되게 먹는다(이건 안전망). TODO(domain): 에이전트 셋업 확정 시 정련.
+        # 전 음악 에이전트 OpenAI(gpt_mini=gpt-4o-mini)로 통일 — Anthropic/Opus 미사용.
+        # 품질 필요 시 writer/synthesizer만 gpt-4o 티어로 상향 가능.
         "agents": {
-            "music_navigator": "haiku", "music_harvester": "gpt_mini",
-            "music_writer": "sonnet", "music_synthesizer": "opus",
+            "music_navigator": "gpt_mini", "music_harvester": "gpt_mini",
+            "music_writer": "gpt_mini", "music_synthesizer": "gpt_mini",
         },
     },
     # 보고서 3축 — influence·popularity·sustainability (profiles.REPORT_AXES와 일치).

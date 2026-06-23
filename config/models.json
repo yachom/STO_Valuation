@@ -28,9 +28,9 @@
     "researcher":   "gpt_mini",
     "outliner":     "sonnet",
 
-    "music_navigator":   "haiku",
+    "music_navigator":   "gpt_mini",
     "music_harvester":   "gpt_mini",
-    "music_writer":      "sonnet",
-    "music_synthesizer": "opus"
+    "music_writer":      "gpt_mini",
+    "music_synthesizer": "gpt_mini"
   }
 }

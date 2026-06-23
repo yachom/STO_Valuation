@@ -65,10 +65,25 @@ def card_for_rightsholder(p: dict) -> str:
 
 
 def card_for_platform(p: dict) -> str:
+    # 지표는 의미가 서로 다르다 — playcount(재생수)·listeners(청취자)·rank(인기지수,
+    # 0~1M)·popularity(0~100). 한 필드로 뭉치면 'rank를 재생수로' 같은 사실오류가
+    # 보고서로 전파되므로 각각 정확히 표기한다.
     name = p.get("name") or "플랫폼 미상"
-    streams = _fmt_int(p.get("stream_count"))
-    streams_s = f" 누적 재생 {streams}회." if streams else ""
-    return f"{name} — 유통 플랫폼.{streams_s}"
+    bits = []
+    pc = _fmt_int(p.get("playcount"))
+    if pc:
+        bits.append(f"누적 재생 {pc}회")
+    li = _fmt_int(p.get("listeners"))
+    if li:
+        bits.append(f"청취자 {li}명")
+    rk = _fmt_int(p.get("rank"))
+    if rk:
+        bits.append(f"플랫폼 인기지수 {rk}")
+    pop = p.get("popularity")
+    if isinstance(pop, (int, float)):
+        bits.append(f"인기도 {pop}/100")
+    tail = (" " + ", ".join(bits) + ".") if bits else ""
+    return f"{name} — 유통 플랫폼.{tail}"
 
 
 def card_for_chart(p: dict) -> str:
