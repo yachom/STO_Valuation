@@ -34,5 +34,13 @@
     "min_evidence":  2,
     "min_top_score": 0.12,
     "mini_expand":   {"rounds": 1, "frontier_max": 2, "total_query_budget": 3}
+  },
+
+  "documents": {
+    "enabled":       true,
+    "kinds":         ["building_register"],
+    "min_priority":  "medium",
+    "use_llm":       true,
+    "interrupt":     true
   }
 }
