@@ -25,7 +25,7 @@ from neo4j import Driver
 
 from real_estate.graphflow.profiles import REPORT_AXES
 from real_estate.graphflow.state import GraphFlowState
-from infra.agent.tracing import langchain_trace_metadata, make_run_id
+from infra.agent.tracing import emit, langchain_trace_metadata, make_run_id
 
 logger = logging.getLogger("graphflow.workflow")
 
@@ -52,6 +52,84 @@ def seed_node(state: GraphFlowState) -> dict:
     if state.get("location") is not None:
         seed(collect_scope(state["location"], state["db_path"]), driver)
     return {"asset_card": asset_card_text(driver, state["asset_id"])}
+
+
+def _documents_config() -> dict:
+    from real_estate.graphflow.config import get_config
+    return get_config().get("documents", {})
+
+
+def doc_intake_node(state: GraphFlowState) -> dict:
+    """선택적 PDF 입력 축 — 표제부 파싱 → doc_requester 판정 → (필요 시) HITL interrupt.
+
+    pdf_path가 없거나 documents.enabled=false면 **즉시 no-op({})** — 주소-only 경로는
+    100% 불변(이 노드가 그래프에 있어도 영향 0).
+
+    PDF가 주어지면:
+      1) 표제부를 파싱·추출하고 doc_requester로 '추가 전유부가 필요한 호'를 판정.
+      2) 추가 문서가 필요하고 interrupt가 켜졌고 아직 그 문서들이 업로드되지 않았으면
+         `interrupt(payload)`로 그래프를 멈춰 사람에게 요청(gov.kr URL + 호수 목록).
+         재개(Command(resume=업로드문서))되면 interrupt()가 그 값을 돌려주고 계속 진행.
+      3) 필요 없거나 이미 업로드됐으면 그대로 통과.
+
+    interrupt()는 checkpointer로 컴파일된 그래프에서만 동작한다(build_report_graph가
+    pdf_path 있을 때 MemorySaver로 컴파일). 산출은 document_intake(판정 결과) +
+    pending_doc_requests(미충족 요청) + uploaded_documents(재개 시 주입분).
+    """
+    from langgraph.types import interrupt
+
+    pdf_path = state.get("pdf_path")
+    cfg = _documents_config()
+    if not pdf_path or not cfg.get("enabled", True):
+        return {}
+
+    from real_estate.external.gov24.extract import extract_from_clean_pdf
+    from real_estate.external.gov24.parser import parse_gov24_pdf
+    from real_estate.graphflow.agents.doc_requester import (
+        DocRequester, format_human_doc_request)
+
+    parsed = parse_gov24_pdf(pdf_path)
+    extracted = extract_from_clean_pdf(parsed)
+    emit("doc_intake_parsed", pdf=parsed.filename, building_id=extracted.building_id,
+         changes=len(extracted.changes), rows=len(extracted.building_rows))
+
+    result = DocRequester().decide(
+        parsed, extracted,
+        min_priority=cfg.get("min_priority", "medium"),
+        use_llm=cfg.get("use_llm", True))
+    emit("doc_requester_decided", decided_by=result.decided_by,
+         needs_more=result.needs_more_documents,
+         requests=[r.unit_id for r in result.requests])
+
+    out: dict = {"document_intake": result.to_jsonable()}
+
+    already = state.get("uploaded_documents") or []
+    requested_units = {r.unit_id for r in result.requests}
+    have_units = {d.get("unit_id") for d in already if isinstance(d, dict)}
+    unmet = [r for r in result.requests if r.unit_id not in have_units]
+
+    if not result.needs_more_documents or not unmet:
+        out["pending_doc_requests"] = []
+        if requested_units and not unmet:
+            emit("doc_intake_satisfied", units=sorted(requested_units))
+        return out
+
+    if not cfg.get("interrupt", True):
+        # interrupt 비활성 — 요청만 surface하고 진행(비차단 모드).
+        out["pending_doc_requests"] = [
+            {"request_id": r.request_id, "unit_id": r.unit_id,
+             "priority": r.priority, "reason": r.reason} for r in unmet]
+        return out
+
+    # HITL — 그래프를 멈추고 사람에게 추가 전유부를 요청.
+    payload = format_human_doc_request(result)
+    emit("doc_intake_interrupt", units=payload["requested_units"])
+    supplied = interrupt(payload)   # 재개 시 사람이 넘긴 업로드 문서 리스트가 반환됨
+
+    merged = list(already) + list(supplied or [])
+    return {"document_intake": result.to_jsonable(),
+            "uploaded_documents": merged,
+            "pending_doc_requests": []}
 
 
 def tenant_node(state: GraphFlowState) -> dict:
@@ -223,21 +301,27 @@ def finalize_node(state: GraphFlowState) -> dict:
 # ───────────────────────────────────────────────────────────
 # 그래프 조립
 # ───────────────────────────────────────────────────────────
-def build_report_graph():
+def build_report_graph(checkpointer=None):
     """LangGraph 조립 — 토폴로지가 곧 흐름의 문서.
 
-        START → seed → tenant ─route─┬─ (static/moderated) → expand ─────────────┐
-                                     └─ (discourse) perspectives                 │
-                                            → discourse_round ⟲ moderator         │
-                                            → outline ──────────────────────────┤
-                                                                                ▼
+        START → seed → doc_intake → tenant ─route─┬─ (static/moderated) → expand ──┐
+                       (PDF 있을 때만 동작)         └─ (discourse) perspectives      │
+                                                          → discourse_round ⟲ mod    │
+                                                          → outline ────────────────┤
+                                                                                    ▼
                           [write_tenant ∥ write_esg ∥ write_commercial] → synthesize → finalize
 
     discourse 경로(STORM/Co-STORM)가 노드로 가시화된다. static/moderated는 expand 노드
     그대로 — route_after_tenant가 mode로 분기, 양 경로는 write로 수렴(diamond).
+
+    doc_intake는 선택적 PDF 입력 축(표제부)이다. pdf_path가 없으면 no-op이라 주소-only
+    경로는 불변. 추가 전유부가 필요하면 interrupt로 멈춘다 — 이때만 checkpointer가
+    필요하므로, pdf_path를 줄 호출부는 MemorySaver를 넘긴다. checkpointer=None이면
+    기존(체크포인터 없는) 컴파일과 동일.
     """
     g = StateGraph(GraphFlowState)
     g.add_node("seed", seed_node)
+    g.add_node("doc_intake", doc_intake_node)            # 선택적 PDF 입력 축
     g.add_node("tenant", tenant_node)
     g.add_node("expand", expand_node)
     g.add_node("perspectives", perspectives_node)        # STORM 담론 (discourse mode)
@@ -250,7 +334,8 @@ def build_report_graph():
     g.add_node("finalize", finalize_node)
 
     g.add_edge(START, "seed")
-    g.add_edge("seed", "tenant")
+    g.add_edge("seed", "doc_intake")     # PDF 없으면 doc_intake는 통과(no-op)
+    g.add_edge("doc_intake", "tenant")
     # mode 분기: static/moderated → expand, discourse → STORM 담론 서브그래프
     g.add_conditional_edges("tenant", route_after_tenant,
                             {"expand": "expand", "perspectives": "perspectives"})
@@ -265,7 +350,18 @@ def build_report_graph():
         g.add_edge(f"write_{axis}", "synthesize")   # fan-in (전 축 완료 대기)
     g.add_edge("synthesize", "finalize")
     g.add_edge("finalize", END)
-    return g.compile()
+    return g.compile(checkpointer=checkpointer) if checkpointer else g.compile()
+
+
+def _trace_metadata(asset_id: str) -> dict:
+    # LangGraph 루트 trace는 핸들러가 metadata['langfuse_*']로 명명한다. 호출부가
+    # run_tracer(trace_name=...)로 감쌌으면 그 값을, 아니면 asset_id로 폴백 —
+    # 둘 다 없으면 trace.name이 'LangGraph'로 떨어지므로 항상 채운다.
+    md = langchain_trace_metadata()
+    md.setdefault("langfuse_trace_name", f"report:{asset_id}")
+    md.setdefault("langfuse_session_id", asset_id)
+    md.setdefault("langfuse_tags", ["report"])
+    return md
 
 
 def run_report_pipeline(
@@ -278,29 +374,69 @@ def run_report_pipeline(
     expand_rounds: int = 0,
     expand_budget: int | None = None,   # None → config.expand.total_query_budget
     evidence_k: int | None = None,
+    pdf_path: str | None = None,        # 선택적 표제부 PDF (있으면 doc_intake 가동)
+    uploaded_documents: list | None = None,   # 사전 업로드 문서(있으면 interrupt 생략)
+    thread_id: str | None = None,       # PDF 경로 재개용 checkpointer thread
 ) -> GraphFlowState:
-    """워크플로우 1회 실행. Langfuse 콜백 자동 부착."""
+    """워크플로우 1회 실행. Langfuse 콜백 자동 부착.
+
+    pdf_path가 없으면 기존과 100% 동일(체크포인터 없이 compile→invoke). pdf_path가
+    있으면 MemorySaver로 컴파일해 doc_intake가 추가 문서를 요청할 때 interrupt할 수
+    있게 한다 — 반환 state에 '__interrupt__'가 있으면 멈춘 것이고, resume_report_pipeline로
+    이어간다. uploaded_documents를 미리 주면 interrupt 없이 통과한다.
+    """
     global _driver
     _driver = driver
 
     from infra.agent.llm import get_langfuse_handler
     callbacks = [h for h in [get_langfuse_handler()] if h is not None]
 
-    app = build_report_graph()
     initial: GraphFlowState = {
         "asset_id": asset_id, "out_dir": out_dir, "db_path": db_path,
         "location": location, "expand_rounds": expand_rounds,
         "expand_budget": expand_budget, "evidence_k": evidence_k,
         "collected_by": make_run_id("exp"),
     }
-    # LangGraph 루트 trace는 핸들러가 metadata['langfuse_*']로 명명한다. 호출부가
-    # run_tracer(trace_name=...)로 감쌌으면 그 값을, 아니면 asset_id로 폴백 —
-    # 둘 다 없으면 trace.name이 'LangGraph'로 떨어지므로 항상 채운다.
-    md = langchain_trace_metadata()
-    md.setdefault("langfuse_trace_name", f"report:{asset_id}")
-    md.setdefault("langfuse_session_id", asset_id)
-    md.setdefault("langfuse_tags", ["report"])
-    final = app.invoke(initial, config={"callbacks": callbacks, "metadata": md})
-    logger.info("workflow 완료 — report=%s",
+    if pdf_path:
+        initial["pdf_path"] = pdf_path
+    if uploaded_documents:
+        initial["uploaded_documents"] = uploaded_documents
+    md = _trace_metadata(asset_id)
+
+    # PDF가 없으면 기존 경로 그대로(체크포인터 없음).
+    if not pdf_path:
+        app = build_report_graph()
+        final = app.invoke(initial, config={"callbacks": callbacks, "metadata": md})
+        logger.info("workflow 완료 — report=%s",
+                    (final.get("report") or {}).get("report_id"))
+        return final
+
+    # PDF 경로 — checkpointer로 컴파일(interrupt 가능). thread_id로 재개 식별.
+    from langgraph.checkpoint.memory import MemorySaver
+    app = build_report_graph(checkpointer=MemorySaver())
+    config = {"callbacks": callbacks, "metadata": md,
+              "configurable": {"thread_id": thread_id or make_run_id("doc")}}
+    final = app.invoke(initial, config=config)
+    if final.get("__interrupt__") is not None:
+        logger.info("workflow 일시정지(추가 문서 요청) — thread=%s",
+                    config["configurable"]["thread_id"])
+    else:
+        logger.info("workflow 완료 — report=%s",
+                    (final.get("report") or {}).get("report_id"))
+    # 재개에 필요한 app/config를 동봉(호출부가 resume_report_pipeline에 그대로 넘김).
+    final["_resume_handle"] = {"app": app, "config": config}
+    return final
+
+
+def resume_report_pipeline(handle: dict, uploaded_documents: list) -> GraphFlowState:
+    """interrupt된 그래프를 사람이 업로드한 문서로 재개.
+
+    handle = run_report_pipeline(pdf_path=...)가 반환한 state['_resume_handle'].
+    uploaded_documents = [{"kind","path","unit_id"?}, ...] (사람이 gov.kr에서 받은 전유부).
+    """
+    from langgraph.types import Command
+    app, config = handle["app"], handle["config"]
+    final = app.invoke(Command(resume=uploaded_documents), config=config)
+    logger.info("workflow 재개 완료 — report=%s",
                 (final.get("report") or {}).get("report_id"))
     return final

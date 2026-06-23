@@ -36,6 +36,9 @@ _DEFAULTS: dict[str, Any] = {
             "sonnet":   {"provider": "anthropic", "model": "claude-sonnet-4-6", "max_tokens": 8000},
             "haiku":    {"provider": "anthropic", "model": "claude-haiku-4-5-20251001", "max_tokens": 4096},
             "gpt_mini": {"provider": "openai", "model": "gpt-4o-mini", "max_tokens": 4096},
+            # 로컬 vLLM(openai_compat) — base_url은 TIER_LOCAL_BASE_URL로 override.
+            "local":    {"provider": "openai_compat", "model": "Qwen/Qwen2.5-7B-Instruct",
+                         "base_url": "http://localhost:8000/v1", "max_tokens": 4096},
         },
         "agents": {
             "navigator": "haiku", "harvester": "gpt_mini", "prefilter": "gpt_mini",
@@ -43,7 +46,7 @@ _DEFAULTS: dict[str, Any] = {
             "synthesizer": "opus", "auditor": "sonnet", "reviser": "sonnet",
             "qa": "sonnet", "qa_recognize": "haiku", "moderator": "haiku",
             "perspectivist": "sonnet", "questioner": "haiku", "researcher": "gpt_mini",
-            "outliner": "sonnet",
+            "outliner": "sonnet", "doc_requester": "local",
         },
     },
     "retrieval": {
@@ -64,6 +67,12 @@ _DEFAULTS: dict[str, Any] = {
         "mode": "static", "moderator_max_rounds": 2,
         "moderator_budget_per_round": 6, "moderator_max_questions": 3,
         "perspectives_max": 2, "turns_per_perspective": 2, "research_budget": 3,
+    },
+    # 선택적 PDF 입력 축(건축물대장 표제부). pdf_path가 없으면 doc_intake 노드가
+    # no-op이라 주소-only 경로는 불변. interrupt=true면 추가 전유부 필요 시 HITL.
+    "documents": {
+        "enabled": True, "kinds": ["building_register"],
+        "min_priority": "medium", "use_llm": True, "interrupt": True,
     },
 }
 

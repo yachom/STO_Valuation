@@ -25,6 +25,13 @@ class GraphFlowState(TypedDict, total=False):
     db_path: str
     out_dir: str
 
+    # ── 선택적 PDF 입력 축 (건축물대장 표제부) ──
+    # pdf_path가 없으면 doc_intake 노드는 no-op → 주소-only 경로는 100% 불변.
+    pdf_path: str              # 표제부(집합건축물대장) PDF 경로 (선택)
+    uploaded_documents: list   # 사람이 업로드한 추가 PDF [{kind, path, unit_id?}] — 재개 시 주입
+    document_intake: dict      # doc_requester 판정 결과(구조화) + 파싱 메타
+    pending_doc_requests: list # 사람에게 surface된 추가 문서 요청(호별 전유부)
+
     # ── 제어 ──
     expand_rounds: int         # 0이면 EXPAND 생략 (그래프 기존 상태 사용)
     expand_budget: int         # 총 검색 쿼리 예산

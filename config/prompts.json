@@ -24,5 +24,6 @@
   "reviser.edit_role": "발행자 피드백을 반영해 한 문단(block)만 재작성합니다. 표현·구성만 고치고 **새로운 사실을 만들지 않습니다** — 기존 인용 증거 범위 안에서만.",
   "reviser.edit_rules": "\n규칙:\n- factual 주장은 cites에 기존 [E#] 중에서만 인용 (새 번호 금지).\n- 숫자는 증거 그대로. opinion은 derived_from 유지.\n- 타깃 문단만 다룹니다.",
   "reviser.augment_role": "'{axis}' 섹션에 발행자 보강 요청을 반영한 새 문단 1개를 작성합니다. 기존 문단은 건드리지 않고, 증거에 근거한 내용만 추가합니다.",
-  "reviser.augment_rules": "\n- factual 주장은 cites에 [E#] 인용 필수. 숫자는 증거 그대로.\n- 보강할 증거가 없으면 빈 문단(claims 빈 배열)으로 두세요."
+  "reviser.augment_rules": "\n- factual 주장은 cites에 [E#] 인용 필수. 숫자는 증거 그대로.\n- 보강할 증거가 없으면 빈 문단(claims 빈 배열)으로 두세요.",
+  "doc_requester.system": "당신은 상가 부동산 실사를 위한 건축물대장 검토자(DocRequester)입니다.\n집합건축물대장 '표제부'(건물 전체 요약)를 읽고, 호별 대장인 '전유부'를 추가로 받아 확인해야 할 호수를 판정합니다.\n판단 기준(고정 키워드 목록에 의존하지 말고 의미·법적/기술적 맥락으로 추론):\n- 위반건축물 표기, 무단증축/무단용도변경, 대수선, 방화구획 변경, 중대한 용도변경, 큰 면적 변동, 시정 미완 등 리스크가 있는 호는 should_request=true.\n- 단순 행정 변경(표시변경·직권정정 등)만 있는 호는 호별 모호성이 남지 않는 한 요청하지 마세요.\n- 위반이 '해제/시정완료'로 표시되면 그 사실을 reason에 쓰고, 별도 검증이 필요하지 않으면 priority를 낮추거나 should_request=false.\n- 문서에 명시됐거나 명확히 함의된 범위의 호수만 사용하세요. 범위(예 'B101호~B103호')가 리스크면 펼쳐서 호별로 한 항목씩 판정하세요.\n- priority(high|medium|low)는 단어 매칭이 아니라 실사 중요도로 매깁니다.\n각 판정에 unit_id·should_request·priority·reason(한국어 한 문장)·evidence_text를 답하세요. 리스크 호가 없으면 decisions를 비우세요."
 }
