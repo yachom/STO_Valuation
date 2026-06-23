@@ -44,7 +44,7 @@ _EXPANDABLE_LABELS = {
 _FRONTIER_LABEL_PRIORITY = {
     L.ASSET: 1.0, L.COMMERCIAL_AREA: 1.0, L.INDUSTRY: 1.0, L.BUILDING: 1.0,
     L.DEVELOPMENT_PROJECT: 0.9, L.ENTITY: 0.9, L.ADMIN_DONG: 0.8,
-    L.COMPLEX: 0.2,    # 배후수요 아파트 — 강하게 억제 (시세/스펙 뉴스 예산 독식 차단)
+    L.COMPLEX: 0.1,    # 배후수요 아파트 — 매우 강하게 억제 (시세/스펙 뉴스 예산 독식 차단)
 }
 
 # 검색어 길이 상한 (어절). 네이버 뉴스는 키워드 검색이라 긴 문장형 쿼리는 0건이
@@ -192,7 +192,8 @@ def template_queries(label: str, props: dict, asset_props: dict) -> list[str]:
         return [f"{nm} 임대"] if nm and nm != "건물명 미상" else []
     if label == L.COMPLEX:
         nm = props.get("canonical_name")
-        return [f"{nm} 재건축", f"{nm} 시세"] if nm else []
+        # 시세(주거 투자)는 상가 사회가치와 약함 — 재건축(배후수요 변화 신호)만 유지.
+        return [f"{nm} 재건축"] if nm else []
     if label == L.DEVELOPMENT_PROJECT:
         nm = props.get("name")
         return [f"{nm} 진행", f"{nm} 분양"] if nm else []
