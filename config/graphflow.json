@@ -1,0 +1,38 @@
+{
+  "_comment": "graphflow 파이프라인 튜닝 — 검색·확장·큐레이션·QA. 모델 선택은 models.json, 프롬프트는 prompts.json. 우선순위: 이 파일 > 코드 기본값(real_estate/graphflow/config.py:_DEFAULTS). A/B variant = 이 설정의 부분 override.",
+
+  "curation": {
+    "mode": "static",
+    "moderator_max_rounds": 2,
+    "moderator_budget_per_round": 6,
+    "moderator_max_questions": 3,
+    "perspectives_max": 2,
+    "turns_per_perspective": 2,
+    "research_budget": 3
+  },
+
+  "retrieval": {
+    "evidence_k":    12,
+    "news_k":        2,
+    "alpha":         0.6,
+    "max_hops":      4,
+    "semantic":      true,
+    "corroboration": true,
+    "corrob_beta":   0.35,
+    "fact_reserve":  0
+  },
+
+  "expand": {
+    "rounds":             2,
+    "frontier_max":       12,
+    "queries_per_node":   3,
+    "total_query_budget": 100,
+    "novelty_threshold":  0.1
+  },
+
+  "qa": {
+    "min_evidence":  2,
+    "min_top_score": 0.12,
+    "mini_expand":   {"rounds": 1, "frontier_max": 2, "total_query_budget": 3}
+  }
+}

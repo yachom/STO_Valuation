@@ -283,7 +283,7 @@ def run_report_pipeline(
     global _driver
     _driver = driver
 
-    from real_estate.graphflow.llm import get_langfuse_handler
+    from infra.agent.llm import get_langfuse_handler
     callbacks = [h for h in [get_langfuse_handler()] if h is not None]
 
     app = build_report_graph()

@@ -1,0 +1,29 @@
+{
+  "_comment": "LLM 모델 티어 + 에이전트→티어 매핑. 사용자가 모델을 갈아끼우는 곳. 우선순위: env override(TIER_<TIER>_*/AGENT_TIER_<AGENT>) > 이 파일 > 코드 기본값(real_estate/graphflow/config.py:_DEFAULTS).",
+
+  "tiers": {
+    "opus":     {"provider": "anthropic", "model": "claude-opus-4-8",            "max_tokens": 8000},
+    "sonnet":   {"provider": "anthropic", "model": "claude-sonnet-4-6",          "max_tokens": 8000},
+    "haiku":    {"provider": "anthropic", "model": "claude-haiku-4-5-20251001",  "max_tokens": 4096},
+    "gpt_mini": {"provider": "openai",    "model": "gpt-4o-mini",                "max_tokens": 4096}
+  },
+
+  "agents": {
+    "navigator":    "haiku",
+    "harvester":    "gpt_mini",
+    "prefilter":    "gpt_mini",
+    "curator":      "haiku",
+    "walk_judge":   "haiku",
+    "writer":       "sonnet",
+    "synthesizer":  "opus",
+    "auditor":      "sonnet",
+    "reviser":      "sonnet",
+    "qa":           "sonnet",
+    "qa_recognize": "haiku",
+    "moderator":    "haiku",
+    "perspectivist": "sonnet",
+    "questioner":   "haiku",
+    "researcher":   "gpt_mini",
+    "outliner":     "sonnet"
+  }
+}

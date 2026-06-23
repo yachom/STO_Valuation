@@ -20,7 +20,7 @@ from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 
-logger = logging.getLogger("graphflow.llm")
+logger = logging.getLogger("infra.agent.llm")
 
 
 @dataclass
@@ -33,13 +33,13 @@ class ProviderSpec:
 
 
 # 모델 티어 spec(tier→provider/model) + 에이전트→tier 매핑은 중앙 설정에서 온다
-# (real_estate/graphflow/config.json). env override(TIER_*_*, AGENT_TIER_*)는
-# config가 적용한다 → 여기선 읽기만. [[feedback-base-llm-pattern]]
+# (config/models.json). env override(TIER_*_*, AGENT_TIER_*)는 config_loader가
+# 적용한다 → 여기선 읽기만. [[feedback-base-llm-pattern]]
 
 
 def _load_tier_specs() -> dict[str, ProviderSpec]:
-    from real_estate.graphflow.config import get_config
-    tiers = get_config()["models"]["tiers"]      # env override 적용된 상태
+    from infra.config_loader import get_models
+    tiers = get_models()["tiers"]      # config/models.json + env override 적용된 상태
     return {
         tier: ProviderSpec(
             provider=s["provider"], model=s["model"],
@@ -50,8 +50,8 @@ def _load_tier_specs() -> dict[str, ProviderSpec]:
 
 
 def _load_agent_tier_map() -> dict[str, str]:
-    from real_estate.graphflow.config import get_config
-    return dict(get_config()["models"]["agents"])
+    from infra.config_loader import get_models
+    return dict(get_models()["agents"])
 
 
 def _build_chat_model(spec: ProviderSpec, callbacks: list,
@@ -170,7 +170,7 @@ def _spec_for_agent(agent_name: str, overrides: dict) -> ProviderSpec:
     if tier is None:
         raise ValueError(
             f"unknown agent '{agent_name}'. "
-            f"real_estate/graphflow/llm.py:AGENT_TO_TIER_DEFAULT에 등록 필요.")
+            f"config/models.json의 agents에 등록 필요.")
     spec = _load_tier_specs()[tier]
     if overrides:
         return ProviderSpec(
