@@ -19,14 +19,13 @@ get_prompt()가 그 문구를 돌려줘 파이프라인 전체가 변형 프롬�
 
 from __future__ import annotations
 
-import json
 import logging
-import os
-from pathlib import Path
+
+from infra.config_loader import get_layered
+from infra.config_loader import reset as _loader_reset
+from infra.config_loader import set_active as _loader_set_active
 
 logger = logging.getLogger("graphflow.prompts")
-
-_PATH = Path(__file__).parent / "prompts.json"
 
 # ────────────────────────────────────────────────────────────────────────
 # 코드 기본값 — prompts.json 부재 시 진실. 키는 점 표기(에이전트.역할).
@@ -325,41 +324,16 @@ _DEFAULTS: dict[str, str] = {
 
 
 # ────────────────────────────────────────────────────────────────────────
-# 로더 — config.py와 동일한 캐시 + active override 패턴
+# 로더 — 메커니즘은 infra.config_loader에 위임(슬롯 'prompts').
 # ────────────────────────────────────────────────────────────────────────
-def _load_file() -> dict[str, str]:
-    """prompts.json(있으면)을 _DEFAULTS에 얹는다. 파일이 일부 키만 가져도 됨."""
-    merged = dict(_DEFAULTS)
-    try:
-        raw = json.loads(_PATH.read_text(encoding="utf-8"))
-        raw.pop("_comment", None)
-        for k, v in raw.items():
-            if isinstance(v, str):
-                merged[k] = v
-        return merged
-    except FileNotFoundError:
-        return merged
-    except (ValueError, OSError) as e:
-        logger.warning("prompts.json 로드 실패(%s) — 코드 기본값 사용", e)
-        return merged
-
-
-_cache: dict[str, str] | None = None
-_active: dict[str, str] | None = None      # 실험 러너 variant override (전역)
-
-
 def get_prompt(key: str, **fmt) -> str:
-    """프롬프트 문자열. 우선순위(높은 순): active(실험) > prompts.json > 코드 기본값.
+    """프롬프트 문자열. 우선순위(높은 순): active(실험) > config/prompts.json > 코드 기본값.
 
     fmt가 주어지면 .format(**fmt)로 {placeholder}를 치환한다(fmt 없으면 원문 그대로 —
     문구에 중괄호가 있어도 안전). 키가 없으면 KeyError(오타를 조용히 넘기지 않음).
     """
-    global _cache
-    if _cache is None:
-        _cache = _load_file()
-    text = (_active or {}).get(key)
-    if text is None:
-        text = _cache.get(key)
+    merged = get_layered("prompts", "prompts.json", _DEFAULTS)
+    text = merged.get(key)
     if text is None:
         raise KeyError(f"unknown prompt key: {key!r} (prompts.py:_DEFAULTS에 등록 필요)")
     return text.format(**fmt) if fmt else text
@@ -371,11 +345,9 @@ def set_active_override(variant: dict[str, str] | None) -> None:
     config.set_active_override와 짝: 모델·검색·프롬프트를 한 variant 객체로 묶어
     파이프라인 전체를 그 조합으로 돌린다.
     """
-    global _active
-    _active = variant
+    _loader_set_active("prompts", variant)
 
 
 def reset_prompts() -> None:
     """테스트/재로딩용 — 파일 캐시 비움(active override는 유지)."""
-    global _cache
-    _cache = None
+    _loader_reset("prompts")

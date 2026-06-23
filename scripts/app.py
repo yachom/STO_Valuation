@@ -40,7 +40,7 @@ st.set_page_config(page_title="STO 상가 평가", page_icon="🏢", layout="wid
 @st.cache_resource
 def _driver():
     load_env()
-    from real_estate.graphflow.graph.driver import get_neo4j_driver
+    from infra.graph.driver import get_neo4j_driver
     return get_neo4j_driver()
 
 

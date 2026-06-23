@@ -48,7 +48,7 @@ def main() -> int:
             return 2
 
     from real_estate.graphflow.expand import run_expand
-    from real_estate.graphflow.graph.driver import close_neo4j_driver, get_neo4j_driver
+    from infra.graph.driver import close_neo4j_driver, get_neo4j_driver
     from real_estate.graphflow.graph.schema import NODE_LABELS as L
     from real_estate.graphflow.seeder import asset_id_for, collect_scope, seed
     from infra.agent.tracing import make_run_id, run_tracer

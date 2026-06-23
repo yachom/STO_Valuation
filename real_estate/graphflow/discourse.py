@@ -121,6 +121,7 @@ class Questioner(BaseAgent):
     name = "questioner"
 
     def ask(self, perspective: Perspective, thread: list[dict], *,
+            asset_card: str = "", scope_anchors: str = "",
             shared_digest: str = "") -> QuestionTurn:
         prior = "\n".join(
             f"Q{i+1}: {t['q']}\nA{i+1}: {t['a']}" for i, t in enumerate(thread)
@@ -129,14 +130,21 @@ class Questioner(BaseAgent):
         shared_block = (
             f"[다른 전문가들이 지금까지 발견한 것 — 중복 피하고 교차 연관을 파고들어라]\n"
             f"{shared_digest}\n\n" if shared_digest else "")
+        # 자산 카드 + 실제 고유명사 주입 — 없으면 LLM이 '대형몰·백화점' 일반론을 환각한다(실측).
+        anchor_block = (
+            f"[이 자산의 실제 고유명사 — 질문은 반드시 아래 이름을 써서 이 자산·상권을 겨눠라]\n"
+            f"{scope_anchors}\n\n" if scope_anchors else "")
         user = (
-            f"[당신의 전문가 역할] {persona} (관점: {perspective.label}, "
+            f"[평가 대상 자산]\n{asset_card}\n\n"
+            + anchor_block
+            + f"[당신의 전문가 역할] {persona} (관점: {perspective.label}, "
             f"부모축: {perspective.parent_axis})\n"
             f"[초점] {perspective.focus}\n\n"
             + shared_block
             + f"[내 이전 Q&A]\n{prior}\n\n"
-            f"이 관점을 채울 다음 질문 하나를 만들거나(이전 답·다른 전문가 발견에서 "
-            f"심화), 충분하면 done=true.")
+            f"위 자산의 고유명사를 담아 이 관점을 채울 다음 질문 하나를 만드세요"
+            f"(이전 답·다른 전문가 발견에서 심화). **일반론(대형 쇼핑몰·백화점·타 지역 등)이 "
+            f"아니라 반드시 이 자산·상권**에 대한 질문이어야 합니다. 충분하면 done=true.")
         return self.complete(
             system=get_prompt("questioner.system"), user=user, schema=QuestionTurn)
 
@@ -161,6 +169,17 @@ class Researcher(BaseAgent):
             paths = _scope_fact_paths(driver, asset_id, question, anchor,
                                       n=5, exclude=set(), scope_hops=3)
             facts = paths_to_evidence(driver, paths)
+        # 폴백: 스코프-expand가 0건이면 질문을 자산맥락과 함께 직접 자유형 웹검색
+        # (navigator 스코프앵커 우회). 스코프 밖 고도화 질문의 답 소스를 직접 확보.
+        if not facts:
+            from real_estate.graphflow.harvester import Harvester
+            Harvester().harvest_question(
+                driver, asset_id=asset_id, asset_card=_asset_card(driver, asset_id),
+                question=question, collected_by=collected_by)
+            if anchor:
+                paths = _scope_fact_paths(driver, asset_id, question, anchor,
+                                          n=5, exclude=set(), scope_hops=3)
+                facts = paths_to_evidence(driver, paths)
         if not facts:
             return "검색했으나 이 질문에 답할 근거를 찾지 못함."
         resp = self.complete(
@@ -244,6 +263,27 @@ def _shared_digest(threads: list[dict], exclude_idx: int) -> str:
     return "\n".join(lines)
 
 
+def _scope_anchor_names(driver: Driver, asset_id: str) -> str:
+    """자산 스코프의 실제 고유명사 목록 — questioner가 일반론 대신 이 자산을 겨누게.
+    상권·업종·단지·건물·행정동·역명 등 (자산 2홉 내). 없으면 빈 문자열."""
+    with driver.session() as s:
+        rows = list(s.run(
+            "MATCH (a:Asset {asset_id:$aid})-[*0..2]-(n) "
+            "WITH DISTINCT n, labels(n)[0] AS lbl "
+            "WHERE lbl IN ['Asset','CommercialArea','Industry','Complex','Building',"
+            "'AdminDong','TransitStation','DevelopmentProject'] "
+            "RETURN lbl AS lbl, coalesce(n.trdar_name,n.adstrd_name,n.industry_name,"
+            "n.canonical_name,n.station_name,n.road_address,n.name,n.bname) AS nm",
+            aid=asset_id))
+    out, seen = [], set()
+    for r in rows:
+        nm = r["nm"]
+        if nm and nm not in seen:
+            seen.add(nm)
+            out.append(f"{nm}({r['lbl']})")
+    return ", ".join(out[:18])
+
+
 def discourse_round_stage(driver: Driver, asset_id: str, threads: list[dict],
                           collected_by: str, *, research_budget: int | None = None) -> list[dict]:
     """한 담론 라운드 (STORM Q&A) — 각 미완료 관점이 한 턴씩(Questioner→Researcher),
@@ -252,12 +292,15 @@ def discourse_round_stage(driver: Driver, asset_id: str, threads: list[dict],
     budget = int(research_budget if research_budget is not None
                  else get_config().get("curation", {}).get("research_budget", 3))
     questioner, researcher = Questioner(), Researcher()
+    asset_card = _asset_card(driver, asset_id)
+    scope_anchors = _scope_anchor_names(driver, asset_id)   # 자산 고유명사 주입(일반론 환각 방지)
     for i, th in enumerate(threads):
         if th.get("done"):
             continue
         p = Perspective(parent_axis=th["axis"], label=th["label"], focus=th["focus"],
                         persona=th.get("persona", ""))
-        qt = questioner.ask(p, th["qa"], shared_digest=_shared_digest(threads, i))
+        qt = questioner.ask(p, th["qa"], asset_card=asset_card, scope_anchors=scope_anchors,
+                            shared_digest=_shared_digest(threads, i))
         if qt.done or not qt.question.strip():
             th["done"] = True
             continue

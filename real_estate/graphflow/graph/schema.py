@@ -15,6 +15,8 @@ from __future__ import annotations
 
 from neo4j import Driver
 
+from infra.graph.schema import GraphSchemaSpec, _constraint_name
+
 
 # ───────────────────────────────────────────────────────────
 # 노드 라벨 상수 (사용처 typo 방지)
@@ -124,8 +126,8 @@ _UNIQUE_KEYS: list[tuple[str, str]] = [
 ]
 
 
-def _constraint_name(label: str, key: str) -> str:
-    return f"uniq_{label.lower()}_{key.lower()}"
+# 라벨 → 키 프로퍼티 매핑 (제네릭 writer가 MERGE 키로 사용)
+KEY_PROP: dict[str, str] = {label: key for label, key in _UNIQUE_KEYS}
 
 
 CONSTRAINTS: list[str] = [
@@ -135,12 +137,24 @@ CONSTRAINTS: list[str] = [
 ]
 
 
-# 라벨 → 키 프로퍼티 매핑 (제네릭 writer가 MERGE 키로 사용)
-KEY_PROP: dict[str, str] = {label: key for label, key in _UNIQUE_KEYS}
+# 부동산 자산의 그래프 스키마 명세 — infra 메커니즘에 주입한다.
+# node_labels는 NODE_LABELS 클래스의 모든 라벨 값(UPPER 상수)을 모은다.
+REAL_ESTATE_SCHEMA = GraphSchemaSpec(
+    node_labels=tuple(
+        v for k, v in vars(NODE_LABELS).items()
+        if not k.startswith("_") and isinstance(v, str)
+    ),
+    edge_types=tuple(
+        v for k, v in vars(EDGE_TYPES).items()
+        if not k.startswith("_") and isinstance(v, str)
+    ),
+    key_props=KEY_PROP,
+)
 
 
 def apply_constraints(driver: Driver) -> None:
-    """모든 UNIQUE constraint 생성. idempotent."""
-    with driver.session() as session:
-        for cypher in CONSTRAINTS:
-            session.run(cypher)
+    """모든 UNIQUE constraint 생성. idempotent. (기존 호출부 변경 없음 — 도메인
+    spec을 infra 메커니즘에 주입해 위임한다.)"""
+    from infra.graph.schema import apply_constraints as _ac
+
+    return _ac(driver, REAL_ESTATE_SCHEMA)

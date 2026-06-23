@@ -100,7 +100,7 @@ def main() -> int:
     spec = _SCENARIOS[args.scenario]
     print(f"대상 보고서: {report['report_id']} ({report['version_id']}) @ {rpt_dir.name}")
 
-    from real_estate.graphflow.graph.driver import close_neo4j_driver, get_neo4j_driver
+    from infra.graph.driver import close_neo4j_driver, get_neo4j_driver
     from real_estate.graphflow.report import asset_card_text
     from real_estate.graphflow.feedback import resolve_feedback, submit_feedback
     from real_estate.graphflow.seeder import asset_id_for

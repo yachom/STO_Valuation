@@ -1,10 +1,14 @@
 """graphflow 중앙 설정 — 튜닝 가능한 모든 값(모델·검색·확장)을 한 곳에.
 
-비밀(API 키)은 .env에 남고, 여기엔 동작을 바꾸는 튜닝값만 둔다. 우선순위:
-    env override (AGENT_TIER_<NAME>, TIER_<TIER>_*) > config.json > 코드 기본값
+사용자가 만지는 설정 파일은 레포 루트 `config/`에 노출된다(models.json·graphflow.json).
+이 모듈은 그 위에 도메인 *기본값*(_DEFAULTS, 안전망)을 얹고, 로딩 *메커니즘*은
+[[infra.config_loader]]에 위임한다 — 메커니즘은 자산 무관 공통 계층이라 infra에 둔다.
 
-A/B 실험의 'variant' = 이 설정의 부분 override. 실험 러너가 config를 로드해
-섹션을 덮어쓰고 파이프라인에 넘긴다 (load_config(overrides=...)).
+비밀(API 키)은 .env에 남고, 여기엔 동작을 바꾸는 튜닝값만 둔다. 우선순위:
+    env override (AGENT_TIER_<NAME>, TIER_<TIER>_*) > config/*.json > 코드 _DEFAULTS
+
+A/B 실험의 'variant' = 이 설정의 부분 override. set_active_override가 models 부분과
+나머지(graphflow)를 infra 슬롯으로 갈라 적용한다 ([[feedback-base-llm-pattern]]).
 
 사용:
     from real_estate.graphflow.config import get_config
@@ -15,18 +19,16 @@ A/B 실험의 'variant' = 이 설정의 부분 override. 실험 러너가 config
 
 from __future__ import annotations
 
-import copy
-import json
 import logging
-import os
-from pathlib import Path
 from typing import Any
+
+from infra.config_loader import deep_merge, get_layered, get_models
+from infra.config_loader import reset as _loader_reset
+from infra.config_loader import set_active as _loader_set_active
 
 logger = logging.getLogger("graphflow.config")
 
-_PATH = Path(__file__).parent / "config.json"
-
-# config.json 부재/파손 시 폴백 (파일이 진실, 이건 안전망).
+# config/*.json 부재/파손 시 폴백 (파일이 진실, 이건 안전망).
 _DEFAULTS: dict[str, Any] = {
     "models": {
         "tiers": {
@@ -65,85 +67,42 @@ _DEFAULTS: dict[str, Any] = {
     },
 }
 
-
-def _deep_merge(base: dict, over: dict) -> dict:
-    """over를 base에 재귀 병합 (base 비파괴, 새 dict 반환)."""
-    out = copy.deepcopy(base)
-    for k, v in (over or {}).items():
-        if isinstance(v, dict) and isinstance(out.get(k), dict):
-            out[k] = _deep_merge(out[k], v)
-        else:
-            out[k] = v
-    return out
-
-
-def _load_file() -> dict:
-    try:
-        raw = json.loads(_PATH.read_text(encoding="utf-8"))
-        raw.pop("_comment", None)
-        return _deep_merge(_DEFAULTS, raw)
-    except FileNotFoundError:
-        logger.info("config.json 없음 — 코드 기본값 사용")
-        return copy.deepcopy(_DEFAULTS)
-    except (ValueError, OSError) as e:
-        logger.warning("config.json 로드 실패(%s) — 기본값 사용", e)
-        return copy.deepcopy(_DEFAULTS)
-
-
-def _apply_env(cfg: dict) -> dict:
-    """기존 env override 컨벤션 유지 (config가 .env보다 후순위).
-
-    AGENT_TIER_<NAME>=<tier>, TIER_<TIER>_PROVIDER/MODEL/MAX_TOKENS/BASE_URL.
-    """
-    cfg = copy.deepcopy(cfg)
-    agents = cfg["models"]["agents"]
-    for name in list(agents):
-        v = os.environ.get(f"AGENT_TIER_{name.upper()}")
-        if v:
-            agents[name] = v.lower()
-    for tier, spec in cfg["models"]["tiers"].items():
-        p = f"TIER_{tier.upper()}_"
-        for envk, ck in (("PROVIDER", "provider"), ("MODEL", "model"), ("BASE_URL", "base_url")):
-            val = os.environ.get(p + envk)
-            if val:
-                spec[ck] = val
-        mt = os.environ.get(p + "MAX_TOKENS")
-        if mt:
-            spec["max_tokens"] = int(mt)
-    return cfg
-
-
-_cache: dict | None = None
-_active: dict | None = None       # 실험 러너가 set한 variant override (전역 적용)
+# models는 infra가 직접(llm) 읽으므로 슬롯 분리; 나머지는 graphflow 튜닝 슬롯.
+_MODEL_DEFAULTS: dict = _DEFAULTS["models"]
+_TUNING_DEFAULTS: dict = {k: v for k, v in _DEFAULTS.items() if k != "models"}
 
 
 def get_config(overrides: dict | None = None) -> dict:
-    """병합된 설정 dict. 우선순위(높은 순): 인자 overrides > active(실험) > 파일+env.
+    """병합된 설정 dict. 우선순위(높은 순): 인자 overrides > active(실험) > 파일+env > _DEFAULTS.
 
-    compose·llm 등 모든 소비자가 이걸 읽으므로, 실험 러너가 set_active_override로
-    variant를 걸면 파이프라인 전체가 그 설정으로 돈다(스레딩 불필요).
+    compose·writer 등 모든 소비자가 이걸 읽는다. models는 infra.get_models()(config/
+    models.json+env)에 도메인 기본값을 안전망으로 얹고, 나머지는 graphflow.json과 병합.
     """
-    global _cache
-    if _cache is None:
-        _cache = _apply_env(_load_file())
-    cfg = _cache
-    if _active:
-        cfg = _deep_merge(cfg, _active)
+    cfg = {
+        "models": deep_merge(_MODEL_DEFAULTS, get_models()),
+        **get_layered("graphflow", "graphflow.json", _TUNING_DEFAULTS),
+    }
     if overrides:
-        cfg = _deep_merge(cfg, overrides)
+        cfg = deep_merge(cfg, overrides)
     return cfg
 
 
 def set_active_override(variant: dict | None) -> None:
     """실험 러너용 — 이후 모든 get_config()에 얹히는 variant. None이면 해제.
 
-    모델 변경 시 llm 캐시도 비워야 적용됨: llm.reset_caches() 동반 호출.
+    variant의 'models' 부분은 models 슬롯(llm도 즉시 반영), 나머지는 graphflow 슬롯으로
+    간다. 모델 변경 시 llm 캐시도 비워야 적용됨: llm.reset_caches() 동반 호출.
     """
-    global _active
-    _active = variant
+    if variant is None:
+        _loader_set_active("models", None)
+        _loader_set_active("graphflow", None)
+        return
+    _loader_set_active("models", variant.get("models"))
+    rest = {k: v for k, v in variant.items() if k != "models"}
+    _loader_set_active("graphflow", rest or None)
 
 
 def reset_config() -> None:
     """테스트/실험 재로딩용 — 캐시 비움(active override는 유지)."""
-    global _cache
-    _cache = None
+    _loader_reset("models")
+    _loader_reset("graphflow")

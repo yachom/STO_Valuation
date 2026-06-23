@@ -69,7 +69,7 @@ def main() -> int:
 
     from real_estate.location import LocationResolver
     from real_estate.graphflow.seeder import asset_id_for
-    from real_estate.graphflow.graph.driver import close_neo4j_driver, get_neo4j_driver
+    from infra.graph.driver import close_neo4j_driver, get_neo4j_driver
     from real_estate.graphflow.workflow import run_report_pipeline
     from infra.agent.tracing import make_run_id, run_tracer
 

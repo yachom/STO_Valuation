@@ -44,7 +44,7 @@ _EXPANDABLE_LABELS = {
 _FRONTIER_LABEL_PRIORITY = {
     L.ASSET: 1.0, L.COMMERCIAL_AREA: 1.0, L.INDUSTRY: 1.0, L.BUILDING: 1.0,
     L.DEVELOPMENT_PROJECT: 0.9, L.ENTITY: 0.9, L.ADMIN_DONG: 0.8,
-    L.COMPLEX: 0.35,   # 배후수요 아파트 — 보조 (시세 뉴스 예산 독식 억제)
+    L.COMPLEX: 0.2,    # 배후수요 아파트 — 강하게 억제 (시세/스펙 뉴스 예산 독식 차단)
 }
 
 # 검색어 길이 상한 (어절). 네이버 뉴스는 키워드 검색이라 긴 문장형 쿼리는 0건이

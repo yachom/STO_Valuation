@@ -41,7 +41,7 @@ def main() -> int:
         format="%(levelname)s %(name)s: %(message)s")
     load_env()
 
-    from real_estate.graphflow.graph.driver import close_neo4j_driver, get_neo4j_driver
+    from infra.graph.driver import close_neo4j_driver, get_neo4j_driver
     from real_estate.graphflow.janitor import run_janitor
 
     driver = get_neo4j_driver()

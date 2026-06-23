@@ -35,6 +35,8 @@ _TITLE_TO_PROPS = {
     "에너지효율등급": "energy_grade",
     "에너지절감율": "energy_reduce_rate",
     "세대수": "household_count",
+    "내진설계적용여부": "seismic_design_applied",   # '0'/'1' — ESG 물리리스크(지진)
+    "내진능력": "seismic_ability",
 }
 
 

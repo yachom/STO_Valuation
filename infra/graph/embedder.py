@@ -11,7 +11,7 @@ import logging
 import threading
 from typing import Iterable
 
-logger = logging.getLogger("graphflow.embed")
+logger = logging.getLogger("infra.graph.embedder")
 
 _MODEL_NAME = "intfloat/multilingual-e5-large"
 _DIM = 1024
