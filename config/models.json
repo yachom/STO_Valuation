@@ -24,6 +24,11 @@
     "perspectivist": "sonnet",
     "questioner":   "haiku",
     "researcher":   "gpt_mini",
-    "outliner":     "sonnet"
+    "outliner":     "sonnet",
+
+    "music_navigator":   "haiku",
+    "music_harvester":   "gpt_mini",
+    "music_writer":      "sonnet",
+    "music_synthesizer": "opus"
   }
 }
