@@ -37,6 +37,7 @@ class MusicFlowState(TypedDict, total=False):
     out_dir: str
     evidence_k: int
     expand_rounds: int
+    collected_by: str
     # ── 단계 산출 ──
     work_card: str
     expand_summary: dict
@@ -63,9 +64,16 @@ def seed_node(state: MusicFlowState) -> dict:
 
 
 def expand_node(state: MusicFlowState) -> dict:
-    """웹검색 확장 (v1 패스스루). TODO: navigator→harvester(ddgs/naver/tavily) 루프."""
+    """웹검색 확장 — navigator→harvester→curator 라운드 (expand_rounds>0일 때)."""
     rounds = state.get("expand_rounds", 0)
-    return {"expand_summary": {"rounds_run": 0 if rounds <= 0 else rounds, "stub": True}}
+    if rounds <= 0:
+        return {"expand_summary": {"rounds_run": 0, "skipped": True}}
+    from infra.agent.tracing import make_run_id
+    from music_copyright.graphflow.expand import run_expand
+    collected_by = state.get("collected_by") or make_run_id("exp")
+    summary = run_expand(_driver(), work_id=state["work_id"],
+                         collected_by=collected_by, rounds=rounds)
+    return {"expand_summary": summary, "collected_by": collected_by}
 
 
 def _make_write_node(axis: str):

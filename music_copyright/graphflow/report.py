@@ -271,8 +271,17 @@ def generate_report(
     *,
     out_dir: str | Path,
     evidence_k: int | None = None,
+    expand_rounds: int = 0,
 ) -> dict:
-    """순차 단독 실행 진입점 (LangGraph 없이). 표준 그래프 경로는 workflow.py."""
+    """순차 단독 실행 진입점 (LangGraph 없이). 표준 그래프 경로는 workflow.py.
+
+    expand_rounds>0이면 집필 전 웹검색 EXPAND로 Fact를 보강한다(보고서가 두꺼워짐).
+    """
+    if expand_rounds > 0:
+        from infra.agent.tracing import make_run_id
+        from music_copyright.graphflow.expand import run_expand
+        run_expand(driver, work_id=work_id, collected_by=make_run_id("exp"),
+                   rounds=expand_rounds)
     card = work_card_text(driver, work_id)
     sections: dict[str, SectionDraft] = {}
     evidence_by_axis: dict[str, list[Evidence]] = {}

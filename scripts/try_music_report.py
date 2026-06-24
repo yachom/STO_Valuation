@@ -36,6 +36,8 @@ def main():
     p.add_argument("--artist", default="BTS")
     p.add_argument("--out", default=None, help="출력 디렉터리 (기본 run_dir)")
     p.add_argument("--evidence-k", type=int, default=None)
+    p.add_argument("--expand-rounds", type=int, default=0,
+                   help="집필 전 웹검색 EXPAND 라운드 수 (0=생략)")
     p.add_argument("--workflow", action="store_true", help="순차 대신 LangGraph 경로")
     args = p.parse_args()
 
@@ -72,16 +74,20 @@ def main():
             print(f"  → {seed_out}")
 
             # 3. 보고서 생성
+            if args.expand_rounds > 0:
+                print(f"  EXPAND {args.expand_rounds}라운드 (웹검색 Fact 보강)...")
             print(f"[3/3] 보고서 생성 중 (GPT 집필·종합)... → {out_dir}")
             if args.workflow:
                 from music_copyright.graphflow.workflow import run_report_pipeline
                 state = run_report_pipeline(ident.work_id, out_dir=out_dir,
-                                            evidence_k=args.evidence_k)
+                                            evidence_k=args.evidence_k,
+                                            expand_rounds=args.expand_rounds)
                 report = state["report"]
             else:
                 from music_copyright.graphflow.report import generate_report
                 report = generate_report(driver, ident.work_id, out_dir=out_dir,
-                                         evidence_k=args.evidence_k)
+                                         evidence_k=args.evidence_k,
+                                         expand_rounds=args.expand_rounds)
 
         val = report.get("valuation", {})
         print("\n=== 보고서 완료 ===")

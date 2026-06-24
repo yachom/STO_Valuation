@@ -26,9 +26,9 @@
 
   "expand": {
     "rounds":             2,
-    "frontier_max":       12,
-    "queries_per_node":   3,
-    "total_query_budget": 100,
+    "frontier_max":       6,
+    "queries_per_node":   2,
+    "total_query_budget": 8,
     "novelty_threshold":  0.1
   },
 
