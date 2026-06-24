@@ -31,6 +31,21 @@ logger = logging.getLogger("infra.agent.base")
 _WS_RE = re.compile(r"\s+")
 
 
+def _gateway_wait(agent_name: str) -> None:
+    """LLM provider 호출 간격 제어 — provider명을 게이트웨이 키로 throttle한다.
+
+    OpenAI 등은 계정 tier별 RPM/TPM 한도가 있고, harvester 추출이 스레드풀(최대 8워커)로
+    동시 호출하면 burst로 429가 날 수 있다. 게이트웨이가 슬롯을 분배해(워커별 0/Δ/2Δ…)
+    전역 호출 간격을 강제한다 — min_interval은 infra/gateway/rate_limits.json의
+    provider 키('openai')로 조정(tier를 모를 때의 안전판). rate_limits.json에 키가 없는
+    provider(anthropic 등)는 무동작 통과. 게이트는 best-effort라 실패해도 호출은 진행."""
+    try:
+        from infra.gateway import get_default
+        get_default().wait(provider_for_agent(agent_name))
+    except Exception as exc:        # 게이트 자체 오류가 LLM 호출을 막지 않게
+        logger.debug("LLM 게이트 통과 실패(무시): %s", exc)
+
+
 def normalize_text(s: str) -> str:
     """공백 제거 + 소문자 — 검색어/표면형(surface) 동일성 비교용 정규화.
 
@@ -106,6 +121,7 @@ class BaseAgent:
             model = self.llm(**overrides)
             if schema is not None:
                 model = model.with_structured_output(schema)
+            _gateway_wait(self.name)   # provider 호출 간격 제어(openai 등 rate-limit). 재시도도 throttle.
             return model.invoke(messages)
 
         with node_scope(self.name):

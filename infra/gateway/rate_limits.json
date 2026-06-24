@@ -16,5 +16,7 @@
   "reb_lease_market": { "min_interval_seconds": 0.5 },
   "nts_business_registry": { "min_interval_seconds": 0.5 },
   "seoul_open_data": { "min_interval_seconds": 0.2 },
-  "localdata": { "min_interval_seconds": 0.2 }
+  "localdata": { "min_interval_seconds": 0.2 },
+
+  "openai": { "min_interval_seconds": 0.2 }
 }

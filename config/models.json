@@ -5,7 +5,7 @@
     "opus":     {"provider": "anthropic", "model": "claude-opus-4-8",            "max_tokens": 8000},
     "sonnet":   {"provider": "anthropic", "model": "claude-sonnet-4-6",          "max_tokens": 8000},
     "haiku":    {"provider": "anthropic", "model": "claude-haiku-4-5-20251001",  "max_tokens": 4096},
-    "gpt_mini": {"provider": "openai",    "model": "gpt-4o-mini",                "max_tokens": 4096},
+    "gpt_mini": {"provider": "openai",    "model": "gpt-4o-mini",                "max_tokens": 4096, "extra": {"max_retries": 6}},
     "local":    {"provider": "openai_compat", "model": "Qwen/Qwen2.5-7B-Instruct", "base_url": "http://localhost:8000/v1", "max_tokens": 4096}
   },
 
