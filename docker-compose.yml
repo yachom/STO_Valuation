@@ -27,6 +27,31 @@ services:
       timeout: 5s
       retries: 10
 
+  # 음악저작권 전용 Neo4j — 부동산과 물리적으로 분리된 인스턴스.
+  #   docker compose up -d neo4j-music
+  #   → 브라우저 http://localhost:7475 (neo4j / music_dev_pw)
+  #   → .env: MUSIC_NEO4J_PASSWORD=music_dev_pw
+  neo4j-music:
+    image: neo4j:5.26-community
+    container_name: graphflow_neo4j_music
+    ports:
+      - "7475:7474"   # HTTP (브라우저)
+      - "7688:7687"   # Bolt (드라이버)
+    environment:
+      NEO4J_AUTH: "neo4j/music_dev_pw"
+      NEO4J_server_memory_heap_max__size: "1G"
+      NEO4J_server_memory_pagecache_size: "512M"
+    volumes:
+      - neo4j_music_data:/data
+      - neo4j_music_logs:/logs
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:7474 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
 volumes:
   neo4j_data:
   neo4j_logs:
+  neo4j_music_data:
+  neo4j_music_logs:

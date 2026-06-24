@@ -1,13 +1,12 @@
 """음악 Seeder 검증 — resolve → collect_scope (→ seed).
 
-real_estate의 try_graphflow --seed-only에 대응.
-    --scope-only : Neo4j 없이 collect_scope 결과만 출력 (오프라인 검증)
-    (기본)       : collect_scope + Neo4j 적재 (NEO4J_* 필요, docker-compose 가동)
-    --embed      : 적재 시 카드 임베딩까지 (모델 로드 ~1.5GB)
+    --scope-only : 음악 Neo4j 없이 collect_scope 결과만 출력 (오프라인 검증)
+    (기본)       : collect_scope + 음악 Neo4j 적재 (MUSIC_NEO4J_*, docker neo4j-music)
+    --embed      : 적재 시 카드 임베딩까지
 
 실행:
-    $ python -m scripts.try_music_seed --title "Dynamite" --artist "BTS" --scope-only
-    $ python -m scripts.try_music_seed --title "Dynamite" --artist "BTS"
+    python -m music_copyright.scripts.try_music_seed --title "Dynamite" --artist "BTS" --scope-only
+    python -m music_copyright.scripts.try_music_seed --title "Dynamite" --artist "BTS"
 """
 
 from __future__ import annotations
@@ -37,24 +36,19 @@ def main():
         print("에러: SPOTIFY_CLIENT_ID/SECRET, MUSICBRAINZ_USER_AGENT 필요")
         return
 
-    # 1. 식별
     resolver = WorkResolver(spotify_client_id=cid, spotify_client_secret=secret,
                             musicbrainz_user_agent=ua)
     print(f"질의: {args.artist} - {args.title}\n해소 중...")
     ident = resolver.resolve(title=args.title, artist=args.artist)
     print(f"  → work_id={ident.work_id}  ISWC={ident.iswc}  ISRC={ident.isrc}\n")
 
-    # 2. 스코프 수집 (구조화 API)
     print("스코프 수집 중 (MusicBrainz/Deezer/Last.fm)...")
     scope = collect_scope(ident, lastfm_api_key=lastfm, mb_user_agent=ua)
 
     print("\n=== ScopeGraph 요약 ===")
     print(" ", scope.summary())
-    print("\n--- 노드 ---")
     for n in scope.nodes:
-        print(f"  [{n.label}] {n.key}")
-        print(f"      card: {n.card_text}")
-    print("\n--- 엣지 ---")
+        print(f"  [{n.label}] {n.key}\n      card: {n.card_text}")
     for e in scope.edges:
         print(f"  ({e.src_label}:{e.src_key}) -[{e.rel} {e.props}]-> ({e.dst_label}:{e.dst_key})")
 
@@ -62,15 +56,14 @@ def main():
         print("\n(--scope-only: Neo4j 적재 생략)")
         return
 
-    # 3. Neo4j 적재
-    from infra.graph.driver import get_neo4j_driver
-    print("\nNeo4j 적재 중...")
-    driver = get_neo4j_driver()
+    from music_copyright.graphflow.graph.driver import close_music_driver, get_music_driver
+    print("\n음악 Neo4j 적재 중...")
+    driver = get_music_driver()
     try:
         result = seed(scope, driver, embed=args.embed)
         print("적재 완료:", result)
     finally:
-        driver.close()
+        close_music_driver()
 
 
 if __name__ == "__main__":

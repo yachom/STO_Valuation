@@ -1,13 +1,13 @@
-"""음악 보고서 end-to-end 검증 — resolve → seed → generate_report.
+"""음악 보고서 end-to-end — resolve → seed → (EXPAND) → generate_report.
 
-real_estate의 try_report에 대응. 자유텍스트(제목+아티스트) 한 줄로 정성 가치평가
-보고서(JSON + markdown)를 생성한다. real_estate와 동일하게 공용 run_tracer로 감싸,
-산출물 + 트레이스 사이드카가 자산 내부 run 디렉터리(music_copyright/reports/<run_id>/)에
-쌓이고 Langfuse run으로 그룹핑된다.
+real_estate의 try_report에 대응. 공용 run_tracer로 감싸 산출물 + 트레이스가
+music_copyright/reports/<run_id>/에 쌓이고 Langfuse run으로 그룹핑된다.
+음악 전용 Neo4j(MUSIC_NEO4J_*)를 사용한다.
 
-실행 (NEO4J 가동 + .env 키 필요):
-    python -m scripts.try_music_report --title "Dynamite" --artist "BTS"
-    python -m scripts.try_music_report --title "좋니" --artist "윤종신" --workflow
+실행 (음악 Neo4j 가동 + .env 키 필요):
+    python -m music_copyright.scripts.try_music_report --title "Dynamite" --artist "BTS"
+    python -m music_copyright.scripts.try_music_report --title "Dynamite" --artist "BTS" --expand-rounds 1
+    python -m music_copyright.scripts.try_music_report --title "좋니" --artist "윤종신" --workflow
 """
 
 from __future__ import annotations
@@ -19,13 +19,12 @@ from pathlib import Path
 import music_copyright
 from infra.agent.tracing import make_run_id, run_tracer
 from infra.env import load_env
-from infra.graph.driver import close_neo4j_driver, get_neo4j_driver
+from music_copyright.graphflow.graph.driver import close_music_driver, get_music_driver
 from music_copyright.graphflow.seeder import seed_from_identity
 from music_copyright.resolver import WorkResolver
 
 # 음악은 SQLite가 없다 — db_path는 RunTracer의 run_dir 베이스 앵커로만 쓰인다
 # (RunTracer는 db_path.parent/"reports"/run_id만 사용, 파일을 만들지 않음).
-# 결과: music_copyright/reports/<run_id>/  (real_estate/database/DB/reports/<run_id>/와 평행)
 _MUSIC_HOME = Path(music_copyright.__file__).resolve().parent
 _TRACE_ANCHOR = _MUSIC_HOME / "store.db"
 
@@ -50,9 +49,8 @@ def main():
         print("에러: SPOTIFY_CLIENT_ID/SECRET, MUSICBRAINZ_USER_AGENT 필요")
         return
 
-    driver = get_neo4j_driver()
+    driver = get_music_driver()
     try:
-        # 1. 식별 (work_id 확보 — 트레이서 세션 키로 사용)
         resolver = WorkResolver(spotify_client_id=cid, spotify_client_secret=secret,
                                 musicbrainz_user_agent=ua)
         print(f"질의: {args.artist} - {args.title}\n[1/3] 식별 중...")
@@ -67,13 +65,11 @@ def main():
                                   "iswc": ident.iswc}) as tracer:
             out_dir = args.out or str(tracer.run_dir)
 
-            # 2. 시드 적재
             print("[2/3] 그래프 시드 적재 중...")
             seed_out = seed_from_identity(ident, driver, lastfm_api_key=lastfm,
                                           mb_user_agent=ua)
             print(f"  → {seed_out}")
 
-            # 3. 보고서 생성
             if args.expand_rounds > 0:
                 print(f"  EXPAND {args.expand_rounds}라운드 (웹검색 Fact 보강)...")
             print(f"[3/3] 보고서 생성 중 (GPT 집필·종합)... → {out_dir}")
@@ -99,7 +95,7 @@ def main():
               f"evidence={len(report['evidence'])}")
         print(f"  파일: {out_dir}/report.md , {out_dir}/report.json")
     finally:
-        close_neo4j_driver()
+        close_music_driver()
 
 
 if __name__ == "__main__":

@@ -53,8 +53,8 @@ class MusicFlowState(TypedDict, total=False):
 # 노드 — report.py 단계 함수 호출 (driver는 싱글톤)
 # ───────────────────────────────────────────────────────────
 def _driver():
-    from infra.graph.driver import get_neo4j_driver
-    return get_neo4j_driver()
+    from music_copyright.graphflow.graph.driver import get_music_driver
+    return get_music_driver()
 
 
 def seed_node(state: MusicFlowState) -> dict:
