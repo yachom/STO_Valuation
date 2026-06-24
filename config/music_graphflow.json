@@ -5,12 +5,12 @@
 
   "curation": {
     "mode": "static",
-    "moderator_max_rounds": 2,
-    "moderator_budget_per_round": 6,
-    "moderator_max_questions": 3,
-    "perspectives_max": 2,
-    "turns_per_perspective": 2,
-    "research_budget": 3
+    "moderator_max_rounds": 1,
+    "moderator_budget_per_round": 2,
+    "moderator_max_questions": 1,
+    "perspectives_max": 1,
+    "turns_per_perspective": 1,
+    "research_budget": 1
   },
 
   "retrieval": {

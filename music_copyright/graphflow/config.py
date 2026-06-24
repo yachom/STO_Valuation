@@ -45,6 +45,9 @@ _DEFAULTS: dict[str, Any] = {
         "agents": {
             "music_navigator": "gpt_mini", "music_harvester": "gpt_mini",
             "music_writer": "gpt_mini", "music_synthesizer": "gpt_mini",
+            "music_perspectivist": "gpt_mini", "music_questioner": "gpt_mini",
+            "music_researcher": "gpt_mini", "music_moderator": "gpt_mini",
+            "music_outliner": "gpt_mini",
         },
     },
     # 보고서 3축 — influence·popularity·sustainability (profiles.REPORT_AXES와 일치).

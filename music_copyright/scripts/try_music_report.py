@@ -38,7 +38,16 @@ def main():
     p.add_argument("--expand-rounds", type=int, default=0,
                    help="집필 전 웹검색 EXPAND 라운드 수 (0=생략)")
     p.add_argument("--workflow", action="store_true", help="순차 대신 LangGraph 경로")
+    p.add_argument("--discourse", action="store_true",
+                   help="STORM 담론 모드 (perspectives→discourse→moderator→outline)")
     args = p.parse_args()
+
+    if args.discourse:
+        # 담론은 LangGraph 경로 + expand_rounds>0에서만 라우팅된다(workflow.route_after_seed).
+        from music_copyright.graphflow.config import set_active_override
+        set_active_override({"curation": {"mode": "discourse"}})
+        args.workflow = True
+        args.expand_rounds = max(1, args.expand_rounds)
 
     load_env()
     cid = os.environ.get("SPOTIFY_CLIENT_ID")
