@@ -129,6 +129,22 @@ def card_for_entity(p: dict) -> str:
     return f"{name} — 수집 문서에서 언급된 엔티티{suffix}."
 
 
+# ── 보고서 grounding (real_estate와 동형 — 보고서 노드도 카드를 갖는 1급 시민) ──
+def card_for_report(p: dict) -> str:
+    return f"평가 보고서 {p.get('report_id', '')} ({(p.get('created_at') or '')[:10]})."
+
+
+def card_for_report_section(p: dict) -> str:
+    return f"보고서 섹션 [{p.get('axis', '')}] {p.get('title', '')}"
+
+
+def card_for_claim(p: dict) -> str:
+    # 카드 = 주장 문장 자체 (QA 앵커 매칭에서 보고서 결론이 잡히도록)
+    text = p.get("text", "")
+    as_of = f" (기준 {p['as_of']})" if p.get("as_of") else ""
+    return f"{text}{as_of}"
+
+
 _BUILDERS = {
     NODE_LABELS.WORK: card_for_work,
     NODE_LABELS.ARTIST: card_for_artist,
@@ -139,6 +155,9 @@ _BUILDERS = {
     NODE_LABELS.WEB_DOC: card_for_web_doc,
     NODE_LABELS.FACT: card_for_fact,
     NODE_LABELS.ENTITY: card_for_entity,
+    NODE_LABELS.REPORT: card_for_report,
+    NODE_LABELS.REPORT_SECTION: card_for_report_section,
+    NODE_LABELS.CLAIM: card_for_claim,
 }
 
 
