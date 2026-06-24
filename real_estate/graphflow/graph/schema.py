@@ -24,7 +24,7 @@ from infra.graph.schema import GraphSchemaSpec, _constraint_name
 class NODE_LABELS:
     # ── 전역 층: SQLite 적재 구조 노드 ──
     ASSET = "Asset"                      # 평가 대상 자산 — re:{bd_mgt_sn} | re:{lat},{lon}
-    COMPLEX = "Complex"                  # apartment_complex.master_complex_id (배후수요)
+    COMPLEX = "Complex"                  # 배후 주거수요 집계(반경 내 단지수·총세대수, key=backing:{asset})
     BUILDING = "Building"                # bdmgt_sn (cert/거래에서 등장)
     LEGAL_DONG = "LegalDong"             # bcode (10자리)
     ADMIN_DONG = "AdminDong"             # adstrd_cd

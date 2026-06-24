@@ -1,0 +1,1170 @@
+{
+  "report_id": "rpt_20260623_154212_d2a0463d",
+  "version_id": "v1",
+  "parent_version_id": null,
+  "asset_id": "re:1168010100108580000000013",
+  "created_at": "2026-06-23T15:42:12",
+  "sections": [
+    {
+      "section_id": "sec_overview",
+      "axis": "overview",
+      "title": "종합 평가 개요 — 강남역지하도상가 사회적 가치 판정",
+      "blocks": [
+        {
+          "block_id": "blk_overview_0",
+          "markdown": "## Executive Summary\n\n강남역지하도상가의 사회적 가치는 **압도적 상권 입지가 견인하고 물리·임차 측면이 끌어내리는** 비대칭 구조를 보인다. 강남역 상권은 강남구 발달상권 25곳 중 매출 1위(상위 4%)의 최고 등급 상권으로, 2025년 4분기 유동인구 약 745만 명·추정매출 약 4,187억원 규모에 매출 추세 -0.2%의 안정성을 갖춰 상권건강도 측면에서 최상위 입지다. 배후수요 또한 역삼1동·서초2동의 광역 상주인구와 의료·식음료 목적형 소비 구조로 탄탄하다.",
+          "claim_ids": [
+            "clm_788c49e408",
+            "clm_5ba51c47f3",
+            "clm_4bb884419c"
+          ]
+        },
+        {
+          "block_id": "blk_overview_1",
+          "markdown": "## 축간 인사이트 — 강점과 모순\n\n핵심 모순은 **'최상급 상권 입지' vs '건물 단위 물리·임차 취약성'**의 괴리다. 상권은 A급이지만, 건물 자체는 내진설계 미적용과 냉방기 1주 고장 등 지하 시설 안전·쾌적성 결함이 확인되고 ESG 인증 데이터가 거의 없어 ESG·물리성능은 C급에 그친다. 임차 측면에서도 누적폐업률 33%·폐업자 평균존속 0.1년의 단기 폐업 신호와 현재 영업 4곳 평균 5.2년·최근 2년 폐업 0건의 장기 존속 신호가 **양극화**되어 단일 결론을 내리기 어렵다. 즉, '좋은 상권에 있다'는 사실이 '이 건물의 임차인이 안정적이다'를 자동 보장하지 않는다.",
+          "claim_ids": [
+            "clm_2ed6b934ac",
+            "clm_0e30194281",
+            "clm_8ccf9e5c78"
+          ]
+        },
+        {
+          "block_id": "blk_overview_2",
+          "markdown": "## 데이터 한계 명시\n\n임차안정성은 건물 전체 임차율·개별 테넌트 매출·현재 공실 현황·임대 대기 등 핵심 정량 데이터가 부재해 **잠정 평가**에 머문다. ESG 축도 에너지효율등급·녹색건축인증·탄소배출 공시가 대부분 없어 상향 근거가 존재하지 않는다. 인용된 공실률 6.3%(전년比 +24.2%)·수익률 1.23%는 본 건물이 아닌 서울 시장 전체 거시 지표로, 건물 고유 평가가 아닌 참고치로만 반영했다.",
+          "claim_ids": [
+            "clm_088fbc64b1",
+            "clm_e89a5b79c9"
+          ]
+        },
+        {
+          "block_id": "blk_overview_3",
+          "markdown": "## 등급 판정 요약\n\n**종합 등급: B+.** 결정적 강점은 강남구 1위·상위 4%의 상권 입지와 광역 배후수요로, 이 두 축이 A~A- 등급을 받아 종합 가치를 끌어올린다. 결정적 약점은 내진 미적용·냉방기 고장·ESG 인증 전무(ESG C)와 폐업 양극화 및 핵심 임차 데이터 공백(임차안정성 C+, 잠정)이다. **유의점**: 본 등급은 상권 우위에 크게 기댄 판정이며, 건물 임차율·공실·매출·ESG 인증 등 누락 데이터가 확보되면 ESG·임차 축에서 등급이 재조정될 수 있다. 거시 공실률 상승(+24.2%)과 제한적 수익률(1.23%)은 하방 리스크 모니터링 요소다.",
+          "claim_ids": [
+            "clm_578fefeeda",
+            "clm_e89a5b79c9"
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "sec_tenant",
+      "axis": "tenant",
+      "title": "임차(테넌트) 가치 분석",
+      "blocks": [
+        {
+          "block_id": "blk_tenant_0",
+          "markdown": "## 기본 현황 및 분류\n\n평가 대상인 강남역지하도상가는 서울 강남구 역삼동에 위치한 판매시설로, 연면적 6,125.37㎡의 철근콘크리트 구조 건물이다. 2014년 8월 13일 사용승인을 받았으며, 내진설계는 미적용되었다. 상권은 강남역(발달상권)에 위치하며, 최근 2025년 4분기 기준으로 동일 자치구 발달상권 25곳 중 매출 1위(상위 4%)의 상권 성과를 기록하고 있다.",
+          "claim_ids": [
+            "clm_1e6916e772",
+            "clm_3e44a0b807",
+            "clm_c8483419c1"
+          ]
+        },
+        {
+          "block_id": "blk_tenant_1",
+          "markdown": "## 앵커 테넌트 리뷰·평판\n\n건물 내 주요 임차 사업자들의 고객 평가는 엇갈린다. GS25 S강남역1호점은 4.0점의 평점으로 안정적인 평가를 받고 있으며, 하마커피는 4.2점의 평점과 함께 카카오후기 63건, 블로그리뷰 178건으로 상대적으로 높은 온라인 평판을 유지하고 있다. 반면 일월분식은 2.1점의 낮은 평점으로 고객 만족도가 미흡하며(카카오후기 7건, 블로그리뷰 15건), 이마트24 강남역점은 1.0점의 최저 평점으로 서비스 품질 문제가 심각한 상황이다.",
+          "claim_ids": [
+            "clm_43a4a81517",
+            "clm_b93d36e0d3",
+            "clm_3c28b877a8",
+            "clm_eadf26ef3a",
+            "clm_be61fed968"
+          ]
+        },
+        {
+          "block_id": "blk_tenant_2",
+          "markdown": "## 임차 회전율·폐업·존속\n\n본 건물의 임차 회전율은 상당한 불안정성을 보이고 있다. 전체 입점이력 6건 중 누적폐업률이 33%로 높으며, 폐업한 사업자들의 평균존속기간은 0.1년에 불과해 매우 단명하다. 현재 영업 중인 4곳은 평균 5.2년의 영업기간을 유지하고 있어, 일부 장기 영업 임차인과 단기 폐업자 간의 양극화가 뚜렷하다. 최근 2년간(데이터 기준 시점 기준)에는 폐업 사례가 없었으나 신규 입점은 1건에 그쳤다.",
+          "claim_ids": [
+            "clm_cb4943c98f",
+            "clm_68551d502d",
+            "clm_f278aa23b8",
+            "clm_58d55378d1"
+          ]
+        },
+        {
+          "block_id": "blk_tenant_3",
+          "markdown": "## 임대 시장 환경(공실률·임대료·수익률)\n\n서울 소규모상가 시장의 2026년 1분기 기준 현황은 다음과 같다. 공실률이 6.3%로 전년 대비 24.2% 증가하였으며, 이는 시장 공급 과잉 또는 수요 약화의 신호로 해석된다. 평균 임대료는 52.5천원/㎡로 책정되어 있고, 분기 기준 수익률은 1.23%이다. 이러한 수익 수준은 임차 사업자의 수익성이 제한적임을 시사한다.",
+          "claim_ids": [
+            "clm_bd8f617664",
+            "clm_301974e865",
+            "clm_5f7e633b64"
+          ]
+        },
+        {
+          "block_id": "blk_tenant_4",
+          "markdown": "## 테넌트 평판 신호 및 시장 동향\n\n뉴스 증거에 따르면 신규 입점 시 직접 경쟁이 발생할 수 있으며, 이는 건물 내 테넌트 간의 수익 잠식으로 이어질 가능성을 시사한다. 또한 코로나 시국으로 인한 상가 공실화 현상이 보고되고 있어, 팬데믹 이후의 회복 속도가 임차 사업자 안정성의 주요 변수가 될 것으로 예상된다.",
+          "claim_ids": [
+            "clm_aa3e77cc4d",
+            "clm_6f212cc890"
+          ]
+        },
+        {
+          "block_id": "blk_tenant_5",
+          "markdown": "## 데이터 한계 및 평가 유보\n\n본 건물의 임차 가치 평가에는 다음과 같은 정보 격차가 있다. 건물 전체 임차율(입주율), 개별 테넌트의 구체적 매출·수익률, 임대료 책정 근거 및 장기 계약 조건, 업종별 폐업 원인 분석, 현재 공실 현황 및 임대 대기 상황 등은 제공된 증거에 없다. 따라서 건물 수익성의 절대 수준, 임차인 선별 기준의 효과성, 중장기 임차 안정성에 대한 종합 판단은 추가 자료 없이 유보된다.",
+          "claim_ids": [
+            "clm_0032b58f91",
+            "clm_46db153e19"
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "sec_esg",
+      "axis": "esg",
+      "title": "ESG·물리적 상태 분석",
+      "blocks": [
+        {
+          "block_id": "blk_esg_0",
+          "markdown": "강남역지하도상가는 2014년 8월 13일 사용승인을 받은 철근콘크리트 구조의 지하 판매시설로, 총 연면적 6,125.37㎡ 규모이다. 역삼1동에 위치하며 강남역 직하 상권의 핵심을 차지하고 있다.",
+          "claim_ids": [
+            "clm_64d8736754",
+            "clm_2155bde03a",
+            "clm_ad4ebed40a"
+          ]
+        },
+        {
+          "block_id": "blk_esg_1",
+          "markdown": "건물의 구조 안전성 측면에서 주요 우려 사항은 내진설계의 미적용이다. 이는 지진 등 지각변동에 대한 구조 저항력이 현행 건축기준 이상으로 확보되지 않음을 의미하며, 지하 시설물의 특성상 대피 경로 제약과 함께 재해 시 이용객 안전 위험을 가중시킬 수 있다.",
+          "claim_ids": [
+            "clm_7a2c854bbf",
+            "clm_9c1494ed21"
+          ]
+        },
+        {
+          "block_id": "blk_esg_2",
+          "markdown": "녹색건축 인증 및 에너지효율등급 관련 데이터는 제공된 증거에서 확인되지 않는다. BEEC 건물에너지효율등급이나 G-SEED 녹색건축인증 여부를 평가하기 위한 정보가 부족하여 이 부문의 ESG 성능을 판단할 수 없다.",
+          "claim_ids": [
+            "clm_716bca95e6"
+          ]
+        },
+        {
+          "block_id": "blk_esg_3",
+          "markdown": "지하 환경의 열환경 및 환기 관리 측면에서 실질적 결함이 드러나 있다. 2024년 7월 공용부 냉방기 고장으로 약 1주일간 냉방 서비스가 중단된 사례가 보도되었으며, 이는 지하 상가 특유의 폐쇄적 환경에서 온습도 관리 체계의 취약성을 보여준다. 지하 판매시설의 쾌적성과 상인·고객의 영업 및 이용 편의성 유지에 직접 영향을 미치는 요소이다.",
+          "claim_ids": [
+            "clm_34c0f62940",
+            "clm_681df601d4"
+          ]
+        },
+        {
+          "block_id": "blk_esg_4",
+          "markdown": "침수·배수·지반 안전 현황에 관해서는 제공된 증거에 구체적인 데이터나 점검 결과가 없다. 지하 시설의 배수 체계, 침수 이력, 지반 침하 등 물리적 안전성을 평가하기 위한 자료가 부족하여 이 부문을 판단할 수 없다.",
+          "claim_ids": [
+            "clm_58a0034b6a"
+          ]
+        },
+        {
+          "block_id": "blk_esg_5",
+          "markdown": "서울시 또는 강남구의 안전 점검 프로그램 및 현대화 사업 대상 지정 여부에 관한 정보는 제공된 증거에 없다. 다만 역삼1동 재개발·재건축 관심 기사가 언급되어 있으나, 강남역지하도상가의 구체적인 현대화 계획이나 안전 관리 체계에 관한 공식 정보는 확인되지 않는다.",
+          "claim_ids": [
+            "clm_1b5815d35c"
+          ]
+        },
+        {
+          "block_id": "blk_esg_6",
+          "markdown": "ESG 공시 및 인증 데이터의 한계는 명확하다. 에너지효율등급, 녹색건축인증, 탄소배출량 공시, 환경 관리 정책 등 체계적인 ESG 평가에 필요한 공식 자료가 대부분 부재한 상황이다. 지하 상가의 물리적 결함(냉방기 고장)은 보도되나, 이를 통제하는 에너지 효율화 로드맵이나 설비 개선 계획에 관한 공시는 없다.",
+          "claim_ids": [
+            "clm_922a8ddcad"
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "sec_commercial",
+      "axis": "commercial",
+      "title": "입지·상권 가치 분석",
+      "blocks": [
+        {
+          "block_id": "blk_commercial_0",
+          "markdown": "## 강남역 광역 상권 현황\n\n평가 대상 상가는 서울 강남역 지하상가 내 위치하며, 강남역 상권은 강남구 발달상권 25곳 중 매출 1위를 차지하는 최고 등급의 상권이다. 2025년 4분기 기준 강남역 상권의 유동인구는 7,453,204명이며, 동일 분기 추정매출은 418,704,504,599원에 달한다. 매출 추세는 2025년 1분기 대비 최근 4분기까지 -0.2%로 매우 안정적이어서, 상권의 건강도가 양호함을 시사한다.",
+          "claim_ids": [
+            "clm_dcafc0b45b",
+            "clm_44d692591a",
+            "clm_15652b26d7"
+          ]
+        },
+        {
+          "block_id": "blk_commercial_1",
+          "markdown": "## 배후수요 구조\n\n평가 대상 건물이 입지한 강남역 상권은 광역 범위의 배후수요를 보유하고 있다. 상권 인근 행정동인 역삼1동의 상주인구는 34,082명이고, 같은 상권 서비스 지역인 서초2동의 상주인구는 24,636명이다. 이들은 각각 거주 거리 기준으로 강남역 상권의 직접 수요층을 구성하며, 상주인구 기반의 일상 소비(외식, 의료, 쇼핑) 수요를 창출한다.",
+          "claim_ids": [
+            "clm_cf372bdd24",
+            "clm_bed377fe79"
+          ]
+        },
+        {
+          "block_id": "blk_commercial_2",
+          "markdown": "## 주력 업종 및 상권 특성\n\n강남역 상권의 매출 구성을 분석하면 의료서비스가 압도적 비중을 차지한다. 일반의원이 상권 매출의 32.4%(2025년 4분기 추정매출 135,767,729,504원)로 절대 주력 업종이며, 치과의원은 4.2%(17,387,851,070원)를 차지한다. 식음료 업종 중에는 한식음식점이 상권 매출의 15.2%(63,458,142,575원)로 차지해 두 번째 큰 업종군을 이룬다. 이 외 편의점(4.4%, 18,418,817,345원)과 일반의류(4.6%, 19,358,737,141원)가 그 뒤를 따른다. 이러한 업종 구성은 의료·식음료 목적형 상권 특성을 명확히 보여주며, 직장인 밀집 지역의 평일 점심 및 회식 수요가 탄탄하다는 점이 상권 안정성을 뒷받침한다.",
+          "claim_ids": [
+            "clm_26ba6f59b7",
+            "clm_f9683392b8",
+            "clm_1fa51d4b11",
+            "clm_b9c41770d9",
+            "clm_e7676c7451"
+          ]
+        },
+        {
+          "block_id": "blk_commercial_3",
+          "markdown": "## 지하상가 입지 포지션\n\n평가 대상은 강남역지하도상가(서울 강남구 역삼동 858)로, 연면적 6,125.37㎡의 철근콘크리트 구조 판매시설이다. 2014년 8월 사용승인을 받은 현대식 지하상가이며, 내진설계는 미적용되어 있다. 지하상가는 지하철 3·4번 출구 주변에 위치해 강남역의 주요 수송 동선과 일치하는 구조적 강점을 갖는다. 다만, 교통 접근성, 경쟁 지하상가와의 상대적 포지션, 개발 호재에 관한 상세 정보는 제공된 증거에 부족하다.",
+          "claim_ids": [
+            "clm_fafc509718",
+            "clm_80eb659e23"
+          ]
+        },
+        {
+          "block_id": "blk_commercial_4",
+          "markdown": "## 향후 전망 및 평가 한계\n\n2005년 보도에서 삼성타운 입주 호재와 강남역 지하 3·4번 출구 주변 상가의 성장 전망이 언급되었으나, 해당 자료는 약 20년 전 시점으로 현재 시점과 시장 환경이 상이할 수 있으므로 현재의 개발 호재로 직접 평가하기 어렵다. 최근의 재개발·신축 프로젝트, 인근 교통망 확충, 대형 임차인 입주 등 동적 성장 요인에 관한 현재 증거는 제공되지 않았다.",
+          "claim_ids": [
+            "clm_1b4f161973",
+            "clm_f549fd49d6"
+          ]
+        }
+      ]
+    }
+  ],
+  "claims": {
+    "clm_4fa8c37811": {
+      "text": "평가 대상인 강남역지하도상가는 서울 강남구 역삼동에 위치한 판매시설이다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "Building:1168010100108580000000013"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": null
+    },
+    "clm_1e6916e772": {
+      "text": "강남역지하도상가는 연면적 6,125.37㎡의 철근콘크리트 구조 건물이다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "Building:1168010100108580000000013"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_0"
+    },
+    "clm_3e44a0b807": {
+      "text": "강남역지하도상가는 2014년 8월 13일 사용승인을 받았다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "Building:1168010100108580000000013"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_0"
+    },
+    "clm_c8483419c1": {
+      "text": "강남역지하도상가 건물에는 내진설계가 미적용되었다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "Building:1168010100108580000000013"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_0"
+    },
+    "clm_43a4a81517": {
+      "text": "강남역 상권은 강남구 내 발달상권이며, 2025년 4분기 기준 동일 자치구 발달상권 25곳 중 매출 1위를 기록했다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "CommercialArea:3120189"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2025-04",
+      "block_id": "blk_tenant_1"
+    },
+    "clm_b93d36e0d3": {
+      "text": "GS25 S강남역1호점은 4.0점의 평점으로 평가받고 있다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "Tenant:16299855"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_1"
+    },
+    "clm_3c28b877a8": {
+      "text": "하마커피는 4.2점의 평점으로 평가받으며, 카카오후기 63건, 블로그리뷰 178건을 보유하고 있다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "Tenant:1433125498"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_1"
+    },
+    "clm_eadf26ef3a": {
+      "text": "일월분식은 2.1점의 평점으로 평가받으며, 카카오후기 7건, 블로그리뷰 15건을 보유하고 있다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "Tenant:1300037604"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_1"
+    },
+    "clm_be61fed968": {
+      "text": "이마트24 강남역점은 1.0점의 평점으로 평가받고 있다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "Tenant:1274767874"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_1"
+    },
+    "clm_cb4943c98f": {
+      "text": "강남역지하도상가의 전체 입점이력은 6건이고, 누적폐업률은 33%이다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "TurnoverStat:turnover:서울 강남구 강남대로 지하 396"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_2"
+    },
+    "clm_68551d502d": {
+      "text": "강남역지하도상가의 폐업 사업자들의 평균존속기간은 0.1년이다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "TurnoverStat:turnover:서울 강남구 강남대로 지하 396"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_2"
+    },
+    "clm_f278aa23b8": {
+      "text": "강남역지하도상가에서 현재 영업 중인 사업자는 4곳이며, 평균영업기간은 5.2년이다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "TurnoverStat:turnover:서울 강남구 강남대로 지하 396"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_2"
+    },
+    "clm_58d55378d1": {
+      "text": "강남역지하도상가는 최근 2년간 폐업 0건, 신규 입점 1건을 기록했다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "TurnoverStat:turnover:서울 강남구 강남대로 지하 396"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_2"
+    },
+    "clm_bd8f617664": {
+      "text": "2026년 1분기 기준 서울 소규모상가의 공실률은 6.3%이다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "MarketContext:reb:서울:소규모상가"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2026-01",
+      "block_id": "blk_tenant_3"
+    },
+    "clm_301974e865": {
+      "text": "서울 소규모상가 공실률이 전년 대비 24.2% 증가했다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "MarketContext:reb:서울:소규모상가"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2026-01",
+      "block_id": "blk_tenant_3"
+    },
+    "clm_5f7e633b64": {
+      "text": "2026년 1분기 기준 서울 소규모상가의 평균 임대료는 52.5천원/㎡이다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "MarketContext:reb:서울:소규모상가"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2026-01",
+      "block_id": "blk_tenant_3"
+    },
+    "clm_aa3e77cc4d": {
+      "text": "2026년 1분기 기준 서울 소규모상가의 분기 수익률은 1.23%이다.",
+      "kind": "factual",
+      "axis": "tenant",
+      "cites": [
+        "MarketContext:reb:서울:소규모상가"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2026-01",
+      "block_id": "blk_tenant_4"
+    },
+    "clm_6f212cc890": {
+      "text": "신규 입점 시 직접 경쟁이 발생할 수 있어, 건물 내 테넌트 간의 수익 잠식으로 이어질 가능성이 있다.",
+      "kind": "opinion",
+      "axis": "tenant",
+      "cites": [],
+      "derived_from": [
+        "clm_f278aa23b8"
+      ],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_4"
+    },
+    "clm_0032b58f91": {
+      "text": "코로나 시국으로 인한 상가 공실화 현상이 보고되고 있어, 팬데믹 이후의 회복 속도가 임차 사업자 안정성의 주요 변수가 될 것으로 예상된다.",
+      "kind": "opinion",
+      "axis": "tenant",
+      "cites": [],
+      "derived_from": [
+        "clm_58d55378d1"
+      ],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_5"
+    },
+    "clm_46db153e19": {
+      "text": "건물 전체 임차율(입주율), 개별 테넌트의 구체적 매출·수익률, 임대료 책정 근거 및 장기 계약 조건 등의 정보는 제공된 증거에 없다.",
+      "kind": "gap",
+      "axis": "tenant",
+      "cites": [],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_tenant_5"
+    },
+    "clm_356208240e": {
+      "text": "임대 대기 상황, 업종별 폐업 원인 분석, 현재 공실 현황 등의 정보는 제공된 증거에 없어 중장기 임차 안정성에 대한 종합 판단이 유보된다.",
+      "kind": "gap",
+      "axis": "tenant",
+      "cites": [],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": null
+    },
+    "clm_64d8736754": {
+      "text": "강남역지하도상가는 철근콘크리트 구조이다.",
+      "kind": "factual",
+      "axis": "esg",
+      "cites": [
+        "Building:1168010100108580000000013"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_esg_0"
+    },
+    "clm_2155bde03a": {
+      "text": "강남역지하도상가는 2014년 8월 13일 사용승인을 받았다.",
+      "kind": "factual",
+      "axis": "esg",
+      "cites": [
+        "Building:1168010100108580000000013"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "20140813",
+      "block_id": "blk_esg_0"
+    },
+    "clm_ad4ebed40a": {
+      "text": "강남역지하도상가의 연면적은 6,125.37㎡이다.",
+      "kind": "factual",
+      "axis": "esg",
+      "cites": [
+        "Building:1168010100108580000000013"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_esg_0"
+    },
+    "clm_7a2c854bbf": {
+      "text": "강남역지하도상가는 내진설계가 적용되지 않았다.",
+      "kind": "factual",
+      "axis": "esg",
+      "cites": [
+        "Building:1168010100108580000000013",
+        "CommercialArea:3120189",
+        "AdminDong:11680640"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_esg_1"
+    },
+    "clm_9c1494ed21": {
+      "text": "내진설계의 미적용은 지진 등 지각변동에 대한 구조 저항력 부족을 의미하며, 지하 시설의 대피 경로 제약과 함께 재해 시 이용객 안전 위험을 가중시킬 수 있다.",
+      "kind": "opinion",
+      "axis": "esg",
+      "cites": [],
+      "derived_from": [
+        "clm_7a2c854bbf"
+      ],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_esg_1"
+    },
+    "clm_716bca95e6": {
+      "text": "강남역지하도상가의 BEEC 건물에너지효율등급 및 G-SEED 녹색건축인증 여부에 관한 데이터는 제공된 증거에 없다.",
+      "kind": "gap",
+      "axis": "esg",
+      "cites": [],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_esg_2"
+    },
+    "clm_34c0f62940": {
+      "text": "2024년 7월 강남역 지하도 상가의 공용부 냉방기가 약 1주일간 고장 나 가동이 중단되었다.",
+      "kind": "factual",
+      "axis": "esg",
+      "cites": [
+        "LegalDong:1168010100"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "202407",
+      "block_id": "blk_esg_3"
+    },
+    "clm_681df601d4": {
+      "text": "공용부 냉방기 고장으로 인한 냉방 서비스 중단은 지하 상가 특유의 폐쇄적 환경에서 온습도 관리 체계의 취약성을 보여주며, 상인과 고객의 영업 및 이용 편의성 유지에 직접 영향을 미친다.",
+      "kind": "opinion",
+      "axis": "esg",
+      "cites": [],
+      "derived_from": [
+        "clm_34c0f62940"
+      ],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_esg_3"
+    },
+    "clm_58a0034b6a": {
+      "text": "강남역지하도상가의 침수·배수·지반 안전 현황에 관한 구체적인 데이터나 점검 결과는 제공된 증거에 없다.",
+      "kind": "gap",
+      "axis": "esg",
+      "cites": [],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_esg_4"
+    },
+    "clm_1b5815d35c": {
+      "text": "서울시 또는 강남구의 안전 점검 프로그램 및 강남역지하도상가의 현대화 사업 대상 지정 여부에 관한 공식 정보는 제공된 증거에 없다.",
+      "kind": "gap",
+      "axis": "esg",
+      "cites": [],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_esg_5"
+    },
+    "clm_922a8ddcad": {
+      "text": "에너지효율등급, 녹색건축인증, 탄소배출량 공시, 환경 관리 정책 등 체계적인 ESG 평가에 필요한 공식 자료가 대부분 부재하며, 설비 개선 계획에 관한 공시도 없다.",
+      "kind": "gap",
+      "axis": "esg",
+      "cites": [],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_esg_6"
+    },
+    "clm_dcafc0b45b": {
+      "text": "강남역 상권은 강남구 발달상권 25곳 중 매출 1위를 차지하는 최고 등급의 상권이다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "CommercialArea:3120189"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2025-04",
+      "block_id": "blk_commercial_0"
+    },
+    "clm_44d692591a": {
+      "text": "2025년 4분기 기준 강남역 상권의 유동인구는 7,453,204명이다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "CommercialArea:3120189"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2025-04",
+      "block_id": "blk_commercial_0"
+    },
+    "clm_15652b26d7": {
+      "text": "2025년 4분기 강남역 상권의 추정매출은 418,704,504,599원이다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "CommercialArea:3120189"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2025-04",
+      "block_id": "blk_commercial_0"
+    },
+    "clm_cf372bdd24": {
+      "text": "강남역 상권의 매출 추세는 2025년 1분기 대비 최근 4분기까지 -0.2%로 매우 안정적이다.",
+      "kind": "opinion",
+      "axis": "commercial",
+      "cites": [],
+      "derived_from": [
+        "clm_44d692591a",
+        "clm_15652b26d7"
+      ],
+      "computations": [],
+      "as_of": "2025-04",
+      "block_id": "blk_commercial_1"
+    },
+    "clm_bed377fe79": {
+      "text": "역삼1동의 상주인구는 34,082명이다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "AdminDong:11680640"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2025-04",
+      "block_id": "blk_commercial_1"
+    },
+    "clm_26ba6f59b7": {
+      "text": "서초2동의 상주인구는 24,636명이다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "AdminDong:11650520"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2025-04",
+      "block_id": "blk_commercial_2"
+    },
+    "clm_f9683392b8": {
+      "text": "일반의원이 강남역 상권 매출의 32.4%를 차지하는 절대 주력 업종이다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "Industry:CS200006"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2025-04",
+      "block_id": "blk_commercial_2"
+    },
+    "clm_1fa51d4b11": {
+      "text": "2025년 4분기 강남역 상권에서 일반의원의 추정매출은 135,767,729,504원이다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "Industry:CS200006"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2025-04",
+      "block_id": "blk_commercial_2"
+    },
+    "clm_b9c41770d9": {
+      "text": "한식음식점이 강남역 상권 매출의 15.2%를 차지하며 두 번째 큰 업종군을 이룬다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "Industry:CS100001"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2025-04",
+      "block_id": "blk_commercial_2"
+    },
+    "clm_e7676c7451": {
+      "text": "2025년 4분기 강남역 상권에서 한식음식점의 추정매출은 63,458,142,575원이다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "Industry:CS100001"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2025-04",
+      "block_id": "blk_commercial_2"
+    },
+    "clm_fafc509718": {
+      "text": "평가 대상은 강남역지하도상가(서울 강남구 역삼동 858)로 연면적 6,125.37㎡의 철근콘크리트 구조 판매시설이다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "Building:1168010100108580000000013"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_commercial_3"
+    },
+    "clm_80eb659e23": {
+      "text": "강남역지하도상가는 2014년 8월 13일 사용승인을 받았다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "Building:1168010100108580000000013"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_commercial_3"
+    },
+    "clm_1b4f161973": {
+      "text": "2005년 시점에서 삼성타운 입주 호재와 함께 강남역 지하 3·4번 출구 주변 상가의 폭발적인 성장이 예상되었다.",
+      "kind": "factual",
+      "axis": "commercial",
+      "cites": [
+        "Fact:fd8e8d8f1f4eff30"
+      ],
+      "derived_from": [],
+      "computations": [],
+      "as_of": "2005-12",
+      "block_id": "blk_commercial_4"
+    },
+    "clm_f549fd49d6": {
+      "text": "2005년 보도 자료는 현재(2025년)와 약 20년의 시간 차이가 있어 현재 개발 호재로 직접 평가하기 어렵다.",
+      "kind": "gap",
+      "axis": "commercial",
+      "cites": [],
+      "derived_from": [],
+      "computations": [],
+      "as_of": null,
+      "block_id": "blk_commercial_4"
+    },
+    "clm_788c49e408": {
+      "text": "강남역 상권은 강남구 발달상권 25곳 중 매출 1위(상위 4%)의 최고 등급 상권이다.",
+      "kind": "factual",
+      "axis": "overview",
+      "cites": [
+        "clm_43a4a81517",
+        "clm_dcafc0b45b"
+      ],
+      "derived_from": [],
+      "as_of": "2025-04",
+      "block_id": "blk_overview_0"
+    },
+    "clm_5ba51c47f3": {
+      "text": "2025년 4분기 강남역 상권의 유동인구는 7,453,204명, 추정매출은 약 4,187억원이며 매출 추세는 -0.2%로 안정적이다.",
+      "kind": "factual",
+      "axis": "overview",
+      "cites": [
+        "clm_44d692591a",
+        "clm_15652b26d7",
+        "clm_cf372bdd24"
+      ],
+      "derived_from": [],
+      "as_of": "2025-04",
+      "block_id": "blk_overview_0"
+    },
+    "clm_4bb884419c": {
+      "text": "강남역 상권은 역삼1동 34,082명, 서초2동 24,636명의 광역 배후수요를 보유하며 의료·식음료 중심 목적형 상권이다.",
+      "kind": "factual",
+      "axis": "overview",
+      "cites": [
+        "clm_bed377fe79",
+        "clm_26ba6f59b7",
+        "clm_f9683392b8",
+        "clm_b9c41770d9"
+      ],
+      "derived_from": [],
+      "as_of": "2025-04",
+      "block_id": "blk_overview_0"
+    },
+    "clm_2ed6b934ac": {
+      "text": "본 건물은 내진설계가 미적용되었고, 2024년 7월 공용부 냉방기가 약 1주간 고장 났다.",
+      "kind": "factual",
+      "axis": "overview",
+      "cites": [
+        "clm_7a2c854bbf",
+        "clm_34c0f62940"
+      ],
+      "derived_from": [],
+      "as_of": null,
+      "block_id": "blk_overview_1"
+    },
+    "clm_0e30194281": {
+      "text": "BEEC 에너지효율등급·G-SEED 녹색건축인증 등 ESG 핵심 데이터가 대부분 부재하다.",
+      "kind": "factual",
+      "axis": "overview",
+      "cites": [
+        "clm_716bca95e6",
+        "clm_922a8ddcad"
+      ],
+      "derived_from": [],
+      "as_of": null,
+      "block_id": "blk_overview_1"
+    },
+    "clm_8ccf9e5c78": {
+      "text": "건물 누적폐업률은 33%, 폐업자 평균존속기간은 0.1년이나, 현재 영업 4곳의 평균영업기간은 5.2년이고 최근 2년 폐업은 0건이다.",
+      "kind": "factual",
+      "axis": "overview",
+      "cites": [
+        "clm_cb4943c98f",
+        "clm_68551d502d",
+        "clm_f278aa23b8",
+        "clm_58d55378d1"
+      ],
+      "derived_from": [],
+      "as_of": null,
+      "block_id": "blk_overview_1"
+    },
+    "clm_088fbc64b1": {
+      "text": "건물 전체 임차율·개별 매출·공실 현황 등 핵심 임차 정량 데이터가 부재해 임차안정성 판단이 제약된다.",
+      "kind": "factual",
+      "axis": "overview",
+      "cites": [
+        "clm_46db153e19",
+        "clm_356208240e"
+      ],
+      "derived_from": [],
+      "as_of": null,
+      "block_id": "blk_overview_2"
+    },
+    "clm_e89a5b79c9": {
+      "text": "2026년 1분기 서울 소규모상가 공실률은 6.3%(전년比 +24.2%), 분기 수익률은 1.23%다.",
+      "kind": "factual",
+      "axis": "overview",
+      "cites": [
+        "clm_bd8f617664",
+        "clm_301974e865",
+        "clm_aa3e77cc4d"
+      ],
+      "derived_from": [],
+      "as_of": "2026-01",
+      "block_id": "blk_overview_2"
+    },
+    "clm_578fefeeda": {
+      "text": "최상급 상권 입지가 종합 가치를 견인하나 ESG 물리 결함과 임차 데이터 공백이 등급 상한을 제약한다.",
+      "kind": "opinion",
+      "axis": "overview",
+      "cites": [],
+      "derived_from": [],
+      "as_of": null,
+      "block_id": "blk_overview_3"
+    }
+  },
+  "evidence": {
+    "Building:1168010100108580000000013": {
+      "text": "강남역지하도상가 (서울 강남구 역삼동 858) — 판매시설, 연면적 6125.37㎡, 철근콘크리트구조, 20140813 사용승인, 내진설계 미적용. 건물관리번호 1168010100108580000000013.",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "건축HUB 건축물대장",
+        "url": "https://www.eais.go.kr"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[ANCHORS]→ 강남역지하도상가 (서울 강남구 역삼동 858) — 판매시설, 연면적 6125.37㎡, 철근콘크리트구조, 20140813 사용승인, 내진설계 미적용. 건물관리번호 1168010100108580000000013."
+    },
+    "CommercialArea:3120189": {
+      "text": "상권 강남역 (발달상권), 면적 617,547㎡. 최근(20254) 분기 유동인구 7,453,204명, 추정매출 418,704,504,599원. 동일 자치구 발달상권 25곳 중 매출 1위(상위 4%). 매출 추세(20251~20254) -0.2%.",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "서울 열린데이터광장 상권분석",
+        "url": "https://data.seoul.go.kr"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[ANCHORS]→ 상권 강남역 (발달상권), 면적 617,547㎡. 최근(20254) 분기 유동인구 7,453,204명, 추정매출 418,704,504,599원. 동일 자치구 발달상권 25곳 중 매출 1위(상위 4%). 매출 추세(20251~20254) -0.2%."
+    },
+    "Tenant:16299855": {
+      "text": "GS25 S강남역1호점 — GS25 (입점 앵커). 평점 4.0, 카카오후기 4, 블로그리뷰 2.",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "카카오맵 장소정보",
+        "url": "https://map.kakao.com"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[HAS_TENANT]→ GS25 S강남역1호점 — GS25 (입점 앵커). 평점 4.0, 카카오후기 4, 블로그리뷰 2."
+    },
+    "Tenant:1433125498": {
+      "text": "하마커피 — 카페 (입점 앵커). 평점 4.2, 카카오후기 63, 블로그리뷰 178.",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "카카오맵 장소정보",
+        "url": "https://map.kakao.com"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[HAS_TENANT]→ 하마커피 — 카페 (입점 앵커). 평점 4.2, 카카오후기 63, 블로그리뷰 178."
+    },
+    "Tenant:1300037604": {
+      "text": "일월분식 — 분식 (입점 앵커). 평점 2.1, 카카오후기 7, 블로그리뷰 15, 면적 20㎡, 업력 3년(사업자 등록 기준).",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "카카오맵 장소정보",
+        "url": "https://map.kakao.com"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[HAS_TENANT]→ 일월분식 — 분식 (입점 앵커). 평점 2.1, 카카오후기 7, 블로그리뷰 15, 면적 20㎡, 업력 3년(사업자 등록 기준)."
+    },
+    "Tenant:1274767874": {
+      "text": "이마트24 강남역점 — 이마트24 (입점 앵커). 평점 1.0, 카카오후기 11.",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "카카오맵 장소정보",
+        "url": "https://map.kakao.com"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[HAS_TENANT]→ 이마트24 강남역점 — 이마트24 (입점 앵커). 평점 1.0, 카카오후기 11."
+    },
+    "TurnoverStat:turnover:서울 강남구 강남대로 지하 396": {
+      "text": "[임차 회전율] 서울 강남구 강남대로 지하 396 — 입점이력 6건, 누적폐업률 33%, 평균존속 0.1년, 영업중 4곳(평균영업 5.2년), 최근2년 폐업 0/신규 1 (LocalData 인허가, 업종: 일반음식점).",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "LocalData 지방행정 인허가",
+        "url": "https://www.localdata.go.kr"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[HAS_TURNOVER]→ [임차 회전율] 서울 강남구 강남대로 지하 396 — 입점이력 6건, 누적폐업률 33%, 평균존속 0.1년, 영업중 4곳(평균영업 5.2년), 최근2년 폐업 0/신규 1 (LocalData 인허가, 업종: 일반음식점)."
+    },
+    "MarketContext:reb:서울:소규모상가": {
+      "text": "[임대시장 환경] 서울 소규모상가 — 공실률 6.3%(전년比 +24.2%), 임대료 52.5천원/㎡, 수익률 1.23%/분기 (2026년 1분기 기준, 한국부동산원).",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "한국부동산원 부동산통계(R-ONE) 임대동향",
+        "url": "https://www.reb.or.kr/r-one"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[HAS_MARKET]→ [임대시장 환경] 서울 소규모상가 — 공실률 6.3%(전년比 +24.2%), 임대료 52.5천원/㎡, 수익률 1.23%/분기 (2026년 1분기 기준, 한국부동산원)."
+    },
+    "AdminDong:11680640": {
+      "text": "행정동 역삼1동 (11680640). 상주인구 34,082명(20254).",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "서울 열린데이터광장 인구통계",
+        "url": "https://data.seoul.go.kr"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[ANCHORS]→ 행정동 역삼1동 (11680640). 상주인구 34,082명(20254)."
+    },
+    "LegalDong:1168010100": {
+      "text": "법정동 역삼동 (1168010100).",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "행정표준코드 법정동"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[ANCHORS]→ 법정동 역삼동 (1168010100)."
+    },
+    "AdminDong:11650520": {
+      "text": "행정동 서초2동 (11650520). 상주인구 24,636명(20254).",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "서울 열린데이터광장 인구통계",
+        "url": "https://data.seoul.go.kr"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[ANCHORS]→ 상권 강남역 (발달상권), 면적 617,547㎡. 최근(20254) 분기 유동인구 7,453,204명, 추정매출 418,704,504,599원. 동일 자치구 발달상권 25곳 중 매출 1위(상위 4%). 매출 추세(20251~20254) -0.2%.\n   —[SERVES_DISTRICT]→ 행정동 서초2동 (11650520). 상주인구 24,636명(20254)."
+    },
+    "Industry:CS200006": {
+      "text": "일반의원 — 강남역 상권 매출 상위 업종 (20254 분기 추정매출 135,767,729,504원, 상권 매출의 32.4%).",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "서울 열린데이터광장 상권 추정매출",
+        "url": "https://data.seoul.go.kr"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[ANCHORS]→ 상권 강남역 (발달상권), 면적 617,547㎡. 최근(20254) 분기 유동인구 7,453,204명, 추정매출 418,704,504,599원. 동일 자치구 발달상권 25곳 중 매출 1위(상위 4%). 매출 추세(20251~20254) -0.2%.\n   —[TOP_INDUSTRY]→ 일반의원 — 강남역 상권 매출 상위 업종 (20254 분기 추정매출 135,767,729,504원, 상권 매출의 32.4%)."
+    },
+    "Industry:CS100001": {
+      "text": "한식음식점 — 강남역 상권 매출 상위 업종 (20254 분기 추정매출 63,458,142,575원, 상권 매출의 15.2%).",
+      "source_kind": "graph_stat",
+      "origin": {
+        "source": "서울 열린데이터광장 상권 추정매출",
+        "url": "https://data.seoul.go.kr"
+      },
+      "published_at": null,
+      "confidence": null,
+      "validity": {
+        "status": "VALID",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[ANCHORS]→ 상권 강남역 (발달상권), 면적 617,547㎡. 최근(20254) 분기 유동인구 7,453,204명, 추정매출 418,704,504,599원. 동일 자치구 발달상권 25곳 중 매출 1위(상위 4%). 매출 추세(20251~20254) -0.2%.\n   —[TOP_INDUSTRY]→ 한식음식점 — 강남역 상권 매출 상위 업종 (20254 분기 추정매출 63,458,142,575원, 상권 매출의 15.2%)."
+    },
+    "Fact:fd8e8d8f1f4eff30": {
+      "text": "삼성타운 입주 호재지역인 지하철 3, 4번 출구 주변 상가는 앞으로 폭발적인 인기를 누릴 것 같다. (2005-12-18 보도)",
+      "source_kind": "news_fact",
+      "origin": {
+        "url": "https://n.news.naver.com/mnews/article/014/0000205092?sid=101",
+        "title": "[불황 모르는 상권－서울 강남역 상권]삼성타운 건립등 호재 임대료 ‘부르는게 값’",
+        "press": "파이낸셜뉴스"
+      },
+      "published_at": "2005-12-18 21:51:00",
+      "confidence": 0.8,
+      "validity": {
+        "status": "DECAYED",
+        "valid_until": null
+      },
+      "path": "서울 강남구 강남대로 지하 396는 강남구 소재 평가 대상 상가 건물이다. 건물관리번호 1168010100108580000000013.\n   —[RELEVANT]→ 삼성타운 입주 호재지역인 지하철 3, 4번 출구 주변 상가는 앞으로 폭발적인 인기를 누릴 것 같다. (2005-12-18 보도)"
+    }
+  },
+  "audit": {
+    "mechanical": {
+      "tenant": [],
+      "esg": [],
+      "commercial": [
+        "claim[13] '2005년 보도 자료는 현재(2025년)와 약 20년의 시간 차이가 있어…': gap(부재) 진술에 수치 포함 — 부재 주장과 모순이므로 수치를 빼거나 factual/opinion으로 전환"
+      ],
+      "overview": []
+    },
+    "llm": {
+      "overall_pass": false,
+      "issues": [
+        {
+          "severity": "high",
+          "kind": "overreach",
+          "location": "commercial blocks[4] — [#blk_commercial_4]",
+          "fix_target": "blk_commercial_4",
+          "description": "2005년 보도(DECAYED)를 '삼성타운 입주 호재와 강남역 지하 3·4번 출구 주변 상가의 성장 전망'으로 언급하면서 '현재의 개발 호재로 직접 평가하기 어렵다'고만 단서를 달고 있으나, DECAYED 등급의 약 20년 전 단발 기사를 현재 입지 강점 논거로 본문에 포함하는 것 자체가 과대 해석 위험을 내포한다. 한편 executive summary 및 상권건강도 등급 근거로 인용된 최신 상권 데이터(C33~C36)로 이미 충분히 입지를 뒷받침하므로 이 DECAYED 출처를 입지 분석 본문에 서술하면 독자에게 증거 가중치를 혼동시킬 수 있다."
+        },
+        {
+          "severity": "high",
+          "kind": "contradiction",
+          "location": "tenant blocks[3] — [#blk_tenant_3] vs commercial blocks[0] — [#blk_commercial_0]",
+          "fix_target": "blk_tenant_3",
+          "description": "임대시장환경 문단(blk_tenant_3)은 서울 소규모상가 공실률 6.3%를 '시장 공급 과잉 또는 수요 약화의 신호'로 해석하는 반면, 상권건강도 문단(blk_commercial_0)과 overview는 동일 분기 강남역 상권 매출 추세 -0.2%를 '매우 안정적'으로 평가한다. 거시 지표와 개별 상권 지표를 같은 문단 내에서 혼용해 '공실·수요 약화' 신호가 강남역 상권에도 해당하는 것처럼 읽힐 수 있어 독자 혼동을 유발한다. 두 지표의 적용 범위(서울 전체 vs 강남역 상권)가 명확히 분리되지 않으면 모순으로 기능한다."
+        },
+        {
+          "severity": "medium",
+          "kind": "overreach",
+          "location": "tenant blocks[3] — [#blk_tenant_3], 수익률 해석",
+          "fix_target": "blk_tenant_3",
+          "description": "분기 수익률 1.23%를 '임차 사업자의 수익성이 제한적임을 시사한다'고 서술하나, 한국부동산원 소규모상가 수익률은 건물 소유자(임대인)의 자본수익률 지표이지 임차 사업자(테넌트)의 영업수익성 지표가 아니다. 증거 범위를 벗어난 해석이다."
+        },
+        {
+          "severity": "medium",
+          "kind": "missing_counter",
+          "location": "tenant blocks[4] — [#blk_tenant_4]",
+          "fix_target": "blk_tenant_4",
+          "description": "'코로나 시국으로 인한 상가 공실화 현상이 보고되고 있어 팬데믹 이후의 회복 속도가 주요 변수'라고 서술하나, 본문 내 최근 2년 폐업 0건(C13) 및 2025년 4분기 기준 상권 매출·유동인구 최상위 데이터(C34~C36)는 이미 팬데믹 이후 회복이 상당 수준 완료되었음을 반증한다. 이 반대 증거가 blk_tenant_4 결론에 전혀 반영되지 않아 서술이 편향적이다."
+        },
+        {
+          "severity": "low",
+          "kind": "overreach",
+          "location": "tenant blocks[2] — [#blk_tenant_2], 폐업률 해석",
+          "fix_target": "blk_tenant_2",
+          "description": "누적폐업률 33%와 폐업자 평균존속 0.1년을 '상당한 불안정성'으로 단정하나, 입점이력이 6건에 불과한 소표본에서 2건 폐업(33%)을 통계적으로 일반화하기에는 표본 크기가 작다. 소표본 한계에 대한 단서가 없어 과대 해석 가능성이 있다."
+        }
+      ]
+    }
+  },
+  "valuation": {
+    "overall_grade": "B+",
+    "overall_rationale": "결정적 강점은 입지·상권으로, 강남역 상권이 강남구 발달상권 25곳 중 매출 1위(상위 4%)이고 매출 추세도 -0.2%로 안정적이며[C5][C33][C36], 의료·식음료 목적형 수요와 광역 배후수요(역삼1동 34,082명·서초2동 24,636명)가 탄탄해[C37][C38][C39][C41] 상권건강도·배후수요 축은 A급이다. 그러나 ESG·물리성능 축은 내진설계 미적용[C4][C25]·냉방기 1주 고장[C28]·에너지/녹색건축 인증 데이터 전무[C27][C32]로 명백한 약점이며, 임차안정성 축은 누적폐업률 33%·폐업자 평균존속 0.1년[C10][C11]의 양극화에 더해 건물 임차율·매출·공실 등 핵심 정량 데이터가 부재해[C20][C21] 보수적으로만 평가 가능하다. 최상급 상권 입지가 종합 등급을 끌어올리지만, ESG 결함과 임차 데이터 공백이 상한을 제약해 B+로 판정한다.",
+    "axis_scores": [
+      {
+        "axis": "상권건강도",
+        "grade": "A",
+        "rationale": "강남역 상권이 동일 자치구 발달상권 25곳 중 매출 1위(상위 4%)의 최고 등급 상권이며[C5][C33], 2025년 4분기 유동인구 7,453,204명·추정매출 약 4,187억원의 압도적 규모[C34][C35]에 매출 추세도 -0.2%로 매우 안정적[C36]. 비교 벤치마크가 모두 최상위라 A 부여."
+      },
+      {
+        "axis": "배후수요",
+        "grade": "A-",
+        "rationale": "역삼1동 상주인구 34,082명·서초2동 24,636명의 광역 배후수요를 보유하고[C37][C38], 의료(일반의원 32.4%·치과 4.2%)·식음료(한식 15.2%) 중심의 목적형 수요가 평일 직장인 소비를 안정적으로 뒷받침[C39][C41]. 다만 주간 유동에 의존하는 목적형 구조라 A-로 소폭 조정."
+      },
+      {
+        "axis": "ESG·물리성능",
+        "grade": "C",
+        "rationale": "내진설계 미적용으로 지하 시설 재해 안전 위험이 상존하고[C25][C26], 2024년 7월 냉방기 약 1주 고장으로 온습도 관리 취약성이 드러남[C28][C29]. 더해 BEEC 에너지효율등급·G-SEED 녹색건축인증·탄소배출 공시 등 ESG 핵심 자료가 대부분 부재해[C27][C32] 상향 근거가 없음. 확인된 결함과 데이터 공백을 함께 반영해 C."
+      },
+      {
+        "axis": "임차안정성",
+        "grade": "C+",
+        "rationale": "누적폐업률 33%, 폐업자 평균존속기간 0.1년으로 단기 폐업 위험이 노출되나[C10][C11], 현재 영업 4곳의 평균영업기간 5.2년·최근 2년 폐업 0건이라는 장기 존속 신호도 공존하는 양극화 구조[C12][C13]. 결정적으로 건물 전체 임차율·개별 매출·공실 현황·임대 대기 등 핵심 정량 데이터가 부재해[C20][C21] 종합 판단이 제약됨 — 핵심 정량 데이터 부재로 잠정 평가."
+      },
+      {
+        "axis": "임대시장환경(거시)",
+        "grade": "B-",
+        "rationale": "2026년 1분기 서울 소규모상가 공실률 6.3%로 전년 대비 24.2% 증가했고 분기 수익률 1.23%·평균임대료 52.5천원/㎡로 수익성이 제한적[C14][C15][C16][C17]. 이는 본 건물이 아닌 서울 시장 전체 지표이므로 건물 고유 평가가 아닌 거시 참고치로만 반영해 B-."
+      }
+    ]
+  }
+}

@@ -35,7 +35,6 @@ from real_estate.location import LocationInfo
 logger = logging.getLogger("graphflow.seeder")
 
 _NEARBY_RADIUS_M = 800     # 배후수요 반경
-_NEARBY_LIMIT = 8          # 인접 단지 최대 노드 수
 _TOP_INDUSTRY_N = 5        # 상권 매출 상위 업종 수
 
 
@@ -472,24 +471,36 @@ def _collect_admin_dong(sg, conn, adstrd_cd, adstrd_name) -> object:
 
 
 def _collect_nearby_complexes(sg, conn, asset, loc, radius_m) -> None:
-    """반경 radius_m 안 아파트 단지 (배후수요). 가까운 순 최대 _NEARBY_LIMIT개."""
+    """반경 radius_m 내 배후 주거수요를 **단일 집계 노드**로 적재 (단지수·총세대수).
+
+    개별 단지명·주소·준공연도는 적재하지 않는다. 상가 평가에서 아파트 이름은
+    분석적으로 무의미하고(보고서에선 단순 나열될 뿐, 신호는 늘 세대수 집계),
+    개별 단지 노드 N개가 commercial walk 증거를 점령해 writer가 배후 아파트를
+    '경쟁 상권'으로 오인하게 만들던 원인이었다. 따라서 '반경 N m 내 K개 단지·총
+    M세대' 한 줄 집계만 남긴다(반경 내 전부 합산 — 더는 노드 수 상한 불필요)."""
     rows = conn.execute(
-        "SELECT master_complex_id, canonical_name, road_address, household_count, "
-        "completion_date, latitude, longitude FROM apartment_complex "
+        "SELECT household_count, latitude, longitude FROM apartment_complex "
         "WHERE latitude IS NOT NULL",
     ).fetchall()
-    nearby = []
+    n_complexes = 0
+    total_households = 0
+    nearest_m: float | None = None
     for c in rows:
         d = _haversine_m(loc.latitude, loc.longitude, c["latitude"], c["longitude"])
         if d <= radius_m:
-            nearby.append((d, c))
-    nearby.sort(key=lambda x: x[0])
-    for d, c in nearby[:_NEARBY_LIMIT]:
-        node = sg.add_node(L.COMPLEX, c["master_complex_id"], {
-            "canonical_name": c["canonical_name"], "road_address": c["road_address"],
-            "household_count": c["household_count"], "completion_date": c["completion_date"],
-        })
-        sg.add_edge(asset, E.WITHIN_RADIUS, node, {"distance_m": round(d)})
+            n_complexes += 1
+            if c["household_count"]:
+                total_households += c["household_count"]
+            nearest_m = d if nearest_m is None else min(nearest_m, d)
+    if n_complexes == 0:
+        return
+    node = sg.add_node(L.COMPLEX, f"backing:{asset.key}", {
+        "단지수": n_complexes,
+        "총세대수": total_households or None,
+        "반경m": radius_m,
+    })
+    sg.add_edge(asset, E.WITHIN_RADIUS, node,
+                {"distance_m": round(nearest_m) if nearest_m is not None else None})
 
 
 def _collect_transit(sg, conn, asset, loc) -> None:

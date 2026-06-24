@@ -101,19 +101,25 @@ class BuildingEnergyRepository:
 
     def fetch_energy(self, location: LocationInfo, *, this_year: int,
                      years_back=(1, 2, 3), min_months: int = 6) -> dict:
-        """전기+가스 모두 ≥min_months 데이터가 있는 최근 연도 채택(데이터 lag 대응).
+        """전기(지배 요인)가 ≥min_months 있는 최근 연도 채택 — 가스는 보조 합산.
+
+        전기 환산계수(2.75)가 가스(1.1)의 2.5배라 전기가 등급을 좌우하므로, 가스가
+        희박해도 전기만 충분하면 평가한다(반대로 '가스단독' 채택은 허위로 좋게 나와 금지 —
+        그래서 가스는 전기가 충분한 연도에만 받아 합산). 전기를 먼저 받아 부족하면 그 연도
+        가스 호출을 생략해 콜을 절감(건물당 최대 72→24, data.go.kr 호출 폭주 완화). lag 대응.
         반환: {year, gas_kwh, elec_kwh, gas_months, elec_months}."""
         base = self._base(location)
         best = None
         for d in years_back:
             y = this_year - d
-            gas, gm = self._annual(self.ENDPOINT_GAS, base, y)
             elec, em = self._annual(self.ENDPOINT_ELEC, base, y)
-            row = {"year": y, "gas_kwh": gas, "elec_kwh": elec,
-                   "gas_months": gm, "elec_months": em}
-            if gm >= min_months and em >= min_months:
-                return row
-            if best is None or (gm + em) > (best["gas_months"] + best["elec_months"]):
-                best = row
+            if em < min_months:               # 전기 부족 → 가스 호출 생략, 다음 연도
+                if best is None or em > best["elec_months"]:
+                    best = {"year": y, "gas_kwh": 0.0, "elec_kwh": elec,
+                            "gas_months": 0, "elec_months": em}
+                continue
+            gas, gm = self._annual(self.ENDPOINT_GAS, base, y)   # 전기 충분 → 가스 합산
+            return {"year": y, "gas_kwh": gas, "elec_kwh": elec,
+                    "gas_months": gm, "elec_months": em}
         return best or {"year": this_year - 1, "gas_kwh": 0.0, "elec_kwh": 0.0,
                         "gas_months": 0, "elec_months": 0}

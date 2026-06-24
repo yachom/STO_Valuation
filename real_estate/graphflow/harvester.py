@@ -14,9 +14,11 @@ cafe/kin=低. 저신뢰 소스는 자동으로 낮은 confidence를 받아 기�
 
 from __future__ import annotations
 
+import contextvars
 import logging
 import re
-from dataclasses import dataclass
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Literal
 
@@ -89,6 +91,11 @@ _MAX_DDGS_EXTRACT = 3           # ddgs text 패스: 쿼리당 본문 extract 상
 _MAX_DDGS_NEWS_EXTRACT = 2      # ddgs news 패스: 보강이므로 더 보수적 (Naver가 뉴스 주담당)
 _MAX_FACTS_PER_DOC = 8
 _BODY_TRIM = 3500               # 추출 프롬프트에 넣는 본문 길이 상한
+# 쿼리 내 문서별 LLM 추출(_extract_and_store)을 병렬화하는 스레드풀 동시성 상한.
+# 순차 추출이 수집 wall-clock의 ~84%(529콜×~4.1s 직렬)였다 — gpt-mini는 동시성
+# 여유가 충분하므로 쿼리 내에서 문서들을 동시 추출한다(게이트 throttle된 검색·스크랩
+# fetch는 그대로 순차). 8 = Neo4j 풀(기본 100)·LLM rate 양쪽에 안전한 보수값.
+_MAX_EXTRACT_WORKERS = 8
 
 # 공유 헬퍼(agents.base)를 모듈 로컬 이름으로 — 호출부(surface 매칭·문서 해시) 다수.
 _norm = normalize_text
@@ -431,6 +438,65 @@ class HarvestStats:
             self.new_fact_texts = []
 
 
+@dataclass
+class _FactDeltas:
+    """문서 1건 추출의 stats 증분 — 스레드 로컬로 모은 뒤 풀 종료 후 직렬 병합.
+
+    각 _extract_and_store 태스크는 공유 HarvestStats를 직접 건드리지 않고 이 값을
+    반환한다. 워커 스레드는 자기 _FactDeltas만 쓰므로 락이 불필요하고, 병합은
+    디스패치 스레드에서 한 번에 일어나(merge_into) HarvestStats 의미가 보존된다.
+    docs=0 은 문서가 추출에서 스킵(추출 에러/저관련도)됐음을 뜻한다.
+    """
+    docs_new: int = 0
+    facts_new: int = 0
+    entities_new: int = 0
+    mentions_confirmed: int = 0
+    mentions_candidate: int = 0
+    new_fact_texts: list[str] = field(default_factory=list)
+
+    def merge_into(self, stats: HarvestStats) -> None:
+        stats.docs_new += self.docs_new
+        stats.facts_new += self.facts_new
+        stats.entities_new += self.entities_new
+        stats.mentions_confirmed += self.mentions_confirmed
+        stats.mentions_candidate += self.mentions_candidate
+        stats.new_fact_texts.extend(self.new_fact_texts)
+
+
+def _parallel_extract(extract_fn, tasks: list[dict]) -> list["_FactDeltas"]:
+    """문서 추출 태스크들을 bounded 스레드풀로 병렬 실행 후 deltas를 직렬 병합.
+
+    extract_fn(**task) -> _FactDeltas. 각 태스크는 자기 ScopeGraph/edges/세션으로
+    독립 적재하고 stats 증분만 반환하므로 동시 실행이 안전하다(Neo4j driver는
+    스레드 안전, 세션은 seed/write_edges가 호출마다 새로 연다). 트레이싱 contextvar
+    (_current_node/_axis/_tracer)는 워커 스레드로 자동 전파되지 않으므로 현재
+    컨텍스트를 복사해 각 태스크를 그 안에서 실행한다(emit·토큰 roll-up·Langfuse span
+    스탬핑 보존). 문서가 1건이면 풀 없이 인라인 실행(오버헤드 회피).
+
+    반환값(_FactDeltas 리스트)을 호출부 순서대로 모아 반환 — 병합은 호출부가
+    디스패치 스레드에서 수행한다.
+    """
+    results: list[_FactDeltas] = []
+    if not tasks:
+        return results
+    if len(tasks) == 1:
+        results.append(extract_fn(**tasks[0]))
+        return results
+    workers = min(_MAX_EXTRACT_WORKERS, len(tasks))
+
+    def _run_in_ctx(task: dict) -> _FactDeltas:
+        ctx = contextvars.copy_context()
+        return ctx.run(extract_fn, **task)
+
+    with ThreadPoolExecutor(max_workers=workers,
+                            thread_name_prefix="harvest-extract") as pool:
+        # map은 입력 순서대로 결과를 yield → 적재(MERGE)는 동시,
+        # stats 병합 순서는 결정적(직렬 베이스라인과 동일 누적 순서).
+        for deltas in pool.map(_run_in_ctx, tasks):
+            results.append(deltas)
+    return results
+
+
 class Harvester(BaseAgent):
     name = "harvester"
 
@@ -509,9 +575,12 @@ class Harvester(BaseAgent):
         hashes = [_short_hash(it["link"]) for it in items]
         existing = _existing_doc_hashes(driver, hashes)
 
-        scraped = 0
+        # 스크랩(게이트 throttle)은 순차로 돌며 새 문서 본문을 모은다 — 중복 dedup·
+        # _MAX_ARTICLES_PER_QUERY 캡을 여기(디스패치 전)서 적용해 동시성 하에서도
+        # 이중 적재/캡 초과가 없게 한다. 모은 문서들의 LLM 추출만 풀로 병렬 처리.
+        tasks: list[dict] = []
         for it, url_hash in zip(items, hashes):
-            if scraped >= _MAX_ARTICLES_PER_QUERY:
+            if len(tasks) >= _MAX_ARTICLES_PER_QUERY:
                 break
             if url_hash in existing:
                 # 기수확 문서 — 새 Query에서 RETRIEVED 엣지만 연결 (재추출 안 함)
@@ -521,15 +590,15 @@ class Harvester(BaseAgent):
             art = self._scrape(url=it["link"])
             if not art.get("ok"):
                 continue
-            scraped += 1
-            self._extract_and_store(
-                driver, stats, scope,
+            tasks.append(dict(
+                driver=driver, scope=scope,
                 article=art, meta=it, url_hash=url_hash, query=query,
                 query_hash=query_hash, target_label=target_label,
                 target_key=target_key, target_card=target_card,
                 asset_card=asset_card, asset_sigungu=asset_sigungu,
-                collected_by=collected_by,
-            )
+                collected_by=collected_by))
+        for deltas in _parallel_extract(self._extract_and_store, tasks):
+            deltas.merge_into(stats)
 
         # 멀티소스 보강 — 스니펫 채널(스크랩 불필요). 네이버 뉴스가 못 보는
         # 모달리티(블로그·카페·웹문서·실거래·지역 글)를 메운다. description/content
@@ -625,23 +694,26 @@ class Harvester(BaseAgent):
 
         hashes = [_short_hash(d["url"]) for d in docs]
         existing = _existing_doc_hashes(driver, hashes)
-        stored = 0
+        # 디스패치 전에 중복 dedup + _MAX_ARTICLES_PER_QUERY 캡 적용 — 스니펫은
+        # 본문이 인라인이라 fetch 없이 바로 추출 태스크로. LLM 추출만 풀로 병렬.
+        tasks: list[dict] = []
         for d, url_hash in zip(docs, hashes):
-            if stored >= _MAX_ARTICLES_PER_QUERY:
+            if len(tasks) >= _MAX_ARTICLES_PER_QUERY:
                 break
             if url_hash in existing:
                 write_edges(driver, [SeedEdge(L.QUERY, query_hash, E.RETRIEVED,
                                                L.WEB_DOC, url_hash)])
                 continue
-            stored += 1
             article = {"title": d["title"], "url": d["url"], "press": d["press"],
                        "body": d["body"], "published_at": d["published_at"], "ok": True}
-            self._extract_and_store(
-                driver, stats, scope, article=article, meta=d, url_hash=url_hash,
+            tasks.append(dict(
+                driver=driver, scope=scope, article=article, meta=d, url_hash=url_hash,
                 query=query, query_hash=query_hash, target_label=target_label,
                 target_key=target_key, target_card=target_card,
                 asset_card=asset_card, asset_sigungu=asset_sigungu,
-                collected_by=collected_by, source_tier=source_tier)
+                collected_by=collected_by, source_tier=source_tier))
+        for deltas in _parallel_extract(self._extract_and_store, tasks):
+            deltas.merge_into(stats)
 
     # ── ddgs(무키) 1쿼리: text(범용 웹) + news(한국 뉴스) 두 패스 ──
     def _harvest_ddgs(self, driver, stats, scope, *, query, query_hash,
@@ -684,11 +756,14 @@ class Harvester(BaseAgent):
 
         hashes = [_short_hash(it["link"]) for it in items]
         existing = _existing_doc_hashes(driver, hashes)
-        extracted = 0
+        # 본문 보강(ddgs.extract, 게이트 throttle)·seen 갱신·max_extract 캡은 순차로
+        # 돌며 추출 태스크를 모은다 — 교차패스(text/news) dedup과 예산이 동시성 하에서도
+        # 결정적으로 유지된다(디스패치 전 확정). LLM 추출만 풀로 병렬 처리.
+        tasks: list[dict] = []
         for it, url_hash in zip(items, hashes):
             if url_hash in seen:               # 다른 패스(text/news)에서 이미 처리
                 continue
-            if extracted >= max_extract:
+            if len(tasks) >= max_extract:
                 break
             seen.add(url_hash)
             if url_hash in existing:
@@ -703,24 +778,28 @@ class Harvester(BaseAgent):
                     body = ext["content"]
             if not body.strip():
                 continue
-            extracted += 1
             # ddgs 날짜는 미신뢰(adapter가 None으로 버림) — published_at은 비우고
             # 시점은 본문에서 LLM이 뽑는 event_date/valid_until에 맡긴다(D9 grounding).
             article = {"title": it["title"], "url": it["link"],
                        "press": it.get("source"), "body": body,
                        "published_at": None, "ok": True}
-            self._extract_and_store(
-                driver, stats, scope, article=article, meta=it, url_hash=url_hash,
+            tasks.append(dict(
+                driver=driver, scope=scope, article=article, meta=it, url_hash=url_hash,
                 query=query, query_hash=query_hash, target_label=target_label,
                 target_key=target_key, target_card=target_card,
                 asset_card=asset_card, asset_sigungu=asset_sigungu,
-                collected_by=collected_by)
+                collected_by=collected_by))
+        for deltas in _parallel_extract(self._extract_and_store, tasks):
+            deltas.merge_into(stats)
 
     # ── 기사 1건: 추출 + 적재 ───────────────────────────────
-    def _extract_and_store(self, driver, stats, scope, *, article, meta, url_hash,
+    # stats를 직접 갱신하지 않고 _FactDeltas를 반환한다 — 쿼리 내 문서들을 스레드풀로
+    # 동시 추출하기 위함(_parallel_extract). 워커는 자기 ScopeGraph/edges/세션으로만
+    # 적재하므로 공유 가변상태가 없고, 증분 병합은 디스패치 스레드가 직렬로 한다.
+    def _extract_and_store(self, driver, scope, *, article, meta, url_hash,
                            query, query_hash, target_label, target_key, target_card,
                            asset_card, asset_sigungu, collected_by,
-                           source_tier=SOURCE_TIER_NEWS) -> None:
+                           source_tier=SOURCE_TIER_NEWS) -> _FactDeltas:
         published_at = article.get("published_at") or meta.get("pub_date") or ""
         body = (article.get("body") or "")[:_BODY_TRIM]
         user = (
@@ -735,14 +814,14 @@ class Harvester(BaseAgent):
         except Exception as exc:
             emit("harvest_skip", reason="extract_error", url=article.get("url"),
                  error=str(exc)[:200])
-            return
+            return _FactDeltas()
 
         # 관련도 게이팅 (B) — 타지역·노이즈 문서(doc_relevance<임계)는 Fact 미적재.
         # 프리필터를 통과했더라도 추출 단계에서 무관 판정된 문서를 격리한다(D9 보강).
         if out.doc_relevance < _MIN_DOC_RELEVANCE:
             emit("harvest_skip", reason="low_relevance", url=article.get("url"),
                  doc_relevance=out.doc_relevance, query=query)
-            return
+            return _FactDeltas()
 
         # 채널 prior(source_tier — 스니펫 경로가 전달, 기본 NEWS)와 host tier 중 보수적 값.
         # ddgs·스크랩은 임의 URL이라 host가, naver vertical은 채널이 더 정확 — min이 안전 결합.
@@ -758,7 +837,6 @@ class Harvester(BaseAgent):
             "fetched_at": datetime.now().isoformat(timespec="seconds"),
             "collected_by": collected_by,
         })
-        stats.docs_new += 1
         edges.append(SeedEdge(L.QUERY, query_hash, E.RETRIEVED, L.WEB_DOC, url_hash))
         edges.append(SeedEdge(L.WEB_DOC, url_hash, E.ABOUT, target_label, target_key))
 
@@ -767,16 +845,15 @@ class Harvester(BaseAgent):
             asset_sigungu=asset_sigungu, source_label=L.WEB_DOC, source_key=url_hash,
             source_tier=tier, published_at=published_at,
             collected_by=collected_by)
-        stats.facts_new += counts["facts"]
-        stats.entities_new += counts["entities"]
-        stats.mentions_confirmed += counts["confirmed"]
-        stats.mentions_candidate += counts["candidate"]
-        stats.new_fact_texts.extend(texts)
 
         seed(sg, driver)                # 신규 노드 MERGE (+카드)
         write_edges(driver, edges)     # 기존 노드 향한 엣지 포함
         emit("harvest_doc", url=article.get("url"), facts=len(out.facts),
              doc_relevance=out.doc_relevance, query=query)
+        return _FactDeltas(
+            docs_new=1, facts_new=counts["facts"], entities_new=counts["entities"],
+            mentions_confirmed=counts["confirmed"], mentions_candidate=counts["candidate"],
+            new_fact_texts=texts)
 
     # ── 답변용 자유형 질문 웹검색 (navigator 스코프앵커 우회, D22 보강) ──
     def harvest_question(self, driver, *, asset_id, asset_card, question,

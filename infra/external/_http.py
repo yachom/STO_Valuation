@@ -30,6 +30,22 @@ __all__ = [
 ]
 
 
+def _notify_api_error(api_name: str, status: int | None, detail: str) -> None:
+    """외부 API 오류를 Slack에 결정론적 통지 (LLM 무개입). 모든 외부 HTTP의 공통
+    경유점이라 여기 한 곳에서 4xx/5xx·네트워크 오류를 빠짐없이 잡는다. Slack 미설정/
+    실패 시 조용히 넘어가며 transport를 절대 깨지 않는다(best-effort). 분류(인증/키/
+    레이트리밋 401·403·429 → api-limit 채널, 그 외 → alerts)·dedup은 notifier가 한다."""
+    try:
+        from infra.notify.slack import get_notifier
+        n = get_notifier()
+        if n is not None:
+            n.notify_error(title=f"외부 API 오류: {api_name}", message=detail,
+                           status=status, logger_name=f"external.{api_name}",
+                           source=api_name, level="ERROR")
+    except Exception:
+        pass
+
+
 def timed_urlopen(
     request,
     *,
@@ -56,8 +72,10 @@ def timed_urlopen(
     except urllib.error.HTTPError as exc:
         status = exc.code
         body = exc.read().decode("utf-8", errors="replace")
+        _notify_api_error(api_name, status, body[:300])
         raise on_http_error(status, body) from exc
     except urllib.error.URLError as exc:
+        _notify_api_error(api_name, None, f"네트워크 오류: {exc.reason}")
         raise on_url_error(str(exc.reason)) from exc
 
     elapsed_ms = int((time.monotonic() - started_at) * 1000)
@@ -85,9 +103,12 @@ def timed_requests_get(
     try:
         response = requests_module.get(endpoint, params=params, timeout=timeout)
     except Exception as exc:  # requests.RequestException 포함 — 호출부 동작 보존
+        _notify_api_error(api_name, None, f"네트워크 오류: {exc}"[:300])
         raise on_error(exc) from exc
 
     elapsed_ms = int((time.monotonic() - started_at) * 1000)
+    if response.status_code >= 400:   # requests 계열은 4xx/5xx가 예외 아님 — 여기서 결정론적 통지
+        _notify_api_error(api_name, response.status_code, response.text[:300])
     return response.status_code, response.text, elapsed_ms
 
 

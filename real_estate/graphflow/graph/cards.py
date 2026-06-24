@@ -43,20 +43,21 @@ def card_for_asset(p: dict) -> str:
 
 
 def card_for_complex(p: dict) -> str:
-    name = p.get("canonical_name", "이름 미상")
-    parts = [name]
-    if p.get("road_address"):
-        parts.append(f"({p['road_address']})")
-    parts.append("는 ")
-    sub = []
-    if p.get("completion_date"):
-        sub.append(f"{p['completion_date']} 준공")
-    hh = _fmt_int(p.get("household_count"))
+    """배후 주거수요 집계 카드 — 반경 내 단지수·총세대수만 (개별 단지명 미수록).
+
+    상가 평가에서 개별 아파트명은 무의미하고 오히려 '경쟁 상권'으로 오인되므로,
+    배후 주거수요를 규모(단지수·세대수)로만 표기하고 '본 상가 배후 주거수요'임을
+    카드 자체에 명시한다(어느 축에 인용돼도 경쟁 요소로 읽히지 않게)."""
+    n = p.get("단지수")
+    radius = p.get("반경m")
+    where = f"반경 {radius}m 내 " if radius else "반경 내 "
+    if not n:
+        return f"{where}배후 아파트 단지 없음 (본 상가 배후 주거수요)."
+    parts = [f"{where}아파트 {int(n):,}개 단지"]
+    hh = _fmt_int(p.get("총세대수"))
     if hh:
-        sub.append(f"{hh}세대 규모")
-    parts.append(", ".join(sub) if sub else "정보 미확정")
-    parts.append("의 아파트 단지이다.")
-    return "".join(parts)
+        parts.append(f"총 {hh}세대")
+    return ", ".join(parts) + " (본 상가 배후 주거수요)."
 
 
 def card_for_building(p: dict) -> str:
