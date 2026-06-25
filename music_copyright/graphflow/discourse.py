@@ -9,7 +9,9 @@
 
 from __future__ import annotations
 
+import contextvars
 import logging
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
 from neo4j import Driver
@@ -24,6 +26,9 @@ from music_copyright.graphflow.traversal import scope_eids
 logger = logging.getLogger("music_copyright.discourse")
 
 _AXES = ("influence", "popularity", "sustainability")
+# 라운드테이블에서 관점(thread)들을 동시에 전진시키는 스레드풀 동시성 상한.
+# 관점 수(3축 + 발견 관점)는 보통 한 자릿수라 6이면 충분히 동시화된다.
+_MAX_DISCOURSE_WORKERS = 6
 
 # 3축 기본 페르소나/초점 (척추 — 항상 존재)
 _BASE = {
@@ -231,27 +236,64 @@ def _shared_digest(threads: list[dict], exclude_idx: int) -> str:
     return "\n".join(lines)
 
 
+def _parallel_threads(advance_fn, items: list[tuple]) -> None:
+    """관점 thread들을 bounded 스레드풀로 병렬 전진 (각 thread는 자기 dict만 in-place 갱신).
+
+    advance_fn(idx, th)는 자기 th dict만 쓰므로 스레드 간 공유 가변상태가 없다. 트레이싱
+    contextvar(_current_node/_axis/_tracer)는 워커로 자동 전파되지 않으므로 현재 컨텍스트를
+    복사해 각 태스크를 그 안에서 실행한다(emit·토큰 roll-up·Langfuse span 스탬핑 보존).
+    1건이면 풀 없이 인라인(오버헤드 회피). 각 thread의 researcher는 내부에서 harvester
+    풀을 또 띄우지만(중첩), openai 호출은 게이트웨이가 전역 throttle(5/s)하고 Neo4j 풀은
+    충분(기본 100)해 안전하다.
+    """
+    if not items:
+        return
+    if len(items) == 1:
+        advance_fn(*items[0])
+        return
+    workers = min(_MAX_DISCOURSE_WORKERS, len(items))
+
+    def _run_in_ctx(item: tuple):
+        ctx = contextvars.copy_context()
+        return ctx.run(lambda: advance_fn(*item))
+
+    with ThreadPoolExecutor(max_workers=workers,
+                            thread_name_prefix="discourse") as pool:
+        list(pool.map(_run_in_ctx, items))
+
+
 def discourse_round_stage(driver: Driver, work_id: str, threads: list[dict],
                           collected_by: str, *, research_budget: int | None = None) -> list[dict]:
-    """라운드테이블 1턴 — 각 관점이 질문→연구로 qa 1건씩 추가 (in-place)."""
+    """라운드테이블 1턴 — 각 관점이 질문→연구로 qa 1건씩 추가 (in-place, 병렬).
+
+    관점들을 스레드풀로 동시에 전진시킨다. 각 관점이 보는 shared_digest는 dispatch 전에
+    고정(round-start 스냅샷)해, 직렬판의 "앞 관점의 이번 라운드 답을 뒤 관점이 본다"는
+    순서 의존을 없애고 모든 관점이 동일 상태에서 출발하는 동시 라운드테이블로 만든다.
+    """
     from music_copyright.graphflow.config import get_config
     budget = research_budget if research_budget is not None else \
         get_config()["curation"]["research_budget"]
     work_card = work_card_text(driver, work_id)
     anchors = _scope_anchor_names(driver, work_id)
-    questioner, researcher = Questioner(), Researcher()
-    for i, th in enumerate(threads):
-        if th.get("done"):
-            continue
+    # round-start 스냅샷: 병렬 실행 중 다른 thread의 qa 갱신과 digest read가 경합하지 않게.
+    digests = [_shared_digest(threads, i) for i in range(len(threads))]
+    items = [(i, th) for i, th in enumerate(threads) if not th.get("done")]
+
+    def _advance(idx: int, th: dict) -> None:
+        # Questioner/Researcher는 무상태라 태스크별 생성(스레드 격리).
+        questioner, researcher = Questioner(), Researcher()
         persp = Perspective(parent_axis=th["axis"], label=th["label"],
                             focus=th["focus"], persona=th["persona"], qa=th["qa"])
         turn = questioner.ask(persp, work_card=work_card, scope_anchors=anchors,
-                              shared_digest=_shared_digest(threads, i))
+                              shared_digest=digests[idx])
         if turn.done or not turn.question.strip():
             th["done"] = True
-            continue
-        answer = researcher.research(driver, work_id, turn.question, collected_by, budget=budget)
+            return
+        answer = researcher.research(driver, work_id, turn.question, collected_by,
+                                     budget=budget)
         th["qa"].append({"q": turn.question, "a": answer})
+
+    _parallel_threads(_advance, items)
     return threads
 
 

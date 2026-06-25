@@ -4,7 +4,9 @@
 → Harvester 검색·Fact 추출·적재 → Curator 임베딩·novelty. novelty<임계 또는 예산 소진
 또는 프론티어 없음이면 중단.
 
-⚠️ LLM 호출(navigator/harvester)을 직렬로 여러 번 한다 — 병렬화는 별도 브랜치에서.
+라운드 간은 순차다(프론티어가 직전 라운드 적재에 의존). 라운드 내 병목인 문서별
+LLM 추출은 harvester가 스레드풀로 병렬화한다(harvester._parallel_ingest). openai
+호출은 게이트웨이가 전역 throttle하므로 동시 호출이 많아도 429가 없다.
 """
 
 from __future__ import annotations

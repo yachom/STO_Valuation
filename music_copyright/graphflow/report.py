@@ -20,11 +20,11 @@ from pathlib import Path
 from neo4j import Driver
 
 from music_copyright.graphflow.auditor import audit_overview, audit_section
+from music_copyright.graphflow.axes import Axis, BASE_AXES, axis_by_key
 from music_copyright.graphflow.composer import Evidence, compose
 from music_copyright.graphflow.graph.queries import work_card_text
 from music_copyright.graphflow.graph.schema import EDGE_TYPES as E
 from music_copyright.graphflow.graph.schema import NODE_LABELS as L
-from music_copyright.graphflow.profiles import REPORT_AXES
 from music_copyright.graphflow.seeder import ScopeGraph, SeedEdge, seed, write_edges
 from music_copyright.graphflow.synthesizer import MusicSynthesizer
 from music_copyright.graphflow.writer import MusicWriter, SectionDraft
@@ -48,20 +48,28 @@ def write_axis(
     driver: Driver,
     work_id: str,
     work_card: str,
-    axis: str,
+    axis: str | Axis,
     *,
     evidence_k: int | None = None,
     outline: list[str] | None = None,
 ) -> tuple[SectionDraft, list[Evidence], list[str]]:
-    """축 1개: compose → write → 기계 검증 → 위반 시 재작성. 반환: (draft, evidence, 잔여위반)."""
-    evidence = compose(driver, work_id, axis, k=evidence_k)
+    """축 1개: compose → write → 기계 검증 → 위반 시 재작성. 반환: (draft, evidence, 잔여위반).
+
+    axis는 Axis(동적 축) 또는 키 문자열(기본 3축). 동적 축이면 intent/title/focus를
+    compose·writer에 그대로 전달한다.
+    """
+    ax = axis if isinstance(axis, Axis) else (axis_by_key(axis) or Axis(axis, axis, ""))
+    evidence = compose(driver, work_id, ax.key, k=evidence_k,
+                       intent=ax.intent, news_intent=ax.news, profile=ax.prof)
     writer = MusicWriter()
-    draft = writer.write(axis, work_card, evidence, outline=outline)
+    draft = writer.write(ax.key, work_card, evidence, outline=outline,
+                         title=ax.title, focus=ax.writer_focus)
     violations = audit_section(draft, evidence)
     rewrites = 0
     while violations and rewrites < _MAX_REWRITES:
-        logger.info("audit fail (%s): %s", axis, violations)
-        draft = writer.write(axis, work_card, evidence, violations=violations, outline=outline)
+        logger.info("audit fail (%s): %s", ax.key, violations)
+        draft = writer.write(ax.key, work_card, evidence, violations=violations,
+                             outline=outline, title=ax.title, focus=ax.writer_focus)
         violations = audit_section(draft, evidence)
         rewrites += 1
     return draft, evidence, violations
@@ -272,11 +280,14 @@ def generate_report(
     out_dir: str | Path,
     evidence_k: int | None = None,
     expand_rounds: int = 0,
+    axes: list[Axis] | None = None,
 ) -> dict:
     """순차 단독 실행 진입점 (LangGraph 없이). 표준 그래프 경로는 workflow.py.
 
     expand_rounds>0이면 집필 전 웹검색 EXPAND로 Fact를 보강한다(보고서가 두꺼워짐).
+    axes 미지정이면 기본 3축. 동적 축(사람·에이전트)은 호출부가 resolve해 넘긴다.
     """
+    axes = axes or BASE_AXES
     if expand_rounds > 0:
         from infra.agent.tracing import make_run_id
         from music_copyright.graphflow.expand import run_expand
@@ -286,12 +297,12 @@ def generate_report(
     sections: dict[str, SectionDraft] = {}
     evidence_by_axis: dict[str, list[Evidence]] = {}
     mech_audit: dict[str, list[str]] = {}
-    for axis in REPORT_AXES:
+    for ax in axes:
         draft, evidence, violations = write_axis(
-            driver, work_id, card, axis, evidence_k=evidence_k)
-        sections[axis] = draft
-        evidence_by_axis[axis] = evidence
-        mech_audit[axis] = violations
+            driver, work_id, card, ax, evidence_k=evidence_k)
+        sections[ax.key] = draft
+        evidence_by_axis[ax.key] = evidence
+        mech_audit[ax.key] = violations
     overview, index_map, ov_violations = synthesize_overview(card, sections)
     mech_audit["overview"] = ov_violations
     return finalize_report(driver, work_id, sections, overview, index_map,

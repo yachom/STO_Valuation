@@ -113,6 +113,67 @@ class MusicBrainzClient:
                             "role": rel.get("type")})
         return out
 
+    # ── 권리자·파생작 (seeder 구조 보강) ─────────────────────
+    def work_publishers(self, work_mbid: str | None) -> list[dict]:
+        """작품 MBID → 퍼블리셔/레이블 권리자 [{mbid, name, kind}] (work label-rels).
+
+        작품 레벨 퍼블리싱 관계. 많은 작품은 비어있고(레이블은 보통 release 레벨),
+        그 경우 recording_labels로 보완한다.
+        """
+        if not work_mbid:
+            return []
+        data = self._get(f"work/{work_mbid}", {"inc": "label-rels"})
+        out: list[dict] = []
+        for rel in (data or {}).get("relations") or []:
+            label = rel.get("label")
+            if label and label.get("id"):
+                out.append({"mbid": label["id"], "name": label.get("name"),
+                            "kind": rel.get("type") or "퍼블리셔"})
+        return out
+
+    def recording_labels(self, recording_mbid: str | None, *, max_releases: int = 3) -> list[dict]:
+        """녹음 MBID → 발매 레이블 [{mbid, name, kind}] (recording→releases→label-info).
+
+        레이블은 release에 달려 있어 recording의 releases를 받고 앞쪽 몇 개의 label-info를
+        모은다(dedup). 권리 카탈로그(Rightsholder) 신호 — Wikidata가 비는 국내곡 보완.
+        """
+        if not recording_mbid:
+            return []
+        data = self._get(f"recording/{recording_mbid}",
+                         {"inc": "releases", "limit": max_releases})
+        out: list[dict] = []
+        seen: set[str] = set()
+        for rel in ((data or {}).get("releases") or [])[:max_releases]:
+            rid = rel.get("id")
+            if not rid:
+                continue
+            rdata = self._get(f"release/{rid}", {"inc": "labels"})
+            for li in (rdata or {}).get("label-info") or []:
+                label = li.get("label")
+                if label and label.get("id") and label["id"] not in seen:
+                    seen.add(label["id"])
+                    out.append({"mbid": label["id"], "name": label.get("name"),
+                                "kind": "레이블"})
+        return out
+
+    def work_derivatives(self, work_mbid: str | None) -> list[dict]:
+        """작품 MBID → 파생작(커버·샘플·메들리·다른 버전) [{mbid, title, relation}].
+
+        work-work 관계(based on/samples material/medley/other version 등). 이 곡이
+        다른 작품에 미친 영향(영향력 축) 신호. 없으면 [](MB는 유명·서구곡에 풍부).
+        """
+        if not work_mbid:
+            return []
+        data = self._get(f"work/{work_mbid}", {"inc": "work-rels"})
+        out: list[dict] = []
+        for rel in (data or {}).get("relations") or []:
+            w = rel.get("work")
+            if w and w.get("id"):
+                out.append({"mbid": w["id"], "title": w.get("title"),
+                            "relation": rel.get("type"),
+                            "direction": rel.get("direction")})
+        return out
+
 
 # ── 모듈 헬퍼 ────────────────────────────────────────────────
 def _first_work_mbid(recording: dict) -> str | None:

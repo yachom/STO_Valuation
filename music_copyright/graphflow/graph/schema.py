@@ -32,6 +32,8 @@ class NODE_LABELS:
     PLATFORM = "Platform"        # 유통 플랫폼(스트리밍 등) — platform_id
     CHART = "Chart"              # 차트 진입 기록 — chart_id
     AWARD = "Award"              # 수상/노미네이트 — award_id
+    CERTIFICATION = "Certification"  # 음반 인증(RIAA/Gaon Gold·Platinum) — certification_id
+    SOCIAL_METRIC = "SocialMetric"   # 소셜/스트리밍 지표 스냅샷(팔로워·조회·사용수) — metric_id
 
     # ── 확장 수집물 (web-search-first) ──
     WEB_DOC = "WebDoc"           # 웹/뉴스/비평 문서 — url_hash
@@ -55,6 +57,10 @@ class EDGE_TYPES:
     DISTRIBUTED_ON = "DISTRIBUTED_ON"  # Work → Platform
     CHARTED_ON = "CHARTED_ON"        # Work → Chart
     WON = "WON"                      # Work|Artist → Award
+    CERTIFIED = "CERTIFIED"          # Work → Certification
+    HAS_METRIC = "HAS_METRIC"        # Work|Platform → SocialMetric
+    COVERED_BY = "COVERED_BY"        # Work → Artist (이 곡을 커버한 아티스트 — 영향력)
+    SAMPLED_BY = "SAMPLED_BY"        # Work → Artist|Work (이 곡을 샘플링한 작품 — 영향력)
 
     # 확장 수집 (Harvester/Navigator) — real_estate와 동일 의미
     SPAWNED_QUERY = "SPAWNED_QUERY"  # 노드 일반 → Query
@@ -80,6 +86,8 @@ _UNIQUE_KEYS: list[tuple[str, str]] = [
     (NODE_LABELS.PLATFORM, "platform_id"),
     (NODE_LABELS.CHART, "chart_id"),
     (NODE_LABELS.AWARD, "award_id"),
+    (NODE_LABELS.CERTIFICATION, "certification_id"),
+    (NODE_LABELS.SOCIAL_METRIC, "metric_id"),
     (NODE_LABELS.WEB_DOC, "url_hash"),
     (NODE_LABELS.FACT, "fact_id"),
     (NODE_LABELS.ENTITY, "entity_id"),

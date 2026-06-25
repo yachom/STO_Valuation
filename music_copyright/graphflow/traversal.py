@@ -65,14 +65,96 @@ def work_anchor_eid(driver: Driver, work_id: str) -> str | None:
 
 
 def scope_eids(driver: Driver, work_id: str, hops: int) -> set[str]:
-    """Work에서 hops 이내 노드 eid 집합 (QA 스코프 한정, 설계 §D11)."""
+    """Work에서 hops 이내 노드 eid 집합 (QA 스코프 한정, 설계 §D11).
+
+    허브-인지(hub-aware): 경로 *중간*에 공유 허브(Artist·레이블·플랫폼·수상·다른 Work)가
+    있으면 그 경로는 버린다 — 그래야 'Dynamite→공유아티스트→다른 곡→그 곡의 Fact' 같은
+    교차오염이 스코프(특히 Fact 벡터검색)에 안 샌다. 이 곡 고유 수집물(Query/WebDoc/Fact/
+    Entity)은 허브를 거치지 않아 그대로 들어온다. walk의 expandable 게이트와 같은 원리.
+    """
     with driver.session() as s:
         r = s.run(
             f"""
-            MATCH (w:Work {{work_id: $wid}})
-            MATCH (w)-[*0..{int(hops)}]-(m)
+            MATCH path=(w:Work {{work_id: $wid}})-[*0..{int(hops)}]-(m)
+            WHERE all(x IN nodes(path)[1..-1] WHERE
+                NOT (x:Work OR x:Artist OR x:Rightsholder OR x:Platform
+                     OR x:Award OR x:Chart OR x:Certification OR x:SocialMetric))
             RETURN collect(DISTINCT elementId(m)) AS eids
             """,
             wid=work_id,
         ).single()
         return set(r["eids"]) if r else set()
+
+
+# ───────────────────────────────────────────────────────────
+# Semantic 검색 입력 — 축 의도 코사인 / 출처 보강 (real_estate 미러)
+# ───────────────────────────────────────────────────────────
+def semantic_sims(
+    driver: Driver,
+    work_id: str,
+    purpose_text: str,
+    *,
+    scope_hops: int = 4,
+) -> dict[str, float]:
+    """Work 스코프 노드 card_embedding vs 축 의도 임베딩 코사인 → eid별 [0,1] 정규화.
+
+    SemanticPolicy 입력 — walk 노드배수에 곱해 '엣지 종류 상수'가 못 보는 '이 노드가
+    축 관심사와 의미적으로 가까운가'를 데이터로 반영(가중치 표 의존 제거). e5 코사인은
+    스프레드가 좁아 스코프 내 min-max 정규화로 변별력을 준다. 결정적(임베딩·스코프 고정).
+    """
+    from infra.graph.embedder import embed_one
+
+    pvec = embed_one(purpose_text)
+    pnorm = sum(x * x for x in pvec) ** 0.5 or 1.0
+    with driver.session() as s:
+        rows = s.run(
+            f"""
+            MATCH (w:Work {{work_id: $wid}})-[*0..{int(scope_hops)}]-(m)
+            WHERE m.card_embedding IS NOT NULL
+              AND (NOT m:Work OR m.work_id = $wid)   // 타 작품 노드 누출 차단(공유 허브)
+            RETURN DISTINCT elementId(m) AS eid, m.card_embedding AS emb
+            """,
+            wid=work_id,
+        ).data()
+    sims: dict[str, float] = {}
+    for r in rows:
+        emb = r["emb"]
+        if not emb:
+            continue
+        dot = sum(a * b for a, b in zip(pvec, emb))
+        enorm = sum(x * x for x in emb) ** 0.5 or 1.0
+        sims[r["eid"]] = dot / (pnorm * enorm)
+    if sims:                                   # 스코프 내 min-max 정규화 (변별력)
+        lo, hi = min(sims.values()), max(sims.values())
+        rng = (hi - lo) or 1.0
+        sims = {k: (v - lo) / rng for k, v in sims.items()}
+    logger.info("semantic_sims(%s): %d nodes scored", purpose_text[:24], len(sims))
+    return sims
+
+
+def corroboration_scores(
+    driver: Driver,
+    work_id: str,
+    *,
+    scope_hops: int = 4,
+) -> dict[str, float]:
+    """스코프 노드별 '독립 출처 수' — 여러 출처가 보강할수록 강한 노드(SemanticPolicy 입력).
+
+    Fact 총량(에코·재탕 포함)이 아니라 그 Fact들이 추출된 WebDoc의 distinct source 수를
+    센다(같은 출처 재탕은 1). Work 스코프 내 Fact만 — 타 작품 보강이 새지 않게.
+    """
+    with driver.session() as s:
+        rows = s.run(
+            f"""
+            MATCH (w:Work {{work_id: $wid}})-[*0..{int(scope_hops)}]-(f:Fact)
+                  -[:MENTIONS]->(n)
+            MATCH (f)-[:EXTRACTED_FROM]->(d:WebDoc)
+            WITH n, count(DISTINCT coalesce(d.source, d.url)) AS srcs
+            WHERE srcs > 0
+            RETURN elementId(n) AS eid, srcs
+            """,
+            wid=work_id,
+        ).data()
+    out = {r["eid"]: float(r["srcs"]) for r in rows}
+    logger.info("corroboration_scores(%s): %d nodes with sources", work_id, len(out))
+    return out

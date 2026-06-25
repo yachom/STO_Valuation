@@ -14,8 +14,10 @@ LLM(music_harvester, gpt_mini)이 문서에서 원자적 Fact를 추출하고, �
 
 from __future__ import annotations
 
+import contextvars
 import logging
 import os
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from typing import Literal
 
@@ -38,6 +40,11 @@ _MAX_DOCS_PER_QUERY = 5
 _MAX_FACTS_PER_DOC = 6
 _BODY_TRIM = 3000
 _MIN_DOC_RELEVANCE = 0.3
+# 쿼리 내 문서별 LLM 추출(_ingest_doc)을 병렬화하는 스레드풀 동시성 상한.
+# 문서별 gpt_mini Fact 추출 직렬 호출이 수집 wall-clock의 대부분이다 — 게이트
+# throttle된 검색(_search)은 그대로 순차로 두고, 모은 문서들의 추출·적재만 동시 실행한다.
+# 게이트웨이가 openai 호출을 전역 throttle(5/s)하므로 워커가 많아도 429가 없다.
+_MAX_EXTRACT_WORKERS = 8
 
 # 출처 신뢰 prior (real_estate _SOURCE_TIER 음악판)
 _TIER_NEWS, _TIER_WEB, _TIER_BLOG = 0.8, 0.68, 0.56
@@ -72,6 +79,57 @@ class HarvestStats:
     entities_new: int = 0
     mentions_confirmed: int = 0
     new_fact_texts: list[str] = field(default_factory=list)
+
+
+@dataclass
+class _DocDeltas:
+    """문서 1건 적재의 stats 증분 — 스레드 로컬로 모은 뒤 풀 종료 후 직렬 병합.
+
+    각 _ingest_doc 태스크는 공유 HarvestStats를 직접 건드리지 않고 이 값을 반환한다.
+    워커는 자기 _DocDeltas만 쓰므로 락이 불필요하고, 병합은 디스패치 스레드가 입력
+    순서대로(map) 한 번에 한다(merge_into) — 누적 순서가 직렬 베이스라인과 동일.
+    """
+    docs_new: int = 0
+    facts_new: int = 0
+    entities_new: int = 0
+    mentions_confirmed: int = 0
+    new_fact_texts: list[str] = field(default_factory=list)
+
+    def merge_into(self, stats: HarvestStats) -> None:
+        stats.docs_new += self.docs_new
+        stats.facts_new += self.facts_new
+        stats.entities_new += self.entities_new
+        stats.mentions_confirmed += self.mentions_confirmed
+        stats.new_fact_texts.extend(self.new_fact_texts)
+
+
+def _parallel_ingest(ingest_fn, tasks: list[dict]) -> list["_DocDeltas"]:
+    """쿼리 내 문서별 적재(_ingest_doc)를 bounded 스레드풀로 병렬 실행 후 deltas 반환.
+
+    ingest_fn(**task) -> _DocDeltas. 각 태스크는 자기 driver.session()으로 독립 적재하고
+    stats 증분만 반환하므로 동시 실행이 안전하다(Neo4j driver는 스레드 안전, 세션은
+    _ingest_doc이 호출마다 새로 연다). 트레이싱 contextvar(_current_node/_axis/_tracer)는
+    워커 스레드로 자동 전파되지 않으므로 현재 컨텍스트를 복사해 각 태스크를 그 안에서
+    실행한다(emit·토큰 roll-up·Langfuse span 스탬핑 보존). 문서 1건이면 풀 없이 인라인
+    실행(오버헤드 회피). 반환은 입력 순서(pool.map)라 호출부 직렬 병합이 결정적이다.
+    """
+    results: list[_DocDeltas] = []
+    if not tasks:
+        return results
+    if len(tasks) == 1:
+        results.append(ingest_fn(**tasks[0]))
+        return results
+    workers = min(_MAX_EXTRACT_WORKERS, len(tasks))
+
+    def _run_in_ctx(task: dict) -> _DocDeltas:
+        ctx = contextvars.copy_context()
+        return ctx.run(ingest_fn, **task)
+
+    with ThreadPoolExecutor(max_workers=workers,
+                            thread_name_prefix="music-harvest") as pool:
+        for deltas in pool.map(_run_in_ctx, tasks):
+            results.append(deltas)
+    return results
 
 
 # ───────────────────────────────────────────────────────────
@@ -191,18 +249,26 @@ class Harvester(BaseAgent):
             t_label, _, t_key = plan.target.partition(":")
             for query in plan.queries:
                 stats.queries += 1
-                docs = self._search(query)
+                docs = self._search(query)          # 게이트 throttle된 검색 — 순차
                 qhash = query_hashes.get(query) or short_hash(normalize_text(query))
-                for d in docs:
-                    self._ingest_doc(driver, d, query, qhash, t_label, t_key,
-                                     work_card, scope_names, collected_by, stats)
+                # 모은 문서들의 LLM 추출·적재만 스레드풀로 병렬(_parallel_ingest).
+                tasks = [dict(driver=driver, d=d, query=query, qhash=qhash,
+                              t_label=t_label, t_key=t_key, work_card=work_card,
+                              scope_names=scope_names, collected_by=collected_by)
+                         for d in docs]
+                for deltas in _parallel_ingest(self._ingest_doc, tasks):
+                    deltas.merge_into(stats)
         logger.info("music_harvest: q=%d docs=%d facts=%d ent=%d ment=%d",
                     stats.queries, stats.docs_new, stats.facts_new,
                     stats.entities_new, stats.mentions_confirmed)
         return stats
 
+    # stats를 직접 갱신하지 않고 _DocDeltas를 반환한다 — 쿼리 내 문서들을 스레드풀로
+    # 동시 추출·적재하기 위함(_parallel_ingest). 워커는 자기 driver.session()으로만
+    # 적재하므로 공유 가변상태가 없고, 증분 병합은 디스패치 스레드가 직렬로 한다.
     def _ingest_doc(self, driver, d, query, qhash, t_label, t_key, work_card,
-                    scope_names, collected_by, stats):
+                    scope_names, collected_by) -> "_DocDeltas":
+        deltas = _DocDeltas()
         # 1. Fact 추출 (LLM)
         try:
             out: ExtractionOutput = self.complete(
@@ -212,9 +278,9 @@ class Harvester(BaseAgent):
                 schema=ExtractionOutput)
         except Exception as exc:  # noqa: BLE001
             logger.debug("extract skip: %s", exc)
-            return
+            return deltas
         if out.doc_relevance < _MIN_DOC_RELEVANCE or not out.facts:
-            return
+            return deltas
 
         tier = _source_tier(d["source"], d["channel"])
         url_hash = short_hash(d["url"])
@@ -224,7 +290,7 @@ class Harvester(BaseAgent):
                 "title": d["title"], "url": d["url"], "source": d["source"],
                 "published_at": d["published_at"], "source_tier": tier,
                 "collected_by": collected_by})
-            stats.docs_new += 1
+            deltas.docs_new += 1
             _merge_edge(s, L.QUERY, qhash, E.RETRIEVED, L.WEB_DOC, url_hash)
             if t_key:
                 _merge_edge(s, L.WEB_DOC, url_hash, E.ABOUT, t_label, t_key)
@@ -238,13 +304,14 @@ class Harvester(BaseAgent):
                     "text": fd.text, "published_at": d["published_at"] or None,
                     "event_date": fd.event_date, "confidence": conf,
                     "source_tier": tier, "collected_by": collected_by})
-                stats.facts_new += 1
-                stats.new_fact_texts.append(fd.text)
+                deltas.facts_new += 1
+                deltas.new_fact_texts.append(fd.text)
                 _merge_edge(s, L.FACT, fact_id, E.EXTRACTED_FROM, L.WEB_DOC, url_hash)
                 self._link_mentions(s, fact_id, fd.mentions, scope_names,
-                                    collected_by, stats)
+                                    collected_by, deltas)
+        return deltas
 
-    def _link_mentions(self, s, fact_id, mentions, scope_names, collected_by, stats):
+    def _link_mentions(self, s, fact_id, mentions, scope_names, collected_by, deltas):
         for m in mentions:
             nm = normalize_text(m.surface)
             if not nm:
@@ -258,13 +325,13 @@ class Harvester(BaseAgent):
             if matched:
                 label, key = matched
                 _merge_edge(s, L.FACT, fact_id, E.MENTIONS, label, key)
-                stats.mentions_confirmed += 1
+                deltas.mentions_confirmed += 1
             else:                                     # 미해소 → Entity
                 eid = short_hash(nm)
                 _merge_node(s, L.ENTITY, eid, {
                     "name": m.surface, "guess_label": m.guess_label,
                     "collected_by": collected_by})
-                stats.entities_new += 1
+                deltas.entities_new += 1
                 _merge_edge(s, L.FACT, fact_id, E.MENTIONS, L.ENTITY, eid)
 
 

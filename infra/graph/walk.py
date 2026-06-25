@@ -182,6 +182,12 @@ def walk(
     anchors = load_nodes(driver, anchor_eids, key_props)
     anchor_set = set(anchors)
 
+    # 선택적 확장 게이트(policy.expandable) — 어떤 노드는 evidence로 도달은 되되 그
+    # 너머로 *통과(재확장)*하지 않게 한다(absorbing leaf). 공유 허브(아티스트·레이블·
+    # 플랫폼 등)를 통해 무관한 다른 앵커의 서브그래프로 새는 걸 막는 용도. 미정의
+    # policy는 전부 확장(하위호환 — 기존 StaticPolicy/SemanticPolicy 무영향).
+    expandable = getattr(policy, "expandable", None)
+
     best: dict[str, EvidencePath] = {}
     frontier: list[EvidencePath] = []
     for eid, nr in anchors.items():
@@ -215,10 +221,12 @@ def walk(
                     or (abs(score - cur.score) <= _EPS and npath.sig < cur.sig)
                 )
                 if better:
-                    best[nb.noderef.eid] = npath
-                    prev = chosen.get(nb.noderef.eid)
-                    if prev is None or score > prev.score + _EPS:
-                        chosen[nb.noderef.eid] = npath
+                    best[nb.noderef.eid] = npath   # evidence 후보로는 항상 보존
+                    # 확장 게이트 — 비확장 노드는 다음 프론티어에 안 넣어 통과 차단.
+                    if expandable is None or expandable(nb.noderef.label, nb.props):
+                        prev = chosen.get(nb.noderef.eid)
+                        if prev is None or score > prev.score + _EPS:
+                            chosen[nb.noderef.eid] = npath
         frontier = list(chosen.values())
 
     results = [p for eid, p in best.items() if eid not in anchor_set]

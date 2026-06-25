@@ -107,6 +107,32 @@ def card_for_award(p: dict) -> str:
     return f"{year_s}{name}{cat_s} — {result}."
 
 
+def card_for_certification(p: dict) -> str:
+    # 음반 인증(RIAA/Gaon 등) — 지속성·대중성 신호. 등급(Gold/Platinum/Diamond)과
+    # 인증기관(body)·지역(region)·연도를 정확히 표기한다.
+    body = p.get("body", "")
+    level = p.get("level", "인증")
+    region = p.get("region", "")
+    year = p.get("year", "")
+    body_s = f"{body} " if body else ""
+    region_s = f"({region}) " if region else ""
+    year_s = f" {year}" if year else ""
+    return f"{region_s}{body_s}{level} 인증{year_s}."
+
+
+def card_for_social_metric(p: dict) -> str:
+    # 소셜/스트리밍 지표 스냅샷 — 플랫폼별 의미가 달라 metric 이름을 그대로 표기
+    # (followers/monthly_listeners/views/tiktok_uses 등). as_of로 시점 명시.
+    platform = p.get("platform", "")
+    metric = p.get("metric", "지표")
+    value = _fmt_int(p.get("value"))
+    as_of = p.get("as_of", "")
+    plat_s = f"{platform} " if platform else ""
+    val_s = f" {value}" if value else ""
+    as_of_s = f" (기준 {as_of})" if as_of else ""
+    return f"{plat_s}{metric}{val_s}{as_of_s}."
+
+
 # ── 확장 수집물 (Harvester) — real_estate와 동형 ──
 def card_for_web_doc(p: dict) -> str:
     title = p.get("title", "제목 미상")
@@ -152,6 +178,8 @@ _BUILDERS = {
     NODE_LABELS.PLATFORM: card_for_platform,
     NODE_LABELS.CHART: card_for_chart,
     NODE_LABELS.AWARD: card_for_award,
+    NODE_LABELS.CERTIFICATION: card_for_certification,
+    NODE_LABELS.SOCIAL_METRIC: card_for_social_metric,
     NODE_LABELS.WEB_DOC: card_for_web_doc,
     NODE_LABELS.FACT: card_for_fact,
     NODE_LABELS.ENTITY: card_for_entity,

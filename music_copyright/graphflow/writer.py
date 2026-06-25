@@ -81,10 +81,17 @@ class MusicWriter(BaseAgent):
         *,
         violations: list[str] | None = None,
         outline: list[str] | None = None,
+        title: str | None = None,
+        focus: str | None = None,
     ) -> SectionDraft:
-        """섹션 1개 집필. violations면 재작성 모드. outline 있으면 그 순서로 구성."""
+        """섹션 1개 집필. violations면 재작성 모드. outline 있으면 그 순서로 구성.
+
+        title/focus 미지정이면 기본 3축 룩업, 지정되면 그대로(동적 축 — 라벨·의도 전달).
+        """
+        title = title or AXIS_TITLES.get(axis, f"{axis} 분석")
+        focus = focus or AXIS_FOCUS.get(axis, "")
         system = music_system_prompt(
-            get_prompt("music_writer.role", title=AXIS_TITLES[axis], focus=AXIS_FOCUS[axis])
+            get_prompt("music_writer.role", title=title, focus=focus)
         ) + get_prompt("music_writer.rules")
         user_parts = [
             f"[평가 대상 저작물]\n{work_card}",

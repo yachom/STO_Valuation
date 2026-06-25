@@ -6,6 +6,7 @@
     "sonnet":   {"provider": "anthropic", "model": "claude-sonnet-4-6",          "max_tokens": 8000},
     "haiku":    {"provider": "anthropic", "model": "claude-haiku-4-5-20251001",  "max_tokens": 4096},
     "gpt_mini": {"provider": "openai",    "model": "gpt-4o-mini",                "max_tokens": 4096, "extra": {"max_retries": 6}},
+    "gpt_54":   {"provider": "openai",    "model": "gpt-5.4",                    "max_tokens": 8000, "extra": {"max_retries": 4}},
     "local":    {"provider": "openai_compat", "model": "Qwen/Qwen2.5-7B-Instruct", "base_url": "http://localhost:8000/v1", "max_tokens": 4096}
   },
 
@@ -30,12 +31,13 @@
 
     "music_navigator":   "gpt_mini",
     "music_harvester":   "gpt_mini",
-    "music_writer":      "gpt_mini",
-    "music_synthesizer": "gpt_mini",
+    "music_writer":      "gpt_54",
+    "music_synthesizer": "gpt_54",
     "music_perspectivist": "gpt_mini",
     "music_questioner":    "gpt_mini",
     "music_researcher":    "gpt_mini",
     "music_moderator":     "gpt_mini",
-    "music_outliner":      "gpt_mini"
+    "music_outliner":      "gpt_mini",
+    "music_axis_discoverer": "gpt_mini"
   }
 }

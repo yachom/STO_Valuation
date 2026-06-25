@@ -19,14 +19,18 @@ DEFAULT_WEIGHT = 0.05
 
 
 PROFILES: dict[str, dict[str, float]] = {
-    # ── 영향력 (비평·문화적 영향, 수상·미디어 언급) ──
+    # ── 영향력 (비평·문화적 영향, 수상·미디어 언급, 샘플·커버) ──
     "influence": {
         E.WON: 0.95,            # 수상이 영향력의 핵심 신호
+        E.SAMPLED_BY: 0.6,      # 이 곡을 샘플링한 작품 = 상호텍스트적 영향
+        E.COVERED_BY: 0.55,     # 이 곡을 커버한 아티스트 = 문화적 파급
         E.CHARTED_ON: 0.6,
         E.BY_ARTIST: 0.7,       # 아티스트 위상이 비평적 영향에 기여
         E.MENTIONS: 0.8,        # 비평/미디어 언급
         E.ABOUT: 0.6,
         E.EXTRACTED_FROM: 0.5,
+        E.HAS_METRIC: 0.4,      # 관심도(pageviews 등)
+        E.CERTIFIED: 0.5,
         E.HELD_BY: 0.3,
         E.DISTRIBUTED_ON: 0.2,
         E.SAME_AS_CANDIDATE: 0.1,
@@ -34,9 +38,13 @@ PROFILES: dict[str, dict[str, float]] = {
     # ── 대중성·팬덤 (대중 도달·팬덤 활동) ──
     "popularity": {
         E.CHARTED_ON: 0.95,     # 차트 성적이 대중 도달의 핵심
+        E.HAS_METRIC: 0.9,      # 소셜/스트리밍 지표(팔로워·조회·pageviews)
         E.DISTRIBUTED_ON: 0.85,  # 스트리밍 플랫폼 도달
+        E.CERTIFIED: 0.8,       # 인증(판매·스트리밍 누적) = 대중 도달
         E.BY_ARTIST: 0.7,       # 아티스트 팬덤
         E.MENTIONS: 0.7,
+        E.COVERED_BY: 0.5,      # 커버 = 바이럴/대중 침투
+        E.SAMPLED_BY: 0.45,
         E.ABOUT: 0.5,
         E.EXTRACTED_FROM: 0.5,
         E.WON: 0.4,
@@ -46,12 +54,16 @@ PROFILES: dict[str, dict[str, float]] = {
     # ── 지속성 (롱테일 스트리밍·재생 지속·세대 전이) ──
     "sustainability": {
         E.DISTRIBUTED_ON: 0.9,   # 롱테일 스트리밍 지속
+        E.CERTIFIED: 0.85,       # 인증 = 장기 누적 성과
         E.HELD_BY: 0.7,          # 권리 안정성이 지속 수익에 직결
+        E.COVERED_BY: 0.6,       # 세대를 넘는 커버 = 세대 전이 신호
         E.BY_ARTIST: 0.6,        # 카탈로그 세대 전이
         E.CHARTED_ON: 0.5,
+        E.HAS_METRIC: 0.5,
         E.MENTIONS: 0.7,
         E.ABOUT: 0.5,
         E.EXTRACTED_FROM: 0.5,
+        E.SAMPLED_BY: 0.4,
         E.WON: 0.4,
         E.SAME_AS_CANDIDATE: 0.1,
     },
@@ -63,6 +75,10 @@ PROFILES: dict[str, dict[str, float]] = {
         E.BY_ARTIST: 0.7,
         E.HELD_BY: 0.6,
         E.MENTIONS: 0.7,
+        E.COVERED_BY: 0.6,
+        E.SAMPLED_BY: 0.6,
+        E.CERTIFIED: 0.7,
+        E.HAS_METRIC: 0.7,
         E.ABOUT: 0.6,
         E.EXTRACTED_FROM: 0.5,
         E.SAME_AS_CANDIDATE: 0.1,

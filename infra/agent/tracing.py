@@ -56,7 +56,13 @@ def make_run_id(prefix: str = "rpt") -> str:
 
 
 class RunTracer:
-    """1회 run의 로컬 사이드카 trace 수집기. 단일 프로세스 가정."""
+    """1회 run의 로컬 사이드카 trace 수집기. 단일 프로세스, 멀티스레드 안전.
+
+    에이전트가 스레드풀로 병렬 실행되면(harvester._parallel_ingest,
+    discourse._parallel_threads) 여러 워커가 동시에 emit/add_tokens를 호출한다 —
+    공유 파일 핸들 write와 토큰 집계 dict는 _io_lock으로 보호한다(미보호 시 jsonl
+    라인 유실·토큰 카운트 경합). next_call_id는 별도 _call_seq_lock.
+    """
 
     def __init__(self, run_id: str, db_path: Path):
         self._run_id = run_id
@@ -71,6 +77,8 @@ class RunTracer:
         self._file_handler = self._install_file_handler()
         self._call_seq = 0
         self._call_seq_lock = threading.Lock()
+        # jsonl write + 토큰 roll-up dict 보호 (병렬 워커 동시 emit/add_tokens 대비).
+        self._io_lock = threading.Lock()
         self._tokens_by_node: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
         self._tokens_by_model: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
         self.emit("pipeline_start", run_id=run_id)
@@ -100,13 +108,14 @@ class RunTracer:
     def add_tokens(self, node: str | None, model: str | None, usage: dict) -> None:
         if not usage:
             return
-        for k, v in usage.items():
-            if not isinstance(v, (int, float)):
-                continue
-            if node:
-                self._tokens_by_node[node][k] += int(v)
-            if model:
-                self._tokens_by_model[model][k] += int(v)
+        with self._io_lock:
+            for k, v in usage.items():
+                if not isinstance(v, (int, float)):
+                    continue
+                if node:
+                    self._tokens_by_node[node][k] += int(v)
+                if model:
+                    self._tokens_by_model[model][k] += int(v)
 
     def emit(self, event_type: str, **fields: Any) -> None:
         record = {
@@ -120,8 +129,11 @@ class RunTracer:
         if axis is not None and "axis" not in fields:
             fields["axis"] = axis
         record.update(fields)
-        self._jsonl_fh.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")
-        self._jsonl_fh.flush()
+        line = json.dumps(record, ensure_ascii=False, default=str) + "\n"
+        # 병렬 워커 동시 write 시 라인 인터리브/유실 방지 — write+flush를 원자적으로.
+        with self._io_lock:
+            self._jsonl_fh.write(line)
+            self._jsonl_fh.flush()
         logger.info("trace [%s] %s", event_type, _short(fields))
 
     def _install_file_handler(self) -> logging.Handler:

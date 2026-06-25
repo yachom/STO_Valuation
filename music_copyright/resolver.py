@@ -62,6 +62,14 @@ def normalize_title(title: str) -> str:
     return re.sub(r"\s+", " ", t).strip()
 
 
+_HANGUL_RE = re.compile(r"[가-힣]")
+
+
+def _has_hangul(s: str | None) -> bool:
+    """문자열에 한글 음절이 있는가 — 표시명 원어(한글) 우선 판정용."""
+    return bool(s and _HANGUL_RE.search(s))
+
+
 # ───────────────────────────────────────────────────────────
 # 값 객체 — 해소 결과
 # ───────────────────────────────────────────────────────────
@@ -171,24 +179,31 @@ class WorkResolver:
             if mb is None:                       # ISRC 없음/MB 미등록 → 제목·아티스트 폴백
                 mb = self._mb.search_recording(
                     sp.get("title") or norm_title, sp.get("artist") or artist)
-            return self._build(raw_query, sp, mb, resolution="spotify")
+            return self._build(raw_query, sp, mb, resolution="spotify",
+                               in_title=title, in_artist=artist)
 
         # 2순위: Spotify 실패 → MusicBrainz recording 검색 폴백(국내곡 대응)
         mb = self._mb.search_recording(norm_title, artist)
         if mb is not None:
-            return self._build(raw_query, None, mb, resolution="musicbrainz_fallback")
+            return self._build(raw_query, None, mb, resolution="musicbrainz_fallback",
+                               in_title=title, in_artist=artist)
 
         raise LookupError(f"곡을 찾을 수 없습니다: {raw_query!r}")
 
     # ── 결과 조립 ────────────────────────────────────────────
-    def _build(self, raw_query, sp, mb, *, resolution) -> WorkIdentity:
+    def _build(self, raw_query, sp, mb, *, resolution, in_title=None, in_artist=None) -> WorkIdentity:
         sp = sp or {}
         mb = mb or {}
         release_date = sp.get("release_date")
+        # 표시명: 입력이 한글이면 원어 유지 — Spotify는 K-pop 제목/아티스트를 로마자로
+        # 저장해(좋니→"Like it", 윤종신→"Yoon Jong Shin") 보고서가 영어로 나온다. 식별자
+        # (ISRC/ISWC/MBID)는 그대로 Spotify·MB에서 받되, 사람이 읽는 이름만 원어 우선.
+        title = (in_title if _has_hangul(in_title) else None) or sp.get("title") or mb.get("title") or in_title
+        artist = (in_artist if _has_hangul(in_artist) else None) or sp.get("artist") or mb.get("artist") or in_artist
         return WorkIdentity(
             raw_query=raw_query,
-            title=sp.get("title") or mb.get("title"),
-            artist=sp.get("artist") or mb.get("artist"),
+            title=title,
+            artist=artist,
             isrc=sp.get("isrc") or mb.get("isrc"),
             iswc=mb.get("iswc"),
             spotify_track_id=sp.get("track_id"),

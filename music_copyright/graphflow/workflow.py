@@ -19,8 +19,6 @@ from typing import Annotated, Any, TypedDict
 
 from langgraph.graph import END, START, StateGraph
 
-from music_copyright.graphflow.profiles import REPORT_AXES
-
 logger = logging.getLogger("music_copyright.workflow")
 
 
@@ -125,35 +123,45 @@ def outline_node(state: MusicFlowState) -> dict:
                                "rounds_run": state.get("discourse_round", 0)}}
 
 
-def _make_write_node(axis: str):
+def _make_write_node(ax):
+    """축 1개의 write 노드 (Axis 클로저). 동적 축이면 intent/title/focus가 ax에 담겨
+    write_axis로 전달된다. outline은 ax.key로 조회(동적 축은 보통 None)."""
     def node(state: MusicFlowState) -> dict:
         from music_copyright.graphflow.report import write_axis
         draft, evidence, violations = write_axis(
-            _driver(), state["work_id"], state["work_card"], axis,
+            _driver(), state["work_id"], state["work_card"], ax,
             evidence_k=state.get("evidence_k"),
-            outline=(state.get("outline") or {}).get(axis))
-        return {"sections": {axis: draft},
-                "evidence_by_axis": {axis: evidence},
-                "mech_audit": {axis: violations}}
-    node.__name__ = f"write_{axis}"
+            outline=(state.get("outline") or {}).get(ax.key))
+        return {"sections": {ax.key: draft},
+                "evidence_by_axis": {ax.key: evidence},
+                "mech_audit": {ax.key: violations}}
+    node.__name__ = f"write_{ax.key}"
     return node
 
 
-def synthesize_node(state: MusicFlowState) -> dict:
-    from music_copyright.graphflow.report import synthesize_overview
-    sections = {ax: state["sections"][ax] for ax in REPORT_AXES if ax in state["sections"]}
-    overview, index_map, violations = synthesize_overview(state["work_card"], sections)
-    return {"overview": overview, "index_map": index_map,
-            "mech_audit": {"overview": violations}}
+def _make_synthesize_node(axes):
+    keys = [a.key for a in axes]
+
+    def node(state: MusicFlowState) -> dict:
+        from music_copyright.graphflow.report import synthesize_overview
+        sections = {k: state["sections"][k] for k in keys if k in state["sections"]}
+        overview, index_map, violations = synthesize_overview(state["work_card"], sections)
+        return {"overview": overview, "index_map": index_map,
+                "mech_audit": {"overview": violations}}
+    return node
 
 
-def finalize_node(state: MusicFlowState) -> dict:
-    from music_copyright.graphflow.report import finalize_report
-    sections = {ax: state["sections"][ax] for ax in REPORT_AXES if ax in state["sections"]}
-    report = finalize_report(
-        _driver(), state["work_id"], sections, state["overview"], state["index_map"],
-        state["evidence_by_axis"], state["mech_audit"], out_dir=state["out_dir"])
-    return {"report": report}
+def _make_finalize_node(axes):
+    keys = [a.key for a in axes]
+
+    def node(state: MusicFlowState) -> dict:
+        from music_copyright.graphflow.report import finalize_report
+        sections = {k: state["sections"][k] for k in keys if k in state["sections"]}
+        report = finalize_report(
+            _driver(), state["work_id"], sections, state["overview"], state["index_map"],
+            state["evidence_by_axis"], state["mech_audit"], out_dir=state["out_dir"])
+        return {"report": report}
+    return node
 
 
 # ───────────────────────────────────────────────────────────
@@ -177,7 +185,12 @@ def route_after_moderator(state: MusicFlowState) -> str:
 # ───────────────────────────────────────────────────────────
 # 그래프 조립
 # ───────────────────────────────────────────────────────────
-def build_report_graph():
+def build_report_graph(axes=None):
+    """보고서 그래프 조립. axes 미지정이면 기본 3축. 동적 축은 write 노드가 축별로
+    생성되고(fan-out), synthesize/finalize가 그 축 키들을 닫아 잡는다."""
+    from music_copyright.graphflow.axes import BASE_AXES
+    axes = axes or BASE_AXES
+
     g = StateGraph(MusicFlowState)
     g.add_node("seed", seed_node)
     g.add_node("expand", expand_node)
@@ -185,24 +198,24 @@ def build_report_graph():
     g.add_node("discourse_round", discourse_round_node)
     g.add_node("moderator", moderator_node)
     g.add_node("outline", outline_node)
-    for axis in REPORT_AXES:
-        g.add_node(f"write_{axis}", _make_write_node(axis))
-    g.add_node("synthesize", synthesize_node)
-    g.add_node("finalize", finalize_node)
+    for ax in axes:
+        g.add_node(f"write_{ax.key}", _make_write_node(ax))
+    g.add_node("synthesize", _make_synthesize_node(axes))
+    g.add_node("finalize", _make_finalize_node(axes))
 
     g.add_edge(START, "seed")
     g.add_conditional_edges("seed", route_after_seed,
                             {"expand": "expand", "perspectives": "perspectives"})
-    # 담론 사이클
+    # 담론 사이클 (기본 3축 척추에서만 관점 발견 — 동적 축은 자체 semantic 검색)
     g.add_edge("perspectives", "discourse_round")
     g.add_edge("discourse_round", "moderator")
     g.add_conditional_edges("moderator", route_after_moderator,
                             {"discourse_round": "discourse_round", "outline": "outline"})
-    # 두 경로 모두 3축 fan-out
-    for axis in REPORT_AXES:
-        g.add_edge("expand", f"write_{axis}")     # 정적 경로
-        g.add_edge("outline", f"write_{axis}")    # 담론 경로
-        g.add_edge(f"write_{axis}", "synthesize")
+    # 두 경로 모두 축별 fan-out (기본 3 + 동적)
+    for ax in axes:
+        g.add_edge("expand", f"write_{ax.key}")     # 정적 경로
+        g.add_edge("outline", f"write_{ax.key}")    # 담론 경로
+        g.add_edge(f"write_{ax.key}", "synthesize")
     g.add_edge("synthesize", "finalize")
     g.add_edge("finalize", END)
     return g.compile()
@@ -214,9 +227,16 @@ def run_report_pipeline(
     out_dir: str,
     evidence_k: int | None = None,
     expand_rounds: int = 0,
+    axes=None,
 ) -> MusicFlowState:
-    """LangGraph 보고서 파이프라인 실행 (그래프 사전 시드 가정)."""
-    app = build_report_graph()
+    """LangGraph 보고서 파이프라인 실행 (그래프 사전 시드 가정).
+
+    axes 미지정이면 기본 3축. 동적 축(사람·에이전트)은 호출부가 resolve해 넘긴다 —
+    그래프가 그 축 리스트로 write 노드를 만들어 fan-out한다.
+    """
+    from music_copyright.graphflow.axes import BASE_AXES
+    axes = axes or BASE_AXES
+    app = build_report_graph(axes)
     init: MusicFlowState = {"work_id": work_id, "out_dir": out_dir,
                             "expand_rounds": expand_rounds}
     if evidence_k is not None:

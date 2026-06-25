@@ -40,6 +40,11 @@ def main():
     p.add_argument("--workflow", action="store_true", help="순차 대신 LangGraph 경로")
     p.add_argument("--discourse", action="store_true",
                    help="STORM 담론 모드 (perspectives→discourse→moderator→outline)")
+    p.add_argument("--axis", action="append", default=[], metavar="라벨::의도",
+                   help="기본 3축 외 평가축 추가 (반복 가능). 예: --axis \"법적 리스크::표절·"
+                        "저작권 분쟁, 라이선스 위반, 권리 다툼\"")
+    p.add_argument("--discover-axes", action="store_true",
+                   help="에이전트(AxisDiscoverer)가 work를 보고 추가 평가축을 자동 제안")
     args = p.parse_args()
 
     if args.discourse:
@@ -74,25 +79,41 @@ def main():
                                   "iswc": ident.iswc}) as tracer:
             out_dir = args.out or str(tracer.run_dir)
 
-            print("[2/3] 그래프 시드 적재 중...")
-            seed_out = seed_from_identity(ident, driver, lastfm_api_key=lastfm,
-                                          mb_user_agent=ua)
+            print("[2/3] 그래프 시드 적재 중 (구조 + 정형 보강)...")
+            seed_out = seed_from_identity(
+                ident, driver, lastfm_api_key=lastfm, mb_user_agent=ua,
+                genius_token=os.environ.get("GENIUS_ACCESS_TOKEN"),
+                soundcharts_app_id=os.environ.get("SOUNDCHARTS_APP_ID"),
+                soundcharts_api_key=os.environ.get("SOUNDCHARTS_API_KEY"),
+                embed=True)   # 구조 노드 카드 임베딩 — semantic 검색(SemanticPolicy)에 필요
             print(f"  → {seed_out}")
+
+            # ── 평가 축 해소: 기본 3축 + 사람(--axis) + 에이전트(--discover-axes) ──
+            from music_copyright.graphflow.axes import (
+                AxisDiscoverer, parse_human_axis, resolve_axes)
+            from music_copyright.graphflow.graph.queries import work_card_text
+            human = [a for a in (parse_human_axis(s) for s in args.axis) if a]
+            discovered = []
+            if args.discover_axes:
+                discovered = AxisDiscoverer().discover(work_card_text(driver, ident.work_id))
+            axes = resolve_axes(human=human, discovered=discovered)
+            if len(axes) > 3:
+                print(f"  추가 평가축: {[a.label for a in axes[3:]]}")
 
             if args.expand_rounds > 0:
                 print(f"  EXPAND {args.expand_rounds}라운드 (웹검색 Fact 보강)...")
-            print(f"[3/3] 보고서 생성 중 (GPT 집필·종합)... → {out_dir}")
+            print(f"[3/3] 보고서 생성 중 (GPT 집필·종합, 축 {len(axes)}개)... → {out_dir}")
             if args.workflow:
                 from music_copyright.graphflow.workflow import run_report_pipeline
                 state = run_report_pipeline(ident.work_id, out_dir=out_dir,
                                             evidence_k=args.evidence_k,
-                                            expand_rounds=args.expand_rounds)
+                                            expand_rounds=args.expand_rounds, axes=axes)
                 report = state["report"]
             else:
                 from music_copyright.graphflow.report import generate_report
                 report = generate_report(driver, ident.work_id, out_dir=out_dir,
                                          evidence_k=args.evidence_k,
-                                         expand_rounds=args.expand_rounds)
+                                         expand_rounds=args.expand_rounds, axes=axes)
 
         val = report.get("valuation", {})
         print("\n=== 보고서 완료 ===")

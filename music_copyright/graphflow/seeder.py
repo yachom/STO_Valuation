@@ -17,6 +17,7 @@ deferred (EXPAND): Chart(차트성적)·Award(수상)·Rightsholder(권리자)·
 
 from __future__ import annotations
 
+import hashlib
 import logging
 import re
 from dataclasses import dataclass, field
@@ -28,11 +29,22 @@ from music_copyright.graphflow.graph.schema import EDGE_TYPES as E
 from music_copyright.graphflow.graph.schema import KEY_PROP
 from music_copyright.graphflow.graph.schema import NODE_LABELS as L
 from music_copyright.external.deezer import deezer_track_by_isrc
+from music_copyright.external.genius import genius_song
 from music_copyright.external.lastfm import lastfm_track_info
 from music_copyright.external.musicbrainz import MusicBrainzClient
+from music_copyright.external.soundcharts import soundcharts_metrics
+from music_copyright.external.wikidata import wikidata_enrich
 from music_copyright.resolver import WorkIdentity
 
 logger = logging.getLogger("music_copyright.seeder")
+
+
+def _norm(s: str | None) -> str:
+    return re.sub(r"\s+", "", (s or "").strip().lower())
+
+
+def _short(s: str, n: int = 16) -> str:
+    return hashlib.sha256(s.encode("utf-8")).hexdigest()[:n]
 
 
 # ───────────────────────────────────────────────────────────
@@ -109,11 +121,16 @@ def collect_scope(
     *,
     lastfm_api_key: str | None = None,
     mb_user_agent: str | None = None,
+    genius_token: str | None = None,
+    soundcharts_app_id: str | None = None,
+    soundcharts_api_key: str | None = None,
 ) -> ScopeGraph:
     """WorkIdentity → 자산 스코프 ScopeGraph.
 
-    lastfm_api_key / mb_user_agent가 None이면 해당 소스 보강을 건너뛴다(graceful).
-    Work 앵커 + 연주/창작 Artist + 유통 Platform(Spotify/Deezer/Last.fm)을 모은다.
+    각 소스 키가 None이면 해당 보강을 건너뛴다(graceful). 수집물:
+        Work(앵커) + 연주/창작 Artist + 유통 Platform(Spotify/Deezer/Last.fm)
+        + 정형 보강 Award·Rightsholder·Chart·SocialMetric·커버/샘플
+        (Wikidata·MusicBrainz·Genius·Soundcharts — 웹검색이 못 주는 정형 신호).
     """
     sg = ScopeGraph()
 
@@ -129,6 +146,10 @@ def collect_scope(
 
     _collect_artists(sg, work, identity, mb_user_agent)
     _collect_platforms(sg, work, identity, lastfm_api_key)
+    _collect_structured(sg, work, identity, mb_user_agent=mb_user_agent,
+                        genius_token=genius_token,
+                        soundcharts_app_id=soundcharts_app_id,
+                        soundcharts_api_key=soundcharts_api_key)
 
     logger.info("collect_scope %s → %s", identity.work_id, sg.summary())
     return sg
@@ -160,12 +181,19 @@ def _collect_artists(sg, work, identity: WorkIdentity, mb_user_agent) -> None:
 
 
 def _collect_platforms(sg, work, identity: WorkIdentity, lastfm_api_key) -> None:
-    """유통 플랫폼 노드 + 대중성 신호 (Spotify/Deezer/Last.fm)."""
-    # 노드 prop은 지표 의미대로 분리 저장한다(카드가 정확히 렌더 → 사실오류 차단):
+    """유통 플랫폼 노드 + 대중성 신호 (Spotify/Deezer/Last.fm).
+
+    ⚠️ Platform 키는 work-scoped(`{platform}:{work_id}`)다 — 지표(rank/playcount/
+    popularity)가 *per-work*인데 'deezer' 공유 싱글톤에 저장하면 곡마다 시드가 서로의
+    수치를 덮어써(클로버링) 카드가 마지막 시드값을 렌더한다. Artist/Rightsholder/Award는
+    진짜 공유 엔티티라 공유하지만, 플랫폼-지표는 '이 곡의 플랫폼 존재'라 곡별로 분리한다.
+    """
+    wid = work.key
+
     # popularity(0~100) / rank(0~1M 인기지수) / playcount(재생수) / listeners(청취자).
     # Spotify — 식별만(2026 잠금으로 popularity는 보통 None)
     if identity.spotify_track_id:
-        sp = sg.add_node(L.PLATFORM, "spotify", {
+        sp = sg.add_node(L.PLATFORM, f"spotify:{wid}", {
             "name": "Spotify", "popularity": identity.spotify_popularity,
         })
         sg.add_edge(work, E.DISTRIBUTED_ON, sp, {
@@ -175,7 +203,7 @@ def _collect_platforms(sg, work, identity: WorkIdentity, lastfm_api_key) -> None
     # Deezer — ISRC로 rank(인기지수, 재생수 아님) 확보 (키 불필요)
     dz = deezer_track_by_isrc(identity.isrc)
     if dz:
-        node = sg.add_node(L.PLATFORM, "deezer", {
+        node = sg.add_node(L.PLATFORM, f"deezer:{wid}", {
             "name": "Deezer", "rank": dz.get("rank"),
         })
         sg.add_edge(work, E.DISTRIBUTED_ON, node, {
@@ -185,13 +213,119 @@ def _collect_platforms(sg, work, identity: WorkIdentity, lastfm_api_key) -> None
     # Last.fm — listeners/playcount(대중성 + 롱테일 지속성 신호)
     lf = lastfm_track_info(lastfm_api_key, identity.artist, identity.title)
     if lf:
-        node = sg.add_node(L.PLATFORM, "lastfm", {
+        node = sg.add_node(L.PLATFORM, f"lastfm:{wid}", {
             "name": "Last.fm", "playcount": lf.get("playcount"),
             "listeners": lf.get("listeners"),
         })
         sg.add_edge(work, E.DISTRIBUTED_ON, node, {
             "listeners": lf.get("listeners"), "playcount": lf.get("playcount"),
         })
+
+
+# ───────────────────────────────────────────────────────────
+# 정형 보강 — 웹검색이 못 주는 차트·수상·권리·샘플·소셜을 고신뢰 노드로
+# ───────────────────────────────────────────────────────────
+def _collect_structured(
+    sg, work, identity: WorkIdentity, *,
+    mb_user_agent: str | None = None,
+    genius_token: str | None = None,
+    soundcharts_app_id: str | None = None,
+    soundcharts_api_key: str | None = None,
+) -> None:
+    """Award·Rightsholder·Chart·SocialMetric·커버/샘플 보강 (각 소스 best-effort).
+
+    축별 공백 직격: 수상·샘플/커버(영향력), 차트·소셜(대중성), 권리자(지속성).
+    웹 하베스팅(confidence 0.68 정성)과 달리 식별자 기반 정형 소스라 카드가 그대로
+    보고서 evidence로 잡힌다(Platform 노드와 동일 패턴).
+    """
+    # ── Wikidata(무키): 수상 + 권리자(레이블) ──
+    wd = wikidata_enrich(
+        title=identity.title, artist=identity.artist, iswc=identity.iswc,
+        isrc=identity.isrc, mb_work_mbid=identity.mb_work_mbid,
+        mb_recording_mbid=identity.mb_recording_mbid, user_agent=mb_user_agent)
+    for aw in wd.get("awards", []):
+        _add_award(sg, work, aw["award_name"], aw.get("year"), aw.get("result"), aw.get("qid"))
+    for rh in wd.get("rightsholders", []):
+        _add_rightsholder(sg, work, rh["name"], rh.get("kind"), rh.get("qid"))
+
+    # ── MusicBrainz(UA): 발매 레이블 + 작품 퍼블리셔(권리자) + 파생작 ──
+    if mb_user_agent:
+        mb = MusicBrainzClient(mb_user_agent)
+        for lb in (mb.recording_labels(identity.mb_recording_mbid)
+                   + mb.work_publishers(identity.mb_work_mbid)):
+            _add_rightsholder(sg, work, lb.get("name"), lb.get("kind"), lb.get("mbid"))
+
+    # ── Genius(키): 샘플/커버(영향력) + 관심도(pageviews) ──
+    gn = genius_song(identity.title, identity.artist, genius_token)
+    for d in gn.get("derivatives", []) + gn.get("covers", []):
+        _add_derivative(sg, work, d.get("artist"), d.get("relation"))
+    if gn.get("pageviews"):
+        _add_metric(sg, work, "Genius", "pageviews", gn["pageviews"], None)
+
+    # ── Soundcharts(키): 차트 순위 + 소셜/스트리밍 오디언스 ──
+    sc = soundcharts_metrics(identity.isrc, soundcharts_app_id, soundcharts_api_key)
+    for ch in sc.get("charts", []):
+        _add_chart(sg, work, ch)
+    for au in sc.get("audience", []):
+        _add_metric(sg, work, au.get("platform"), au.get("metric"),
+                    au.get("value"), au.get("as_of"))
+
+
+def _add_award(sg, work, name, year, result, qid=None) -> None:
+    if not name:
+        return
+    aid = qid or _short(f"{_norm(name)}:{year or ''}")
+    node = sg.add_node(L.AWARD, aid, {
+        "award_name": name, "year": year, "result": result or "수상"})
+    sg.add_edge(work, E.WON, node, {"year": year, "result": result})
+
+
+def _add_rightsholder(sg, work, name, kind, key=None) -> None:
+    if not name:
+        return
+    rid = key or ("name:" + _norm(name))
+    node = sg.add_node(L.RIGHTSHOLDER, rid, {"name": name, "kind": kind})
+    sg.add_edge(work, E.HELD_BY, node, {"kind": kind})
+
+
+def _add_chart(sg, work, ch: dict) -> None:
+    name = ch.get("chart_name")
+    if not name:
+        return
+    cid = f"{ch.get('platform') or 'chart'}:{_norm(name)}"
+    node = sg.add_node(L.CHART, cid, {
+        "chart_name": name, "peak_rank": ch.get("peak_rank"),
+        "region": ch.get("region")})
+    sg.add_edge(work, E.CHARTED_ON, node, {"peak_rank": ch.get("peak_rank")})
+
+
+def _add_metric(sg, work, platform, metric, value, as_of) -> None:
+    if value is None:
+        return
+    # work_id를 키에 포함 — 미포함 시 곡마다 다른 pageviews가 같은 노드에 충돌하고
+    # 공유 노드가 작품 간 다리가 된다(교차오염).
+    mid = _short(f"{work.key}:{platform}:{metric}:{as_of or 'latest'}")
+    node = sg.add_node(L.SOCIAL_METRIC, mid, {
+        "platform": platform, "metric": metric, "value": value, "as_of": as_of})
+    sg.add_edge(work, E.HAS_METRIC, node, {"value": value})
+
+
+def _add_derivative(sg, work, artist_name, relation) -> None:
+    """커버/샘플한 아티스트 → Artist + COVERED_BY|SAMPLED_BY (이 곡의 영향력 신호).
+
+    role을 자연어로 둬(카드가 'X — 이 곡을 커버한 아티스트'처럼 렌더) 집필 LLM이 엣지
+    상수명(SAMPLED_BY)을 그대로 쓰지 않게 한다. 곡명을 박아 카드만으로 관계가 자명.
+    """
+    if not artist_name:
+        return
+    is_cover = "cover" in (relation or "")
+    title = work.props.get("title") or "이 곡"
+    rel_word = "커버" if is_cover else "샘플링"
+    aid = "name:" + _norm(artist_name)
+    node = sg.add_node(L.ARTIST, aid, {
+        "name": artist_name, "role": f"'{title}'을(를) {rel_word}한 아티스트"})
+    rel = E.COVERED_BY if is_cover else E.SAMPLED_BY
+    sg.add_edge(work, rel, node, {"relation": relation})
 
 
 # ───────────────────────────────────────────────────────────
@@ -277,10 +411,16 @@ def seed_from_identity(
     *,
     lastfm_api_key: str | None = None,
     mb_user_agent: str | None = None,
+    genius_token: str | None = None,
+    soundcharts_app_id: str | None = None,
+    soundcharts_api_key: str | None = None,
     embed: bool = False,
 ) -> dict:
     """편의 진입점: collect_scope + seed 한 번에."""
-    scope = collect_scope(identity, lastfm_api_key=lastfm_api_key, mb_user_agent=mb_user_agent)
+    scope = collect_scope(
+        identity, lastfm_api_key=lastfm_api_key, mb_user_agent=mb_user_agent,
+        genius_token=genius_token, soundcharts_app_id=soundcharts_app_id,
+        soundcharts_api_key=soundcharts_api_key)
     out = seed(scope, driver, embed=embed)
     out["scope"] = scope.summary()
     return out
