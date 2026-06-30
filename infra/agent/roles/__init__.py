@@ -13,6 +13,7 @@ generic BaseAgent(infra.agent.base) 위에, 자산 무관하게 동일한 호출
   Synthesizer만 감싼다. 따라서 system 조립은 `_frame` hook으로(기본=프레임 없음).
 """
 
+from infra.agent.roles.synthesizer import BaseSynthesizerAgent, format_sections
 from infra.agent.roles.writer import BaseWriterAgent
 
-__all__ = ["BaseWriterAgent"]
+__all__ = ["BaseWriterAgent", "BaseSynthesizerAgent", "format_sections"]

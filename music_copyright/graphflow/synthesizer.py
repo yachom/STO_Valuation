@@ -11,9 +11,9 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from music_copyright.graphflow.agents.base import BaseAgent, music_system_prompt
+from infra.agent.roles.synthesizer import BaseSynthesizerAgent
+from music_copyright.graphflow.agents.base import music_system_prompt
 from music_copyright.graphflow.prompts import get_prompt
-from music_copyright.graphflow.writer import SectionDraft
 
 logger = logging.getLogger("music_copyright.synthesizer")
 
@@ -70,42 +70,28 @@ class OverviewDraft(BaseModel):
                     "섹션 수만큼 — 누락 금지")
 
 
-def _format_sections(sections: dict[str, SectionDraft]) -> tuple[str, list[tuple[str, int]]]:
-    """섹션들을 [C#] 글로벌 인덱스 텍스트로 직렬화. 반환: (텍스트, C#→(axis, claim_idx))."""
-    lines: list[str] = []
-    index_map: list[tuple[str, int]] = []
-    c = 0
-    for axis, sec in sections.items():
-        lines.append(f"\n## [{axis}] {sec.title}")
-        for b in sec.blocks:
-            lines.append(b.markdown)
-        lines.append("주장 목록:")
-        for i, cl in enumerate(sec.claims):
-            c += 1
-            index_map.append((axis, i))
-            as_of = f" (기준 {cl.as_of})" if cl.as_of else ""
-            lines.append(f"  [C{c}] ({cl.kind}) {cl.text}{as_of}")
-    return "\n".join(lines), index_map
+class MusicSynthesizer(BaseSynthesizerAgent):
+    """음악 종합 — BaseSynthesizerAgent 골격 + 음악 도메인 hook.
 
+    synthesize()와 format_sections는 베이스가 제공한다. 여기선 이중 트랙 OverviewDraft
+    스키마·음악 프롬프트 슬롯·프레임·라벨, 그리고 [채점할 축] 목록 추가만 공급한다.
+    """
 
-class MusicSynthesizer(BaseAgent):
     name = "music_synthesizer"
+    Schema = OverviewDraft
+    role_key = "music_synthesizer.role"
+    rules_key = "music_synthesizer.rules"
+    card_label = "[평가 대상 저작물]"
+    sections_label = "[평가 축 섹션과 주장 목록]"
 
-    def synthesize(
-        self,
-        work_card: str,
-        sections: dict[str, SectionDraft],
-    ) -> tuple[OverviewDraft, list[tuple[str, int]]]:
-        """Overview 생성. 반환: (draft, C# 글로벌 인덱스 → (axis, claim_idx) 매핑)."""
-        sections_text, index_map = _format_sections(sections)
+    def _get_prompt(self, key, **fmt):
+        return get_prompt(key, **fmt)
+
+    def _frame(self, role):
+        return music_system_prompt(role)
+
+    def _build_user(self, card, sections_text, sections):
         axis_titles = [sec.title for sec in sections.values()]
-        system = (music_system_prompt(get_prompt("music_synthesizer.role"))
-                  + get_prompt("music_synthesizer.rules"))
-        user = (f"[평가 대상 저작물]\n{work_card}\n\n"
-                f"[평가 축 섹션과 주장 목록]\n{sections_text}\n\n"
-                f"[채점할 축 — 각 축마다 axis_scores 1개씩, 누락 금지]\n"
+        return (super()._build_user(card, sections_text, sections)
+                + "\n\n[채점할 축 — 각 축마다 axis_scores 1개씩, 누락 금지]\n"
                 + "\n".join(f"- {t}" for t in axis_titles))
-        out: OverviewDraft = self.complete(system=system, user=user, schema=OverviewDraft)
-        logger.info("music_synthesizer: blocks=%d claims=%d grade=%s",
-                    len(out.blocks), len(out.claims), out.overall_grade)
-        return out, index_map

@@ -11,9 +11,9 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from real_estate.graphflow.agents.base import BaseAgent, korean_system_prompt
+from infra.agent.roles.synthesizer import BaseSynthesizerAgent
+from real_estate.graphflow.agents.base import korean_system_prompt
 from real_estate.graphflow.prompts import get_prompt
-from real_estate.graphflow.writer import SectionDraft
 
 logger = logging.getLogger("graphflow.synthesizer")
 
@@ -55,38 +55,20 @@ class OverviewBlockDraft(BaseModel):
         default_factory=list, description="claims 배열 0-base 인덱스")
 
 
-def _format_sections(sections: dict[str, SectionDraft]) -> tuple[str, list[tuple[str, int]]]:
-    """섹션들을 [C#] 글로벌 인덱스 텍스트로 직렬화. 반환: (텍스트, C#→(axis, claim_idx))."""
-    lines: list[str] = []
-    index_map: list[tuple[str, int]] = []
-    c = 0
-    for axis, sec in sections.items():
-        lines.append(f"\n## [{axis}] {sec.title}")
-        for b in sec.blocks:
-            lines.append(b.markdown)
-        lines.append("주장 목록:")
-        for i, cl in enumerate(sec.claims):
-            c += 1
-            index_map.append((axis, i))
-            as_of = f" (기준 {cl.as_of})" if cl.as_of else ""
-            lines.append(f"  [C{c}] ({cl.kind}) {cl.text}{as_of}")
-    return "\n".join(lines), index_map
+class Synthesizer(BaseSynthesizerAgent):
+    """상가 종합 — BaseSynthesizerAgent 골격 + 부동산 도메인 hook.
 
+    synthesize()와 format_sections는 베이스가 제공한다. card_label·sections_label은
+    베이스 기본값(부동산형)을 그대로 쓰고, 스키마·프롬프트 슬롯·프레임만 공급한다.
+    """
 
-class Synthesizer(BaseAgent):
     name = "synthesizer"
+    Schema = OverviewDraft
+    role_key = "synthesizer.role"
+    rules_key = "synthesizer.rules"
 
-    def synthesize(
-        self,
-        asset_card: str,
-        sections: dict[str, SectionDraft],
-    ) -> tuple[OverviewDraft, list[tuple[str, int]]]:
-        """Overview 생성. 반환: (draft, C# 글로벌 인덱스 → (axis, claim_idx) 매핑)."""
-        sections_text, index_map = _format_sections(sections)
-        system = (korean_system_prompt(get_prompt("synthesizer.role"))
-                  + get_prompt("synthesizer.rules"))
-        user = (f"[평가 대상 자산]\n{asset_card}\n\n"
-                f"[3축 섹션과 주장 목록]\n{sections_text}")
-        out: OverviewDraft = self.complete(system=system, user=user, schema=OverviewDraft)
-        logger.info("synthesizer: blocks=%d claims=%d", len(out.blocks), len(out.claims))
-        return out, index_map
+    def _get_prompt(self, key, **fmt):
+        return get_prompt(key, **fmt)
+
+    def _frame(self, role):
+        return korean_system_prompt(role)

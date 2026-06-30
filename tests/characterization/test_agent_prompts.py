@@ -98,3 +98,49 @@ def test_real_estate_writer_prompt(capture):
         "[재작성 — 직전 출력의 위반 사항을 반드시 수정]\n- v1",
     ])
     assert cap.user == exp_user
+
+
+# ───────────────────────────────────────────────────────────
+# Synthesizer — 섹션 → Overview (이중 트랙 등급)
+# ───────────────────────────────────────────────────────────
+def test_music_synthesizer_prompt(capture):
+    from music_copyright.graphflow.agents.base import music_system_prompt
+    from music_copyright.graphflow.prompts import get_prompt
+    from music_copyright.graphflow.synthesizer import MusicSynthesizer, OverviewDraft
+    from music_copyright.graphflow.writer import SectionDraft
+
+    sections = {"influence": SectionDraft(title="T-INF", blocks=[], claims=[])}
+    with pytest.raises(_Captured) as ei:
+        MusicSynthesizer().synthesize("CARD-X", sections)
+    cap = ei.value
+
+    assert cap.schema is OverviewDraft
+    exp_system = (music_system_prompt(get_prompt("music_synthesizer.role"))
+                  + get_prompt("music_synthesizer.rules"))
+    assert cap.system == exp_system
+    sections_text = "\n## [influence] T-INF\n주장 목록:"
+    exp_user = (f"[평가 대상 저작물]\nCARD-X\n\n"
+                f"[평가 축 섹션과 주장 목록]\n{sections_text}\n\n"
+                f"[채점할 축 — 각 축마다 axis_scores 1개씩, 누락 금지]\n- T-INF")
+    assert cap.user == exp_user
+
+
+def test_real_estate_synthesizer_prompt(capture):
+    from real_estate.graphflow.agents.base import korean_system_prompt
+    from real_estate.graphflow.prompts import get_prompt
+    from real_estate.graphflow.synthesizer import OverviewDraft, Synthesizer
+    from real_estate.graphflow.writer import SectionDraft
+
+    sections = {"tenant": SectionDraft(title="T-TEN", blocks=[], claims=[])}
+    with pytest.raises(_Captured) as ei:
+        Synthesizer().synthesize("CARD-Y", sections)
+    cap = ei.value
+
+    assert cap.schema is OverviewDraft
+    exp_system = (korean_system_prompt(get_prompt("synthesizer.role"))
+                  + get_prompt("synthesizer.rules"))
+    assert cap.system == exp_system
+    sections_text = "\n## [tenant] T-TEN\n주장 목록:"
+    exp_user = (f"[평가 대상 자산]\nCARD-Y\n\n"
+                f"[3축 섹션과 주장 목록]\n{sections_text}")
+    assert cap.user == exp_user
