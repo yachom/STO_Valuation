@@ -32,6 +32,14 @@
         "max_retries": 4
       }
     },
+    "gpt_54_mini": {
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "max_tokens": 8000,
+      "extra": {
+        "max_retries": 5
+      }
+    },
     "local": {
       "provider": "openai_compat",
       "model": "Qwen/Qwen2.5-7B-Instruct",
@@ -68,7 +76,7 @@
     "music_outliner": "gpt_mini",
     "music_axis_discoverer": "gpt_mini",
     "music_social_extractor": "gpt_mini",
-    "music_graph_proposer": "gpt_mini",
+    "music_graph_proposer": "gpt_54_mini",
     "music_reranker": "gpt_mini",
     "music_agency_classifier": "gpt_mini"
   }

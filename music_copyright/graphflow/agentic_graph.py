@@ -299,6 +299,8 @@ def apply_graph_proposals(
         "promoted": 0,
         "promoted_by_edge": {},
         "same_as_candidates": 0,
+        # 승격 엣지는 불법이었으나 existing_ref가 유효해 dedup(same_as)만 구제한 건수.
+        "same_as_salvaged": 0,
         "review_marked": 0,
         "rejected": 0,
         "skipped": 0,
@@ -320,7 +322,16 @@ def apply_graph_proposals(
                 _resolve_anchor(state, proposal, rel) if rel in EDGE_ENDPOINTS else (None, None))
             ok, reason = _validate_promotion(
                 state, entity, proposal, label, rel, src_label, auto_edges)
-            if not ok:                              # 안전장치 미충족 → 검토 후보로
+            if not ok:                              # 승격(엣지)이 안전장치 미충족
+                # 엣지는 불법이라 버리지만, proposer가 이 고아를 기존 스코프 노드와 동일하다고
+                # 본 경우(existing_ref 유효)는 dedup(same_as)만은 살린다 — 엔티티 정체성은
+                # 관계의 적법성과 독립적이라, 고아가 review로 방치돼 중복으로 남는 걸 막는다.
+                if proposal.existing_ref and _commit_same_as_candidate(
+                        driver, state, entity, proposal):
+                    stats["same_as_candidates"] += 1
+                    stats["same_as_salvaged"] += 1
+                    stats["committed"] += 1
+                    continue
                 _mark_review(driver, entity, proposal, label or "Unknown")
                 stats["review_marked"] += 1
                 _skip(stats, f"promotion_guard:{reason}")

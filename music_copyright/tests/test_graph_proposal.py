@@ -164,5 +164,84 @@ class ValidatePromotionTest(unittest.TestCase):
         self.assertEqual(reason, "edge_not_auto")
 
 
+class _FakeResult:
+    def single(self):
+        return None
+
+    def data(self):
+        return []
+
+
+class _FakeSession:
+    """apply_graph_proposals의 same_as/review 경로가 쓰는 session.run만 받아 무시한다."""
+
+    def __init__(self, calls):
+        self.calls = calls
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def run(self, query, **params):
+        self.calls.append((query, params))
+        return _FakeResult()
+
+
+class _FakeDriver:
+    def __init__(self):
+        self.calls: list = []
+
+    def session(self):
+        return _FakeSession(self.calls)
+
+
+class SalvageSameAsTest(unittest.TestCase):
+    """(c) 승격 엣지가 불법이어도 existing_ref가 유효하면 dedup(same_as)은 살린다."""
+
+    def _apply(self, proposal: GraphProposal, *, scope_refs: dict) -> dict:
+        ent = EntityCtx(
+            entity_id="e1", name="리센느",
+            facts=(FactCtx(fact_id="f1", text="리센느는 RESCENE의 한글 표기",
+                           source_excerpt="리센느(RESCENE)"),),
+            work_anchored=True, collection_anchored=True)
+        st = GraphState(
+            work=WorkCtx(work_id="w1", title="LOVE ATTACK", artist_key="a1", artist_name="RESCENE"),
+            work_card="", coverage_text="", entities=[ent],
+            scope_refs=scope_refs, scope_name_index={})
+        return ag.apply_graph_proposals(_FakeDriver(), st, [proposal], {})
+
+    def _illegal_promote(self, **kw) -> GraphProposal:
+        # HAS_FANDOM의 dst는 Fandom이어야 하는데 target_label=Artist → illegal_target_label.
+        base = dict(action="promote_entity", entity_id="e1", target_label="Artist",
+                    relationship="HAS_FANDOM", evidence_fact_ids=["f1"], confidence=0.8,
+                    rationale="리센느=RESCENE")
+        base.update(kw)
+        return GraphProposal(**base)
+
+    def test_illegal_edge_salvages_same_as_when_existing_ref_valid(self):
+        stats = self._apply(self._illegal_promote(existing_ref="Artist:a1"),
+                            scope_refs={"Artist:a1": "RESCENE (Artist)"})
+        self.assertEqual(stats["same_as_salvaged"], 1)
+        self.assertEqual(stats["same_as_candidates"], 1)
+        self.assertEqual(stats["committed"], 1)
+        self.assertEqual(stats["review_marked"], 0)
+
+    def test_illegal_edge_without_existing_ref_goes_to_review(self):
+        stats = self._apply(self._illegal_promote(),
+                            scope_refs={"Artist:a1": "RESCENE (Artist)"})
+        self.assertEqual(stats["same_as_salvaged"], 0)
+        self.assertEqual(stats["review_marked"], 1)
+        self.assertEqual(stats["committed"], 0)
+
+    def test_illegal_edge_with_unknown_existing_ref_goes_to_review(self):
+        stats = self._apply(self._illegal_promote(existing_ref="Artist:nope"),
+                            scope_refs={"Artist:a1": "RESCENE (Artist)"})
+        self.assertEqual(stats["same_as_salvaged"], 0)
+        self.assertEqual(stats["review_marked"], 1)
+        self.assertEqual(stats["committed"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()
