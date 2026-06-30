@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import unittest
 
+from music_copyright.graphflow.agents.base import normalize_text
 from music_copyright.graphflow.harvester import (
-    FactDraft, _fact_grounded_in_doc, _match_scope_name,
+    FactDraft, _fact_grounded_in_doc, _index_scope_names, _match_scope_name,
     _missing_required_artist_context, _rank_docs)
 from music_copyright.graphflow.navigator import FrontierCandidate, Navigator
 from music_copyright.graphflow.report import _claim_id, _section_id
@@ -178,6 +179,25 @@ class ResearchPlanningTest(unittest.TestCase):
         self.assertIsNone(_match_scope_name("위로의노래", scope))
         # 과다매칭 차단: 'bts'(3)가 substring이지만 비율<0.6인 'btsarmy'에 안 걸림
         self.assertIsNone(_match_scope_name("btsarmy", scope))
+
+    def test_scope_name_index_registers_aliases(self) -> None:
+        # 음차 별칭(원어)을 Artist에 등록해 "리센느" mention이 영문 Artist(RESCENE)에
+        # 매칭되게 한다(고아 중복 Entity 방지). Work.artist_aliases는 무시 — 아티스트
+        # mention이 Work로 잘못 가지 않게.
+        rows = [
+            {"label": "Work", "p": {
+                "work_id": "isrc:X", "title": "LOVE ATTACK",
+                "title_aliases": ["러브어택"], "artist_aliases": ["RESCENE", "리센느"]}},
+            {"label": "Artist", "p": {
+                "artist_id": "A1", "name": "RESCENE",
+                "artist_aliases": ["RESCENE", "리센느"]}},
+        ]
+        idx = _index_scope_names(rows)
+        self.assertEqual(idx.get(normalize_text("리센느")), ("Artist", "A1"))
+        self.assertEqual(idx.get(normalize_text("러브어택")), ("Work", "isrc:X"))
+        self.assertEqual(idx.get(normalize_text("RESCENE")), ("Artist", "A1"))
+        # Work.artist_aliases는 등록되지 않음 — "리센느"는 Artist로만(Work 아님)
+        self.assertEqual(idx[normalize_text("리센느")][0], "Artist")
 
     def test_report_graph_ids_are_namespaced_per_report(self) -> None:
         self.assertNotEqual(

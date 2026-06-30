@@ -171,6 +171,10 @@ def _collect_artists(sg, work, identity: WorkIdentity, mb_user_agent) -> None:
     if perf_key:
         performer = sg.add_node(L.ARTIST, perf_key, {
             "name": identity.artist, "role": "performer",
+            # 음차 별칭(원어↔로마자)을 Artist에도 저장 — harvester의 스코프 이름 인덱스가
+            # 이를 읽어, 원어 보도("리센느")의 mention을 영문 Artist(RESCENE)에 연결한다
+            # (없으면 매번 고아 Entity로 중복 생성됨). Work에도 있지만 mention 매칭은 Artist 기준.
+            "artist_aliases": identity.artist_aliases or None,
         })
         sg.add_edge(work, E.BY_ARTIST, performer, {"role": "performer"})
 

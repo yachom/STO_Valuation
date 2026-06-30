@@ -207,31 +207,51 @@ def _rank_docs(docs: list[dict], work_card: str) -> list[dict]:
 # ───────────────────────────────────────────────────────────
 # 스코프 이름 로딩 (mention 링크용)
 # ───────────────────────────────────────────────────────────
-def _load_scope_names(driver: Driver, work_id: str, scope_hops: int) -> dict[str, tuple[str, str]]:
-    """Work 스코프 내 노드 이름 → (label, key). mention surface 매칭에 사용."""
-    eids = scope_eids(driver, work_id, scope_hops)
-    if not eids:
-        return {}
+# 스코프 노드에서 mention 매칭 surface로 읽는 기본 이름 필드.
+_SCOPE_NAME_FIELDS = (
+    "title", "release_title", "artist_name", "name", "agency_name",
+    "genre_name", "chart_name", "award_name", "event_name", "trend_name",
+    "fandom_name",
+)
+# 음차 별칭 리스트 필드 — 라벨별로 자기 노드에만 귀속(원어↔로마자). Work.artist_aliases는
+# 카드/grounding용이라 여기선 무시한다(아티스트 mention이 Work로 잘못 가지 않게).
+_SCOPE_ALIAS_FIELDS = {L.WORK: ("title_aliases",), L.ARTIST: ("artist_aliases",)}
+
+
+def _index_scope_names(rows: list[dict]) -> dict[str, tuple[str, str]]:
+    """스코프 노드 행 → {정규화 이름/별칭: (label, key)}.
+
+    기본 이름에 더해 음차 별칭(Work.title_aliases·Artist.artist_aliases)도 등록해,
+    원어 보도("리센느")의 mention이 영문 노드(RESCENE)에 매칭되게 한다 — 안 하면
+    고아 Entity로 중복 생성된다. 순수 함수(테스트 용이)."""
     out: dict[str, tuple[str, str]] = {}
-    with driver.session() as s:
-        rows = s.run(
-            "UNWIND $eids AS eid MATCH (n) WHERE elementId(n)=eid "
-            "RETURN labels(n)[0] AS label, properties(n) AS p", eids=list(eids),
-        ).data()
     for r in rows:
         label, p = r["label"], r["p"] or {}
         key = p.get(KEY_PROP.get(label, ""))
         if not key:
             continue
-        for nk in (
-            "title", "release_title", "artist_name", "name", "agency_name",
-            "genre_name", "chart_name", "award_name", "event_name", "trend_name",
-            "fandom_name",
-        ):
+        for nk in _SCOPE_NAME_FIELDS:
             v = p.get(nk)
             if v and isinstance(v, str):
                 out.setdefault(normalize_text(v), (label, str(key)))
+        for ak in _SCOPE_ALIAS_FIELDS.get(label, ()):
+            for alias in (p.get(ak) or []):
+                if alias and isinstance(alias, str):
+                    out.setdefault(normalize_text(alias), (label, str(key)))
     return out
+
+
+def _load_scope_names(driver: Driver, work_id: str, scope_hops: int) -> dict[str, tuple[str, str]]:
+    """Work 스코프 내 노드 이름/별칭 → (label, key). mention surface 매칭에 사용."""
+    eids = scope_eids(driver, work_id, scope_hops)
+    if not eids:
+        return {}
+    with driver.session() as s:
+        rows = s.run(
+            "UNWIND $eids AS eid MATCH (n) WHERE elementId(n)=eid "
+            "RETURN labels(n)[0] AS label, properties(n) AS p", eids=list(eids),
+        ).data()
+    return _index_scope_names(rows)
 
 
 def _match_scope_name(nm: str, scope_names: dict[str, tuple[str, str]]) -> tuple[str, str] | None:
