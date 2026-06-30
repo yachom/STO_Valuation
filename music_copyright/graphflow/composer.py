@@ -1,19 +1,25 @@
-"""Composer (음악저작권) — 축별 증거 수집 (StaticPolicy walk). real_estate 미러.
+"""Composer (음악저작권) — 축별 증거 수집 (recall 회수 → LLM 재랭킹 선별).
 
-v1 스켈레톤: Work 앵커에서 축별 StaticPolicy 가중 walk로 EvidencePath를 모아
-Evidence 레코드로 변환한다. 결정적 — 같은 그래프 스냅샷이면 같은 증거.
+2단계:
+    1) 회수(recall): Work 앵커에서 SemanticPolicy 가중 walk(멀티홉) + 축 의도 벡터검색으로
+       후보 EvidencePath를 넓게 모은다. 구조적 안전 필터(타 작품·이전 보고서·미해소
+       Entity 제외)만 적용한다.
+    2) 선별(precision): 후보를 LLM 재랭킹(rerank.py)에 넘겨 축 관련성·대상 일치·사실성·
+       출처 품질·중복을 판단해 상위 k를 고른다. 과거의 키워드 그룹·출처 감점·맥락 감점
+       룰 더미를 대체한다(규칙 누적 회피).
 
-⚠️ TODO(후속): real_estate의 semantic(축 의도 임베딩)·뉴스 Fact 직접 벡터검색·
-corroboration은 EXPAND(웹검색 Fact 적재) + 임베딩이 갖춰진 뒤 동일 형태로 붙인다.
+LLM 재랭킹이라 결정적이지 않다(LLM 실패 시 벡터/walk 원점수 순으로 폴백 — 산출 안정성).
 """
 
 from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
+from urllib.parse import unquote
 
 from neo4j import Driver
 
+from music_copyright.graphflow.graph.schema import EDGE_TYPES as E
 from music_copyright.graphflow.graph.schema import NODE_LABELS as L
 from music_copyright.graphflow.policies import SemanticPolicy, StaticPolicy
 from music_copyright.graphflow.traversal import (
@@ -36,8 +42,8 @@ from music_copyright.graphflow.axes import BASE_AXES  # noqa: E402
 _BASE_INTENT = {a.key: a.intent for a in BASE_AXES}
 _BASE_NEWS = {a.key: a.news for a in BASE_AXES}
 
-# Fact 슬롯 보장/식별용 라벨 (웹검색 수집물).
-_FACT_LABELS = {L.FACT, L.WEB_DOC}
+# 이전 실행의 보고서 산출 서브그래프 — 새 보고서의 외부 증거가 아니라 후보에서 제외.
+_REPORT_OUTPUT_LABELS = {L.REPORT, L.REPORT_SECTION, L.CLAIM}
 
 
 @dataclass
@@ -65,11 +71,20 @@ class Evidence:
 # 구조 노드의 출처 표기 (URL 없는 노드도 어느 소스인지 배지로 렌더 가능하게).
 _SOURCE_ATTR: dict[str, tuple[str, str]] = {
     L.WORK: ("작품 식별 (MusicBrainz / ISWC)", "https://musicbrainz.org"),
+    L.RELEASE: ("발매물 맥락", ""),
     L.ARTIST: ("아티스트·창작자 (MusicBrainz)", "https://musicbrainz.org"),
     L.RIGHTSHOLDER: ("권리자", ""),
+    L.AGENCY: ("소속사·매니지먼트", ""),
+    L.GENRE: ("장르·스타일", ""),
     L.PLATFORM: ("유통 플랫폼 지표 (Spotify/Deezer/Last.fm)", ""),
     L.CHART: ("차트 기록", ""),
     L.AWARD: ("수상 기록", ""),
+    L.MEDIA_EVENT: ("방송·공연·행사 노출", ""),
+    L.VIRAL_TREND: ("챌린지·밈·해시태그 확산", ""),
+    L.FANDOM: ("팬덤 공동체", ""),
+    L.SOCIAL_THEME: ("사회적 의제 (가사·메시지 분석)", ""),
+    L.CAUSE: ("사회운동·공익 연계", ""),
+    L.PUBLIC_USE: ("공익·공적 활용 사례", ""),
 }
 
 
@@ -102,36 +117,30 @@ def paths_to_evidence(paths) -> list[Evidence]:
     return out
 
 
-def _scope_fact_paths(
+def _scope_fact_candidates(
     driver: Driver, work_id: str, purpose_text: str, anchor_eid: str, *,
     n: int, exclude: set[str], scope_hops: int = 4,
 ) -> list:
-    """Work 스코프 내 Fact/WebDoc을 축 의도로 직접 벡터검색 → 상위 n EvidencePath.
+    """Work 스코프 내 Fact/WebDoc을 축 의도로 벡터검색 → 상위 n EvidencePath(원점수).
 
-    그래프 walk는 저가중·다홉 Fact를 못 표면화한다. Fact 임베딩을 축 의도로 직접 검색해
-    '관련 사실/뉴스'를 결정적으로 확보하고 스코프로 한정한다(타 작품 누출 차단).
+    그래프 walk가 못 표면화하는 저가중·다홉 Fact를 recall로 끌어오기 위한 후보 공급원.
+    품질·관련성·대상일치 판단은 여기서 키워드 멀티플라이어로 하지 않고 LLM 재랭킹(rerank.py)
+    에 맡긴다 — 여기선 scope 한정(타 작품 누출 차단)과 벡터 유사도 정렬만 한다.
     """
     from infra.graph.embedder import embed_one
     from music_copyright.graphflow.graph.vector_index import search_similar
 
     qv = embed_one(purpose_text)
     scope = scope_eids(driver, work_id, scope_hops)
-    fact_hits: dict[str, float] = {}
-    doc_hits: dict[str, float] = {}
-    for label, bucket in ((L.FACT, fact_hits), (L.WEB_DOC, doc_hits)):
+    hits: dict[str, float] = {}
+    for label in (L.FACT, L.WEB_DOC):
         try:
-            for h in search_similar(driver, label, qv, k=n * 5):
+            for h in search_similar(driver, label, qv, k=n * 3):
                 if h["eid"] in scope and h["eid"] not in exclude:
-                    bucket[h["eid"]] = max(bucket.get(h["eid"], 0.0), h["score"])
+                    hits[h["eid"]] = max(hits.get(h["eid"], 0.0), h["score"])
         except Exception as e:                       # 인덱스 부재/빈 라벨
-            logger.debug("scope fact search skip %s: %s", label, e)
-    # Fact(원자적 claim) 우선 — 헤드라인(WebDoc 제목)보다 보고서 grounding에 직접 유용.
-    # news 슬롯의 ≥2/3을 Fact에 배정하고, 부족분만 WebDoc으로 채운다.
-    fact_top = sorted(fact_hits.items(), key=lambda kv: (-kv[1], kv[0]))
-    doc_top = sorted(doc_hits.items(), key=lambda kv: (-kv[1], kv[0]))
-    n_fact = min(len(fact_top), max(1, (n * 2 + 2) // 3))
-    top = fact_top[:n_fact] + doc_top[:max(0, n - n_fact)]
-    top = sorted(top, key=lambda kv: (-kv[1], kv[0]))[:n]
+            logger.debug("scope fact candidate skip %s: %s", label, e)
+    top = sorted(hits.items(), key=lambda kv: (-kv[1], kv[0]))[:n]
     if not top:
         return []
     refs = load_nodes(driver, [anchor_eid] + [e for e, _ in top])
@@ -161,7 +170,7 @@ def compose(
     news_intent: str | None = None,
     profile: str | None = None,
 ) -> list[Evidence]:
-    """축별 증거 = 그래프 walk(SemanticPolicy) + Fact 직접 벡터검색 병합. 결정적.
+    """축별 증거 = 그래프 walk(SemanticPolicy) + Fact 벡터검색으로 후보 회수 → LLM 재랭킹 선별.
 
     기본값은 중앙 설정(config music_graphflow `retrieval`)에서 온다. 명시 인자가 우선.
 
@@ -198,29 +207,103 @@ def compose(
     else:
         policy = StaticPolicy(profile)
 
-    paths = walk(driver, [anchor], policy, max_hops=max_hops, k=k * 2)
-    # 타 작품 Work 노드 누출 차단 — 5개 작품이 공유 Platform/Artist 허브로 연결돼
-    # walk가 다른 곡 Work를 이 곡 근거로 끌어온다(교차오염). 앵커 외 Work는 evidence 제외.
+    # ── 1) 후보 회수 (recall 지향) — 그래프 walk + 벡터검색을 넓게 모은다 ──
+    paths = walk(driver, [anchor], policy, max_hops=max_hops, k=k * 3)
+    # 구조적 안전 필터만 (provenance — 키워드 점수가 아니다):
+    #  · 앵커 외 Work = 타 작품 누출  · Report/Claim = 이전 보고서 산출물
+    #  · 미해소 Entity = 저가치 placeholder(승격된 건 typed 라벨이라 통과)
     paths = [p for p in paths
-             if not (p.tail.label == L.WORK and p.tail.key != work_id)]
-    structured = paths[:k]
+             if not (p.tail.label == L.WORK and p.tail.key != work_id)
+             and p.tail.label not in _REPORT_OUTPUT_LABELS
+             and p.tail.label not in {L.ENTITY, L.QUERY}]
+    from music_copyright.graphflow.graph.queries import work_card_text
+    work_context = work_card_text(driver, work_id)
 
-    if news_k > 0 and news_intent:
-        from music_copyright.graphflow.graph.queries import work_card_text
-        seen = {p.tail.eid for p in structured}
-        # 작품-앵커링: 축 의도에 작품 카드(제목·아티스트)를 더해 벡터검색을 이 작품에
-        # 고정한다 — 안 그러면 같은 축('수상')이면 다른 곡의 Fact도 매칭돼 섞인다
-        # (웹검색 노이즈: Dynamite 검색이 가져온 문서에 타 아티스트가 섞인 경우).
-        news_purpose = f"{work_card_text(driver, work_id)}\n{news_intent}"
-        news = _scope_fact_paths(
+    # 벡터 Fact/WebDoc 후보 (scope 한정, 원점수 — 멀티플라이어/키워드 감점 없음).
+    # 작품 카드를 의도에 더해 이 작품에 고정(스코프가 hub-isolated라 타 작품은 안 샌다).
+    if news_intent:
+        seen = {p.tail.eid for p in paths}
+        news_purpose = f"{work_context}\n{news_intent}"
+        paths += _scope_fact_candidates(
             driver, work_id, news_purpose, anchor,
-            n=news_k, exclude=seen, scope_hops=max_hops)
-        if news:                                  # 뉴스 슬롯 확보 (구조 하위 교체)
-            structured = structured[:k - len(news)] + news
+            n=max(news_k, k) * 2, exclude=seen, scope_hops=max_hops)
 
-    out = paths_to_evidence(structured)
-    logger.info("compose(%s, %s, %s): %d evidence", work_id, axis, policy.name, len(out))
+    candidates = _dedup_paths(paths)
+    cand_evidence = paths_to_evidence(candidates)
+    _enrich_origins(driver, cand_evidence)         # LLM이 출처를 보고 품질 판단하게
+
+    # ── 2) 선별 (precision) — 키워드 룰 더미 대신 LLM이 축 관련성·대상일치·품질·중복 판단 ──
+    from music_copyright.graphflow.rerank import rerank_evidence
+    axis_intent = "\n".join(x for x in (intent, news_intent) if x)
+    out = rerank_evidence(work_context, axis, axis_intent, cand_evidence, k=k)
+    logger.info("compose(%s, %s, %s): %d evidence (rerank %d→%d)",
+                work_id, axis, policy.name, len(out), len(cand_evidence), len(out))
     return out
+
+
+def _dedup_paths(paths: list) -> list:
+    """tail eid 기준 중복 제거(첫 등장 유지 — walk 점수순 우선)."""
+    seen: set[str] = set()
+    out = []
+    for p in paths:
+        if p.tail.eid in seen:
+            continue
+        seen.add(p.tail.eid)
+        out.append(p)
+    return out
+
+
+def _enrich_origins(driver: Driver, evidence: list[Evidence]) -> None:
+    """Fact/WebDoc/SocialMetric evidence에 실제 출처 URL을 붙인다."""
+    if not evidence:
+        return
+    eids = [ev.eid for ev in evidence]
+    with driver.session() as s:
+        rows = s.run(
+            f"""
+            UNWIND $eids AS eid
+            MATCH (n) WHERE elementId(n)=eid
+            OPTIONAL MATCH (n)-[:{E.EXTRACTED_FROM}]->(d:{L.WEB_DOC})
+            RETURN eid, labels(n)[0] AS label,
+                   n.source AS n_source, n.url AS n_url, n.platform AS platform,
+                   n.video_title AS video_title, n.channel AS channel,
+                   d.source AS d_source, d.url AS d_url, d.title AS d_title,
+                   d.channel AS d_channel
+            """,
+            eids=eids,
+        ).data()
+    by_eid = {r["eid"]: r for r in rows}
+    for ev in evidence:
+        r = by_eid.get(ev.eid)
+        if not r:
+            continue
+        if ev.label == L.FACT:
+            src = r.get("d_source") or r.get("n_source")
+            url = r.get("d_url") or r.get("n_url")
+            if src or url:
+                ev.origin = {k: v for k, v in {
+                    "source": src or "웹 수집 Fact",
+                    "url": url,
+                    "title": r.get("d_title"),
+                }.items() if v}
+            channel = r.get("d_channel") or "web"
+            ev.source_kind = f"{channel}_fact"
+        elif ev.label == L.WEB_DOC:
+            if r.get("n_source") or r.get("n_url"):
+                ev.origin = {k: v for k, v in {
+                    "source": r.get("n_source") or "웹 문서",
+                    "url": r.get("n_url"),
+                }.items() if v}
+            channel = r.get("d_channel") or "web"
+            ev.source_kind = f"{channel}_doc"
+        elif ev.label == L.SOCIAL_METRIC:
+            if r.get("n_source") or r.get("n_url") or r.get("platform"):
+                ev.origin = {k: v for k, v in {
+                    "source": r.get("n_source") or r.get("platform"),
+                    "url": r.get("n_url"),
+                    "video_title": r.get("video_title"),
+                    "channel": r.get("channel"),
+                }.items() if v}
 
 
 def format_evidence(evidence: list[Evidence]) -> str:

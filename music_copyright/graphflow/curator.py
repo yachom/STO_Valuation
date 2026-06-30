@@ -20,9 +20,23 @@ logger = logging.getLogger("music_copyright.curator")
 _NOVELTY_SIM_THRESHOLD = 0.85
 
 
-def fetch_fact_embeddings(driver: Driver) -> list[list[float]]:
-    """기존 Fact 임베딩 목록 (novelty 비교 기준). 없으면 빈 리스트."""
+def fetch_fact_embeddings(driver: Driver, *, work_id: str | None = None,
+                          scope_hops: int = 4) -> list[list[float]]:
+    """Load novelty baselines, scoped to one Work when available."""
     try:
+        if work_id:
+            from music_copyright.graphflow.traversal import scope_eids
+            eids = list(scope_eids(driver, work_id, scope_hops))
+            if not eids:
+                return []
+            with driver.session() as s:
+                rows = s.run(
+                    f"UNWIND $eids AS eid MATCH (f:{L.FACT}) "
+                    "WHERE elementId(f)=eid AND f.card_embedding IS NOT NULL "
+                    "RETURN f.card_embedding AS v",
+                    eids=eids,
+                ).data()
+            return [r["v"] for r in rows if r["v"]]
         with driver.session() as s:
             rows = s.run(
                 f"MATCH (f:{L.FACT}) WHERE f.card_embedding IS NOT NULL "

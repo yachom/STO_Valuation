@@ -80,14 +80,21 @@ def main() -> int:
         from music_copyright.graphflow.report import generate_report
         with tempfile.TemporaryDirectory() as out:
             report = generate_report(driver, ident.work_id, out_dir=out)
-        check(len(report["sections"]) == 4, "섹션 4개(overview+3축)",
+        check(len(report["sections"]) == 5, "섹션 5개(overview+4축)",
               f"sections={len(report['sections'])}")
         check(len(report["claims"]) > 0, "주장 생성", f"claims={len(report['claims'])}")
         check(len(report["evidence"]) > 0, "증거 인용", f"evidence={len(report['evidence'])}")
-        check(bool(report["valuation"]["overall_grade"]), "종합 등급 판정",
-              report["valuation"]["overall_grade"])
-        check(len(report["valuation"]["axis_scores"]) == 3, "3축 등급",
-              str([a["grade"] for a in report["valuation"]["axis_scores"]]))
+        target = report.get("target") or {}
+        check(bool(target.get("work_id_type")) and bool(target.get("briefing")),
+              "평가 대상 브리핑 생성",
+              f"{target.get('title') or '-'} / {target.get('work_id_type') or '-'}")
+        val = report["valuation"]
+        check(bool(val["overall_grade"]), "종합 등급 판정", val["overall_grade"])
+        check(bool(val.get("asset_grade")) and bool(val.get("social_grade")),
+              "이중 트랙 등급(자산가치/사회적 가치)",
+              f"asset={val.get('asset_grade')} social={val.get('social_grade')}")
+        check(len(val["axis_scores"]) == 4, "4축 등급",
+              str([a["grade"] for a in val["axis_scores"]]))
     finally:
         close_music_driver()
 

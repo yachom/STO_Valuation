@@ -19,7 +19,7 @@ logger = logging.getLogger("music_copyright.moderator")
 
 
 class GapQuestion(BaseModel):
-    axis: str = Field(description="influence | popularity | sustainability")
+    axis: str = Field(description="influence | popularity | sustainability | social_value")
     question: str = Field(description="웹검색 가능한 구체적 질문")
     why: str = Field(default="", description="이게 공백인 이유 1문장")
 
@@ -73,7 +73,9 @@ def moderator_round_stage(driver: Driver, work_id: str, round_idx: int,
         for gq in verdict.questions:
             try:
                 run_expand(driver, work_id=work_id, collected_by=collected_by, rounds=1,
-                           frontier_max=2, total_query_budget=per_q, purpose=gq.question)
+                           frontier_max=2, total_query_budget=per_q, purpose=gq.question,
+                           global_query_budget=int(cur.get(
+                               "total_research_query_budget", 24)))
             except Exception as exc:  # noqa: BLE001
                 logger.debug("moderator gap expand skip: %s", exc)
 

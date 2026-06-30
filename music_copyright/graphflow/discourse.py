@@ -25,12 +25,12 @@ from music_copyright.graphflow.traversal import scope_eids
 
 logger = logging.getLogger("music_copyright.discourse")
 
-_AXES = ("influence", "popularity", "sustainability")
+_AXES = ("influence", "popularity", "sustainability", "social_value")
 # 라운드테이블에서 관점(thread)들을 동시에 전진시키는 스레드풀 동시성 상한.
-# 관점 수(3축 + 발견 관점)는 보통 한 자릿수라 6이면 충분히 동시화된다.
+# 관점 수(4축 + 발견 관점)는 보통 한 자릿수라 6이면 충분히 동시화된다.
 _MAX_DISCOURSE_WORKERS = 6
 
-# 3축 기본 페르소나/초점 (척추 — 항상 존재)
+# 4축 기본 페르소나/초점 (척추 — 항상 존재)
 _BASE = {
     "influence": ("음악 평론·문화영향 분석가",
                   "비평·문화적 영향, 수상, 미디어 언급, 창작자(작곡·작사) 위상"),
@@ -38,6 +38,10 @@ _BASE = {
                    "차트 성적, 스트리밍·플랫폼 도달, 청취자 규모, 팬덤 활동"),
     "sustainability": ("음악 IP·로열티 분석가",
                        "롱테일 스트리밍, 권리 카탈로그 안정성, 라이선스 다양성, 세대 전이"),
+    "social_value": ("사회·문화 임팩트 분석가",
+                     "작품이 다루는 사회적 의제·메시지, 사회운동·공익/자선 연계, 대표성·"
+                     "다양성, 아티스트/가수와 팬덤의 공익·문화외교 맥락, 공동체·세대·"
+                     "국가를 잇는 사회적 파급과 공적 활용"),
 }
 
 
@@ -78,7 +82,8 @@ def _scope_anchor_names(driver: Driver, work_id: str, hops: int = 2) -> str:
 # 에이전트
 # ───────────────────────────────────────────────────────────
 class PerspectiveDraft(BaseModel):
-    parent_axis: str = Field(description="influence | popularity | sustainability 중 하나")
+    parent_axis: str = Field(
+        description="influence | popularity | sustainability | social_value 중 하나")
     label: str = Field(description="관점 이름 (예: '샘플·인용 영향')")
     focus: str = Field(description="이 관점이 파고들 초점 1문장")
     persona: str = Field(description="전문가 역할명")
@@ -95,8 +100,8 @@ class Perspectivist(BaseAgent):
         try:
             out: PerspectivesOut = self.complete(
                 system=music_system_prompt(get_prompt("music_perspectivist.system")),
-                user=f"[평가 대상]\n{work_card}\n\n3축 외에 추가로 볼 관점을 최대 "
-                     f"{max_perspectives}개 제안하세요.",
+                user=f"[평가 대상]\n{work_card}\n\n기본 4축(영향력/대중성/지속성/사회적 "
+                     f"가치) 외에 추가로 볼 관점을 최대 {max_perspectives}개 제안하세요.",
                 schema=PerspectivesOut)
         except Exception as exc:  # noqa: BLE001
             logger.warning("perspectivist 실패: %s", exc)
@@ -142,8 +147,12 @@ class Researcher(BaseAgent):
         """질문 → 웹검색(run_expand purpose) → 스코프 Fact 수집 → 압축 답변."""
         from music_copyright.graphflow.expand import run_expand
         try:
+            from music_copyright.graphflow.config import get_config
+            global_budget = int(
+                get_config()["curation"].get("total_research_query_budget", 24))
             run_expand(driver, work_id=work_id, collected_by=collected_by, rounds=1,
-                       frontier_max=2, total_query_budget=budget, purpose=question)
+                       frontier_max=2, total_query_budget=budget, purpose=question,
+                       global_query_budget=global_budget)
         except Exception as exc:  # noqa: BLE001
             logger.debug("researcher expand skip: %s", exc)
         facts = _top_scope_facts(driver, work_id, limit=6)
@@ -174,7 +183,7 @@ def _top_scope_facts(driver: Driver, work_id: str, *, limit: int = 6) -> list[st
 
 
 class OutlineSection(BaseModel):
-    axis: str = Field(description="influence | popularity | sustainability")
+    axis: str = Field(description="influence | popularity | sustainability | social_value")
     points: list[str] = Field(default_factory=list, description="이 축 섹션의 논점(소제목)들")
 
 
@@ -195,7 +204,8 @@ class Outliner(BaseAgent):
                 system=music_system_prompt(get_prompt("music_outliner.system")),
                 user=f"[평가 대상]\n{work_card}\n\n[담론 Q&A]\n" + "\n".join(digest) +
                      f"\n\n[커버리지]\n{coverage_summary}\n\n"
-                     "각 축(influence/popularity/sustainability)별 논점을 정리하세요.",
+                     "각 축(influence/popularity/sustainability/social_value)별 논점을 "
+                     "정리하세요.",
                 schema=OutlineOut)
         except Exception as exc:  # noqa: BLE001
             logger.warning("outliner 실패: %s", exc)
@@ -253,13 +263,15 @@ def _parallel_threads(advance_fn, items: list[tuple]) -> None:
         return
     workers = min(_MAX_DISCOURSE_WORKERS, len(items))
 
-    def _run_in_ctx(item: tuple):
-        ctx = contextvars.copy_context()
+    ctx_items = [(contextvars.copy_context(), item) for item in items]
+
+    def _run_in_ctx(payload: tuple):
+        ctx, item = payload
         return ctx.run(lambda: advance_fn(*item))
 
     with ThreadPoolExecutor(max_workers=workers,
                             thread_name_prefix="discourse") as pool:
-        list(pool.map(_run_in_ctx, items))
+        list(pool.map(_run_in_ctx, ctx_items))
 
 
 def discourse_round_stage(driver: Driver, work_id: str, threads: list[dict],

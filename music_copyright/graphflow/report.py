@@ -14,6 +14,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -32,10 +33,26 @@ from music_copyright.graphflow.writer import MusicWriter, SectionDraft
 logger = logging.getLogger("music_copyright.report")
 
 _MAX_REWRITES = 2
+_GAP_TERMS = (
+    "부족", "확인되지", "확인되지 않는다", "확인되지 않았다", "확인하기 어렵",
+    "판단하기 어렵", "제한적", "제한된다", "근거가 없다", "근거가 부족",
+    "공백", "불충분", "not confirmed", "insufficient", "not enough evidence",
+)
+_GAP_AXIS_PRIORITY = {
+    "social_value": 0,
+    "influence": 1,
+    "popularity": 2,
+    "sustainability": 3,
+}
 
 
-def _claim_id(axis: str, text: str) -> str:
-    return "clm_" + hashlib.sha256(f"{axis}|{text}".encode()).hexdigest()[:10]
+def _claim_id(report_id: str, axis: str, text: str) -> str:
+    return "clm_" + hashlib.sha256(
+        f"{report_id}|{axis}|{text}".encode()).hexdigest()[:14]
+
+
+def _section_id(report_id: str, axis: str) -> str:
+    return "sec_" + hashlib.sha256(f"{report_id}|{axis}".encode()).hexdigest()[:14]
 
 
 # work_card_text는 graph/queries.py로 이전(real_estate asset_card와 평행) — 위에서 import.
@@ -79,28 +96,218 @@ def synthesize_overview(work_card: str, sections: dict[str, SectionDraft]):
     """3축 → Overview + 기계 검증 (위반 시 재합성 1회). 반환: (overview, index_map, 잔여위반)."""
     synth = MusicSynthesizer()
     overview, index_map = synth.synthesize(work_card, sections)
-    violations = audit_overview(overview, len(index_map))
+    expected_axes = [sec.title for sec in sections.values()]
+    violations = audit_overview(overview, len(index_map), expected_axes)
     if violations:
         logger.info("overview audit fail: %s", violations)
         overview, index_map = synth.synthesize(work_card, sections)
-        violations = audit_overview(overview, len(index_map))
+        violations = audit_overview(overview, len(index_map), expected_axes)
     return overview, index_map, violations
+
+
+def _work_id_type(work_id: str) -> str:
+    wid = work_id or ""
+    if wid.lower().startswith("isrc:"):
+        return "ISRC"
+    if re.fullmatch(r"T-\d{3}\.\d{3}\.\d{3}-\d", wid):
+        return "ISWC"
+    if ":" in wid:
+        return wid.split(":", 1)[0].upper()
+    return "internal"
+
+
+def _work_identifier(work_id: str) -> str:
+    if ":" in (work_id or ""):
+        return work_id.split(":", 1)[1]
+    return work_id
+
+
+def _target_briefing(work_id: str, work_card: str) -> dict:
+    """그래프 Work 카드에서 보고서 대상 브리핑을 기계적으로 만든다."""
+    first = (work_card or "").splitlines()[0] if work_card else ""
+    title = ""
+    artist = ""
+    if " — " in first:
+        title, rest = first.split(" — ", 1)
+        artist = re.split(r"\s*(?:는|은)\s*", rest, maxsplit=1)[0].strip()
+    year_match = re.search(r"((?:19|20)\d{2})\s*발매", first)
+    release_year = year_match.group(1) if year_match else ""
+    identifier_type = _work_id_type(work_id)
+    identifier = _work_identifier(work_id)
+    if title and artist and release_year:
+        briefing = f"{artist}의 {release_year}년 발매 음악저작물 '{title}'에 관한 평가 보고서"
+    elif title and artist:
+        briefing = f"{artist}의 음악저작물 '{title}'에 관한 평가 보고서"
+    elif title:
+        briefing = f"음악저작물 '{title}'에 관한 평가 보고서"
+    else:
+        briefing = f"음악저작물 {work_id}에 관한 평가 보고서"
+    return {
+        "title": title.strip(),
+        "artist": artist,
+        "release_year": release_year,
+        "work_id": work_id,
+        "work_id_type": identifier_type,
+        "identifier": identifier,
+        "briefing": briefing,
+        "graph_card": work_card,
+    }
+
+
+def _is_gap_claim(text: str, kind: str | None = None) -> bool:
+    if kind == "gap":
+        return True
+    t = (text or "").lower()
+    return any(term.lower() in t for term in _GAP_TERMS)
+
+
+def _gap_claim_texts(section: SectionDraft) -> list[str]:
+    out: list[str] = []
+    for cl in section.claims:
+        if _is_gap_claim(cl.text, getattr(cl, "kind", None)):
+            out.append(cl.text)
+    return out
+
+
+def _gap_expand_purpose(axis: Axis, gaps: list[str], work_card: str) -> str:
+    focus = axis.writer_focus or axis.intent or ""
+    bullets = "\n".join(f"- {g}" for g in gaps[:5])
+    return (
+        f"{work_card}\n\n"
+        f"보고서 초안의 '{axis.title}' 축에서 아래 증거 공백이 확인됐다.\n"
+        f"{bullets}\n\n"
+        "평가 대상 곡명과 아티스트를 함께 앵커링해서 추가 근거를 찾고, "
+        f"이 축의 공백을 직접 메울 수 있는 검증 가능한 자료를 우선 탐색하라. "
+        f"축 초점: {focus}"
+    )
+
+
+def post_write_gap_feedback(
+    driver: Driver,
+    work_id: str,
+    work_card: str,
+    sections: dict[str, SectionDraft],
+    evidence_by_axis: dict[str, list[Evidence]],
+    mech_audit: dict[str, list[str]],
+    *,
+    axes: list[Axis],
+    evidence_k: int | None = None,
+    outline: dict | None = None,
+) -> tuple[dict[str, SectionDraft], dict[str, list[Evidence]], dict[str, list[str]], dict]:
+    """writer가 남긴 gap claim을 제어 신호로 삼아 1회 보강 탐색 후 해당 축만 재작성."""
+    from infra.agent.tracing import emit, make_run_id
+    from music_copyright.graphflow.config import get_config
+    from music_copyright.graphflow.expand import run_expand
+
+    cfg = get_config().get("qa", {}).get("post_write_gap_expand", {})
+    if not cfg.get("enabled", True):
+        summary = {"enabled": False, "skipped": True}
+        emit("post_write_gap_feedback", **summary)
+        return sections, evidence_by_axis, mech_audit, summary
+
+    max_axes = int(cfg.get("max_axes", 2))
+    axis_by = {a.key: a for a in axes}
+    gap_axes: list[tuple[str, list[str]]] = []
+    for key, sec in sections.items():
+        gaps = _gap_claim_texts(sec)
+        if gaps and key in axis_by:
+            gap_axes.append((key, gaps))
+    gap_axes.sort(key=lambda item: (_GAP_AXIS_PRIORITY.get(item[0], 99),
+                                    -len(item[1]), item[0]))
+    gap_axes = gap_axes[:max_axes]
+    if not gap_axes:
+        summary = {"enabled": True, "skipped": True, "reason": "no_gap_claims"}
+        emit("post_write_gap_feedback", **summary)
+        return sections, evidence_by_axis, mech_audit, summary
+
+    collected_by = make_run_id("gap")
+    expand_summaries = []
+    for key, gaps in gap_axes:
+        ax = axis_by[key]
+        try:
+            expand_summaries.append({
+                "axis": key,
+                "summary": run_expand(
+                    driver,
+                    work_id=work_id,
+                    collected_by=collected_by,
+                    rounds=int(cfg.get("rounds", 1)),
+                    frontier_max=int(cfg.get("frontier_max", 2)),
+                    total_query_budget=int(cfg.get("total_query_budget", 3)),
+                    purpose=_gap_expand_purpose(ax, gaps, work_card),
+                ),
+            })
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("post-write gap expand 실패(%s): %s", key, exc)
+            expand_summaries.append({"axis": key, "error": type(exc).__name__})
+
+    graph_refresh: dict = {}
+    try:
+        from music_copyright.graphflow.config import get_config as _cfg
+        c = _cfg().get("consolidate", {})
+        if c.get("enabled", True):
+            from music_copyright.graphflow.consolidate import consolidate_entities
+            graph_refresh["consolidate"] = consolidate_entities(
+                driver, work_id,
+                mode=c.get("mode", "rules_first"),
+                min_conf=float(c.get("min_conf", 0.6)),
+                scope_hops=int(c.get("scope_hops", 4)),
+            )
+        ag = _cfg().get("agentic_graph", {})
+        if ag.get("enabled", False):
+            from music_copyright.graphflow.agentic_graph import run_agentic_graph
+            graph_refresh["agentic_graph"] = run_agentic_graph(
+                driver, work_id, config=ag)
+    except Exception as exc:  # noqa: BLE001
+        graph_refresh["error"] = type(exc).__name__
+        logger.warning("post-write gap graph refresh 실패(재작성은 계속): %s", exc)
+
+    new_sections = dict(sections)
+    new_evidence = dict(evidence_by_axis)
+    new_audit = dict(mech_audit)
+    rewritten: list[str] = []
+    for key, _gaps in gap_axes:
+        ax = axis_by[key]
+        draft, evidence, violations = write_axis(
+            driver,
+            work_id,
+            work_card,
+            ax,
+            evidence_k=evidence_k,
+            outline=(outline or {}).get(key),
+        )
+        new_sections[key] = draft
+        new_evidence[key] = evidence
+        new_audit[key] = violations
+        rewritten.append(key)
+
+    summary = {
+        "enabled": True,
+        "axes": [key for key, _ in gap_axes],
+        "rewritten": rewritten,
+        "expand_summaries": expand_summaries,
+        "graph_refresh": graph_refresh,
+    }
+    emit("post_write_gap_feedback", **summary)
+    return new_sections, new_evidence, new_audit, summary
 
 
 # ───────────────────────────────────────────────────────────
 # 조립 — 구조화 JSON
 # ───────────────────────────────────────────────────────────
-def _assemble(report_id, work_id, sections, overview, index_map,
+def _assemble(report_id, work_id, work_card, created_at, sections, overview, index_map,
               evidence_by_axis, audit) -> dict:
     claim_ids: dict[tuple[str, int], str] = {}
     claims_json: dict[str, dict] = {}
     evidence_map: dict[str, dict] = {}
     sections_json = []
+    section_ids = {axis: _section_id(report_id, axis) for axis in sections}
+    section_ids["overview"] = _section_id(report_id, "overview")
 
     for axis, sec in sections.items():
         ev_by_index = {ev.index: ev for ev in evidence_by_axis[axis]}
         for i, cl in enumerate(sec.claims):
-            claim_ids[(axis, i)] = _claim_id(axis, cl.text)
+            claim_ids[(axis, i)] = _claim_id(report_id, axis, cl.text)
         blocks_json = []
         claim_block: dict[int, str] = {}
         for bi, b in enumerate(sec.blocks):
@@ -129,14 +336,14 @@ def _assemble(report_id, work_id, sections, overview, index_map,
                 "as_of": cl.as_of, "block_id": claim_block.get(i),
             }
         sections_json.append({
-            "section_id": f"sec_{axis}", "axis": axis, "title": sec.title,
+            "section_id": section_ids[axis], "axis": axis, "title": sec.title,
             "blocks": blocks_json,
         })
 
     # overview — C# 글로벌 인덱스 → 섹션 claim_id
     ov_blocks, ov_claim_ids = [], []
     for cl in overview.claims:
-        cid = _claim_id("overview", cl.text)
+        cid = _claim_id(report_id, "overview", cl.text)
         ov_claim_ids.append(cid)
         claims_json[cid] = {
             "text": cl.text, "kind": cl.kind, "axis": "overview",
@@ -152,16 +359,21 @@ def _assemble(report_id, work_id, sections, overview, index_map,
             if claims_json[cid]["block_id"] is None:
                 claims_json[cid]["block_id"] = block_id
     sections_json.insert(0, {
-        "section_id": "sec_overview", "axis": "overview",
+        "section_id": section_ids["overview"], "axis": "overview",
         "title": overview.title, "blocks": ov_blocks,
     })
 
     return {
         "report_id": report_id, "version_id": "v1", "work_id": work_id,
-        "created_at": datetime.now().isoformat(timespec="seconds"),
+        "created_at": created_at,
+        "target": _target_briefing(work_id, work_card),
         "sections": sections_json, "claims": claims_json,
         "evidence": evidence_map, "audit": audit,
         "valuation": {
+            "asset_grade": getattr(overview, "asset_grade", "") or "",
+            "asset_rationale": getattr(overview, "asset_rationale", "") or "",
+            "social_grade": getattr(overview, "social_grade", "") or "",
+            "social_rationale": getattr(overview, "social_rationale", "") or "",
             "overall_grade": getattr(overview, "overall_grade", "") or "",
             "overall_rationale": getattr(overview, "overall_rationale", "") or "",
             "axis_scores": [
@@ -174,23 +386,63 @@ def _assemble(report_id, work_id, sections, overview, index_map,
 
 def render_markdown(report: dict) -> str:
     """보고서 dict → markdown."""
-    lines = ["# 음악저작물 사회·문화 가치 평가 보고서", "",
-             f"- report: `{report['report_id']}` ({report['version_id']})",
-             f"- work: `{report['work_id']}`",
-             f"- 생성: {report['created_at']}", ""]
+    target = report.get("target") or {}
+    lines = [
+        "# 음악저작물 사회·문화 가치 평가 보고서",
+        "",
+        "## 기계 생성 메타데이터",
+        "",
+        f"- `report_id`: `{report['report_id']}`",
+        f"- `version_id`: `{report['version_id']}`",
+        f"- `work_id`: `{report['work_id']}`",
+        f"- `work_id_type`: `{target.get('work_id_type') or _work_id_type(report['work_id'])}`",
+        f"- `created_at`: `{report['created_at']}`",
+        "",
+        "## 평가 대상 브리핑",
+        "",
+        f"- `title`: `{target.get('title') or '-'}`",
+        f"- `artist`: `{target.get('artist') or '-'}`",
+        f"- `release_year`: `{target.get('release_year') or '-'}`",
+        f"- `identifier`: `{target.get('identifier') or _work_identifier(report['work_id'])}`",
+        f"- `briefing`: {target.get('briefing') or '-'}",
+        "",
+        "## LLM 작성 평가",
+        "",
+    ]
     val = report.get("valuation") or {}
-    if val.get("overall_grade") or val.get("axis_scores"):
-        lines.append(f"## 사회·문화 가치 종합 등급: **{val.get('overall_grade') or '-'}**\n")
-        if val.get("overall_rationale"):
-            lines += [val["overall_rationale"], ""]
-        for a in val.get("axis_scores", []):
-            lines.append(f"- **{a['axis']}** ({a['grade']}): {a['rationale']}")
-        lines.append("")
+    if val.get("overall_grade") or val.get("axis_scores") or val.get("social_grade"):
+        lines.append("### 평가 종합\n")
+        # 이중 트랙 — 자산가치(상업)와 사회적 가치를 나란히 (한쪽이 다른 쪽을 가리지 않게)
+        if val.get("asset_grade") or val.get("social_grade"):
+            lines.append(f"- **자산가치(상업) 등급: {val.get('asset_grade') or '-'}**"
+                         + (f" — {val['asset_rationale']}" if val.get("asset_rationale") else ""))
+            lines.append(f"- **사회적 가치 등급: {val.get('social_grade') or '-'}**"
+                         + (f" — {val['social_rationale']}" if val.get("social_rationale") else ""))
+            lines.append("")
+        if val.get("overall_grade"):
+            lines.append(f"#### 종합 등급: **{val.get('overall_grade') or '-'}**\n")
+            if val.get("overall_rationale"):
+                lines += [val["overall_rationale"], ""]
+        if val.get("axis_scores"):
+            lines.append("#### 축별 등급\n")
+            for a in val.get("axis_scores", []):
+                lines.append(f"- **{a['axis']}** ({a['grade']}): {a['rationale']}")
+            lines.append("")
     for sec in report["sections"]:
-        lines.append(f"## [{sec['axis']}] {sec['title']}\n")
+        lines.append(f"### [{sec['axis']}] {sec['title']}\n")
         for b in sec["blocks"]:
             lines += [b["markdown"], ""]
-    lines.append("---\n\n## 인용 근거 (evidence)\n")
+            claim_ids = [cid for cid in b.get("claim_ids", []) if cid in report["claims"]]
+            cite_refs = list(dict.fromkeys(
+                ref for cid in claim_ids for ref in report["claims"][cid].get("cites", [])))
+            if claim_ids:
+                lines.append("_추적 claim_: " + ", ".join(f"`{cid}`" for cid in claim_ids))
+            if cite_refs:
+                label = "근거 claim" if sec["axis"] == "overview" else "근거 evidence"
+                lines.append(f"_{label}_: " + ", ".join(f"`{ref}`" for ref in cite_refs))
+            if claim_ids or cite_refs:
+                lines.append("")
+    lines.append("---\n\n## 기계 생성 인용 근거 (evidence)\n")
     for ref, ev in report["evidence"].items():
         origin = ev.get("origin") or {}
         src = origin.get("source") or ev.get("source_kind")
@@ -206,12 +458,17 @@ def write_report_graph(driver: Driver, report: dict) -> None:
     sg = ScopeGraph()
     edges: list[SeedEdge] = []
     rid = report["report_id"]
+    target = report.get("target") or {}
     sg.add_node(L.REPORT, rid, {
         "work_id": report["work_id"], "version_id": report["version_id"],
         "created_at": report["created_at"],
+        "target_title": target.get("title"),
+        "target_artist": target.get("artist"),
+        "work_id_type": target.get("work_id_type"),
     })
     edges.append(SeedEdge(L.REPORT, rid, E.ABOUT, L.WORK, report["work_id"]))
 
+    section_by_axis = {sec["axis"]: sec["section_id"] for sec in report["sections"]}
     for sec in report["sections"]:
         sg.add_node(L.REPORT_SECTION, sec["section_id"],
                     {"axis": sec["axis"], "title": sec["title"], "report_id": rid})
@@ -222,13 +479,16 @@ def write_report_graph(driver: Driver, report: dict) -> None:
             "text": cl["text"], "kind": cl["kind"], "axis": cl["axis"],
             "as_of": cl["as_of"], "block_id": cl["block_id"], "report_id": rid,
         })
-        edges.append(SeedEdge(L.REPORT_SECTION, f"sec_{cl['axis']}",
+        edges.append(SeedEdge(L.REPORT_SECTION, section_by_axis[cl["axis"]],
                               E.HAS_CLAIM, L.CLAIM, cid))
         for ref in cl["cites"]:
-            if ":" in ref:                       # evidence ref "Label:key"
-                label, key = ref.split(":", 1)
-            else:                                # overview → 섹션 claim id
+            if ref in report["claims"]:           # overview → 이 보고서의 섹션 Claim
                 label, key = L.CLAIM, ref
+            elif ":" in ref:                     # evidence ref "Label:key"
+                label, key = ref.split(":", 1)
+            else:
+                logger.warning("알 수 없는 citation ref 생략: %s", ref)
+                continue
             edges.append(SeedEdge(L.CLAIM, cid, E.CITES, label, key))
 
     seed(sg, driver)
@@ -248,23 +508,48 @@ def finalize_report(
     mech_audit: dict[str, list[str]],
     *,
     out_dir: str | Path,
+    gap_feedback_summary: dict | None = None,
+    pipeline_summary: dict | None = None,
 ) -> dict:
     """조립 → 파일 저장 → Report 서브그래프 적재."""
     created = datetime.now().isoformat(timespec="seconds")
     report_id = "rpt_" + hashlib.sha256(f"{work_id}|{created}".encode()).hexdigest()[:10]
-    report = _assemble(report_id, work_id, sections, overview, index_map,
-                       evidence_by_axis, audit={"mechanical": mech_audit})
+    audit = {"mechanical": mech_audit}
+    if gap_feedback_summary:
+        audit["gap_feedback"] = gap_feedback_summary
+    if pipeline_summary:
+        audit["pipeline"] = pipeline_summary
+    audit["retrieval"] = {
+        axis: {
+            "evidence_count": len(items),
+            "source_kinds": dict(sorted({
+                kind: sum(1 for ev in items if ev.source_kind == kind)
+                for kind in {ev.source_kind for ev in items}
+            }.items())),
+            "independent_sources": len({
+                (ev.origin or {}).get("url") or (ev.origin or {}).get("source")
+                for ev in items
+                if (ev.origin or {}).get("url") or (ev.origin or {}).get("source")
+            }),
+        }
+        for axis, items in evidence_by_axis.items()
+    }
+    report = _assemble(report_id, work_id, work_card_text(driver, work_id), created,
+                       sections, overview, index_map, evidence_by_axis, audit=audit)
+
+    graph_audit = {"status": "written"}
+    try:
+        write_report_graph(driver, report)
+    except Exception as exc:  # noqa: BLE001 — 그래프 적재 실패가 파일 산출을 막지 않게
+        graph_audit = {"status": "failed", "error": type(exc).__name__}
+        logger.warning("Report 서브그래프 적재 실패(파일 산출은 계속): %s", exc)
+    report["audit"]["report_graph"] = graph_audit
 
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     (out / "report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     (out / "report.md").write_text(render_markdown(report), encoding="utf-8")
-
-    try:
-        write_report_graph(driver, report)
-    except Exception as exc:  # noqa: BLE001 — 그래프 적재 실패가 파일 산출을 막지 않게
-        logger.warning("Report 서브그래프 적재 실패(파일은 저장됨): %s", exc)
 
     total_mech = sum(len(v) for v in mech_audit.values())
     logger.info("report %s 완료 → %s (sections=%d claims=%d evidence=%d mech_viol=%d)",
@@ -288,11 +573,32 @@ def generate_report(
     axes 미지정이면 기본 3축. 동적 축(사람·에이전트)은 호출부가 resolve해 넘긴다.
     """
     axes = axes or BASE_AXES
+    pipeline_summary: dict = {}
     if expand_rounds > 0:
         from infra.agent.tracing import make_run_id
         from music_copyright.graphflow.expand import run_expand
-        run_expand(driver, work_id=work_id, collected_by=make_run_id("exp"),
-                   rounds=expand_rounds)
+        pipeline_summary["collection"] = run_expand(
+            driver, work_id=work_id, collected_by=make_run_id("exp"),
+            rounds=expand_rounds)
+    try:
+        from music_copyright.graphflow.config import get_config
+        cfg = get_config()
+        c = cfg.get("consolidate", {})
+        if c.get("enabled", True):
+            from music_copyright.graphflow.consolidate import consolidate_entities
+            pipeline_summary["consolidate"] = consolidate_entities(
+                driver, work_id,
+                mode=c.get("mode", "rules_first"),
+                min_conf=float(c.get("min_conf", 0.6)),
+                scope_hops=int(c.get("scope_hops", 4)),
+            )
+        ag = cfg.get("agentic_graph", {})
+        if ag.get("enabled", False):
+            from music_copyright.graphflow.agentic_graph import run_agentic_graph
+            pipeline_summary["agentic_graph"] = run_agentic_graph(
+                driver, work_id, config=ag)
+    except Exception as exc:  # noqa: BLE001 — 승격 실패가 보고서 산출을 막지 않게
+        logger.warning("Entity consolidate/agentic graph 실패(보고서는 계속 진행): %s", exc)
     card = work_card_text(driver, work_id)
     sections: dict[str, SectionDraft] = {}
     evidence_by_axis: dict[str, list[Evidence]] = {}
@@ -303,7 +609,12 @@ def generate_report(
         sections[ax.key] = draft
         evidence_by_axis[ax.key] = evidence
         mech_audit[ax.key] = violations
+    sections, evidence_by_axis, mech_audit, gap_summary = post_write_gap_feedback(
+        driver, work_id, card, sections, evidence_by_axis, mech_audit,
+        axes=axes, evidence_k=evidence_k)
     overview, index_map, ov_violations = synthesize_overview(card, sections)
     mech_audit["overview"] = ov_violations
     return finalize_report(driver, work_id, sections, overview, index_map,
-                           evidence_by_axis, mech_audit, out_dir=out_dir)
+                           evidence_by_axis, mech_audit, out_dir=out_dir,
+                           gap_feedback_summary=gap_summary,
+                           pipeline_summary=pipeline_summary)

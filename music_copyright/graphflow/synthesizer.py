@@ -17,6 +17,9 @@ from music_copyright.graphflow.writer import SectionDraft
 
 logger = logging.getLogger("music_copyright.synthesizer")
 
+Grade = Literal["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D"]
+OptionalGrade = Literal["", "A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D"]
+
 
 class OverviewClaimDraft(BaseModel):
     text: str = Field(description="주장 한 문장")
@@ -31,7 +34,7 @@ class OverviewClaimDraft(BaseModel):
 class AxisScore(BaseModel):
     axis: str = Field(description="평가 축 이름 — 아래 제시된 섹션의 축 라벨 그대로(기본 "
                                   "영향력/대중성/지속성 + 추가 축 포함)")
-    grade: str = Field(description="사회·문화 가치 등급 (A+/A/A-/B+/B/B-/C+/C/C-/D). 정량 금액 아님")
+    grade: Grade = Field(description="사회·문화 가치 등급 (A+~D). 정량 금액 아님")
     rationale: str = Field(
         description="등급 근거. 데이터가 부재한 축은 한계를 명시하고 등급을 보수적으로")
 
@@ -46,13 +49,24 @@ class OverviewDraft(BaseModel):
     title: str = Field(description="섹션 제목 (예: '종합 평가 개요')")
     blocks: list[OverviewBlockDraft] = Field(description="문단 2~4개")
     claims: list[OverviewClaimDraft]
-    overall_grade: str = Field(
-        default="", description="사회·문화 가치 종합 등급 (A+~D). 축 점수를 종합한 단일 판정")
+    # ── 이중 트랙: 자산가치(상업)와 사회적 가치를 분리 판정 — 한쪽이 다른 쪽을 가리지 않게 ──
+    asset_grade: OptionalGrade = Field(
+        default="", description="자산가치(상업) 등급 (A+~D). 영향력·대중성·지속성 축 종합")
+    asset_rationale: str = Field(
+        default="", description="자산가치 등급 논거 — 상업적 강점·약점·한계")
+    social_grade: OptionalGrade = Field(
+        default="", description="사회적 가치 등급 (A+~D). 사회적 가치 축(및 사회성 띤 추가 "
+                                "축) 종합 — 상업 성과로 대신 매기지 말 것")
+    social_rationale: str = Field(
+        default="", description="사회적 가치 등급 논거 — 사회적 의제·공익 연계·대표성·공동체/"
+                                "소프트파워 파급. 사회적 근거가 부족하면 보수적으로 + 한계 명시")
+    overall_grade: OptionalGrade = Field(
+        default="", description="종합 등급 (A+~D). 자산가치와 사회적 가치를 함께 반영한 단일 판정")
     overall_rationale: str = Field(
-        default="", description="종합 등급의 핵심 논거 — 결정적 강점·약점·한계")
+        default="", description="종합 등급의 핵심 논거 — 두 트랙의 결정적 강점·약점·한계")
     axis_scores: list[AxisScore] = Field(
         default_factory=list,
-        description="제시된 *모든* 평가 축마다 등급+근거 1개씩 (기본 3축 + 추가 축 전부). "
+        description="제시된 *모든* 평가 축마다 등급+근거 1개씩 (기본 4축 + 추가 축 전부). "
                     "섹션 수만큼 — 누락 금지")
 
 

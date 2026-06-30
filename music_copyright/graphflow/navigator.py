@@ -1,8 +1,8 @@
 """Navigator (음악저작권) — 프론티어 선택 + 검색어 합성. real_estate/navigator 미러.
 
 웹검색 확장의 항해사: 그래프에서 '더 캐낼 가치가 있는' 노드(프론티어)를 골라,
-그 노드의 고유명사(곡명·아티스트 등)를 포함한 짧은 검색어를 생성한다. LLM
-(music_navigator, gpt_mini)이 고르고, 코드가 검증(고유명사 포함·길이·중복)한다.
+그 노드의 고유명사(곡명·아티스트 등)를 앵커로 구조화된 조사 과제와 채널별
+검색 변형을 생성한다. 다음 라운드에는 질의별 수집 성과를 돌려줘 재계획한다.
 
 real_estate와 동일 구조지만 도메인 어휘만 음악(곡/아티스트/차트/수상)으로 교체.
 """
@@ -12,26 +12,35 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 
+from infra.agent.tracing import emit
 from neo4j import Driver
 from pydantic import BaseModel, Field
 
-from music_copyright.graphflow.agents.base import BaseAgent, music_system_prompt, normalize_text
+from music_copyright.graphflow.agents.base import (
+    BaseAgent, music_system_prompt, normalize_text, short_hash)
 from music_copyright.graphflow.graph.schema import NODE_LABELS as L
 from music_copyright.graphflow.policies import StaticPolicy
 from music_copyright.graphflow.prompts import get_prompt
+from music_copyright.graphflow.research import QueryOutcome, QueryVariant, ResearchTask
 from music_copyright.graphflow.traversal import walk, work_anchor_eid
 
 logger = logging.getLogger("music_copyright.navigator")
 
-_MAX_QUERY_WORDS = 7
+_MAX_QUERY_WORDS = 18
+_ALLOWED_CHANNELS = {"web", "news", "youtube"}
 
 # 프론티어로 삼을 라벨 — 더 캐낼 가치가 있는 도메인 노드.
-_EXPANDABLE = {L.WORK, L.ARTIST, L.CHART, L.AWARD, L.RIGHTSHOLDER, L.ENTITY}
+_EXPANDABLE = {
+    L.WORK, L.ARTIST, L.CHART, L.AWARD, L.RIGHTSHOLDER, L.AGENCY,
+    L.FANDOM, L.MEDIA_EVENT, L.VIRAL_TREND, L.ENTITY,
+}
 
 # 라벨 우선순위 — Platform(스트리밍 지표)은 검색 가치 낮아 억제.
 _LABEL_PRIORITY = {
     L.WORK: 1.0, L.CHART: 0.9, L.AWARD: 0.9, L.ARTIST: 0.8,
-    L.ENTITY: 0.7, L.RIGHTSHOLDER: 0.5, L.PLATFORM: 0.1,
+    L.ENTITY: 0.7, L.FANDOM: 0.7, L.MEDIA_EVENT: 0.65,
+    L.VIRAL_TREND: 0.65, L.AGENCY: 0.55, L.RIGHTSHOLDER: 0.5,
+    L.PLATFORM: 0.1,
 }
 
 
@@ -52,7 +61,10 @@ class FrontierCandidate:
 def _proper_nouns(label: str, props: dict) -> list[str]:
     """노드에서 검색어에 박을 고유명사 추출 (음악 도메인)."""
     out = []
-    for k in ("title", "artist_name", "name", "album", "chart_name", "award_name"):
+    for k in (
+        "title", "artist_name", "name", "album", "chart_name", "award_name",
+        "agency_name", "fandom_name", "event_name", "trend_name",
+    ):
         v = props.get(k)
         if v and isinstance(v, str):
             out.append(v)
@@ -60,16 +72,22 @@ def _proper_nouns(label: str, props: dict) -> list[str]:
 
 
 def _templates(label: str, props: dict) -> list[str]:
-    """라벨별 결정적 폴백 검색어 (고유명사 + 평가 관심사)."""
+    """라벨별 결정적 폴백 검색어 — LLM navigator가 질의를 못 낼 때만 쓰는 최소 안전망.
+
+    축별 일반 평가 차원(차트·수상·평가·스트리밍·사회적 가치)만 쓴다. 과거엔 '문화외교·
+    사회공헌·팬덤 기부' 같은 특정 서사(K팝 외교)에 과적합한 사회각도를 강제로 박았는데,
+    새 작품·장르엔 편향이라 제거했다(autonomy_decision §3). 사회적 가치의 *구체* 각도는
+    LLM이 작품 맥락에서 판단한다 — 폴백은 중립 단어 하나만 둔다.
+    """
     title = props.get("title")
     artist = props.get("artist_name") or props.get("name")
     name = props.get("name")
     if label == L.WORK and title:
         a = artist or ""
         return [f"{title} {a} 차트", f"{title} 수상", f"{title} 평가 리뷰",
-                f"{title} 스트리밍 기록"]
+                f"{title} 스트리밍 기록", f"{title} {a} 사회적 가치"]
     if label == L.ARTIST and name:
-        return [f"{name} 대표곡", f"{name} 수상", f"{name} 평가"]
+        return [f"{name} 대표곡", f"{name} 수상", f"{name} 평가", f"{name} 사회적 영향"]
     if label in (L.CHART, L.AWARD, L.ENTITY) and (name or props.get("chart_name")):
         n = name or props.get("chart_name") or props.get("award_name")
         return [f"{n}"]
@@ -117,6 +135,16 @@ def collect_frontier(
         return []
     paths = walk(driver, [anchor], StaticPolicy("qa_base"), max_hops=max_hops, k=50)
     tails: dict[str, tuple] = {}
+    # 앵커 Work는 검색 확장의 최우선 프론티어다. walk 결과가 이웃만 반환하면
+    # 커버/샘플 아티스트가 앞서 나와 작품 자체·주 아티스트 검색이 밀릴 수 있다.
+    with driver.session() as s:
+        row = s.run(
+            f"MATCH (w:{L.WORK} {{work_id: $wid}}) "
+            "RETURN elementId(w) AS eid, w.card_text AS card",
+            wid=work_id,
+        ).single()
+    if row:
+        tails[row["eid"]] = (L.WORK, work_id, row["card"] or "", 1.0)
     for p in paths:
         t = p.tail
         if t.label in _EXPANDABLE and t.eid not in tails:
@@ -135,32 +163,59 @@ def collect_frontier(
         nf, nq = counts.get(eid, (0, 0))
         score = (_LABEL_PRIORITY.get(label, 0.3) * pscore
                  / (1 + nf) / (1 + 0.5 * nq))
+        card_l = (card or "").lower()
+        if label == L.WORK:
+            score = max(score * 3.0, 1.2 / (1 + 0.4 * nq))
+        elif label == L.ARTIST and "performer" in card_l:
+            score = max(score * 2.5, 0.9 / (1 + 0.4 * nq))
+        elif label == L.ARTIST and any(t in card_l for t in (
+            "커버", "cover", "샘플", "sample",
+        )):
+            score *= 0.35
         cands.append(FrontierCandidate(ref=f"{label}:{key}", label=label, key=key,
                                        card=card, proper_nouns=pn, templates=tmpl,
                                        score=score))
-    cands.sort(key=lambda c: (-c.score, c.ref))
+    def _pin_rank(c: FrontierCandidate) -> int:
+        if c.label == L.WORK:
+            return 0
+        if c.label == L.ARTIST and "performer" in (c.card or "").lower():
+            return 1
+        return 2
+
+    cands.sort(key=lambda c: (_pin_rank(c), -c.score, c.ref))
     return cands[:limit]
 
 
 # ───────────────────────────────────────────────────────────
 # Navigator 에이전트
 # ───────────────────────────────────────────────────────────
-class QueryPlan(BaseModel):
-    target: str = Field(description="후보 목록의 ref (예: 'Work:T-...')")
-    queries: list[str] = Field(description="검색어 1~2개. 고유명사 포함, 6단어 이내")
-    why: str = Field(default="", description="선택 이유 1문장")
-
-
 class NavigatorOutput(BaseModel):
-    plans: list[QueryPlan]
+    tasks: list[ResearchTask] = Field(default_factory=list)
+
+
+# 기존 내부 import 호환. 새 코드는 ResearchTask를 직접 사용한다.
+QueryPlan = ResearchTask
 
 
 def _format_candidates(cands: list[FrontierCandidate]) -> str:
     lines = []
     for c in cands:
         nouns = ", ".join(c.proper_nouns[:4])
-        tmpl = " | ".join(c.templates[:3])
-        lines.append(f"- {c.ref} | 고유명사: {nouns}\n    카드: {c.card[:80]}\n    템플릿: {tmpl}")
+        lines.append(f"- {c.ref} | 고유명사: {nouns}\n    카드: {c.card[:160]}")
+    return "\n".join(lines)
+
+
+def _format_feedback(outcomes: list[QueryOutcome]) -> str:
+    if not outcomes:
+        return "(첫 라운드 — 성과 피드백 없음)"
+    lines = []
+    for o in outcomes[-16:]:
+        skipped = ", ".join(f"{k}={v}" for k, v in sorted(o.skip_reasons.items())) or "없음"
+        lines.append(
+            f"- [{o.axis}/{o.strategy}] {o.query} | utility={o.utility:.3f}, "
+            f"문서={o.docs_ingested}/{o.docs_selected}, grounded_fact={o.grounded_facts}, "
+            f"새_fact={o.facts_new}, 폐기={skipped}"
+        )
     return "\n".join(lines)
 
 
@@ -176,67 +231,150 @@ class Navigator(BaseAgent):
         max_targets: int = 8,
         queries_per_node: int = 2,
         purpose: str | None = None,
-    ) -> list[QueryPlan]:
-        """프론티어 후보 → 검색 계획. LLM 선택 후 코드 검증/폴백."""
+        coverage: str | None = None,
+        feedback: list[QueryOutcome] | None = None,
+        round_no: int = 1,
+    ) -> list[ResearchTask]:
+        """프론티어와 수집 성과 → 구조화된 조사 과제. LLM 제안 후 안전 검증."""
         if not candidates:
             return []
         system = music_system_prompt(get_prompt("music_navigator.system"))
         user_parts = [
             f"[평가 대상]\n{work_card}",
             f"[프론티어 후보 — 이 중에서만 target 선택]\n{_format_candidates(candidates)}",
+            f"[현재 축별 그래프 커버리지]\n{coverage or '(없음)'}",
             f"[이미 실행한 검색어 — 중복 금지]\n" + ("\n".join(f"- {q}" for q in executed[-30:]) or "(없음)"),
-            f"최대 {max_targets}개 target, 각 {queries_per_node}개 이내 검색어.",
+            f"[직전 질의 성과 — 낮은 성과 원인을 피해 재계획]\n{_format_feedback(feedback or [])}",
+            f"라운드 {round_no}. 최대 {max_targets}개 ResearchTask, 각 task당 "
+            f"QueryVariant {queries_per_node}개 이내.",
         ]
         if purpose:
             user_parts.append(f"[이번 검색 목적]\n{purpose}")
         try:
             out: NavigatorOutput = self.complete(
                 system=system, user="\n\n".join(user_parts), schema=NavigatorOutput)
-            plans = out.plans
+            tasks = out.tasks
         except Exception as exc:  # noqa: BLE001 — LLM 실패 시 템플릿 폴백
             logger.warning("music_navigator 실패, 템플릿 폴백: %s", exc)
-            plans = []
-        return self._validate(plans, candidates, executed,
-                              max_targets=max_targets, queries_per_node=queries_per_node)
+            tasks = []
+        validated = self._validate(
+            tasks, candidates, executed, max_targets=max_targets,
+            queries_per_node=queries_per_node, purpose=purpose)
+        emit(
+            "research_plan",
+            round=round_no,
+            purpose=(purpose or "")[:500],
+            tasks=[t.model_dump(exclude={"queries"}) for t in validated],
+            feedback_count=len(feedback or []),
+            fallback=not bool(tasks),
+        )
+        return validated
 
-    def _validate(self, plans, candidates, executed, *, max_targets, queries_per_node):
+    def _validate(self, tasks, candidates, executed, *, max_targets, queries_per_node,
+                  purpose: str | None = None) -> list[ResearchTask]:
         by_ref = {c.ref: c for c in candidates}
         seen = {normalize_text(q) for q in executed}
-        out: list[QueryPlan] = []
-        # LLM 계획 검증
-        for plan in plans[:max_targets]:
-            cand = by_ref.get(plan.target)
+        out: list[ResearchTask] = []
+        for task in tasks[:max_targets]:
+            target = self._compatible_target(task, candidates)
+            cand = by_ref.get(target)
             if cand is None:
                 continue
-            valid_qs = []
-            for q in plan.queries[:queries_per_node]:
-                vq = self._clean_query(q, cand, seen)
-                if vq:
-                    valid_qs.append(vq)
-                    seen.add(normalize_text(vq))
-            if valid_qs:
-                out.append(QueryPlan(target=plan.target, queries=valid_qs, why=plan.why))
-        # LLM이 아무것도 못 내면 상위 후보 템플릿으로 폴백
+            variants: list[QueryVariant] = []
+            for variant in task.query_variants()[:queries_per_node]:
+                text = self._clean_query(variant.text, cand, seen)
+                if not text:
+                    continue
+                channels = list(dict.fromkeys(
+                    c for c in variant.channels if c in _ALLOWED_CHANNELS)) or ["web", "news"]
+                variants.append(QueryVariant(
+                    text=text,
+                    channels=channels,
+                    strategy=variant.strategy,
+                    expected_signal=variant.expected_signal,
+                ))
+                seen.add(normalize_text(text))
+            if not variants:
+                continue
+            question = task.question.strip() or purpose or task.evidence_goal.strip()
+            task_id = short_hash(
+                f"{target}|{task.axis}|{normalize_text(question)}")
+            out.append(ResearchTask(
+                task_id=task_id,
+                target=target,
+                axis=task.axis,
+                question=question,
+                evidence_goal=task.evidence_goal.strip(),
+                evidence_type=task.evidence_type,
+                source_preferences=task.source_preferences[:5],
+                variants=variants,
+                why=task.why,
+            ))
         if not out:
-            for cand in candidates[:max_targets]:
-                for t in cand.templates:
-                    if normalize_text(t) not in seen:
-                        out.append(QueryPlan(target=cand.ref, queries=[t], why="템플릿 폴백"))
-                        seen.add(normalize_text(t))
-                        break
-                if len(out) >= max_targets:
-                    break
-        return out
+            out = self._fallback_tasks(
+                candidates, seen, max_targets=max_targets,
+                queries_per_node=queries_per_node, purpose=purpose)
+        return out[:max_targets]
+
+    @staticmethod
+    def _compatible_target(task: ResearchTask,
+                           candidates: list[FrontierCandidate]) -> str:
+        """Keep direct-work and artist-context evidence semantics explicit."""
+        by_ref = {c.ref: c for c in candidates}
+        current = by_ref.get(task.target)
+        direct_types = {"direct_work", "metric", "critical_reception", "public_use"}
+        if task.evidence_type in direct_types and (not current or current.label != L.WORK):
+            work = next((c for c in candidates if c.label == L.WORK), None)
+            return work.ref if work else task.target
+        if task.evidence_type == "artist_context" and (
+                not current or current.label not in {L.ARTIST, L.FANDOM, L.AGENCY}):
+            artist = next((c for c in candidates if c.label == L.ARTIST and
+                           "performer" in (c.card or "").lower()), None)
+            return artist.ref if artist else task.target
+        return task.target
 
     def _clean_query(self, q: str, cand: FrontierCandidate, seen: set) -> str | None:
-        """고유명사 포함 + 길이 + 중복 검증. 실패 시 미사용 템플릿으로 대체."""
+        """질의 의도를 보존하면서 빠진 대상 앵커만 보강한다."""
         q = (q or "").strip()
-        has_noun = any(normalize_text(n) in normalize_text(q) for n in cand.proper_nouns)
-        too_long = len(q.split()) > _MAX_QUERY_WORDS
-        if q and has_noun and not too_long and normalize_text(q) not in seen:
-            return q
-        # 폴백: 미실행 템플릿
-        for t in cand.templates:
-            if normalize_text(t) not in seen:
-                return t
-        return None
+        if not q:
+            return None
+        norm_q = normalize_text(q)
+        required = cand.proper_nouns[:2] if cand.label == L.WORK else cand.proper_nouns[:1]
+        missing = [n for n in required if normalize_text(n) not in norm_q]
+        if missing:
+            q = " ".join(f'"{n}"' for n in missing) + " " + q
+            norm_q = normalize_text(q)
+        if len(q.split()) > _MAX_QUERY_WORDS or len(q) > 180 or norm_q in seen:
+            return None
+        return q
+
+    def _fallback_tasks(self, candidates, seen, *, max_targets, queries_per_node,
+                        purpose: str | None) -> list[ResearchTask]:
+        """LLM 장애 시에만 쓰는 최소 안전 경로. 정상 계획을 조타하지 않는다."""
+        out: list[ResearchTask] = []
+        axes = ("influence", "popularity", "sustainability", "social_value")
+        for idx, cand in enumerate(candidates[:max_targets]):
+            variants = []
+            for raw in cand.templates:
+                q = self._clean_query(raw, cand, seen)
+                if not q:
+                    continue
+                variants.append(QueryVariant(
+                    text=q, channels=["web", "news"], strategy="discovery",
+                    expected_signal=purpose or "평가 가능한 직접 근거",
+                ))
+                seen.add(normalize_text(q))
+                if len(variants) >= queries_per_node:
+                    break
+            if not variants:
+                continue
+            axis = axes[idx % len(axes)]
+            question = purpose or f"{cand.proper_nouns[0]}의 {axis} 직접 근거는 무엇인가?"
+            out.append(ResearchTask(
+                task_id=short_hash(f"{cand.ref}|{axis}|{normalize_text(question)}"),
+                target=cand.ref, axis=axis, question=question,
+                evidence_goal="검증 가능한 직접 출처 1건 이상",
+                evidence_type="discovery", variants=variants,
+                why="Navigator 장애 시 최소 수집 폴백",
+            ))
+        return out
