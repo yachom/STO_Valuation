@@ -232,31 +232,38 @@ class SlackNotifier:
         source: str | None = None,
         level: str = "ERROR",
         extra: dict | None = None,
+        force_channels: list[str] | None = None,
     ) -> bool:
-        """분류→dedup→POST. 보냈으면 True, (no-op/throttle/실패) False.
+        """분류→dedup→POST. 보냈으면(1채널 이상) True, (no-op/throttle/실패) False.
 
-        절대 raise하지 않는다.
+        force_channels를 주면 분류를 건너뛰고 그 채널들에 모두 보낸다(외부 오류를
+        api_limit·alerts 동시 통지 등). 절대 raise하지 않는다.
         """
         try:
-            channel = classify_channel(
-                exc_type=exc_type, message=message, status=status,
-                logger_name=logger_name)
-            url = self._webhooks.get(channel)
-            if not url:
-                return False  # 채널 미설정 → silent no-op
+            if force_channels is not None:
+                channels = list(force_channels)
+            else:
+                channels = [classify_channel(
+                    exc_type=exc_type, message=message, status=status,
+                    logger_name=logger_name)]
 
             safe_msg = redact(message or "")
             prefix = safe_msg[: self._msg_prefix_len]
-            dedup_key = (channel, logger_name or source or "", exc_type or "", prefix)
-            if not self._dedup_ok(dedup_key):
-                return False
-
-            payload = self._build_payload(
-                channel=channel, title=title, exc_type=exc_type,
-                message=safe_msg, status=status, logger_name=logger_name,
-                source=source, level=level, extra=extra)
-            self._dispatch(channel, url, payload)
-            return True
+            sent_any = False
+            for channel in channels:
+                url = self._webhooks.get(channel)
+                if not url:
+                    continue  # 채널 미설정 → silent no-op
+                dedup_key = (channel, logger_name or source or "", exc_type or "", prefix)
+                if not self._dedup_ok(dedup_key):
+                    continue
+                payload = self._build_payload(
+                    channel=channel, title=title, exc_type=exc_type,
+                    message=safe_msg, status=status, logger_name=logger_name,
+                    source=source, level=level, extra=extra)
+                self._dispatch(channel, url, payload)
+                sent_any = True
+            return sent_any
         except Exception as e:  # 알림은 절대 호출부를 깨지 않는다
             logger.debug("slack notify_error swallowed: %s", e)
             return False

@@ -19,6 +19,8 @@ from pathlib import Path
 import music_copyright
 from infra.agent.tracing import make_run_id, run_tracer
 from infra.env import load_env
+from infra.external import audit
+from infra.notify.slack import enable_slack_alerting
 from music_copyright.graphflow.graph.driver import close_music_driver, get_music_driver
 from music_copyright.graphflow.seeder import seed_from_identity
 from music_copyright.resolver import WorkResolver
@@ -55,6 +57,7 @@ def main():
         args.expand_rounds = max(1, args.expand_rounds)
 
     load_env()
+    enable_slack_alerting()   # 외부 API 오류를 Slack로 통지(웹훅 없으면 silent no-op)
     cid = os.environ.get("SPOTIFY_CLIENT_ID")
     secret = os.environ.get("SPOTIFY_CLIENT_SECRET")
     ua = os.environ.get("MUSICBRAINZ_USER_AGENT")
@@ -78,6 +81,9 @@ def main():
                         metadata={"work_id": ident.work_id, "isrc": ident.isrc,
                                   "iswc": ident.iswc}) as tracer:
             out_dir = args.out or str(tracer.run_dir)
+            # 외부호출 기록·알림에 박을 자산 컨텍스트(asset_type:asset_id).
+            audit.set_external_context(asset_type="music_copyright",
+                                       asset_id=ident.work_id, phase="seed")
 
             print("[2/3] 그래프 시드 적재 중 (구조 + 정형 보강)...")
             seed_out = seed_from_identity(
@@ -104,6 +110,7 @@ def main():
             if args.expand_rounds > 0:
                 print(f"  EXPAND {args.expand_rounds}라운드 (웹검색 Fact 보강)...")
             print(f"[3/3] 보고서 생성 중 (GPT 집필·종합, 축 {len(axes)}개)... → {out_dir}")
+            audit.set_external_context(phase="report")
             if args.workflow:
                 from music_copyright.graphflow.workflow import run_report_pipeline
                 state = run_report_pipeline(ident.work_id, out_dir=out_dir,
@@ -115,6 +122,8 @@ def main():
                 report = generate_report(driver, ident.work_id, out_dir=out_dir,
                                          evidence_k=args.evidence_k,
                                          expand_rounds=args.expand_rounds, axes=axes)
+
+            audit.flush_summary()   # 실행 종료 — 외부호출 요약 1건을 alerts 채널로
 
         val = report.get("valuation", {})
         print("\n=== 보고서 완료 ===")

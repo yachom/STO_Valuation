@@ -180,6 +180,16 @@ def get_tracer() -> RunTracer | None:
     return _current_tracer.get()
 
 
+def current_node() -> str | None:
+    """현재 파이프라인 노드(emit 자동 스탬핑 contextvar) — 외부호출 기록에 부착."""
+    return _current_node.get()
+
+
+def current_axis() -> str | None:
+    """현재 평가 축(contextvar) — 외부호출 기록에 부착."""
+    return _current_axis.get()
+
+
 @contextmanager
 def run_tracer(run_id: str, db_path: str | Path, *,
                session_id: str | None = None, trace_name: str | None = None,
