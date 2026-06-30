@@ -8,7 +8,6 @@ E# → 노드 ref 매핑은 코드가 한다 (LLM은 인덱스만 다룸). LLM�
 
 from __future__ import annotations
 
-import logging
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -18,7 +17,6 @@ from music_copyright.graphflow.agents.base import music_system_prompt
 from music_copyright.graphflow.composer import format_evidence
 from music_copyright.graphflow.prompts import get_prompt
 
-logger = logging.getLogger("music_copyright.writer")
 
 # 기본 축 — influence/popularity/sustainability/social_value (axes.BASE_AXES와 일치).
 # report.py는 Axis 객체로 title/focus를 직접 넘기므로 이 표는 키-문자열 호출 시 폴백.

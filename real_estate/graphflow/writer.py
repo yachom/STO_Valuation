@@ -9,7 +9,6 @@ E# → 노드 ref 매핑은 코드가 한다 (LLM은 인덱스만 다룸).
 
 from __future__ import annotations
 
-import logging
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -19,7 +18,6 @@ from real_estate.graphflow.agents.base import korean_system_prompt
 from real_estate.graphflow.prompts import get_prompt
 from real_estate.graphflow.composer import format_evidence
 
-logger = logging.getLogger("graphflow.writer")
 
 AXIS_TITLES = {
     "tenant": "임차(테넌트) 가치 분석",

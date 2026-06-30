@@ -6,7 +6,6 @@
 
 from __future__ import annotations
 
-import logging
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -15,7 +14,6 @@ from infra.agent.roles.synthesizer import BaseSynthesizerAgent
 from music_copyright.graphflow.agents.base import music_system_prompt
 from music_copyright.graphflow.prompts import get_prompt
 
-logger = logging.getLogger("music_copyright.synthesizer")
 
 Grade = Literal["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D"]
 OptionalGrade = Literal["", "A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D"]

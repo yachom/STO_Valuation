@@ -6,7 +6,6 @@
 
 from __future__ import annotations
 
-import logging
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -15,7 +14,6 @@ from infra.agent.roles.synthesizer import BaseSynthesizerAgent
 from real_estate.graphflow.agents.base import korean_system_prompt
 from real_estate.graphflow.prompts import get_prompt
 
-logger = logging.getLogger("graphflow.synthesizer")
 
 
 class OverviewClaimDraft(BaseModel):
