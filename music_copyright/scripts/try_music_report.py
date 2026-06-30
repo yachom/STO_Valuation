@@ -90,15 +90,16 @@ def main():
 
             # ── 평가 축 해소: 기본 3축 + 사람(--axis) + 에이전트(--discover-axes) ──
             from music_copyright.graphflow.axes import (
-                AxisDiscoverer, parse_human_axis, resolve_axes)
+                BASE_AXES, AxisDiscoverer, parse_human_axis, resolve_axes)
             from music_copyright.graphflow.graph.queries import work_card_text
             human = [a for a in (parse_human_axis(s) for s in args.axis) if a]
             discovered = []
             if args.discover_axes:
                 discovered = AxisDiscoverer().discover(work_card_text(driver, ident.work_id))
             axes = resolve_axes(human=human, discovered=discovered)
-            if len(axes) > 3:
-                print(f"  추가 평가축: {[a.label for a in axes[3:]]}")
+            print(f"  기본 평가축: {[a.label for a in BASE_AXES]}")
+            if len(axes) > len(BASE_AXES):
+                print(f"  추가 평가축: {[a.label for a in axes[len(BASE_AXES):]]}")
 
             if args.expand_rounds > 0:
                 print(f"  EXPAND {args.expand_rounds}라운드 (웹검색 Fact 보강)...")
@@ -118,6 +119,8 @@ def main():
         val = report.get("valuation", {})
         print("\n=== 보고서 완료 ===")
         print(f"  report_id : {report['report_id']}")
+        print(f"  자산가치 등급 : {val.get('asset_grade') or '-'}")
+        print(f"  사회적 가치 등급 : {val.get('social_grade') or '-'}")
         print(f"  종합 등급  : {val.get('overall_grade') or '-'}")
         for a in val.get("axis_scores", []):
             print(f"    - {a['axis']} ({a['grade']}): {a['rationale'][:60]}...")

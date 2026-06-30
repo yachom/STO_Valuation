@@ -85,6 +85,10 @@ def genius_song(title: str | None, artist: str | None, token: str | None) -> dic
             if rtype in _COVER_RELS:
                 covers.append(entry)
 
+    # description(에디토리얼 'About') — 곡의 주제·사회적 맥락이 담긴 자유서술.
+    # 사회적 가치 신호(의제·메시지)를 추출할 1차 텍스트 소스(?text_format=plain 요청됨).
+    desc = ((song.get("description") or {}).get("plain") or "").strip()
+
     out = {
         "song_id": sid,
         "pageviews": ((song.get("stats") or {}).get("pageviews")),
@@ -93,9 +97,10 @@ def genius_song(title: str | None, artist: str | None, token: str | None) -> dic
         "samples": samples,
         "derivatives": derivatives,
         "covers": covers,
+        "description": desc,
         "url": song.get("url"),
     }
-    logger.info("genius %s: producers=%d writers=%d samples=%d deriv=%d pv=%s", sid,
+    logger.info("genius %s: producers=%d writers=%d samples=%d deriv=%d pv=%s desc=%dch", sid,
                 len(out["producers"]), len(out["writers"]), len(samples),
-                len(derivatives), out["pageviews"])
+                len(derivatives), out["pageviews"], len(desc))
     return out

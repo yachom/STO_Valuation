@@ -19,17 +19,23 @@ from music_copyright.graphflow.prompts import get_prompt
 
 logger = logging.getLogger("music_copyright.writer")
 
-# 3축 — influence/popularity/sustainability (profiles.REPORT_AXES와 일치)
+# 기본 축 — influence/popularity/sustainability/social_value (axes.BASE_AXES와 일치).
+# report.py는 Axis 객체로 title/focus를 직접 넘기므로 이 표는 키-문자열 호출 시 폴백.
 AXIS_TITLES = {
     "influence": "영향력 분석",
     "popularity": "대중성·팬덤 분석",
     "sustainability": "지속성 분석",
+    "social_value": "사회적 가치 분석",
 }
 
 AXIS_FOCUS = {
     "influence": "비평·문화적 영향, 수상·미디어 언급, 창작자(작곡·작사) 위상, 샘플·커버·인용",
     "popularity": "차트 성적, 스트리밍·플랫폼 도달, 청취자 규모, 팬덤 활동",
     "sustainability": "롱테일 스트리밍·재생 지속, 권리 카탈로그 안정성, 라이선스 다양성, 세대 전이",
+    "social_value": "작품이 다루는 사회적 의제와 메시지, 사회운동·공익 연계, 대표성·다양성, "
+                    "아티스트/가수와 팬덤이 만든 공익·문화외교 맥락, 공동체·세대·국가를 "
+                    "잇는 사회적 파급과 공적 활용. 단, 작품 자체 근거와 아티스트/팬덤 "
+                    "맥락은 구분",
 }
 
 
