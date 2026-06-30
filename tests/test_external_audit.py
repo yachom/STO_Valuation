@@ -119,6 +119,27 @@ class ExternalAuditTest(unittest.TestCase):
         self.assertIn("총 2건", self.captured[0][1]["text"])
         self.assertIn("오류 1건", self.captured[0][1]["text"])
 
+    # ── BaseExternalClient._audited (라이브러리 호출 래핑) ─────
+    def test_base_client_audited(self):
+        from infra.external.base_client import BaseExternalClient
+
+        class _Dummy(BaseExternalClient):
+            api_name = "dummy"
+
+        c = _Dummy()
+        with c._audited("op_ok", request_summary="q"):
+            pass
+        self.assertEqual(self._lines()[-1]["status"], 200)
+        self.assertEqual(self._lines()[-1]["api_name"], "dummy")
+        self.assertEqual(self.captured, [])             # 성공은 Slack 안 감
+
+        with self.assertRaises(ValueError):
+            with c._audited("op_err"):
+                raise ValueError("boom")
+        self.assertIsNone(self._lines()[-1]["status"])  # 예외 → status None
+        self.assertEqual(sorted(ch for ch, _ in self.captured),
+                         [CHANNEL_ALERTS, CHANNEL_API_LIMIT])
+
 
 if __name__ == "__main__":
     unittest.main()

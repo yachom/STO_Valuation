@@ -15,19 +15,21 @@ from __future__ import annotations
 
 import json
 import logging
-import time
 
 import requests
 
-from infra.gateway import APIGateway, get_default
+from infra.external.base_client import BaseExternalClient
+from infra.gateway import APIGateway
 
 logger = logging.getLogger("external.lh_public_housing")
 
 
-class LhClient:
+class LhClient(BaseExternalClient):
     """LH OpenAPI thin wrapper. endpoint별 응답 형태가 살짝 달라 호출자가
-    원본 dict를 받아 정규화한다.
+    원본 dict를 받아 정규화한다. (모든 응답·오류는 BaseExternalClient transport→audit 경유)
     """
+
+    api_name = "lh_public_housing"
 
     def __init__(
         self,
@@ -36,10 +38,8 @@ class LhClient:
         timeout: float = 15.0,
         gateway: APIGateway | None = None,
     ):
+        super().__init__(gateway=gateway, timeout=timeout)
         self._service_key = service_key
-        self._api_name = "lh_public_housing"
-        self._timeout = timeout
-        self._gateway = gateway if gateway is not None else get_default()
 
     def get(self, endpoint: str, params: dict | None = None) -> dict:
         merged = {
@@ -49,26 +49,18 @@ class LhClient:
             "_type": "json",
             **(params or {}),
         }
-        self._gateway.wait(self._api_name)
-        started_at = time.monotonic()
+        status, text, _ = self._get_requests(
+            requests, endpoint, merged,
+            on_error=lambda exc: RuntimeError(f"LH 호출 실패: {exc}"),
+            operation="get")
         try:
-            response = requests.get(endpoint, params=merged, timeout=self._timeout)
-        except Exception as exc:
-            logger.warning("GET %s -> 네트워크 오류: %s", endpoint, exc)
-            raise RuntimeError(f"LH 호출 실패: {exc}") from exc
-
-        elapsed_ms = int((time.monotonic() - started_at) * 1000)
-        try:
-            data = json.loads(response.text)
+            data = json.loads(text)
         except json.JSONDecodeError as exc:
             raise RuntimeError(
-                f"LH가 JSON이 아닌 응답을 반환했습니다. 원문: {response.text[:300]}"
+                f"LH가 JSON이 아닌 응답을 반환했습니다. 원문: {text[:300]}"
             ) from exc
 
-        logger.info(
-            "GET %s -> %s (%dms)",
-            endpoint, response.status_code, elapsed_ms,
-        )
+        logger.info("GET %s -> %s", endpoint, status)
         return data
 
     @staticmethod

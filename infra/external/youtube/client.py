@@ -12,11 +12,12 @@ import logging
 from dataclasses import dataclass, field
 from typing import Any
 
+from infra.external.base_client import BaseExternalClient
 from infra.external.youtube.exceptions import (
     YouTubeDependencyError,
     YouTubeExtractError,
 )
-from infra.gateway import APIGateway, get_default
+from infra.gateway import APIGateway
 
 logger = logging.getLogger("external.youtube")
 
@@ -81,10 +82,12 @@ class _YtdlpLogger:
         logger.debug("yt-dlp error: %s", message)
 
 
-class YouTubeClient:
-    """yt-dlp thin wrapper. Optional dependency라 import는 호출 시점에 수행한다."""
+class YouTubeClient(BaseExternalClient):
+    """yt-dlp thin wrapper. Optional dependency라 import는 호출 시점에 수행한다.
+    (검색 호출 성공/실패는 BaseExternalClient._audited로 audit 기록·오류 통지)"""
 
     API_NAME = "youtube"
+    api_name = "youtube"
 
     def __init__(
         self,
@@ -94,9 +97,9 @@ class YouTubeClient:
         gateway: APIGateway | None = None,
         verbose: bool = False,
     ):
+        super().__init__(gateway=gateway, timeout=timeout)
         self.timeout = timeout
         self.retries = retries
-        self._gateway = gateway if gateway is not None else get_default()
         self.verbose = verbose
 
     def search(self, query: str, *, max_results: int = 5) -> list[YouTubeSearchResult]:
@@ -117,18 +120,19 @@ class YouTubeClient:
         }
 
         self._gateway.wait(self.API_NAME)
-        try:
-            with YoutubeDL(options) as ydl:
-                info = ydl.extract_info(f"ytsearch{int(max_results)}:{query}", download=False)
-        except DownloadError as exc:
-            raise YouTubeExtractError(f"YouTube 검색 실패: {exc}", cause=exc) from exc
-        except Exception as exc:
-            raise YouTubeExtractError(f"YouTube 추출 오류: {exc}", cause=exc) from exc
+        with self._audited("search", request_summary=query):
+            try:
+                with YoutubeDL(options) as ydl:
+                    info = ydl.extract_info(f"ytsearch{int(max_results)}:{query}", download=False)
+            except DownloadError as exc:
+                raise YouTubeExtractError(f"YouTube 검색 실패: {exc}", cause=exc) from exc
+            except Exception as exc:
+                raise YouTubeExtractError(f"YouTube 추출 오류: {exc}", cause=exc) from exc
 
-        entries = (info or {}).get("entries") or []
-        out = [_to_result(e, collector.warnings) for e in entries if e]
-        logger.info("youtube '%s' → %d results", query[:40], len(out))
-        return out
+            entries = (info or {}).get("entries") or []
+            out = [_to_result(e, collector.warnings) for e in entries if e]
+            logger.info("youtube '%s' → %d results", query[:40], len(out))
+            return out
 
 
 def _import_ytdlp():

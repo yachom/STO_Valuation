@@ -17,11 +17,11 @@ from __future__ import annotations
 
 import json
 import logging
-import time
 
 import requests
 
-from infra.gateway import APIGateway, get_default
+from infra.external.base_client import BaseExternalClient
+from infra.gateway import APIGateway
 
 logger = logging.getLogger("external.seoul_open_data")
 
@@ -29,7 +29,9 @@ _BASE_URL = "http://openapi.seoul.go.kr:8088"
 _API_NAME = "seoul_open_data"
 
 
-class SeoulOpenDataClient:
+class SeoulOpenDataClient(BaseExternalClient):
+    api_name = _API_NAME
+
     def __init__(
         self,
         service_key: str,
@@ -37,9 +39,8 @@ class SeoulOpenDataClient:
         timeout: float = 15.0,
         gateway: APIGateway | None = None,
     ):
+        super().__init__(gateway=gateway, timeout=timeout)
         self._service_key = service_key
-        self._timeout = timeout
-        self._gateway = gateway if gateway is not None else get_default()
 
     def fetch_page(
         self,
@@ -59,20 +60,15 @@ class SeoulOpenDataClient:
             parts.extend(path_keys)
         url = "/".join(parts)
 
-        self._gateway.wait(_API_NAME)
-        started_at = time.monotonic()
+        status, text, _ = self._get_requests(
+            requests, url, {},
+            on_error=lambda exc: RuntimeError(f"서울 열린데이터 호출 실패: {exc}"),
+            operation="fetch_page")
         try:
-            response = requests.get(url, timeout=self._timeout)
-        except Exception as exc:
-            logger.warning("GET %s -> 네트워크 오류: %s", service_name, exc)
-            raise RuntimeError(f"서울 열린데이터 호출 실패: {exc}") from exc
-
-        elapsed_ms = int((time.monotonic() - started_at) * 1000)
-        try:
-            data = json.loads(response.text)
+            data = json.loads(text)
         except json.JSONDecodeError as exc:
             raise RuntimeError(
-                f"서울 열린데이터가 유효한 JSON이 아님. 원문: {response.text[:300]}"
+                f"서울 열린데이터가 유효한 JSON이 아님. 원문: {text[:300]}"
             ) from exc
 
         # 정상 응답: data[service_name]['RESULT']['CODE'] == 'INFO-000'
@@ -84,7 +80,7 @@ class SeoulOpenDataClient:
                 raise RuntimeError(
                     f"서울 열린데이터 오류: {code} {msg}"
                 )
-            raise RuntimeError(f"예상치 못한 응답: {response.text[:300]}")
+            raise RuntimeError(f"예상치 못한 응답: {text[:300]}")
 
         result = data[service_name].get("RESULT", {})
         if result.get("CODE") not in ("INFO-000", "INFO-200"):
@@ -93,8 +89,8 @@ class SeoulOpenDataClient:
             )
 
         logger.info(
-            "GET %s [%d~%d] -> %s (%dms)",
-            service_name, start_idx, end_idx, response.status_code, elapsed_ms,
+            "GET %s [%d~%d] -> %s",
+            service_name, start_idx, end_idx, status,
         )
         return data[service_name]
 
