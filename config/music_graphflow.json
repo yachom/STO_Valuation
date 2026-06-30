@@ -15,10 +15,10 @@
   },
 
   "retrieval": {
-    "evidence_k":    16,
-    "news_k":        6,
+    "evidence_k":    28,
+    "news_k":        10,
     "alpha":         0.6,
-    "max_hops":      4,
+    "max_hops":      5,
     "semantic":      true,
     "corroboration": true,
     "corrob_beta":   0.35,
@@ -26,10 +26,10 @@
   },
 
   "expand": {
-    "rounds":             2,
-    "frontier_max":       6,
+    "rounds":             3,
+    "frontier_max":       8,
     "queries_per_node":   2,
-    "total_query_budget": 16,
+    "total_query_budget": 24,
     "novelty_threshold":  0.1,
     "min_query_utility":  0.18,
     "max_poor_rounds":    2
@@ -47,9 +47,9 @@
     "mode":       "proposal_first",
     "min_conf":   0.72,
     "scope_hops": 4,
-    "max_entities": 24,
-    "facts_per_entity": 4,
-    "max_proposals": 16,
+    "max_entities": 40,
+    "facts_per_entity": 8,
+    "max_proposals": 28,
     "auto_commit_edges": ["CHARTED_ON", "WON", "CERTIFIED", "HAS_FANDOM"]
   },
 

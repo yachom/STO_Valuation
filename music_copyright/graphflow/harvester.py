@@ -43,8 +43,8 @@ from music_copyright.graphflow.traversal import scope_eids
 
 logger = logging.getLogger("music_copyright.harvester")
 
-_MAX_DOCS_PER_QUERY = 8
-_MAX_FACTS_PER_DOC = 6
+_MAX_DOCS_PER_QUERY = 12
+_MAX_FACTS_PER_DOC = 10
 _BODY_TRIM = 3000
 _MIN_DOC_RELEVANCE = 0.3
 # 쿼리 내 문서별 LLM 추출(_ingest_doc)을 병렬화하는 스레드풀 동시성 상한.
