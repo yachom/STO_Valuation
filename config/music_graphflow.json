@@ -1,7 +1,7 @@
 {
-  "_comment": "music_copyright graphflow 파이프라인 튜닝 — 축·검색·확장·큐레이션·QA. 모델은 models.json(공유), 프롬프트는 music_prompts.json. 우선순위: 이 파일 > 코드 기본값(music_copyright/graphflow/config.py:_DEFAULTS). web-search-first 자산이라 expand가 시드 역할도 한다(STUB). axes = 사회·문화가치형 3축.",
+  "_comment": "music_copyright graphflow 파이프라인 튜닝 — 축·검색·확장·큐레이션·QA. 모델은 models.json(공유), 프롬프트는 music_prompts.json. 우선순위: 이 파일 > 코드 기본값(music_copyright/graphflow/config.py:_DEFAULTS). web-search-first 자산이라 expand가 시드 역할도 한다(STUB). axes = 자산가치 3축 + 사회적 가치 1축(이중 트랙).",
 
-  "axes": ["influence", "popularity", "sustainability"],
+  "axes": ["influence", "popularity", "sustainability", "social_value"],
 
   "curation": {
     "mode": "static",
@@ -9,8 +9,9 @@
     "moderator_budget_per_round": 2,
     "moderator_max_questions": 2,
     "perspectives_max": 2,
-    "turns_per_perspective": 3,
-    "research_budget": 2
+    "turns_per_perspective": 2,
+    "research_budget": 2,
+    "total_research_query_budget": 24
   },
 
   "retrieval": {
@@ -28,13 +29,40 @@
     "rounds":             2,
     "frontier_max":       6,
     "queries_per_node":   2,
-    "total_query_budget": 8,
-    "novelty_threshold":  0.1
+    "total_query_budget": 16,
+    "novelty_threshold":  0.1,
+    "min_query_utility":  0.18,
+    "max_poor_rounds":    2
+  },
+
+  "consolidate": {
+    "enabled":    true,
+    "mode":       "rules_first",
+    "min_conf":   0.6,
+    "scope_hops": 4
+  },
+
+  "agentic_graph": {
+    "enabled":    true,
+    "mode":       "proposal_first",
+    "min_conf":   0.72,
+    "scope_hops": 4,
+    "max_entities": 24,
+    "facts_per_entity": 4,
+    "max_proposals": 16,
+    "auto_commit_edges": ["CHARTED_ON", "WON", "CERTIFIED", "HAS_FANDOM"]
   },
 
   "qa": {
     "min_evidence":  2,
     "min_top_score": 0.12,
-    "mini_expand":   {"rounds": 1, "frontier_max": 2, "total_query_budget": 3}
+    "mini_expand":   {"rounds": 1, "frontier_max": 2, "total_query_budget": 3},
+    "post_write_gap_expand": {
+      "enabled": true,
+      "max_axes": 2,
+      "rounds": 1,
+      "frontier_max": 2,
+      "total_query_budget": 3
+    }
   }
 }

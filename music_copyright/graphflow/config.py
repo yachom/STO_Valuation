@@ -38,20 +38,23 @@ _DEFAULTS: dict[str, Any] = {
             "haiku":    {"provider": "anthropic", "model": "claude-haiku-4-5-20251001", "max_tokens": 4096},
             "gpt_mini": {"provider": "openai", "model": "gpt-4o-mini", "max_tokens": 4096},
         },
-        # 음악 에이전트 → 티어. config/models.json의 agents에도 등록해야 env override가
-        # 일관되게 먹는다(이건 안전망). TODO(domain): 에이전트 셋업 확정 시 정련.
-        # 전 음악 에이전트 OpenAI(gpt_mini=gpt-4o-mini)로 통일 — Anthropic/Opus 미사용.
-        # 품질 필요 시 writer/synthesizer만 gpt-4o 티어로 상향 가능.
+        # 음악 에이전트 → 티어. config/models.json의 agents가 진실(이 _DEFAULTS는 안전망).
+        # 실제 매핑(models.json): 추출·계획·제안 계열은 gpt_mini(gpt-4o-mini)로 저비용,
+        # 품질이 중요한 writer/synthesizer만 gpt_54(gpt-5.4)로 상향한 비용/품질 분리 구조.
+        # 아래 dict는 파일 부재 시 폴백이라 보수적으로 gpt_mini로 둔다(파일이 우선).
         "agents": {
             "music_navigator": "gpt_mini", "music_harvester": "gpt_mini",
             "music_writer": "gpt_mini", "music_synthesizer": "gpt_mini",
             "music_perspectivist": "gpt_mini", "music_questioner": "gpt_mini",
             "music_researcher": "gpt_mini", "music_moderator": "gpt_mini",
-            "music_outliner": "gpt_mini",
+            "music_outliner": "gpt_mini", "music_social_extractor": "gpt_mini",
+            "music_graph_proposer": "gpt_mini", "music_reranker": "gpt_mini",
+            "music_agency_classifier": "gpt_mini",
         },
     },
-    # 보고서 3축 — influence·popularity·sustainability (profiles.REPORT_AXES와 일치).
-    "axes": ["influence", "popularity", "sustainability"],
+    # 보고서 기본 4축 — 자산가치 3축(influence·popularity·sustainability) + 사회적
+    # 가치 1축(social_value). axes.BASE_AXES / profiles.REPORT_AXES와 일치.
+    "axes": ["influence", "popularity", "sustainability", "social_value"],
     "retrieval": {
         "evidence_k": 12, "news_k": 2, "alpha": 0.6, "max_hops": 4,
         "semantic": True, "corroboration": True, "corrob_beta": 0.35, "fact_reserve": 0,
@@ -59,16 +62,31 @@ _DEFAULTS: dict[str, Any] = {
     "expand": {
         "rounds": 2, "frontier_max": 12, "queries_per_node": 3,
         "total_query_budget": 100, "novelty_threshold": 0.1,
+        "min_query_utility": 0.18, "max_poor_rounds": 2,
+    },
+    "consolidate": {
+        "enabled": True, "mode": "rules_first", "min_conf": 0.6, "scope_hops": 4,
+    },
+    "agentic_graph": {
+        "enabled": False, "mode": "proposal_first", "min_conf": 0.72,
+        "scope_hops": 4, "max_entities": 16, "facts_per_entity": 3,
+        "max_proposals": 8,
+        "auto_commit_labels": ["Fandom", "SocialTheme", "Cause", "PublicUse"],
     },
     "qa": {
         "min_evidence": 2, "min_top_score": 0.12,
         "mini_expand": {"rounds": 1, "frontier_max": 2, "total_query_budget": 3},
+        "post_write_gap_expand": {
+            "enabled": True, "max_axes": 2, "rounds": 1,
+            "frontier_max": 2, "total_query_budget": 3,
+        },
     },
     # 담론 큐레이션 — static=결정 경로 불변(real_estate와 동형). TODO(domain).
     "curation": {
         "mode": "static", "moderator_max_rounds": 2,
         "moderator_budget_per_round": 6, "moderator_max_questions": 3,
         "perspectives_max": 2, "turns_per_perspective": 2, "research_budget": 3,
+        "total_research_query_budget": 24,
     },
 }
 

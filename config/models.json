@@ -1,43 +1,75 @@
 {
   "_comment": "LLM 모델 티어 + 에이전트→티어 매핑. 사용자가 모델을 갈아끼우는 곳. 우선순위: env override(TIER_<TIER>_*/AGENT_TIER_<AGENT>) > 이 파일 > 코드 기본값(real_estate/graphflow/config.py:_DEFAULTS). 'local' 티어는 openai_compat(vLLM) — base_url은 TIER_LOCAL_BASE_URL로 override, 키는 LOCAL_LLM_API_KEY. vLLM 미가동 시 클라우드 폴백: AGENT_TIER_DOC_REQUESTER=sonnet.",
-
   "tiers": {
-    "opus":     {"provider": "anthropic", "model": "claude-opus-4-8",            "max_tokens": 8000},
-    "sonnet":   {"provider": "anthropic", "model": "claude-sonnet-4-6",          "max_tokens": 8000},
-    "haiku":    {"provider": "anthropic", "model": "claude-haiku-4-5-20251001",  "max_tokens": 4096},
-    "gpt_mini": {"provider": "openai",    "model": "gpt-4o-mini",                "max_tokens": 4096, "extra": {"max_retries": 6}},
-    "gpt_54":   {"provider": "openai",    "model": "gpt-5.4",                    "max_tokens": 8000, "extra": {"max_retries": 4}},
-    "local":    {"provider": "openai_compat", "model": "Qwen/Qwen2.5-7B-Instruct", "base_url": "http://localhost:8000/v1", "max_tokens": 4096}
+    "opus": {
+      "provider": "anthropic",
+      "model": "claude-opus-4-8",
+      "max_tokens": 8000
+    },
+    "sonnet": {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "max_tokens": 8000
+    },
+    "haiku": {
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5-20251001",
+      "max_tokens": 4096
+    },
+    "gpt_mini": {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "max_tokens": 4096,
+      "extra": {
+        "max_retries": 6
+      }
+    },
+    "gpt_54": {
+      "provider": "openai",
+      "model": "gpt-5.4",
+      "max_tokens": 8000,
+      "extra": {
+        "max_retries": 4
+      }
+    },
+    "local": {
+      "provider": "openai_compat",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "base_url": "http://localhost:8000/v1",
+      "max_tokens": 4096
+    }
   },
-
   "agents": {
-    "navigator":    "haiku",
+    "navigator": "haiku",
     "doc_requester": "local",
-    "harvester":    "gpt_mini",
-    "prefilter":    "gpt_mini",
-    "curator":      "haiku",
-    "walk_judge":   "haiku",
-    "writer":       "sonnet",
-    "synthesizer":  "opus",
-    "auditor":      "sonnet",
-    "reviser":      "sonnet",
-    "qa":           "sonnet",
+    "harvester": "gpt_mini",
+    "prefilter": "gpt_mini",
+    "curator": "haiku",
+    "walk_judge": "haiku",
+    "writer": "sonnet",
+    "synthesizer": "opus",
+    "auditor": "sonnet",
+    "reviser": "sonnet",
+    "qa": "sonnet",
     "qa_recognize": "haiku",
-    "moderator":    "haiku",
+    "moderator": "haiku",
     "perspectivist": "sonnet",
-    "questioner":   "haiku",
-    "researcher":   "gpt_mini",
-    "outliner":     "sonnet",
-
-    "music_navigator":   "gpt_mini",
-    "music_harvester":   "gpt_mini",
-    "music_writer":      "gpt_54",
+    "questioner": "haiku",
+    "researcher": "gpt_mini",
+    "outliner": "sonnet",
+    "music_navigator": "gpt_mini",
+    "music_harvester": "gpt_mini",
+    "music_writer": "gpt_54",
     "music_synthesizer": "gpt_54",
     "music_perspectivist": "gpt_mini",
-    "music_questioner":    "gpt_mini",
-    "music_researcher":    "gpt_mini",
-    "music_moderator":     "gpt_mini",
-    "music_outliner":      "gpt_mini",
-    "music_axis_discoverer": "gpt_mini"
+    "music_questioner": "gpt_mini",
+    "music_researcher": "gpt_mini",
+    "music_moderator": "gpt_mini",
+    "music_outliner": "gpt_mini",
+    "music_axis_discoverer": "gpt_mini",
+    "music_social_extractor": "gpt_mini",
+    "music_graph_proposer": "gpt_mini",
+    "music_reranker": "gpt_mini",
+    "music_agency_classifier": "gpt_mini"
   }
 }
