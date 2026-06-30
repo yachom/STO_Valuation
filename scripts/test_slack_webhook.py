@@ -27,6 +27,7 @@
     python -m scripts.test_slack_webhook --connectivity-only  # 채널별 직접 POST 1회씩만
     python -m scripts.test_slack_webhook --dry-run            # 실제 전송 없이 라우팅/분류만
     python -m scripts.test_slack_webhook --target tavily      # 실 provider client(BAD key)로 동일 경로
+    python -m scripts.test_slack_webhook --target clients     # 3계층 transport 4종 커버리지(대표 client)
 
 주의: --dry-run이 아니면 **실제 Slack 채널에 `[웹훅 테스트]` 메시지가 전송된다.**
 """
@@ -36,9 +37,11 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import tempfile
 import time
 import urllib.error
 import urllib.request
+from pathlib import Path
 
 from infra.env import load_env
 from infra.notify.slack import (
@@ -144,12 +147,73 @@ def _connectivity_check(notifier: SlackNotifier) -> None:
                           status=500, logger_name="webhook_test", source="webhook_test")
 
 
+def _exercise_clients(records: list, *, dry: bool) -> None:
+    """3계층(transport 4종)의 대표 client를 '잘못된 키/입력'으로 호출해, 각 계층이
+    audit 경유(로컬 responses.jsonl 기록 + 오류 Slack 양채널)를 타는지 검증한다.
+
+    4종 transport가 외부 client 17종 전부를 커버하므로, 각 1대표만 쳐도 전 계층 증명:
+      - infra/_http timed_urlopen   : naver·tavily
+      - infra/_http timed_requests_get: kakao·localdata·molit·pdp·reb·lh·seoul
+      - music/_http get_json        : genius·lastfm·deezer·musicbrainz·soundcharts·wikidata
+      - BaseExternalClient._audited : ddgs·youtube
+    임시 RunTracer를 깔아 responses.jsonl(전수 로컬 기록)도 함께 확인한다.
+    """
+    from infra.agent.tracing import RunTracer, set_tracer
+    from infra.external import audit
+
+    tmp = tempfile.mkdtemp(prefix="webhook_test_")
+    tracer = RunTracer("webhook_test_clients", Path(tmp) / "store.db")
+    set_tracer(tracer)
+    audit.set_external_context(asset_type="test", asset_id="webhook-coverage", phase="coverage")
+
+    def _tavily():
+        from infra.external.tavily.client import TavilyClient
+        TavilyClient(api_key="tvly-INVALIDKEY").search("webhook test", max_results=1)
+
+    def _kakao():
+        from real_estate.external.kakao_local.client import KakaoLocalClient
+        KakaoLocalClient(rest_key="0000000000000000bad").search_keyword("강남역", size=1)
+
+    def _genius():
+        from music_copyright.external.genius.client import genius_song
+        genius_song("LOVE ATTACK", "RESCENE", "BAD-GENIUS-TOKEN")
+
+    def _ddgs():
+        from infra.external.ddgs.client import DdgsClient
+        DdgsClient(proxy="http://127.0.0.1:9").search("webhook test", max_results=1)
+
+    layers = [
+        ("infra/_http urllib", "tavily", "naver·tavily", _tavily),
+        ("infra/_http requests", "kakao", "kakao·localdata·molit·pdp·reb·lh·seoul", _kakao),
+        ("music/_http get_json", "genius", "genius·lastfm·deezer·musicbrainz·soundcharts·wikidata", _genius),
+        ("BaseExternalClient _audited", "ddgs", "ddgs·youtube", _ddgs),
+    ]
+    print("  계층(transport) → 대표 client → Slack 채널  [그 transport를 쓰는 client들]")
+    for mech, name, covers, fn in layers:
+        before = len(records)
+        try:
+            fn()
+            note = "예외 없음"
+        except Exception as exc:  # noqa: BLE001
+            note = type(exc).__name__
+        chans = sorted({r["channel"] for r in records[before:]})
+        mark = "✅" if chans else "⚠️"
+        print(f"  {mark} {mech:30s} {name:8s} → {chans or 'Slack 없음'}  ({note})")
+        print(f"       ↳ 커버: {covers}")
+
+    rpath = tracer.run_dir / "responses.jsonl"
+    n = sum(1 for _ in open(rpath, encoding="utf-8")) if rpath.exists() else 0
+    print(f"\n  responses.jsonl(전수 로컬 기록): {n} entries → {rpath}")
+    set_tracer(None)
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description="Slack 웹훅 실전송 테스트 (LLM 무개입)")
     p.add_argument("--count", type=int, default=4, help="반복 호출 횟수 (기본 4 = 상태코드 1사이클)")
     p.add_argument("--interval", type=float, default=0.5, help="호출 간 대기(초)")
-    p.add_argument("--target", choices=["status", "tavily"], default="status",
-                   help="status(무해한 httpstat.us 상태코드 echo, 기본) / tavily(실 provider, BAD key)")
+    p.add_argument("--target", choices=["status", "tavily", "clients"], default="status",
+                   help="status(httpstat.us echo) / tavily(실 provider BAD key) / "
+                        "clients(3계층 transport 4종 커버리지 — 각 계층 대표 client)")
     p.add_argument("--throttle", type=float, default=0.0,
                    help="notifier dedup 창(초). 기본 0=중복 억제 끄고 매 호출 전송. "
                         "프로덕션 기본은 60초(동일 알림 1회).")
@@ -180,6 +244,8 @@ def main() -> int:
 
     if args.connectivity_only:
         _connectivity_check(notifier)
+    elif args.target == "clients":
+        _exercise_clients(records, dry=args.dry_run)
     elif args.target == "tavily":
         _exercise_tavily(args.count, args.interval)
     else:
