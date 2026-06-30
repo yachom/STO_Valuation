@@ -13,8 +13,9 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from music_copyright.graphflow.agents.base import BaseAgent, music_system_prompt
-from music_copyright.graphflow.composer import Evidence, format_evidence
+from infra.agent.roles.writer import BaseWriterAgent
+from music_copyright.graphflow.agents.base import music_system_prompt
+from music_copyright.graphflow.composer import format_evidence
 from music_copyright.graphflow.prompts import get_prompt
 
 logger = logging.getLogger("music_copyright.writer")
@@ -76,44 +77,28 @@ class SectionDraft(BaseModel):
     claims: list[ClaimDraft] = Field(description="이 섹션의 모든 주장 (문장 단위)")
 
 
-class MusicWriter(BaseAgent):
+class MusicWriter(BaseWriterAgent):
+    """음악 섹션 집필 — BaseWriterAgent 골격 + 음악 도메인 hook.
+
+    write()는 베이스가 제공한다. 여기선 음악 프롬프트 슬롯·스키마·프레임·축 표만 공급.
+    title/focus를 명시로 받는 동적 축이 있으므로 strict_axis=False(미등록 축은 폴백).
+    """
+
     name = "music_writer"
+    Schema = SectionDraft
+    role_key = "music_writer.role"
+    rules_key = "music_writer.rules"
+    AXIS_TITLES = AXIS_TITLES
+    AXIS_FOCUS = AXIS_FOCUS
+    card_label = "[평가 대상 저작물]"
+    outline_intro = "[아웃라인 — 이 논점들을 순서대로, 단 증거가 뒷받침하는 범위에서만]"
+    strict_axis = False
 
-    def write(
-        self,
-        axis: str,
-        work_card: str,
-        evidence: list[Evidence],
-        *,
-        violations: list[str] | None = None,
-        outline: list[str] | None = None,
-        title: str | None = None,
-        focus: str | None = None,
-    ) -> SectionDraft:
-        """섹션 1개 집필. violations면 재작성 모드. outline 있으면 그 순서로 구성.
+    def _get_prompt(self, key, **fmt):
+        return get_prompt(key, **fmt)
 
-        title/focus 미지정이면 기본 3축 룩업, 지정되면 그대로(동적 축 — 라벨·의도 전달).
-        """
-        title = title or AXIS_TITLES.get(axis, f"{axis} 분석")
-        focus = focus or AXIS_FOCUS.get(axis, "")
-        system = music_system_prompt(
-            get_prompt("music_writer.role", title=title, focus=focus)
-        ) + get_prompt("music_writer.rules")
-        user_parts = [
-            f"[평가 대상 저작물]\n{work_card}",
-            f"[증거 — 그래프 walk 수집, 경로 포함]\n{format_evidence(evidence)}",
-            "위 증거만으로 섹션을 작성하세요. 증거가 부족한 논점은 부족하다고 명시하세요.",
-        ]
-        if outline:
-            user_parts.append(
-                "[아웃라인 — 이 논점들을 순서대로, 단 증거가 뒷받침하는 범위에서만]\n"
-                + "\n".join(f"- {p}" for p in outline))
-        if violations:
-            user_parts.append(
-                "[재작성 — 직전 출력의 위반 사항을 반드시 수정]\n"
-                + "\n".join(f"- {v}" for v in violations))
-        out: SectionDraft = self.complete(
-            system=system, user="\n\n".join(user_parts), schema=SectionDraft)
-        logger.info("music_writer(%s): blocks=%d claims=%d%s", axis,
-                    len(out.blocks), len(out.claims), " (재작성)" if violations else "")
-        return out
+    def _format_evidence(self, evidence):
+        return format_evidence(evidence)
+
+    def _frame(self, role):
+        return music_system_prompt(role)
