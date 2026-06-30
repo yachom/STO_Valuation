@@ -179,6 +179,10 @@ class ResearchPlanningTest(unittest.TestCase):
         self.assertIsNone(_match_scope_name("위로의노래", scope))
         # 과다매칭 차단: 'bts'(3)가 substring이지만 비율<0.6인 'btsarmy'에 안 걸림
         self.assertIsNone(_match_scope_name("btsarmy", scope))
+        # "원어(romaja)" 합성 표면형: 괄호 떼고 정확일치로 흡수(고아 Entity 방지)
+        self.assertEqual(_match_scope_name("방탄소년단(bts)", scope), ("Artist", "a1"))
+        # 단, 괄호 제거 후에도 스코프에 없으면 매칭 안 함
+        self.assertIsNone(_match_scope_name("뉴진스(newjeans)", scope))
 
     def test_scope_name_index_registers_aliases(self) -> None:
         # 음차 별칭(원어)을 Artist에 등록해 "리센느" mention이 영문 Artist(RESCENE)에

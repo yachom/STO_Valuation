@@ -254,6 +254,10 @@ def _load_scope_names(driver: Driver, work_id: str, scope_hops: int) -> dict[str
     return _index_scope_names(rows)
 
 
+# "원어(romaja)" / "name(qualifier)" 합성 표면형의 괄호부 제거용.
+_PAREN_RE = re.compile(r"\([^)]*\)")
+
+
 def _match_scope_name(nm: str, scope_names: dict[str, tuple[str, str]]) -> tuple[str, str] | None:
     """mention 표면형(정규화)을 스코프 노드에 매칭. 정확일치 우선. 부분일치는 과다매칭을
     막는 가드를 둔다 — 짧은 이름(<3)·길이비율<0.6은 substring이라도 매칭하지 않고(예: 스코프
@@ -264,6 +268,14 @@ def _match_scope_name(nm: str, scope_names: dict[str, tuple[str, str]]) -> tuple
         return exact
     if len(nm) < 3:
         return None
+    # "원어(romaja)"/"name(qualifier)" 표기는 괄호부를 떼고 정확일치를 재시도한다 — 예
+    # "리센느(rescene)" → "리센느" → Artist. 이런 합성 표면형은 부분일치 가드(ratio<0.6)에
+    # 막혀 고아 Entity가 되므로, fuzzy가 아니라 정확일치로 안전하게 흡수한다.
+    stripped = _PAREN_RE.sub("", nm).strip()
+    if stripped and stripped != nm:
+        hit = scope_names.get(stripped)
+        if hit is not None:
+            return hit
     best: tuple[str, str] | None = None
     best_len = 0
     for name, lk in scope_names.items():
