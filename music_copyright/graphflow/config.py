@@ -79,6 +79,8 @@ _DEFAULTS: dict[str, Any] = {
         "post_write_gap_expand": {
             "enabled": True, "max_axes": 2, "rounds": 1,
             "frontier_max": 2, "total_query_budget": 3,
+            "min_axis_facts": 4,
+            "axis_overrides": {"social_value": {"rounds": 2, "total_query_budget": 8}},
         },
     },
     # 담론 큐레이션 — static=결정 경로 불변(real_estate와 동형). TODO(domain).

@@ -428,8 +428,13 @@ def _asserted_work_titles(fact_text: str, fact_norm: str, title_norm: str) -> se
     return {t for t in titles if len(t) >= 2}
 
 
-def _fact_grounded_in_doc(fd: FactDraft, d: dict, query: str, work_card: str) -> bool:
-    """추출 Fact가 평가 대상 카드가 아니라 실제 문서 스니펫에 근거하는지 확인한다."""
+def _fact_grounded_in_doc(fd: FactDraft, d: dict, query: str, work_card: str,
+                          axis: str = "") -> bool:
+    """추출 Fact가 평가 대상 카드가 아니라 실제 문서 스니펫에 근거하는지 확인한다.
+
+    axis는 조사 과제의 평가축. social_value 축에서는 아티스트/팬덤의 사회적 행위가 곧
+    작품의 사회적 가치이므로, 곡명 주어 단정의 근거 앵커로 아티스트 별칭도 인정한다
+    (곡명 excerpt 강제 해제 — 상업축의 과대귀속 가드는 그대로 둔다)."""
     title, artist = _work_terms_from_card(work_card)
     title_norms, artist_norms = _work_alias_norms(work_card)
     identifier = _work_identifier_from_card(work_card)
@@ -475,10 +480,15 @@ def _fact_grounded_in_doc(fd: FactDraft, d: dict, query: str, work_card: str) ->
     # 표기는 여기에 넣지 않는다 — excerpt가 곡이 아니라 아티스트·멤버의 별도 행위를 말하면
     # 곡 주어로 과대귀속되기 때문(아티스트 별칭은 doc-레벨 게이트에서만 쓴다).
     asserted_titles = _asserted_work_titles(fd.text or "", fact_norm, title_norm)
+    # social_value 축은 아티스트 별칭이 excerpt 주어 앵커로 인정된다(아래 _social_subject).
+    # 곡의 사회적 가치는 흔히 아티스트/팬덤의 사회적 행위로 서술돼, 곡명 표면형을 excerpt에
+    # 강제하면(상업축 기준) 사회 Fact가 과다 기각된다. 핵심 어휘·수치 검증은 위에서 끝났다.
+    _social_subject = axis == "social_value" and _any_alias_in(artist_norms, excerpt_norm)
     if (asserted_titles
             and not any(t in excerpt_norm for t in asserted_titles)
             and not _any_alias_in(title_norms, excerpt_norm)
-            and not any(a in excerpt_norm for a in _WORK_ANAPHORA)):
+            and not any(a in excerpt_norm for a in _WORK_ANAPHORA)
+            and not _social_subject):
         return False
 
     # 제목/아티스트가 Fact에 단정됐는데 doc에 어떤 표기(별칭)도 없으면 과대귀속 — 단, 별칭 중
@@ -670,7 +680,7 @@ class Harvester(BaseAgent):
                 tasks = [dict(driver=driver, d=d, query=query, qhash=qhash,
                               t_label=t_label, t_key=t_key, work_card=work_card,
                               work_id=work_id, scope_names=scope_names,
-                              collected_by=collected_by)
+                              collected_by=collected_by, axis=plan.axis)
                          for d in docs]
                 outcome = QueryOutcome(
                     task_id=plan.task_id,
@@ -739,7 +749,7 @@ class Harvester(BaseAgent):
     # 동시 추출·적재하기 위함(_parallel_ingest). 워커는 자기 driver.session()으로만
     # 적재하므로 공유 가변상태가 없고, 증분 병합은 디스패치 스레드가 직렬로 한다.
     def _ingest_doc(self, driver, d, query, qhash, t_label, t_key, work_card,
-                    work_id, scope_names, collected_by) -> "_DocDeltas":
+                    work_id, scope_names, collected_by, axis="") -> "_DocDeltas":
         deltas = _DocDeltas(source=str(d.get("source") or d.get("channel") or ""))
         if _missing_required_artist_context(d, query, work_card):
             deltas.reason = "missing_artist_context"
@@ -770,7 +780,7 @@ class Harvester(BaseAgent):
             return deltas
         grounded_facts = [
             fd for fd in out.facts
-            if _fact_grounded_in_doc(fd, d, query, work_card)
+            if _fact_grounded_in_doc(fd, d, query, work_card, axis)
         ]
         if not grounded_facts:
             deltas.reason = "ungrounded_facts"

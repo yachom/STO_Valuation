@@ -260,6 +260,9 @@ class Navigator(BaseAgent):
         validated = self._validate(
             tasks, candidates, executed, max_targets=max_targets,
             queries_per_node=queries_per_node, purpose=purpose)
+        validated = self._ensure_social_floor(
+            validated, candidates, executed,
+            queries_per_node=queries_per_node, purpose=purpose)
         emit(
             "research_plan",
             round=round_no,
@@ -378,3 +381,80 @@ class Navigator(BaseAgent):
                 why="Navigator 장애 시 최소 수집 폴백",
             ))
         return out
+
+    # ── 사회축 최소 보장 (social floor) ──────────────────────────
+    # 상업 프론티어(차트·수상·평가)가 LLM 계획을 지배하면 social_value 질의가 매 라운드
+    # 0건이 돼 사회 데이터가 구조적으로 굶는다. 정상 계획에 social_value 과제가 임계 미만
+    # 이면 결정적 사회 과제 1건을 보충한다. 토큰 사전이 아니라 (작품/아티스트 고유명사 +
+    # axes.py의 social_value Axis 의도)로 합성한다 — 사회 의도의 단일 출처는 axes.py.
+    _SOCIAL_AXIS = "social_value"
+
+    def _ensure_social_floor(
+        self, tasks: list[ResearchTask], candidates: list[FrontierCandidate],
+        executed: list[str], *, queries_per_node: int, purpose: str | None,
+        min_tasks: int = 1,
+    ) -> list[ResearchTask]:
+        """validated 계획에 social_value 과제가 min_tasks 미만이면 사회 과제를 보충."""
+        have = sum(1 for t in tasks if t.axis == self._SOCIAL_AXIS)
+        if have >= min_tasks:
+            return tasks
+        floor = self._social_floor_task(
+            candidates, executed, tasks,
+            queries_per_node=queries_per_node, purpose=purpose)
+        return tasks + [floor] if floor is not None else tasks
+
+    def _social_floor_task(
+        self, candidates: list[FrontierCandidate], executed: list[str],
+        existing: list[ResearchTask], *, queries_per_node: int, purpose: str | None,
+    ) -> ResearchTask | None:
+        """작품(우선) 또는 performer 아티스트를 앵커로 한 결정적 social_value 과제."""
+        from music_copyright.graphflow.axes import axis_by_key
+        cand = (next((c for c in candidates if c.label == L.WORK), None)
+                or next((c for c in candidates if c.label == L.ARTIST and
+                         "performer" in (c.card or "").lower()), None)
+                or (candidates[0] if candidates else None))
+        if cand is None or not cand.proper_nouns:
+            return None
+        seen = {normalize_text(q) for q in executed}
+        for t in existing or []:
+            for v in t.query_variants():
+                seen.add(normalize_text(v.text))
+        ax = axis_by_key(self._SOCIAL_AXIS)
+        signal = (ax.writer_focus if ax else "") or "사회적 가치 직접 근거"
+        variants: list[QueryVariant] = []
+        for raw in self._social_query_seeds(cand):
+            text = self._clean_query(raw, cand, seen)
+            if not text:
+                continue
+            variants.append(QueryVariant(
+                text=text, channels=["web", "news"], strategy="context",
+                expected_signal=signal))
+            seen.add(normalize_text(text))
+            if len(variants) >= max(1, queries_per_node):
+                break
+        if not variants:
+            return None
+        etype = "public_use" if cand.label == L.WORK else "artist_context"
+        question = (purpose.strip() if purpose and "\n" not in purpose
+                    and len(purpose) <= 120 else
+                    f"{cand.proper_nouns[0]}의 사회적 가치(메시지·사회운동·공익·대표성·"
+                    "문화외교) 근거는 무엇인가?")
+        return ResearchTask(
+            task_id=short_hash(
+                f"{cand.ref}|{self._SOCIAL_AXIS}|{normalize_text(question)}"),
+            target=cand.ref, axis=self._SOCIAL_AXIS, question=question,
+            evidence_goal=(ax.writer_focus if ax else
+                           "사회적 가치 검증 가능한 직접 근거 1건 이상"),
+            evidence_type=etype, variants=variants,
+            why="사회축 최소 보장 — 상업 프론티어 편향으로 social_value가 굶지 않게")
+
+    @staticmethod
+    def _social_query_seeds(cand: FrontierCandidate) -> list[str]:
+        """결정적 사회 질의 씨앗 — _templates의 중립 사회 표현과 동일 어휘(새 사전 아님)."""
+        name = cand.proper_nouns[0] if cand.proper_nouns else ""
+        if not name:
+            return []
+        if cand.label == L.WORK:
+            artist = cand.proper_nouns[1] if len(cand.proper_nouns) > 1 else ""
+            return [f"{name} {artist} 사회적 가치".strip()]
+        return [f"{name} 사회적 영향"]

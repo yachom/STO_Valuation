@@ -9,6 +9,7 @@ Moderator가 '어느 축이 비었나(unknown-unknowns)'를 판단하는 정량 
 
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import dataclass, field
 
 from neo4j import Driver
@@ -26,6 +27,13 @@ _AXIS_LABELS: dict[str, list[str]] = {
     "social_value": [L.ARTIST, L.SOCIAL_THEME, L.CAUSE, L.PUBLIC_USE, L.FANDOM,
                      L.MEDIA_EVENT, L.VIRAL_TREND],
 }
+
+# social_value 전용 라벨(타 축에 등장하지 않는 라벨) — SocialTheme/Cause/PublicUse.
+# 이 노드의 Fact는 축 간 중복 위험이 없어, 축 Query provenance가 없어도(시드-타임 Genius
+# 'About' 추출처럼 EXTRACTED_BY 없는 Fact) social_value evidence로 안전히 집계한다.
+_LABEL_AXIS_COUNT = Counter(label for labels in _AXIS_LABELS.values() for label in labels)
+_SOCIAL_EXCLUSIVE = frozenset(
+    label for label in _AXIS_LABELS["social_value"] if _LABEL_AXIS_COUNT[label] == 1)
 
 
 @dataclass
@@ -79,12 +87,22 @@ def axis_coverage(driver: Driver, work_id: str, *, cap: int = 6) -> dict[str, Ax
             fact_ids = set(research["facts"] or []) if research else set()
             doc_ids = set(research["docs"] or []) if research else set()
             query_ids = set(research["queries"] or []) if research else set()
+            exclusive = _SOCIAL_EXCLUSIVE if axis == "social_value" else frozenset()
             cov = AxisCoverage(axis=axis, n_nodes=1)
             for r in rows:
                 cov.n_nodes += 1
-                # Artist 같은 공유 typed node가 언급된 모든 Fact를 이 축에 복제하지 않는다.
-                # 축별 Query에서 수집된 Fact와의 교집합만 해당 노드의 axis evidence다.
-                node_facts = set(r["facts"] or []) & fact_ids
+                all_node_facts = set(r["facts"] or [])
+                if r["label"] in exclusive:
+                    # 축 전용 노드(SocialTheme/Cause/PublicUse) — 시드 Fact 포함 모든 MENTIONS
+                    # Fact를 이 축 evidence로(축 간 중복 위험 없음). 시드 사회 Fact가 굶어
+                    # 보이던 집계 누락을 메운다.
+                    node_facts = all_node_facts
+                    fact_ids.update(all_node_facts)
+                    doc_ids.update(r["docs"] or [])
+                else:
+                    # Artist 같은 공유 typed node가 언급된 모든 Fact를 이 축에 복제하지 않는다.
+                    # 축별 Query에서 수집된 Fact와의 교집합만 해당 노드의 axis evidence다.
+                    node_facts = all_node_facts & fact_ids
                 node_queries = set(r["queries"] or [])
                 query_ids.update(node_queries)
                 if not node_facts and len(cov.uncited) < cap:

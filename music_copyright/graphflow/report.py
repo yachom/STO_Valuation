@@ -182,6 +182,35 @@ def _gap_expand_purpose(axis: Axis, gaps: list[str], work_card: str) -> str:
     )
 
 
+def _select_gap_axes(
+    sections: dict[str, SectionDraft],
+    axis_by: dict[str, Axis],
+    fact_counts: dict[str, int],
+    *,
+    min_axis_facts: int,
+    max_axes: int,
+) -> list[tuple[str, list[str]]]:
+    """gap 보강 대상 축 선정 — writer의 '근거 부족' 문구 OR 축 Fact 수<임계(정량 공백).
+
+    writer가 자연어 gap 문구를 남기지 않아도, 상업축은 Fact가 풍부하고 social_value만
+    굶는 구조적 비대칭을 정량 게이트로 포착한다(min_axis_facts<=0이면 정량 게이트 끔).
+    social_value가 최우선(_GAP_AXIS_PRIORITY)이라 max_axes 컷에서도 먼저 선택된다.
+    """
+    gap_axes: list[tuple[str, list[str]]] = []
+    for key, sec in sections.items():
+        if key not in axis_by:
+            continue
+        gaps = _gap_claim_texts(sec)
+        thin = min_axis_facts > 0 and fact_counts.get(key, 0) < min_axis_facts
+        if not gaps and thin:
+            gaps = [f"축 Fact {fact_counts.get(key, 0)}건(<{min_axis_facts}) — 정량 증거 공백"]
+        if gaps:
+            gap_axes.append((key, gaps))
+    gap_axes.sort(key=lambda item: (_GAP_AXIS_PRIORITY.get(item[0], 99),
+                                    -len(item[1]), item[0]))
+    return gap_axes[:max_axes]
+
+
 def post_write_gap_feedback(
     driver: Driver,
     work_id: str,
@@ -206,15 +235,23 @@ def post_write_gap_feedback(
         return sections, evidence_by_axis, mech_audit, summary
 
     max_axes = int(cfg.get("max_axes", 2))
+    min_axis_facts = int(cfg.get("min_axis_facts", 0))
+    axis_overrides = cfg.get("axis_overrides", {}) or {}
     axis_by = {a.key: a for a in axes}
-    gap_axes: list[tuple[str, list[str]]] = []
-    for key, sec in sections.items():
-        gaps = _gap_claim_texts(sec)
-        if gaps and key in axis_by:
-            gap_axes.append((key, gaps))
-    gap_axes.sort(key=lambda item: (_GAP_AXIS_PRIORITY.get(item[0], 99),
-                                    -len(item[1]), item[0]))
-    gap_axes = gap_axes[:max_axes]
+
+    # 정량 공백 게이트용 축별 Fact 수 (writer gap 문구가 없어도 굶는 축을 포착)
+    fact_counts: dict[str, int] = {}
+    if min_axis_facts > 0:
+        try:
+            from music_copyright.graphflow.coverage import axis_coverage
+            fact_counts = {k: v.n_facts
+                           for k, v in axis_coverage(driver, work_id).items()}
+        except Exception as exc:  # noqa: BLE001 — 측정 실패가 보강을 막지 않게(문구 게이트만)
+            logger.warning("gap 정량 게이트용 커버리지 측정 실패(문구 게이트만 사용): %s", exc)
+
+    gap_axes = _select_gap_axes(
+        sections, axis_by, fact_counts,
+        min_axis_facts=min_axis_facts, max_axes=max_axes)
     if not gap_axes:
         summary = {"enabled": True, "skipped": True, "reason": "no_gap_claims"}
         emit("post_write_gap_feedback", **summary)
@@ -224,6 +261,8 @@ def post_write_gap_feedback(
     expand_summaries = []
     for key, gaps in gap_axes:
         ax = axis_by[key]
+        # 축별 예산 분기 — social_value는 굶기 쉬워 rounds·query 예산을 키운다(config).
+        ov = axis_overrides.get(key, {}) or {}
         try:
             expand_summaries.append({
                 "axis": key,
@@ -231,9 +270,10 @@ def post_write_gap_feedback(
                     driver,
                     work_id=work_id,
                     collected_by=collected_by,
-                    rounds=int(cfg.get("rounds", 1)),
-                    frontier_max=int(cfg.get("frontier_max", 2)),
-                    total_query_budget=int(cfg.get("total_query_budget", 3)),
+                    rounds=int(ov.get("rounds", cfg.get("rounds", 1))),
+                    frontier_max=int(ov.get("frontier_max", cfg.get("frontier_max", 2))),
+                    total_query_budget=int(ov.get(
+                        "total_query_budget", cfg.get("total_query_budget", 3))),
                     purpose=_gap_expand_purpose(ax, gaps, work_card),
                 ),
             })

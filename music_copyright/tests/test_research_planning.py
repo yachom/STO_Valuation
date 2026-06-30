@@ -1,13 +1,17 @@
 from __future__ import annotations
 
+import types
 import unittest
 
 from music_copyright.graphflow.agents.base import normalize_text
+from music_copyright.graphflow.axes import BASE_AXES
+from music_copyright.graphflow.coverage import _AXIS_LABELS, _SOCIAL_EXCLUSIVE
+from music_copyright.graphflow.graph.schema import NODE_LABELS as L
 from music_copyright.graphflow.harvester import (
     FactDraft, _fact_grounded_in_doc, _index_scope_names, _match_scope_name,
     _missing_required_artist_context, _rank_docs)
 from music_copyright.graphflow.navigator import FrontierCandidate, Navigator
-from music_copyright.graphflow.report import _claim_id, _section_id
+from music_copyright.graphflow.report import _claim_id, _section_id, _select_gap_axes
 from music_copyright.graphflow.research import QueryOutcome, QueryVariant, ResearchTask
 
 
@@ -212,6 +216,93 @@ class ResearchPlanningTest(unittest.TestCase):
             _section_id("rpt_a", "influence"),
             _section_id("rpt_b", "influence"),
         )
+
+    # ── 레버2: navigator 사회축 최소 보장 ────────────────────────
+    def test_social_floor_adds_social_value_task_when_missing(self) -> None:
+        # 상업축만 계획됐을 때, 작품 앵커의 social_value 과제가 보충돼야 한다(굶지 않게).
+        commercial = ResearchTask(
+            target=self.work.ref, axis="popularity", question="차트 성적은?",
+            evidence_type="metric",
+            variants=[QueryVariant(text="토끼 우예린 차트 순위", channels=["web"])])
+        out = Navigator()._ensure_social_floor(
+            [commercial], [self.work], [], queries_per_node=2, purpose=None)
+        social = [t for t in out if t.axis == "social_value"]
+        self.assertEqual(len(social), 1)
+        self.assertEqual(social[0].target, self.work.ref)
+        self.assertIn("토끼", social[0].variants[0].text)  # 작품 고유명사 앵커
+
+    def test_social_floor_noop_when_social_task_present(self) -> None:
+        social = ResearchTask(
+            target=self.work.ref, axis="social_value", question="메시지?",
+            evidence_type="public_use",
+            variants=[QueryVariant(text="토끼 사회적 메시지", channels=["web"])])
+        out = Navigator()._ensure_social_floor(
+            [social], [self.work], [], queries_per_node=2, purpose=None)
+        self.assertEqual([t.axis for t in out], ["social_value"])
+
+    # ── 레버3: gap 판정 정량화(축 Fact 수<임계) ──────────────────
+    @staticmethod
+    def _section(*texts: str, kinds=None):
+        kinds = kinds or [None] * len(texts)
+        claims = [types.SimpleNamespace(text=t, kind=k) for t, k in zip(texts, kinds)]
+        return types.SimpleNamespace(claims=claims, title="섹션")
+
+    def test_gap_selection_fires_on_thin_axis_facts(self) -> None:
+        axis_by = {a.key: a for a in BASE_AXES}
+        sections = {
+            "influence": self._section("영향력이 매우 크다."),       # gap 문구 없음
+            "social_value": self._section("사회적 메시지가 두드러진다."),  # gap 문구 없음
+        }
+        picked = _select_gap_axes(
+            sections, axis_by, {"influence": 47, "social_value": 1},
+            min_axis_facts=4, max_axes=2)
+        self.assertEqual([k for k, _ in picked], ["social_value"])  # 정량 공백만 발동
+
+    def test_gap_selection_fires_on_writer_phrase_regardless_of_facts(self) -> None:
+        axis_by = {a.key: a for a in BASE_AXES}
+        sections = {
+            "influence": self._section("영향력 직접 근거가 부족하다."),  # gap 문구
+            "social_value": self._section("사회적 메시지가 두드러진다."),
+        }
+        picked = _select_gap_axes(
+            sections, axis_by, {"influence": 47, "social_value": 50},
+            min_axis_facts=4, max_axes=2)
+        self.assertEqual([k for k, _ in picked], ["influence"])  # 문구 게이트만
+
+    def test_gap_selection_quantitative_off_when_threshold_zero(self) -> None:
+        axis_by = {a.key: a for a in BASE_AXES}
+        sections = {"social_value": self._section("사회적 메시지가 두드러진다.")}
+        picked = _select_gap_axes(
+            sections, axis_by, {"social_value": 0}, min_axis_facts=0, max_axes=2)
+        self.assertEqual(picked, [])  # 정량 게이트 비활성 + 문구 없음 → 없음
+
+    # ── 레버4: social_value 축 grounding 완화(아티스트 별칭 주어 앵커) ──
+    def test_social_axis_accepts_artist_anchored_subject(self) -> None:
+        card = ("Dynamite — BTS는 2020 발매된 평가 대상 음악저작물이다. "
+                "작품식별자 T-300.516.442-7.")
+        excerpt = ("방탄소년단(BTS)은 코로나19 팬데믹 동안 유니세프에 기부하고 "
+                   "선한 영향력 캠페인을 이어갔다.")
+        doc = {"title": "BTS 사회공헌", "source": "naver", "youtube_channel": "",
+               "url": "https://news.example/bts",
+               "content": "방탄소년단의 'Dynamite' 성공 속에서도 " + excerpt}
+        # 곡명('Dynamite')을 주어로 단정했지만 근거 구절은 아티스트의 사회적 행위를 말한다.
+        fact = FactDraft(
+            text="'Dynamite'의 방탄소년단(BTS)은 코로나19 동안 유니세프에 기부하고 "
+                 "선한 영향력 캠페인을 이어갔다.",
+            source_excerpt=excerpt)
+        # 비사회 축: 곡명이 excerpt에 없어 과대귀속으로 기각(상업축 가드 유지)
+        self.assertFalse(_fact_grounded_in_doc(fact, doc, "BTS Dynamite 사회공헌", card))
+        # social_value 축: 아티스트 별칭이 주어 앵커로 인정돼 통과
+        self.assertTrue(
+            _fact_grounded_in_doc(fact, doc, "BTS Dynamite 사회공헌", card, "social_value"))
+
+    # ── 레버5: 사회 전용 라벨은 단일 축(시드 Fact 안전 집계의 근거) ──
+    def test_social_exclusive_labels_are_single_axis(self) -> None:
+        self.assertEqual(
+            _SOCIAL_EXCLUSIVE, frozenset({L.SOCIAL_THEME, L.CAUSE, L.PUBLIC_USE}))
+        self.assertTrue(_SOCIAL_EXCLUSIVE <= set(_AXIS_LABELS["social_value"]))
+        for ax in ("influence", "popularity", "sustainability"):
+            self.assertTrue(_SOCIAL_EXCLUSIVE.isdisjoint(_AXIS_LABELS[ax]))
 
 
 if __name__ == "__main__":
