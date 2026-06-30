@@ -48,22 +48,38 @@ class MusicBrainzClient:
 
     # ── 식별 (resolver) ──────────────────────────────────────
     def lookup_by_isrc(self, isrc: str | None) -> dict | None:
-        """ISRC → recording MBID + 연결 Work MBID + ISWC."""
+        """ISRC → recording MBID + 연결 Work MBID + ISWC + 제목/아티스트 별칭(다국어)."""
         if not isrc:
             return None
-        data = self._get(f"isrc/{urllib.parse.quote(isrc)}", {"inc": "work-rels"})
+        data = self._get(f"isrc/{urllib.parse.quote(isrc)}",
+                         {"inc": "work-rels+artist-credits+aliases"})
         recordings = (data or {}).get("recordings") or []
         if not recordings:
             return None
         rec = recordings[0]
         work_mbid = _first_work_mbid(rec)
+        artist_mbid = _first_artist_mbid(rec)
         return {
             "isrc": isrc,
             "recording_mbid": rec.get("id"),
             "title": rec.get("title"),
+            "artist": _artist_credit_name(rec),
+            "artist_mbid": artist_mbid,
+            "title_aliases": _alias_names(rec),
+            "artist_aliases": self.aliases("artist", artist_mbid),
             "work_mbid": work_mbid,
             "iswc": self.work_iswc(work_mbid),
         }
+
+    def aliases(self, entity: str, mbid: str | None) -> list[str]:
+        """엔티티(artist/work/recording) MBID → 다국어 별칭 이름 목록(원어·로마자 등).
+
+        K-pop처럼 Spotify는 로마자, 국내 보도는 원어를 쓰는 경우의 음차 불일치를 메운다.
+        best-effort: 실패/부재 시 []."""
+        if not mbid:
+            return []
+        data = self._get(f"{entity}/{mbid}", {"inc": "aliases"})
+        return _alias_names(data or {})
 
     def search_recording(self, title: str | None, artist: str | None) -> dict | None:
         """제목/아티스트로 recording 검색 → 상세 재조회(work·isrc·artist). 국내곡 폴백."""
@@ -80,13 +96,17 @@ class MusicBrainzClient:
         if not rec_id:
             return None
         detail = self._get(f"recording/{rec_id}",
-                           {"inc": "work-rels+isrcs+artist-credits"}) or recs[0]
+                           {"inc": "work-rels+isrcs+artist-credits+aliases"}) or recs[0]
         work_mbid = _first_work_mbid(detail)
+        artist_mbid = _first_artist_mbid(detail)
         return {
             "isrc": (detail.get("isrcs") or [None])[0],
             "recording_mbid": rec_id,
             "title": detail.get("title"),
             "artist": _artist_credit_name(detail),
+            "artist_mbid": artist_mbid,
+            "title_aliases": _alias_names(detail),
+            "artist_aliases": self.aliases("artist", artist_mbid),
             "work_mbid": work_mbid,
             "iswc": self.work_iswc(work_mbid),
         }
@@ -183,6 +203,26 @@ def _first_work_mbid(recording: dict) -> str | None:
         if work and work.get("id"):
             return work["id"]
     return None
+
+
+def _first_artist_mbid(recording: dict) -> str | None:
+    """recording.artist-credit에서 첫 아티스트 MBID(별칭 조회용)."""
+    for c in recording.get("artist-credit") or []:
+        if isinstance(c, dict):
+            a = c.get("artist") or {}
+            if a.get("id"):
+                return a["id"]
+    return None
+
+
+def _alias_names(entity: dict) -> list[str]:
+    """엔티티의 aliases 배열 → 이름 목록(중복 제거, 순서 보존)."""
+    out: list[str] = []
+    for a in entity.get("aliases") or []:
+        name = a.get("name") if isinstance(a, dict) else None
+        if name and name not in out:
+            out.append(name)
+    return out
 
 
 def _artist_credit_name(recording: dict) -> str | None:

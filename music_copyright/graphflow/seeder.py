@@ -137,6 +137,9 @@ def collect_scope(
     work = sg.add_node(L.WORK, identity.work_id, {
         "title": identity.title,
         "artist_name": identity.artist,
+        # 음차 별칭(다국어 표기) — grounding이 영문/원어 어느 표기든 같은 작품으로 인정.
+        "title_aliases": identity.title_aliases or None,
+        "artist_aliases": identity.artist_aliases or None,
         "release_year": identity.release_year,
         "iswc": identity.iswc,
         "isrc": identity.isrc,
@@ -255,12 +258,15 @@ def _collect_structured(
                    + mb.work_publishers(identity.mb_work_mbid)):
             _add_rightsholder(sg, work, lb.get("name"), lb.get("kind"), lb.get("mbid"))
 
-    # ── Genius(키): 샘플/커버(영향력) + 관심도(pageviews) ──
+    # ── Genius(키): 샘플/커버(영향력) + 관심도(pageviews) + 사회적 가치(About 설명) ──
     gn = genius_song(identity.title, identity.artist, genius_token)
     for d in gn.get("derivatives", []) + gn.get("covers", []):
         _add_derivative(sg, work, d.get("artist"), d.get("relation"))
     if gn.get("pageviews"):
         _add_metric(sg, work, "Genius", "pageviews", gn["pageviews"], None)
+    # 사회적 가치 신호 — Genius 'About'(에디토리얼) 텍스트에서 의제·운동·공적활용 추출.
+    _collect_social(sg, work, identity, genius_desc=gn.get("description"),
+                    genius_url=gn.get("url"))
 
     # ── Soundcharts(키): 차트 순위 + 소셜/스트리밍 오디언스 ──
     sc = soundcharts_metrics(identity.isrc, soundcharts_app_id, soundcharts_api_key)
@@ -308,6 +314,104 @@ def _add_metric(sg, work, platform, metric, value, as_of) -> None:
     node = sg.add_node(L.SOCIAL_METRIC, mid, {
         "platform": platform, "metric": metric, "value": value, "as_of": as_of})
     sg.add_edge(work, E.HAS_METRIC, node, {"value": value})
+
+
+# Genius 'About'은 에디토리얼 출처 — harvester._source_tier의 genius.com과 동일 tier.
+_GENIUS_TIER = 0.82
+
+
+def _collect_social(sg, work, identity: WorkIdentity, *, genius_desc: str | None,
+                    genius_url: str | None = None) -> None:
+    """가사·에디토리얼 텍스트에서 사회적 가치 신호 추출 → SocialTheme/Cause/PublicUse.
+
+    근거 텍스트(현재 Genius 'About')가 없으면 스킵 — 빈 입력으로 환각 유도 방지. 노드
+    키는 work-scoped(곡마다 분리)라 공유 싱글톤 교차오염이 없다(SocialMetric과 동일 전략).
+    best-effort: LLM 실패는 빈 결과로 흡수(시드를 막지 않음).
+
+    grounding: social 추출기는 source_excerpt(근거 텍스트 verbatim)가 검증된 항목만
+    돌려준다(social._keep_grounded). 여기서는 그 excerpt를 ① typed 노드에 보존하고 ②
+    Genius 'About' WebDoc을 EXTRACTED_FROM으로 가리키는 근거 Fact로 적재해, 웹 Fact와
+    동일한 감사 체인(Fact→WebDoc, Fact→MENTIONS→Work/typed)을 갖게 한다.
+    """
+    context = (genius_desc or "").strip()
+    if not context:
+        return
+    from music_copyright.graphflow.social import extract_social_signals
+    out = extract_social_signals(
+        title=identity.title or "", artist=identity.artist or "", context_text=context)
+    title = work.props.get("title")
+    # 근거 출처(WebDoc) — Genius 'About' 페이지. 모든 시드 사회신호 Fact의 공통 출처.
+    # url_hash 키는 harvester와 동일 스킴이라, 후속 웹검색이 같은 URL을 잡으면 멱등 병합된다.
+    webdoc = None
+    if genius_url:
+        webdoc = sg.add_node(L.WEB_DOC, _short(genius_url), {
+            "url": genius_url, "title": f"{identity.title or ''} — Genius",
+            "source": "genius.com", "source_tier": _GENIUS_TIER})
+    for it in out.themes:
+        node = _add_social_theme(sg, work, it.label, it.description, it.source_excerpt, title)
+        _ground_social(sg, work, node, it, webdoc)
+    for it in out.causes:
+        node = _add_cause(sg, work, it.label, it.description, it.source_excerpt)
+        _ground_social(sg, work, node, it, webdoc)
+    for it in out.public_uses:
+        node = _add_public_use(sg, work, it.label, it.description, it.source_excerpt)
+        _ground_social(sg, work, node, it, webdoc)
+    logger.info("social signals(%s): themes=%d causes=%d public_uses=%d",
+                work.key, len(out.themes), len(out.causes), len(out.public_uses))
+
+
+def _ground_social(sg, work, node, item, webdoc) -> None:
+    """사회신호 typed 노드에 근거 Fact를 연결(웹 Fact와 동일 감사 체인)."""
+    if node is None:
+        return
+    text = (item.description or item.label or "").strip()
+    if not text:
+        return
+    # harvester와 동일 키 스킴(work-scoped) — 동일 텍스트 웹 Fact와 멱등 병합 가능.
+    fact = sg.add_node(L.FACT, _short(f"{work.key}|{_norm(text)}"), {
+        "text": text, "source_excerpt": (item.source_excerpt or "")[:500],
+        "source": "genius.com", "source_tier": _GENIUS_TIER,
+        "confidence": _GENIUS_TIER, "extraction_method": "genius_about"})
+    if fact is None:
+        return
+    sg.add_edge(fact, E.MENTIONS, work, {})
+    sg.add_edge(fact, E.MENTIONS, node, {})
+    if webdoc is not None:
+        sg.add_edge(fact, E.EXTRACTED_FROM, webdoc, {})
+
+
+def _add_social_theme(sg, work, label, description, source_excerpt=None,
+                      work_title=None):
+    if not label:
+        return None
+    tid = _short(f"{work.key}:theme:{_norm(label)}")
+    node = sg.add_node(L.SOCIAL_THEME, tid, {
+        "theme": label, "description": description, "work_title": work_title,
+        "source_excerpt": (source_excerpt or "")[:500] or None, "source": "genius.com"})
+    sg.add_edge(work, E.ADDRESSES, node, {})
+    return node
+
+
+def _add_cause(sg, work, name, description, source_excerpt=None):
+    if not name:
+        return None
+    cid = _short(f"{work.key}:cause:{_norm(name)}")
+    node = sg.add_node(L.CAUSE, cid, {
+        "name": name, "description": description,
+        "source_excerpt": (source_excerpt or "")[:500] or None, "source": "genius.com"})
+    sg.add_edge(work, E.SUPPORTED, node, {})
+    return node
+
+
+def _add_public_use(sg, work, context, description, source_excerpt=None):
+    if not context:
+        return None
+    uid = _short(f"{work.key}:use:{_norm(context)}")
+    node = sg.add_node(L.PUBLIC_USE, uid, {
+        "context": context, "description": description,
+        "source_excerpt": (source_excerpt or "")[:500] or None, "source": "genius.com"})
+    sg.add_edge(work, E.USED_IN, node, {})
+    return node
 
 
 def _add_derivative(sg, work, artist_name, relation) -> None:

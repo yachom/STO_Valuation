@@ -70,6 +70,18 @@ def _has_hangul(s: str | None) -> bool:
     return bool(s and _HANGUL_RE.search(s))
 
 
+def _dedup_names(names: list[str | None]) -> list[str]:
+    """별칭 목록 정리 — 빈값 제거 + 표면형(strip) 중복 제거, 순서 보존."""
+    out: list[str] = []
+    seen: set[str] = set()
+    for n in names:
+        s = (n or "").strip()
+        if s and s.lower() not in seen:
+            seen.add(s.lower())
+            out.append(s)
+    return out
+
+
 # ───────────────────────────────────────────────────────────
 # 값 객체 — 해소 결과
 # ───────────────────────────────────────────────────────────
@@ -92,6 +104,9 @@ class WorkIdentity:
     raw_query: str
     title: str | None = None
     artist: str | None = None
+    # 다국어 표기(음차) 별칭 — grounding이 영문/원어 어느 표기든 같은 작품으로 인정.
+    title_aliases: list[str] = field(default_factory=list)
+    artist_aliases: list[str] = field(default_factory=list)
     isrc: str | None = None
     iswc: str | None = None
     spotify_track_id: str | None = None
@@ -200,10 +215,18 @@ class WorkResolver:
         # (ISRC/ISWC/MBID)는 그대로 Spotify·MB에서 받되, 사람이 읽는 이름만 원어 우선.
         title = (in_title if _has_hangul(in_title) else None) or sp.get("title") or mb.get("title") or in_title
         artist = (in_artist if _has_hangul(in_artist) else None) or sp.get("artist") or mb.get("artist") or in_artist
+        # 음차 별칭: 입력·Spotify(로마자)·MB(원어+MB aliases) 모든 표기를 모은다. 한글 보도가
+        # 원어("리센느")를, Spotify가 로마자("RESCENE")를 쓰는 음차 불일치를 grounding이 메우게.
+        title_aliases = _dedup_names(
+            [title, in_title, sp.get("title"), mb.get("title"), *(mb.get("title_aliases") or [])])
+        artist_aliases = _dedup_names(
+            [artist, in_artist, sp.get("artist"), mb.get("artist"), *(mb.get("artist_aliases") or [])])
         return WorkIdentity(
             raw_query=raw_query,
             title=title,
             artist=artist,
+            title_aliases=title_aliases,
+            artist_aliases=artist_aliases,
             isrc=sp.get("isrc") or mb.get("isrc"),
             iswc=mb.get("iswc"),
             spotify_track_id=sp.get("track_id"),

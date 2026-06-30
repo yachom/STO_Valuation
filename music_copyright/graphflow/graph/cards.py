@@ -43,7 +43,29 @@ def card_for_work(p: dict) -> str:
     wid = p.get("work_id")
     if wid:
         tail += f" 작품식별자 {wid}."
-    return "".join(parts) + tail
+    card = "".join(parts) + tail
+    # 음차 별칭(다국어 표기) — grounding 파서(_work_aliases_from_card)가 읽어 영문/원어 어느
+    # 표기든 같은 작품으로 인정한다. 형식 고정: "[별칭] 제목: a|b · 아티스트: x|y".
+    talias = [a for a in (p.get("title_aliases") or []) if a]
+    aalias = [a for a in (p.get("artist_aliases") or []) if a]
+    if talias or aalias:
+        card += (f" [별칭] 제목: {'|'.join(talias) or '-'}"
+                 f" · 아티스트: {'|'.join(aalias) or '-'}")
+    return card
+
+
+def card_for_release(p: dict) -> str:
+    title = p.get("title") or p.get("release_title") or p.get("name") or "발매물 미상"
+    kind = p.get("kind") or "발매물"
+    artist = p.get("artist_name")
+    year = p.get("release_year") or p.get("year")
+    bits = []
+    if artist:
+        bits.append(f"아티스트 {artist}")
+    if year:
+        bits.append(f"{year} 발매")
+    tail = " " + ", ".join(bits) + "." if bits else ""
+    return f"{title} ({kind}) — 앨범·싱글·EP 등 발매 단위.{tail}"
 
 
 def card_for_artist(p: dict) -> str:
@@ -53,6 +75,21 @@ def card_for_artist(p: dict) -> str:
     debut = p.get("debut_year")
     debut_s = f" {debut} 데뷔." if debut else ""
     return f"{name}{role_s} — 아티스트.{debut_s}"
+
+
+def card_for_genre(p: dict) -> str:
+    name = p.get("name") or p.get("genre_name") or "장르 미상"
+    desc = p.get("description") or ""
+    desc_s = f" {desc}" if desc else ""
+    return f"{name} — 음악 장르·스타일.{desc_s}"
+
+
+def card_for_agency(p: dict) -> str:
+    name = p.get("name") or p.get("agency_name") or "기획사 미상"
+    kind = p.get("kind") or "기획사·매니지먼트"
+    artist = p.get("artist_name")
+    artist_s = f" {artist}의 소속·관리 조직." if artist else ""
+    return f"{name} ({kind}) — 음악 아티스트의 기획·매니지먼트 조직.{artist_s}"
 
 
 def card_for_rightsholder(p: dict) -> str:
@@ -107,6 +144,25 @@ def card_for_award(p: dict) -> str:
     return f"{year_s}{name}{cat_s} — {result}."
 
 
+def card_for_media_event(p: dict) -> str:
+    name = p.get("name") or p.get("event_name") or "미디어 이벤트 미상"
+    kind = p.get("kind") or "방송·공연·행사"
+    date = p.get("event_date") or p.get("year")
+    date_s = f" ({date})" if date else ""
+    desc = p.get("description") or ""
+    desc_s = f" {desc}" if desc else ""
+    return f"{name}{date_s} — {kind} 노출·공연 맥락.{desc_s}"
+
+
+def card_for_viral_trend(p: dict) -> str:
+    name = p.get("name") or p.get("trend_name") or "확산 현상 미상"
+    platform = p.get("platform")
+    plat_s = f"{platform} " if platform else ""
+    desc = p.get("description") or ""
+    desc_s = f" {desc}" if desc else ""
+    return f"{plat_s}{name} — 챌린지·밈·해시태그 등 대중 확산 현상.{desc_s}"
+
+
 def card_for_certification(p: dict) -> str:
     # 음반 인증(RIAA/Gaon 등) — 지속성·대중성 신호. 등급(Gold/Platinum/Diamond)과
     # 인증기관(body)·지역(region)·연도를 정확히 표기한다.
@@ -130,7 +186,52 @@ def card_for_social_metric(p: dict) -> str:
     plat_s = f"{platform} " if platform else ""
     val_s = f" {value}" if value else ""
     as_of_s = f" (기준 {as_of})" if as_of else ""
-    return f"{plat_s}{metric}{val_s}{as_of_s}."
+    video = p.get("video_title")
+    channel = p.get("channel")
+    target_s = f" '{video}'" if video else ""
+    channel_s = f" / 채널 {channel}" if channel else ""
+    return f"{plat_s}{metric}{val_s}{target_s}{channel_s}{as_of_s}."
+
+
+def card_for_fandom(p: dict) -> str:
+    name = p.get("name") or p.get("fandom_name") or "팬덤 미상"
+    artist = p.get("artist_name")
+    artist_s = f"{artist}의 " if artist else ""
+    desc = p.get("description") or ""
+    desc_s = f" {desc}" if desc else ""
+    return f"{name} — {artist_s}팬덤 공동체.{desc_s}"
+
+
+# ── 사회적 가치 신호 (가사·메시지·운동·공익 활용) ──
+def card_for_social_theme(p: dict) -> str:
+    # 작품이 다루는 사회적 의제(정의·인권·정신건강·환경·정체성 등). 카드에 곡 맥락을
+    # 박아 '무관한 의제'와 '이 곡의 의제'가 의미검색에서 변별되게 한다.
+    theme = p.get("theme") or p.get("label") or "사회적 의제"
+    title = p.get("work_title")
+    subj = f"'{title}'이(가) 다루는" if title else "이 작품이 다루는"
+    desc = p.get("description") or ""
+    desc_s = f" {desc}" if desc else ""
+    return f"사회적 의제 '{theme}' — {subj} 사회·문화적 주제.{desc_s}"
+
+
+def card_for_cause(p: dict) -> str:
+    # 연계된 사회운동·시위·공익/자선 캠페인 (앤섬화·기부·연대 등).
+    name = p.get("name") or "사회운동·캠페인"
+    kind = p.get("kind") or ""  # 사회운동/시위/공익캠페인/자선·기부 등
+    kind_s = f" ({kind})" if kind else ""
+    desc = p.get("description") or ""
+    desc_s = f" {desc}" if desc else ""
+    return f"{name}{kind_s} — 이 작품과 연계된 사회운동·공익 활동.{desc_s}"
+
+
+def card_for_public_use(p: dict) -> str:
+    # 공익·교육·기념·문화외교 등 공적 활용 사례.
+    context = p.get("context") or p.get("label") or "공적 활용"
+    kind = p.get("kind") or ""  # 교육/기념식/시위/공공행사/문화외교 등
+    kind_s = f" ({kind})" if kind else ""
+    desc = p.get("description") or ""
+    desc_s = f" {desc}" if desc else ""
+    return f"{context}{kind_s} — 이 작품의 공익·공적 활용 사례.{desc_s}"
 
 
 # ── 확장 수집물 (Harvester) — real_estate와 동형 ──
@@ -145,7 +246,11 @@ def card_for_web_doc(p: dict) -> str:
 def card_for_fact(p: dict) -> str:
     text = p.get("text", "")
     date = (p.get("published_at") or "")[:10]
-    return f"{text}" + (f" ({date} 보도)" if date else "")
+    excerpt = (p.get("source_excerpt") or "").strip()
+    suffix = f" ({date} 보도)" if date else ""
+    if excerpt:
+        suffix += f" 근거 원문: {excerpt[:220]}"
+    return f"{text}{suffix}"
 
 
 def card_for_entity(p: dict) -> str:
@@ -173,13 +278,22 @@ def card_for_claim(p: dict) -> str:
 
 _BUILDERS = {
     NODE_LABELS.WORK: card_for_work,
+    NODE_LABELS.RELEASE: card_for_release,
     NODE_LABELS.ARTIST: card_for_artist,
+    NODE_LABELS.GENRE: card_for_genre,
+    NODE_LABELS.AGENCY: card_for_agency,
     NODE_LABELS.RIGHTSHOLDER: card_for_rightsholder,
     NODE_LABELS.PLATFORM: card_for_platform,
     NODE_LABELS.CHART: card_for_chart,
     NODE_LABELS.AWARD: card_for_award,
+    NODE_LABELS.MEDIA_EVENT: card_for_media_event,
+    NODE_LABELS.VIRAL_TREND: card_for_viral_trend,
     NODE_LABELS.CERTIFICATION: card_for_certification,
     NODE_LABELS.SOCIAL_METRIC: card_for_social_metric,
+    NODE_LABELS.FANDOM: card_for_fandom,
+    NODE_LABELS.SOCIAL_THEME: card_for_social_theme,
+    NODE_LABELS.CAUSE: card_for_cause,
+    NODE_LABELS.PUBLIC_USE: card_for_public_use,
     NODE_LABELS.WEB_DOC: card_for_web_doc,
     NODE_LABELS.FACT: card_for_fact,
     NODE_LABELS.ENTITY: card_for_entity,
