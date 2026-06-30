@@ -20,7 +20,7 @@ API 키:
     BuildingHubClient 생성자에서 받는다.
 """
 
-from infra.external.public_data_portal import PublicDataPortalClient
+from real_estate.external.public_data_portal import PublicDataPortalClient
 from real_estate.location import LocationInfo
 
 # 게이트웨이 rate-limit 키와 일치시킨다 (infra/gateway/rate_limits.json 참조).

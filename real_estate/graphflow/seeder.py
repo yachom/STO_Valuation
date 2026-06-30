@@ -252,7 +252,7 @@ def _fetch_building_energy(loc: LocationInfo, key: str, total_area_sqm) -> dict:
     """
     try:
         from datetime import date
-        from infra.external.public_data_portal import PublicDataPortalClient
+        from real_estate.external.public_data_portal import PublicDataPortalClient
         from real_estate.external.building_energy import (
             API_NAME, BuildingEnergyRepository, primary_energy_assessment)
         repo = BuildingEnergyRepository(

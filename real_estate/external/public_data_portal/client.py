@@ -23,7 +23,7 @@ import logging
 import requests
 
 from infra.external import _http
-from infra.external.public_data_portal.exceptions import PublicDataPortalError
+from real_estate.external.public_data_portal.exceptions import PublicDataPortalError
 from infra.gateway import APIGateway, get_default
 
 

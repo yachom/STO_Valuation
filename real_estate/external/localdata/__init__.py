@@ -5,7 +5,7 @@ client는 envelope 처리와 정규화만 책임지고, 어떤 업종(opnSvcId)�
 기간을 부를지는 호출자(repository/collector)가 결정한다.
 """
 
-from infra.external.localdata.client import (
+from real_estate.external.localdata.client import (
     BusinessLicense,
     LocalDataClient,
     LocalDataError,

@@ -31,7 +31,7 @@ if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
 from infra.env import load_env
-from infra.external.seoul_open_data import SeoulOpenDataClient
+from real_estate.external.seoul_open_data import SeoulOpenDataClient
 from real_estate.database.schema import ensure_schema
 
 # 서울 열린데이터광장 현행 service name (2024+):

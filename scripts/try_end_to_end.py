@@ -10,7 +10,7 @@
 검증 대상:
     - infra.env 로더
     - real_estate.location (Kakao + Juso)
-    - infra.external.public_data_portal + real_estate.external.building_hub
+    - real_estate.external.public_data_portal + real_estate.external.building_hub
     - infra.gateway (Naver 검색·스크랩 + 공공데이터포털 모두 통과)
     - infra.external.naver_search, infra.external.naver_news_scraper
 
@@ -36,7 +36,7 @@ from infra.external.naver_search import (
     fetch_news_metadata,
     load_credentials,
 )
-from infra.external.public_data_portal import (
+from real_estate.external.public_data_portal import (
     PublicDataPortalClient,
     PublicDataPortalError,
 )

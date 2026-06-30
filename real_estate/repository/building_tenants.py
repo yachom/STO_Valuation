@@ -19,7 +19,7 @@ from __future__ import annotations
 import logging
 import re
 
-from infra.external.kakao_local import KakaoLocalClient
+from real_estate.external.kakao_local import KakaoLocalClient
 
 logger = logging.getLogger("repository.building_tenants")
 

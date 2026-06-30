@@ -1,13 +1,9 @@
 """특성화(안전망) — 부동산 전용 정형 커넥터의 공개 API를 잠근다.
 
-Phase A는 이 6개 커넥터를 ``infra/external/`` → ``real_estate/external/`` 로 옮긴다
-(인터넷 검색 커넥터만 infra에 남기는 설계 원칙). 이동 후에도 각 커넥터의 공개 심볼이
-그대로 import 되어야 한다.
-
-운용:
-  - 지금(이동 전): ``CONNECTOR_HOME = "infra.external"`` 로 현재 위치 계약을 고정.
-  - Phase A(이동 후): ``CONNECTOR_HOME`` 을 ``"real_estate.external"`` 로 바꾸고,
-    ``test_old_infra_path_still_imports`` 로 infra의 임시 re-export shim 도 검증한다.
+Phase A에서 이 6개 커넥터를 ``infra/external/`` → ``real_estate/external/`` 로 옮겼다
+(infra/external에는 인터넷 검색 커넥터만 남기는 설계 원칙). 이동 후에도 각 커넥터의
+공개 심볼이 그대로 import 되어야 한다. importer는 전부 real_estate + scripts라
+임시 shim 없이 한 번에 갱신했으므로, infra 구 경로는 더 이상 존재하지 않는다(의도).
 """
 
 from __future__ import annotations
@@ -26,8 +22,7 @@ CONNECTORS = [
     ("seoul_open_data", ["SeoulOpenDataClient"]),
 ]
 
-# Phase A가 "real_estate.external" 로 바꾼다.
-CONNECTOR_HOME = "infra.external"
+CONNECTOR_HOME = "real_estate.external"
 
 
 @pytest.mark.parametrize("suffix,symbols", CONNECTORS, ids=[c[0] for c in CONNECTORS])

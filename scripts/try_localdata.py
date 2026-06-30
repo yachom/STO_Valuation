@@ -17,8 +17,8 @@ import logging
 import os
 
 from infra.env import load_env
-from infra.external.localdata import LocalDataClient, LocalDataError
-from infra.external.localdata.client import _LEGACY_BASE
+from real_estate.external.localdata import LocalDataClient, LocalDataError
+from real_estate.external.localdata.client import _LEGACY_BASE
 
 
 def _selftest_parser() -> None:

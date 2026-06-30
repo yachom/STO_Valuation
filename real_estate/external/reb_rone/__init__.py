@@ -12,6 +12,6 @@ data.go.kr 표준(apis.data.go.kr) envelope과 달라 PublicDataPortalClient 재
 로거: external.reb_rone.
 """
 
-from infra.external.reb_rone.client import RebRoneClient, RebRoneError
+from real_estate.external.reb_rone.client import RebRoneClient, RebRoneError
 
 __all__ = ["RebRoneClient", "RebRoneError"]

@@ -7,6 +7,6 @@ LocationResolver(real_estate/location.py)는 Kakao Local의 주소/좌표 변환
 로거 컨벤션: external.kakao_local (폴더명과 일치).
 """
 
-from infra.external.kakao_local.client import KakaoLocalClient, KakaoLocalError
+from real_estate.external.kakao_local.client import KakaoLocalClient, KakaoLocalError
 
 __all__ = ["KakaoLocalClient", "KakaoLocalError"]

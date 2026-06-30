@@ -15,7 +15,7 @@ import os
 import sys
 
 from infra.env import load_env
-from infra.external.public_data_portal import (
+from real_estate.external.public_data_portal import (
     PublicDataPortalClient,
     PublicDataPortalError,
 )

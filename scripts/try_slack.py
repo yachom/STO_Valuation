@@ -209,7 +209,7 @@ def live_client_shapes() -> None:
     # ── Kakao Local ───────────────────────────────────────
     print("\n  -- kakao_local --")
     try:
-        from infra.external.kakao_local.client import KakaoLocalClient
+        from real_estate.external.kakao_local.client import KakaoLocalClient
         bad = KakaoLocalClient(rest_key="0000000000000000bad")
         _observe("kakao BAD-key", lambda: bad.search_keyword("강남역", size=1))
         good_key = os.environ.get("KAKAO_API_KEY")
@@ -239,7 +239,7 @@ def live_client_shapes() -> None:
     # ── 공공데이터포털 (building_hub 등 family 공유) ──────
     print("\n  -- public_data_portal --")
     try:
-        from infra.external.public_data_portal.client import PublicDataPortalClient
+        from real_estate.external.public_data_portal.client import PublicDataPortalClient
         endpoint = "https://apis.data.go.kr/1613000/BldRgstHubService/getBrTitleInfo"
         bad = PublicDataPortalClient(service_key="BADSERVICEKEY000", api_name="building_hub")
         _observe("pdp BAD-key", lambda: bad.get_items(endpoint, {"sigunguCd": "11680", "bjdongCd": "10300"}))

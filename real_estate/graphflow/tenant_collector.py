@@ -19,9 +19,9 @@ import logging
 from datetime import date
 
 from infra.agent.tracing import emit, node_scope
-from infra.external.kakao_place_scraper import KakaoPlaceScraper
-from infra.external.localdata.client import LocalDataClient
-from infra.external.reb_rone import RebRoneClient
+from real_estate.external.kakao_place_scraper import KakaoPlaceScraper
+from real_estate.external.localdata.client import LocalDataClient
+from real_estate.external.reb_rone import RebRoneClient
 from real_estate.graphflow.graph.schema import EDGE_TYPES as E
 from real_estate.graphflow.graph.schema import NODE_LABELS as L
 from real_estate.graphflow.seeder import ScopeGraph, SeedEdge, seed

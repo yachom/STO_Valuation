@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import logging
 
-from infra.external.public_data_portal import PublicDataPortalClient
+from real_estate.external.public_data_portal import PublicDataPortalClient
 from infra.tool.base import BaseTool
 from real_estate.external.building_hub import API_NAME, BuildingRegisterRepository
 from real_estate.location import LocationInfo

@@ -27,7 +27,7 @@ if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
 from infra.env import load_env
-from infra.external.public_data_portal import PublicDataPortalClient
+from real_estate.external.public_data_portal import PublicDataPortalClient
 from real_estate.database.schema import ensure_schema
 
 DEFAULT_ENDPOINT = os.environ.get(

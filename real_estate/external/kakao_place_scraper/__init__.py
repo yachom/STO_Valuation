@@ -7,7 +7,7 @@
 로거: external.kakao_place (cf. infra/external/naver_news_scraper).
 """
 
-from infra.external.kakao_place_scraper.scraper import (
+from real_estate.external.kakao_place_scraper.scraper import (
     KakaoPlaceScraper,
     PlaceReview,
 )

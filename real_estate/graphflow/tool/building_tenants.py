@@ -13,7 +13,7 @@ from __future__ import annotations
 import collections
 import logging
 
-from infra.external.kakao_local import KakaoLocalClient
+from real_estate.external.kakao_local import KakaoLocalClient
 from infra.tool.base import BaseTool
 from real_estate.location import LocationInfo
 from real_estate.repository.building_tenants import BuildingTenantsRepository

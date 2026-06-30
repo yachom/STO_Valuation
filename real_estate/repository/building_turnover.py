@@ -15,7 +15,7 @@ import logging
 import statistics
 from collections import Counter
 
-from infra.external.localdata.client import LocalDataClient, LocalDataError
+from real_estate.external.localdata.client import LocalDataClient, LocalDataError
 from real_estate.location import core_road_address as _core_road
 
 logger = logging.getLogger("repository.building_turnover")

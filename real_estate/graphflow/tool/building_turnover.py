@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import logging
 
-from infra.external.localdata.client import LocalDataClient
+from real_estate.external.localdata.client import LocalDataClient
 from infra.tool.base import BaseTool
 from real_estate.location import LocationInfo
 from real_estate.repository.building_turnover import BuildingTurnoverRepository

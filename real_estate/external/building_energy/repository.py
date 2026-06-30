@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import logging
 
-from infra.external.public_data_portal import PublicDataPortalClient
+from real_estate.external.public_data_portal import PublicDataPortalClient
 from real_estate.location import LocationInfo
 
 API_NAME = "building_energy"
