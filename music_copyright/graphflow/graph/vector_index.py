@@ -24,13 +24,23 @@ from music_copyright.graphflow.graph.schema import NODE_LABELS
 # card_text를 갖는, QA 앵커가 될 수 있는 라벨. 노드 없는 라벨의 인덱스는 무해.
 INDEXED_LABELS = [
     NODE_LABELS.WORK,
+    NODE_LABELS.RELEASE,
     NODE_LABELS.ARTIST,
+    NODE_LABELS.GENRE,
+    NODE_LABELS.AGENCY,
     NODE_LABELS.RIGHTSHOLDER,
     NODE_LABELS.PLATFORM,
     NODE_LABELS.CHART,
     NODE_LABELS.AWARD,
+    NODE_LABELS.MEDIA_EVENT,
+    NODE_LABELS.VIRAL_TREND,
     NODE_LABELS.CERTIFICATION,
     NODE_LABELS.SOCIAL_METRIC,
+    NODE_LABELS.FANDOM,
+    # 사회적 가치 신호 (시드-타임 추출 — SemanticPolicy가 축 의도로 부상)
+    NODE_LABELS.SOCIAL_THEME,
+    NODE_LABELS.CAUSE,
+    NODE_LABELS.PUBLIC_USE,
     # 확장 단계에서 채워짐 (web-search-first)
     NODE_LABELS.FACT,
     NODE_LABELS.ENTITY,

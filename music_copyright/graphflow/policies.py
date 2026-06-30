@@ -27,8 +27,9 @@ MUSIC_PROFILES = PROFILES
 # 무관한 다른 곡으로 샌다(교차오염). 카드는 evidence로 쓰이되 그 너머는 안 판다.
 # 확장 대상 = 곡 고유 수집물(Query/WebDoc/Fact/Entity) + 앵커 Work(초기 프론티어라 무관).
 _HUB_LABELS = frozenset({
-    _L.WORK, _L.ARTIST, _L.RIGHTSHOLDER, _L.PLATFORM,
-    _L.AWARD, _L.CHART, _L.CERTIFICATION, _L.SOCIAL_METRIC,
+    _L.WORK, _L.RELEASE, _L.ARTIST, _L.RIGHTSHOLDER, _L.AGENCY, _L.GENRE,
+    _L.PLATFORM, _L.AWARD, _L.CHART, _L.MEDIA_EVENT, _L.VIRAL_TREND,
+    _L.CERTIFICATION, _L.SOCIAL_METRIC, _L.FANDOM,
 })
 
 
@@ -79,6 +80,12 @@ class StaticPolicy:
         conf = props.get("confidence")
         if isinstance(conf, (int, float)):
             score *= max(0.0, min(1.0, float(conf)))
+        # Fact confidence는 harvester가 이미 source_tier를 곱해 저장한다. WebDoc은
+        # 별도 confidence가 없으므로 검색 출처 tier를 여기서 한 번 반영한다.
+        if label == _L.WEB_DOC:
+            tier = props.get("source_tier")
+            if isinstance(tier, (int, float)):
+                score *= max(0.0, min(1.0, float(tier)))
         return score
 
     def expandable(self, label: str, props: dict) -> bool:

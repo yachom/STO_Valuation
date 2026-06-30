@@ -77,8 +77,10 @@ def scope_eids(driver: Driver, work_id: str, hops: int) -> set[str]:
             f"""
             MATCH path=(w:Work {{work_id: $wid}})-[*0..{int(hops)}]-(m)
             WHERE all(x IN nodes(path)[1..-1] WHERE
-                NOT (x:Work OR x:Artist OR x:Rightsholder OR x:Platform
-                     OR x:Award OR x:Chart OR x:Certification OR x:SocialMetric))
+                NOT (x:Work OR x:Release OR x:Artist OR x:Rightsholder
+                     OR x:Agency OR x:Genre OR x:Platform OR x:Fandom
+                     OR x:Award OR x:Chart OR x:MediaEvent OR x:ViralTrend
+                     OR x:Certification OR x:SocialMetric))
             RETURN collect(DISTINCT elementId(m)) AS eids
             """,
             wid=work_id,

@@ -36,6 +36,8 @@ class MusicFlowState(TypedDict, total=False):
     # ── 단계 산출 ──
     work_card: str
     expand_summary: dict
+    consolidate_summary: dict
+    agentic_graph_summary: dict
     # ── 담론(discourse) ──
     discourse_threads: list
     discourse_round: int
@@ -45,6 +47,7 @@ class MusicFlowState(TypedDict, total=False):
     sections: Annotated[dict, _merge_dicts]
     evidence_by_axis: Annotated[dict, _merge_dicts]
     mech_audit: Annotated[dict, _merge_dicts]
+    gap_feedback_summary: dict
     overview: Any
     index_map: list
     report: dict
@@ -84,6 +87,41 @@ def expand_node(state: MusicFlowState) -> dict:
         summary["moderator"] = run_moderated_expand(
             _driver(), work_id=state["work_id"], collected_by=collected_by)
     return {"expand_summary": summary, "collected_by": collected_by}
+
+
+def consolidate_node(state: MusicFlowState) -> dict:
+    from infra.agent.tracing import emit
+    from music_copyright.graphflow.config import get_config
+    c = get_config().get("consolidate", {})
+    if not c.get("enabled", True):
+        summary = {"skipped": True, "enabled": False}
+        emit("consolidate", **summary)
+        return {"consolidate_summary": summary}
+    from music_copyright.graphflow.consolidate import consolidate_entities
+    summary = consolidate_entities(
+        _driver(), state["work_id"],
+        mode=c.get("mode", "rules_first"),
+        min_conf=float(c.get("min_conf", 0.6)),
+        scope_hops=int(c.get("scope_hops", 4)),
+    )
+    emit("consolidate", **summary)
+    return {"consolidate_summary": summary}
+
+
+def agentic_graph_node(state: MusicFlowState) -> dict:
+    from infra.agent.tracing import emit
+    from music_copyright.graphflow.agentic_graph import run_agentic_graph
+    from music_copyright.graphflow.config import get_config
+
+    c = get_config().get("agentic_graph", {})
+    try:
+        summary = run_agentic_graph(_driver(), state["work_id"], config=c)
+    except Exception as exc:  # noqa: BLE001
+        summary = {"enabled": bool(c.get("enabled", False)), "skipped": True,
+                   "reason": "stage_error", "error": type(exc).__name__}
+        emit("agentic_graph", **summary)
+        logger.warning("agentic graph stage failed; report continues: %s", exc)
+    return {"agentic_graph_summary": summary}
 
 
 # ── 담론 노드 ──
@@ -151,6 +189,38 @@ def _make_synthesize_node(axes):
     return node
 
 
+def _make_gap_feedback_node(axes):
+    keys = [a.key for a in axes]
+
+    def node(state: MusicFlowState) -> dict:
+        from music_copyright.graphflow.report import post_write_gap_feedback
+        sections = {k: state["sections"][k] for k in keys if k in state["sections"]}
+        evidence_by_axis = {
+            k: state["evidence_by_axis"][k]
+            for k in keys
+            if k in state.get("evidence_by_axis", {})
+        }
+        mech_audit = {
+            k: state["mech_audit"][k]
+            for k in keys
+            if k in state.get("mech_audit", {})
+        }
+        sections, evidence_by_axis, mech_audit, summary = post_write_gap_feedback(
+            _driver(), state["work_id"], state["work_card"],
+            sections, evidence_by_axis, mech_audit,
+            axes=axes,
+            evidence_k=state.get("evidence_k"),
+            outline=state.get("outline"),
+        )
+        return {
+            "sections": sections,
+            "evidence_by_axis": evidence_by_axis,
+            "mech_audit": mech_audit,
+            "gap_feedback_summary": summary,
+        }
+    return node
+
+
 def _make_finalize_node(axes):
     keys = [a.key for a in axes]
 
@@ -159,7 +229,13 @@ def _make_finalize_node(axes):
         sections = {k: state["sections"][k] for k in keys if k in state["sections"]}
         report = finalize_report(
             _driver(), state["work_id"], sections, state["overview"], state["index_map"],
-            state["evidence_by_axis"], state["mech_audit"], out_dir=state["out_dir"])
+            state["evidence_by_axis"], state["mech_audit"], out_dir=state["out_dir"],
+            gap_feedback_summary=state.get("gap_feedback_summary"),
+            pipeline_summary={
+                "collection": state.get("expand_summary", {}),
+                "consolidate": state.get("consolidate_summary", {}),
+                "agentic_graph": state.get("agentic_graph_summary", {}),
+            })
         return {"report": report}
     return node
 
@@ -194,12 +270,15 @@ def build_report_graph(axes=None):
     g = StateGraph(MusicFlowState)
     g.add_node("seed", seed_node)
     g.add_node("expand", expand_node)
+    g.add_node("consolidate", consolidate_node)
+    g.add_node("agentic_graph", agentic_graph_node)
     g.add_node("perspectives", perspectives_node)
     g.add_node("discourse_round", discourse_round_node)
     g.add_node("moderator", moderator_node)
     g.add_node("outline", outline_node)
     for ax in axes:
         g.add_node(f"write_{ax.key}", _make_write_node(ax))
+    g.add_node("gap_feedback", _make_gap_feedback_node(axes))
     g.add_node("synthesize", _make_synthesize_node(axes))
     g.add_node("finalize", _make_finalize_node(axes))
 
@@ -212,10 +291,13 @@ def build_report_graph(axes=None):
     g.add_conditional_edges("moderator", route_after_moderator,
                             {"discourse_round": "discourse_round", "outline": "outline"})
     # 두 경로 모두 축별 fan-out (기본 3 + 동적)
+    g.add_edge("expand", "consolidate")
+    g.add_edge("outline", "consolidate")
+    g.add_edge("consolidate", "agentic_graph")
     for ax in axes:
-        g.add_edge("expand", f"write_{ax.key}")     # 정적 경로
-        g.add_edge("outline", f"write_{ax.key}")    # 담론 경로
-        g.add_edge(f"write_{ax.key}", "synthesize")
+        g.add_edge("agentic_graph", f"write_{ax.key}")   # 정적/담론 공통
+        g.add_edge(f"write_{ax.key}", "gap_feedback")
+    g.add_edge("gap_feedback", "synthesize")
     g.add_edge("synthesize", "finalize")
     g.add_edge("finalize", END)
     return g.compile()

@@ -144,7 +144,7 @@ def _expand(driver: Driver, eids: list[str], key_props: dict[str, str]) -> dict[
                    m[$keymap[lbl]] AS nat_key,
                    m.published_at AS published_at, m.valid_until AS valid_until,
                    m.temporal_kind AS temporal_kind, m.confidence AS confidence,
-                   m.`앵커점수` AS anchor_score
+                   m.source_tier AS source_tier, m.`앵커점수` AS anchor_score
             ORDER BY from_eid, to_eid, rel
             """,
             eids=eids, keymap=key_props,
@@ -156,6 +156,7 @@ def _expand(driver: Driver, eids: list[str], key_props: dict[str, str]) -> dict[
                 noderef=NodeRef(r["to_eid"], r["to_label"], str(r["nat_key"]), r["card"]),
                 props={"published_at": r["published_at"], "valid_until": r["valid_until"],
                        "temporal_kind": r["temporal_kind"], "confidence": r["confidence"],
+                       "source_tier": r["source_tier"],
                        "앵커점수": r["anchor_score"], "_eid": r["to_eid"]},
             )
             out[r["from_eid"]].append(nb)
