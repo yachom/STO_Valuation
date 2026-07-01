@@ -78,7 +78,11 @@ class FactDraft(BaseModel):
 
 
 class ExtractionOutput(BaseModel):
-    facts: list[FactDraft] = Field(default_factory=list)
+    facts: list[FactDraft] = Field(
+        default_factory=list,
+        description="문서당 평가 기여도 높은 핵심 사실을 중요도 순으로(대략 15개 이내). 이 상한은 "
+                    "출력이 max_tokens(16000)에 잘려 응답 전체가 파싱 실패로 버려지는 것을 막는 "
+                    "안전장치이지 목표치가 아니다 — 문서가 빈약하면 적게, 풍부하면 핵심만 우선.")
     doc_relevance: float = Field(default=0.5, description="문서의 검색맥락 관련도 0~1")
 
 
@@ -763,7 +767,7 @@ class Harvester(BaseAgent):
                 system=music_system_prompt(get_prompt("music_harvester.system")),
                 user=(f"[평가 대상]\n{work_card}\n\n[검색어]\n{query}\n\n"
                       f"[문서] {d['title']}\nURL: {d['url']}\n{d['content'][:_BODY_TRIM]}"),
-                schema=ExtractionOutput)
+                schema=ExtractionOutput, max_tokens=16000)   # rich 문서 truncation 방지(4096→8192→16000, gpt-4o-mini 상한 16384)
         except Exception as exc:  # noqa: BLE001
             deltas.reason = "extract_error"
             emit("harvest_doc", status="extract_error", query=query, url=d.get("url"),
