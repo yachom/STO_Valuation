@@ -63,7 +63,7 @@ class CoverExtractor(BaseAgent):
 
 
 def _year(published) -> int | None:
-    """ddgs published("2026-02-05T…") → 연도. 없거나 이상하면 None."""
+    """published("2026-02-05T…") → 연도. 없거나 이상하면 None."""
     if not isinstance(published, str) or len(published) < 4:
         return None
     try:
@@ -73,14 +73,60 @@ def _year(published) -> int | None:
         return None
 
 
-def collect_video_covers(driver, work_id: str, *, max_videos: int = 10,
-                         region: str = "kr-ko") -> dict:
-    """ddgs 비디오로 유튜브 커버 인식 → Work-COVERED_BY->Artist(+cover_year) 적재.
+def _vid(url: str | None) -> str:
+    """YouTube URL → videoId(11자). dedup 키."""
+    u = url or ""
+    if "v=" in u:
+        return u.split("v=")[-1][:11]
+    return u.rstrip("/").split("/")[-1][:11]
 
-    커버 연도 span(min~max)을 함께 산출해 C2 세대전이 longevity의 근거로 남긴다. 멱등(MERGE)·
-    best-effort. 반환: {videos_seen, covers_added, year_span}.
+
+def _fetch_cover_videos(artist: str, title: str, *, max_per_source: int = 8,
+                        region: str = "kr-ko") -> list[dict]:
+    """두 소스에서 커버 비디오 수집·병합(video_id dedup). 소스마다 **랭킹 기준이 달라**
+    서로 다른 커버를 준다(실측: 겹침 8중 1) — ddgs(Bing)=인디·아마추어 커버, yt-dlp(YouTube
+    네이티브)=방송·유명인 커버. 둘 다 써서 C2 longevity 커버리지를 넓힌다. 각 소스 best-effort.
     """
-    from infra.external.ddgs.client import DdgsClient
+    q = f"{artist} {title} cover"
+    seen: set[str] = set()
+    out: list[dict] = []
+    # ddgs (빠름, Bing 인덱스) — audit·게이트웨이 경유
+    try:
+        from infra.external.ddgs.client import DdgsClient
+        for v in DdgsClient().videos(q, max_results=max_per_source, region=region):
+            vid = _vid(v.get("url"))
+            if vid and vid not in seen:
+                seen.add(vid)
+                out.append(v)
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("cover fetch ddgs 실패(계속): %s", exc)
+    # yt-dlp (느림, YouTube 네이티브 — 방송/유명인 커버). 미설치·실패 시 skip.
+    try:
+        from infra.external.youtube.client import YouTubeClient
+        for r in YouTubeClient().search(q, max_results=max_per_source):
+            vid = getattr(r, "video_id", None) or _vid(getattr(r, "url", ""))
+            if vid and vid not in seen:
+                seen.add(vid)
+                out.append({"title": getattr(r, "title", "") or "",
+                            "url": getattr(r, "url", ""),
+                            "description": getattr(r, "description", "") or "",
+                            "published": getattr(r, "published_at", None),
+                            "uploader": getattr(r, "channel", None),
+                            "view_count": getattr(r, "view_count", None),
+                            "duration": getattr(r, "duration", None)})
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("cover fetch yt-dlp 실패(계속): %s", exc)
+    return out
+
+
+def collect_video_covers(driver, work_id: str, *, max_per_source: int = 8,
+                         region: str = "kr-ko") -> dict:
+    """유튜브 커버 인식(ddgs Bing + yt-dlp 네이티브 두 소스) → Work-COVERED_BY->Artist 적재.
+
+    두 소스는 랭킹 기준이 달라 서로 다른 커버를 준다(ddgs=인디·아마추어, yt-dlp=방송·유명인)
+    → 병합해 커버리지를 넓힌다. 커버 연도 span을 산출해 C2 세대전이 longevity 근거로 남긴다.
+    멱등(MERGE)·best-effort. 반환: {videos_seen, covers_added, year_span}.
+    """
     from music_copyright.graphflow.graph.cards import build_card
     from music_copyright.graphflow.graph.schema import EDGE_TYPES as E
     from music_copyright.graphflow.graph.schema import KEY_PROP
@@ -99,9 +145,8 @@ def collect_video_covers(driver, work_id: str, *, max_videos: int = 10,
             return stats
         title, artist = ctx["title"], ctx["artist"]
 
-        # 날짜 spread 확보를 위해 timelimit 미지정(전 기간) — published로 연도 span 계산.
-        videos = DdgsClient().videos(f"{artist} {title} cover",
-                                     max_results=max_videos, region=region)
+        videos = _fetch_cover_videos(artist, title, max_per_source=max_per_source,
+                                     region=region)
         stats["videos_seen"] = len(videos)
         if not videos:
             return stats
