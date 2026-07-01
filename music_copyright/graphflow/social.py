@@ -46,13 +46,19 @@ class _SocialItem(BaseModel):
 class _SocialOut(BaseModel):
     themes: list[_SocialItem] = Field(
         default_factory=list,
-        description="작품이 다루는 사회적 의제·메시지 (정의·인권·정신건강·환경·정체성·위로 등)")
+        description="작품이 다루는 **구체적 사회·정치적 의제** — 사회정의·인권·차별·소수자/정체성 "
+                    "대표성·정신건강(사회문제로서)·환경·노동·평화 등. ⚠️ 사랑·이별·그리움·위로·자기표현 "
+                    "같은 **보편적 감정·관계 정서는 사회의제가 아니다**(그건 곡의 예술적 정서일 뿐) — "
+                    "특정 사회 이슈·집단을 명시적으로 다룰 때만 theme로 인정한다(firewall).")
     causes: list[_SocialItem] = Field(
         default_factory=list,
         description="연계된 사회운동·시위·공익/자선 캠페인 (앤섬화·기부·연대 등)")
     public_uses: list[_SocialItem] = Field(
         default_factory=list,
-        description="공익·교육·기념·공공행사·문화외교 등 공적 활용 사례")
+        description="이 작품이 **공익·공공 목적으로 외부 기관·행사에서 사용된 문서화된 사례** — 교육과정·"
+                    "교재 등재, 공식 기념식·의례·국가행사·추모, 공공기관·정부 활용, 문화외교 프로그램 동원 "
+                    "등. ⚠️ (1) 곡의 감정·메시지는 '활용'이 아니다. (2) **광고·드라마·영화·게임 삽입 등 "
+                    "상업 라이선스는 공적 활용이 아니다**(상업 신호 → firewall로 제외). 실제 공익적 사용만.")
 
 
 def _is_grounded(item: _SocialItem, context_norm: str) -> bool:
@@ -96,10 +102,18 @@ class SocialValueExtractor(BaseAgent):
             f"[작품] {title} — {artist}\n\n"
             f"[근거 텍스트 — 이 안에 명시·시사된 것만 추출]\n{context_text.strip()}\n\n"
             f"위 근거에서 이 작품의 *사회적 가치* 신호를 추출하세요. 각 분류 최대 {max_each}개.\n"
-            "- themes: 작품이 다루는 사회적 의제·메시지\n"
+            "- themes: 작품이 다루는 **구체적 사회·정치 의제**(정의·인권·차별·소수자 대표성·"
+            "정신건강·환경·노동·평화 등)\n"
             "- causes: 연계된 사회운동·시위·공익/자선 캠페인\n"
             "- public_uses: 공익·교육·기념·공공·문화외교 활용\n"
-            "근거에 없거나 단순 상업 성과(차트·판매·스트리밍)면 넣지 마세요. 없으면 빈 배열.\n"
+            "⚠️ 러브송·발라드의 보편적 감정(사랑·망설임·그리움·위로·자기표현·공감)은 사회적 가치가 "
+            "아니다 — **어느 분류에도**(themes/causes/public_uses 모두) 넣지 마세요. 특정 사회 이슈·"
+            "집단을 명시하거나, 외부 운동·기관·행사의 실제 사용이 문서화된 경우만 인정합니다.\n"
+            "**대부분의 러브송·발라드는 세 분류 모두 빈 배열이 정상입니다** — 신호가 없으면 억지로 "
+            "만들지 말고 빈 배열로 두세요. 상업 신호(차트·판매·스트리밍, **광고·드라마·영화 삽입 등 "
+            "상업 라이선스**)는 사회가치가 아니므로 제외합니다.\n"
+            "예) 'featured in the ad for Samsung Galaxy'(광고 삽입) → 상업 라이선스이므로 어느 "
+            "분류에도 넣지 않음. 'joy and appreciation'(긍정 정서) → 감정이므로 제외.\n"
             "각 항목의 source_excerpt에는 [근거 텍스트]의 구절을 **그대로 복사**하세요"
             "(의역·번역·요약 금지). verbatim 구절이 없는 항목은 폐기됩니다.")
         try:
