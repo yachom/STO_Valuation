@@ -228,3 +228,7 @@ music_copyright/reports/
 
 # 원본 백업
 STO_valuation_orgin/
+
+# 리서치 참고용으로 저장한 외부 웹페이지 스크랩 (소스 아님, 로컬 보관)
+/apilimits.html
+/listing.html
