@@ -176,24 +176,6 @@ class MusicBrainzClient:
                                 "kind": "레이블"})
         return out
 
-    def work_derivatives(self, work_mbid: str | None) -> list[dict]:
-        """작품 MBID → 파생작(커버·샘플·메들리·다른 버전) [{mbid, title, relation}].
-
-        work-work 관계(based on/samples material/medley/other version 등). 이 곡이
-        다른 작품에 미친 영향(영향력 축) 신호. 없으면 [](MB는 유명·서구곡에 풍부).
-        """
-        if not work_mbid:
-            return []
-        data = self._get(f"work/{work_mbid}", {"inc": "work-rels"})
-        out: list[dict] = []
-        for rel in (data or {}).get("relations") or []:
-            w = rel.get("work")
-            if w and w.get("id"):
-                out.append({"mbid": w["id"], "title": w.get("title"),
-                            "relation": rel.get("type"),
-                            "direction": rel.get("direction")})
-        return out
-
 
 # ── 모듈 헬퍼 ────────────────────────────────────────────────
 def _first_work_mbid(recording: dict) -> str | None:
