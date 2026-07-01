@@ -76,19 +76,23 @@ def write_axis(
     compose·writer에 그대로 전달한다.
     """
     ax = axis if isinstance(axis, Axis) else (axis_by_key(axis) or Axis(axis, axis, ""))
-    evidence = compose(driver, work_id, ax.key, k=evidence_k,
-                       intent=ax.intent, news_intent=ax.news, profile=ax.prof)
-    writer = MusicWriter()
-    draft = writer.write(ax.key, work_card, evidence, outline=outline,
-                         title=ax.title, focus=ax.writer_focus)
-    violations = audit_section(draft, evidence)
-    rewrites = 0
-    while violations and rewrites < _MAX_REWRITES:
-        logger.info("audit fail (%s): %s", ax.key, violations)
-        draft = writer.write(ax.key, work_card, evidence, violations=violations,
-                             outline=outline, title=ax.title, focus=ax.writer_focus)
+    # axis_scope로 이 축 작업의 trace 이벤트에 축을 자동 스탬핑(emit이 _current_axis를 읽음).
+    # 이게 없으면 compose/rerank/writer emit이 axis=None으로 찍혀 축별 관측이 불가.
+    from infra.agent.tracing import axis_scope
+    with axis_scope(ax.key):
+        evidence = compose(driver, work_id, ax.key, k=evidence_k,
+                           intent=ax.intent, news_intent=ax.news, profile=ax.prof)
+        writer = MusicWriter()
+        draft = writer.write(ax.key, work_card, evidence, outline=outline,
+                             title=ax.title, focus=ax.writer_focus)
         violations = audit_section(draft, evidence)
-        rewrites += 1
+        rewrites = 0
+        while violations and rewrites < _MAX_REWRITES:
+            logger.info("audit fail (%s): %s", ax.key, violations)
+            draft = writer.write(ax.key, work_card, evidence, violations=violations,
+                                 outline=outline, title=ax.title, focus=ax.writer_focus)
+            violations = audit_section(draft, evidence)
+            rewrites += 1
     return draft, evidence, violations
 
 
