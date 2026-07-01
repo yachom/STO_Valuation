@@ -1,6 +1,6 @@
 # 담론 주도 큐레이션 — STORM/Co-STORM 기반 에이전트 구조 고도화
 
-> 상태: **설계 (합의 대기)**. 결정 로그 D17~D21 (graph_native_flow.md).
+> 상태: **✅ 구현됨(2026-07-01)** — STORM/Co-STORM 담론 큐레이션 구현·병렬화 완료(메모리 `storm-parallel-plan`). 이 문서는 설계 근거로 보존. 결정 로그 D17~D21 (graph_native_flow.md).
 > 목적: 현재 보고서 흐름의 "에이전틱하지 않음"을 해소 — 고정 EXPAND를 관점 기반
 > 담론 루프로 고도화하되, **그래프·walk·writer·재현성은 그대로** 둔다.
 

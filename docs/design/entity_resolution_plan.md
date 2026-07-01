@@ -1,6 +1,6 @@
 # 엔티티 해소·승격 계층 — 구현 계획 (Implementation Plan)
 
-> 작성일: 2026-06-25 · 상태: **계획만 (미구현, 후속 세션)** · 짝 문서: [entity_resolution_gap.md](entity_resolution_gap.md)
+> 작성일: 2026-06-25 · 상태: **✅ 구현 완료(2026-07-01)** — as-built은 [entity_resolution_layers.md](entity_resolution_layers.md)(2계층: 결정적 링킹 + LLM proposer/validator, 라운드마다 발동). 이 문서는 *구현 전 계획*으로 보존. · 짝 문서: [entity_resolution_gap.md](entity_resolution_gap.md)
 > 목표: 발견된 mention/`Entity`를 **정규화 → 타입화 → 올바른 앵커에 타입 엣지 연결**해
 > walk·프로파일이 1급 근거로 쓰게 한다. 우선 검증 케이스: BTS "Dynamite"의 ARMY·하이브.
 

@@ -2,7 +2,7 @@
 
 > 이 레포를 처음 보는 사람을 위한 지도. 전체 구조 → 규약(계약·제약) → 구현 방식 →
 > 실행/읽기 순서. 세부 설계는 `docs/design/*`로 링크한다.
-> (최종 갱신: 2026-06-30)
+> (최종 갱신: 2026-07-01)
 
 ---
 
@@ -191,13 +191,33 @@
 - **mention**: 문서에서 추출된 표면형(곡명·아티스트·차트…) — 노드에 링크되거나 고아 Entity가 됨.
 - **Fact / Entity**: Fact=원자적 사실(+source_excerpt), Entity=미해소 추출물(해소되면 typed 노드로 승격).
 - **provenance**: `Fact-EXTRACTED_FROM->WebDoc`, `Fact-EXTRACTED_BY->Query` 등 출처 추적 체인.
-- **axis(평가축)**: 영향력·대중성/팬덤·지속성·사회적가치(기본 4축, 동적 추가 가능).
+- **axis(평가축)**: 음악은 **자산가치 트랙**(영향력·대중성/팬덤·지속성) + **사회·ESG 트랙**
+  (사회적가치·혁신·ESG/리스크)의 다중 축. 사람(`--axis`)·에이전트(`--discover-axes`)가 동적 추가.
+  프레임은 `esg_assessment.md`(S 주축·G 필수)·`social_value.md`(social-primary). (부동산은 tenant/esg/commercial.)
 - **proposer**: `agentic_graph`의 LLM — (엔티티→관계→노드)를 제안, validator가 검증.
 - **audit**: 외부호출 전수 기록 + 오류 Slack 통지의 단일 경유점(`infra/external/audit.py`).
 
 ### 4.6 설계 문서 색인 (`docs/design/`)
-- `asset_layering.md` — 자산 계층 구조
-- `graph_native_flow.md` — 파이프라인 흐름
-- `entity_resolution_layers.md` / `entity_resolution_gap.md` / `entity_resolution_plan.md` — 엔티티 해소
-- `agentic_curation.md` / `agentic_graph_autonomy_decision.md` / `HANDOFF_agentic_curation.md` — 에이전트 큐레이션·자율성
+**평가 프레임(사회적 가치·ESG)**
+- `esg_assessment.md` — ESG(S 주축·G 필수·E material) 공통 프레임 ★상위
+- `social_value.md` — 사회적 가치 평가 통합 설계(S-pillar, 음악 우선)
+- `structured_ingestion.md` — 외부 정형데이터 수집·적재(사회가치 관점)
+
+**자산 공통 구조**
+- `asset_layering.md` — 공통 엔진 vs 자산 도메인 경계
+- `asset_extension.md` — 새 기초자산 추가 체크리스트(정형=seed·웹=expand 타이밍)
+
+**파이프라인·탐색**
+- `graph_native_flow.md` — 그래프 네이티브 파이프라인 흐름(결정 로그 D1~D22)
+- `agentic_traversal.md` — 적응 깊이 + PPR(compose-recall 플래그 뒤 · **frontier PPR 항상 가동**)
 - `music_valuation_pipeline_review.md` — 음악 평가 파이프라인 리뷰
+- `korean_music_sources.md` — 한국 음악 웹서치 소스(뉴스·커뮤니티·정형)
+
+**엔티티 해소**
+- `entity_resolution_layers.md` — 2계층 as-built ★현행
+- `entity_resolution_gap.md` — 갭 진단 · `entity_resolution_plan.md` — 구현 전 계획(완료)
+- `agentic_graph_autonomy_decision.md` — 자율성(하드코딩 금지·불확실→review) **결정**(유효). 단
+  구현 세부(§8~11 라벨/토큰 기준)는 레거시 → as-built은 위 `entity_resolution_layers.md`(엣지/불변식).
+
+**🗄️ 레거시(역사적 기록)**
+- `HANDOFF_agentic_curation.md` — STORM 인계(구현 완료) · `agentic_curation.md` — STORM 설계(구현됨)

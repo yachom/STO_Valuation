@@ -1,5 +1,7 @@
 # 인계 문서 — 담론 주도 큐레이션(STORM/Co-STORM) 구현
 
+> **🗄️ 레거시(2026-07-01) — 이 인계는 완료됨.** STORM/Co-STORM 담론 큐레이션은 이후 구현·병렬화되었다(메모리 `storm-parallel-plan`: "STORM 3라운드 풀 병렬화 구현 완료"). 아래 "다음 작업 = PR-2 착수" 지시·브랜치/커밋 스냅샷은 **역사적 기록**이며 현행 지침이 아니다. 현재 구조는 [`../ARCHITECTURE.md`](../ARCHITECTURE.md).
+
 > 작성: 2026-06-21. 다음 세션이 **이 문서만 읽고** STORM 큐레이션 구현을 이어갈 수 있도록 자급식으로 작성.
 > 한 줄 요약: 설계 합의 완료(`agentic_curation.md`, D17~D22). **다음 작업 = PR-2(Moderator + GAP 재진입)부터 구현.** 작업 브랜치 `yachom/feature/agentic-report`.
 
