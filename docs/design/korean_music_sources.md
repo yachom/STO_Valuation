@@ -59,7 +59,10 @@
 2. **YouTube 댓글 미수집** — yt-dlp 경로는 통계/설명만. 팬 sentiment(댓글)를 못 봄.
 3. **ddgs news 한국어 취약** — Bing/Yahoo 뉴스 인덱스가 한국어 얇음(실측 1건). NAVER news ≫.
 4. **Kakao/Daum 미사용** — Tistory·Daum카페 2차 코퍼스 미활용(키는 이미 보유).
-5. **ddgs `videos` = Bing 동영상**(YouTube 아님) — 미배선이며 댓글 용도로 무의미.
+5. **ddgs `videos`** — ⚠️정정(2026-07-01 실측): 결과 **대부분이 YouTube**다(Bing 비디오가 유튜브를
+   대량 인덱싱). 댓글은 없지만 **제목에 커버 아티스트가 그대로 노출**(예 "[COVER by 김수영]",
+   "Cover by Raon Lee")돼 **커버곡 인식(C2 세대전이 longevity)에 유효** — MB/Genius가 놓치는 유튜브
+   롱테일 커버를 잡는다. 미배선(도입 후보). (구 기술 "YouTube 아님·무의미"는 오류였음.)
 
 ---
 
@@ -72,7 +75,7 @@
 | **text** [8] | brave, duckduckgo, google, grokipedia, mojeek, wikipedia, yahoo, yandex | brave=**Brave**(독립) · duckduckgo=**Bing**(html.duckduckgo.com) · google=**Google** · grokipedia=**Grokipedia**(xAI 백과) · mojeek=**Mojeek**(독립 크롤러) · wikipedia=**Wikipedia** opensearch API · yahoo=**Bing**(search.yahoo.com) · yandex=**Yandex** *site-search*(yandex.com/search/site) |
 | **news** [3] | bing, duckduckgo, yahoo | bing=**Bing News** · duckduckgo=**Bing**(news.js) · yahoo=**Yahoo News**(독립) |
 | **images** [1] | duckduckgo | **Bing** images |
-| **videos** [1] | duckduckgo | **Bing 동영상**(YouTube 아님) |
+| **videos** [1] | duckduckgo | **Bing 비디오 = YouTube 대량 인덱싱** (실측 전부 youtube.com) — 커버곡 인식에 유효 |
 | **books** [1] | annasarchive | **Anna's Archive**(그림자도서관 — ToS 리스크, 음악 무관·제외) |
 
 **핵심**: text에서 duckduckgo·yahoo는 **둘 다 Bing 스크랩(중복)**, brave·mojeek만 독립. news에서
@@ -254,7 +257,8 @@ yt-dlp / YouTube Data API 경로 유지).
 |---|---|---|---|---|---|---|
 | **ddgs text** (Bing·Brave·Mojeek) | 웹 스니펫 | 中(Bing 경유 naver/tistory 일부) | 무키 | 비공식(라이브 스크랩·게이트웨이 완충) | 무료 | 영향력·혁신(글로벌/영어), 크로스마켓 |
 | **ddgs news** (Bing·Yahoo) | 뉴스 스니펫 | 弱(실측 1건) | 무키 | 상동 | 무료 | 영향력(글로벌 이벤트) — 한국은 NAVER로 |
-| ddgs videos/images/books | Bing동영상/이미지/그림자도서 | 무관 | 무키 | — | 무료 | (미배선·저가치) |
+| **ddgs videos** | **YouTube**(Bing 비디오) | **커버곡(강)** | 무키 | — | 무료 | **커버 인식(C2 longevity)** — 미배선·도입후보 |
+| ddgs images/books | 이미지/그림자도서 | 무관 | 무키 | — | 무료 | (미배선·저가치) |
 | **NAVER news** | 한국 뉴스 | **强** | Client-Id/Secret | **25,000/일**(전 sub 공유) / 초당(미공개) | 무료 | 영향력·ESG(논란)·지속성(컴백사) |
 | **NAVER blog** | 네이버 블로그 | **强** | 〃 | 25k 공유 | 무료 | **대중성/팬덤**·지속성(회고) |
 | **NAVER cafearticle** | 네이버 카페 | **强(팬덤 본진)** | 〃 | 25k 공유 | 무료 | **대중성/팬덤(핵심)**·사회공헌·지속성 |
