@@ -30,7 +30,7 @@
 | `infra/config_loader.py` | 슬롯별 레이어드 설정 메커니즘 |
 | `infra/external/` | **인터넷 검색만** — ddgs·tavily·naver_search·naver_news_scraper·youtube + 공용 `_http` |
 | `infra/tool/` | 인터넷 검색 도구(ddgs·web·naver·youtube) |
-| `infra/asset.py` | `Asset` 베이스 |
+| `infra/asset/base.py` | `Asset` 베이스 |
 
 ### 자산 (`real_estate/`, `music_copyright/`)
 

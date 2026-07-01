@@ -379,5 +379,3 @@ quota: `.../ko/getting-started/quota` · 유료 API 목록(Daum 검색 부재): 
 - YouTube 현행(yt-dlp, 댓글 없음): `infra/external/youtube/client.py` · `infra/tool/youtube.py`
 - Kakao REST키 선례(부동산 Local API): `real_estate/database/db_builder/build_master_db.py:110-114`
   (`KakaoAK` 헤더 패턴)
-</content>
-</invoke>

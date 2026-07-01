@@ -24,7 +24,6 @@
       필드를 제공한다.
 """
 
-import os
 import urllib.parse
 import urllib.request
 import json

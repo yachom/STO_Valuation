@@ -59,7 +59,7 @@ localdata.go.kr 포털 폐쇄). **업종별 209종 개별 API** — 통합 단�
 > `real_estate/repository/building_turnover.py:SERVICE_CATALOG`에 추가하면 자동 합산.
 
 ### 회전율 산출 (구현됨)
-`infra/external/localdata/client.py`(LocalDataClient) + `real_estate/repository/building_turnover.py`.
+`real_estate/external/localdata/client.py`(LocalDataClient) + `real_estate/repository/building_turnover.py`.
 도로명 → 누적폐업률·평균/중앙 존속연수·최근 회전·신규진입·업태분포. 미신청 업종은 403 graceful skip.
 
 **검증 (강서로 385, 일반음식점):** 입점이력 44 / 영업 13 / 폐업 31 / 누적폐업률 70.5% /
@@ -88,7 +88,7 @@ localdata.go.kr 포털 폐쇄). **업종별 209종 개별 API** — 통합 단�
   오피스/중대형/소규모/집합, 2024Q3~ 현행).
 - **지역 한계**: 서울 / 서울>도심·강남·영등포신촌·**기타**(강서 포함) 까지. 강서구·마곡 상권 단위 없음.
 
-구현: `infra/external/reb_rone/`(client) + `repository/reb_lease.py`. tenant 축에 `MarketContext`
+구현: `real_estate/external/reb_rone/`(client) + `repository/reb_lease.py`. tenant 축에 `MarketContext`
 노드로 배선 완료(루브릭이 "서울 소규모상가 공실 +24% 악화" 인용).
 
 ---

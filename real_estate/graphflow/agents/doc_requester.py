@@ -26,7 +26,7 @@ from dataclasses import asdict, dataclass, field
 
 from pydantic import BaseModel, Field
 
-from real_estate.external.gov24.extract import ChangeEntry, Gov24Extract
+from real_estate.external.gov24.extract import Gov24Extract
 from real_estate.external.gov24.parser import PdfText, squeeze_spaces
 from real_estate.graphflow.agents.base import BaseAgent, coerce_json
 from real_estate.graphflow.prompts import get_prompt
