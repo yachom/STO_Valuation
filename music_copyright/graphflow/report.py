@@ -637,6 +637,13 @@ def generate_report(
             from music_copyright.graphflow.agentic_graph import run_agentic_graph
             pipeline_summary["agentic_graph"] = run_agentic_graph(
                 driver, work_id, config=ag)
+        # 웹수집 사회 Fact → typed 노드 승격(social_value.md §1). 시드-타임 추출이 만든 노드에
+        # 더해, expand가 웹에서 모은 work-anchored 사회 근거를 SocialTheme/Cause/PublicUse로
+        # 승격해 ADDRESSES/SUPPORTED/USED_IN 고가중 경로로 회수 가능하게 한다(firewall은 extractor).
+        sp = cfg.get("social_promotion", {})
+        if sp.get("enabled", True):
+            from music_copyright.graphflow.social import promote_social_facts
+            pipeline_summary["social_promotion"] = promote_social_facts(driver, work_id)
     except Exception as exc:  # noqa: BLE001 — 승격 실패가 보고서 산출을 막지 않게
         logger.warning("Entity consolidate/agentic graph 실패(보고서는 계속 진행): %s", exc)
     card = work_card_text(driver, work_id)
