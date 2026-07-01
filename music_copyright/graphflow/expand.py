@@ -195,16 +195,24 @@ def run_expand(
         if global_query_budget is not None and global_spent >= global_query_budget:
             history.append({"round": rnd, "reason": "global_query_budget"})
             break
-        frontier = collect_frontier(driver, work_id, limit=frontier_max)
+        frontier = collect_frontier(driver, work_id, limit=frontier_max,
+                                    max_hops=frontier_hops)
         if not frontier:
             history.append({"round": rnd, "reason": "no_frontier"})
             break
         executed = _executed_queries(driver, work_id, scope_hops)
-        coverage_before = coverage_summary_text(axis_coverage(driver, work_id))
+        cov_before = axis_coverage(driver, work_id)
+        coverage_before = coverage_summary_text(cov_before)
         plans = navigator.plan_round(
             work_card, frontier, executed,
             max_targets=frontier_max, queries_per_node=queries_per_node, purpose=purpose,
             coverage=coverage_before, feedback=feedback, round_no=rnd)
+        # 축별 예산 공정성 — 커버리지 낮은(Fact 적은) 축의 plan을 먼저 배분해, 한 축(매우 사회적인
+        # 곡의 social_value 등)이 공유 예산을 독점하고 ESG 등이 굶는 것을 막는다(전체 예산만 있고
+        # 축별 예산이 없던 문제). ESG floor가 만든 소속사(BigHit 등) 앵커 질의도 이 우선순위로
+        # 예산을 확보해 연계주체 거버넌스가 실제로 조사된다. 안정 정렬이라 동커버 축은 순서 보존.
+        plans = sorted(plans, key=lambda p: getattr(
+            cov_before.get(getattr(p, "axis", ""), None), "n_facts", 0))
         # 예산 trim
         trimmed, n_q = [], 0
         for plan in plans:
