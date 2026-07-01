@@ -4,6 +4,14 @@
 > 대상: `music_copyright/graphflow`  
 > 기준 E2E: 우예린 `토끼`, STORM/discourse workflow  
 > 목적: 수집부터 보고서와 후속 QA까지 추적 가능한 그래프 기반 평가 체계 확립
+>
+> **📌 읽는 법(2026-07-01).** **§1~§2(4단계 파이프라인·단계별 계약)와 §5(자율성 경계)는 항구적
+> 설계이자 현행**이다. 반면 **§3 문제 표와 §4 `토끼` E2E 수치는 2026-06-29 시점 스냅샷**이다 —
+> 여기서 진단된 **P0/P1(질의 템플릿 교체·`source_excerpt` 필수·`EXTRACTED_BY` provenance·work-local
+> novelty·report별 namespace·공유 budget)은 이후 반영**됐다(§4 말미가 스스로 밝히듯 계약 추가
+> 완료; as-built은 [`entity_resolution_layers.md`](entity_resolution_layers.md)). §4 실행은 *결함
+> 발견용 baseline*이지 새 계약의 검증 결과가 아니며, **§6은 그 시점의 재검증 계획**(대부분 수행됨).
+> P2 잔여 항목(출처 권위 검증·문서 snippet 한계·reranker의 entailment 겸직 등)은 열린 과제로 남을 수 있다.
 
 ## 1. 결론
 

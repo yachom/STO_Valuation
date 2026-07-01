@@ -2,6 +2,12 @@
 
 > 진단일: 2026-06-25 · 대상: `music_copyright` graphflow · 브랜치: `yachom/feature/music-copyright`
 > 검증 케이스: BTS "Dynamite" (`work_id=T-300.516.442-7`)
+>
+> **✅ 상태: 해소됨(2026-07-01).** 이 문서는 *갭 진단*(구현 전)이다. 여기서 지적한 Entity 무덤·승격
+> 계층 부재는 이후 구현됐다 — 구현 전 계획은 [`entity_resolution_plan.md`](entity_resolution_plan.md),
+> **as-built(현행 2계층)** 은 [`entity_resolution_layers.md`](entity_resolution_layers.md).
+> (본문의 코드 라인번호 예: `harvester.py:314`는 *진단 시점* 기준으로 이후 이동함 — 현행 위치는
+> layers 문서 부록 참조. 이 문서는 역사적 진단으로 보존.)
 
 ## TL;DR
 

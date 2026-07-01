@@ -1,8 +1,17 @@
 # Agentic Graph Autonomy Decision
 
-> 작성일: 2026-06-26  
-> 대상: `music_copyright` graphflow  
-> 구현 상태: 1차 수직 슬라이스 반영 (`agentic_graph` stage)
+> 작성일: 2026-06-26 · 대상: `music_copyright` graphflow
+>
+> **⚠️ 상태(2026-07-01) — 결정은 유효, 구현 세부는 교체됨.** 이 문서의 **핵심 결정**
+> (LLM=제안자·코드=validator/가드레일, §4~§5 자율성 배분, §7 agent 입력)은 **현행 그대로**다.
+> 그러나 **§8~§11의 1차 구현 세부는 이후 바뀌었다** — as-built은
+> [`entity_resolution_layers.md`](entity_resolution_layers.md)(2계층: 결정적 링킹 + proposer/validator).
+> 코드로 확인된 변경점: ① 자동커밋 기준이 **라벨(Fandom/SocialTheme/Cause/PublicUse)** →
+> **객관 엣지(`CHARTED_ON`/`WON`/`CERTIFIED`/`HAS_FANDOM`)** (`agentic_graph._AUTO_COMMIT_EDGES`,
+> config `auto_commit_edges`). ② validator가 **라벨별 토큰 리스트(§9)** 를 보지 않고 **불변식만**
+> 검사한다(허용 엣지·스키마 (src→dst)·근거 Fact+source_excerpt·작품 앵커) — 하드코딩 토큰 사전은
+> 검색기반 인식으로 대체(메모리 `music-graph-autonomy-principle`). ③ proposer 모델 `gpt_mini`→`gpt_54_mini`
+> 상향. → 아래 §8·§9·§11은 *역사적 1차안*으로 읽을 것.
 
 ## 1. 프로젝트 목적
 
@@ -129,7 +138,8 @@ Agent는 이 상태만 보고 `GraphProposal` JSON을 낸다. 직접 Cypher는 �
 - `mark_review`: 유용하지만 자동 승격이 위험한 대상
 - `reject`: 연도·순위·일반명사·노이즈
 
-자동 커밋 대상은 1차로 다음 라벨로 제한했다.
+자동 커밋 대상은 1차로 다음 라벨로 제한했다. *(⚠️ 레거시 1차안 — 현행은 라벨이 아니라
+객관 **엣지** `CHARTED_ON`/`WON`/`CERTIFIED`/`HAS_FANDOM` 기준. 헤더 참조.)*
 
 - `Fandom`
 - `SocialTheme`
@@ -148,13 +158,14 @@ Agent는 이 상태만 보고 `GraphProposal` JSON을 낸다. 직접 Cypher는 �
 - target label이 허용 목록에 있음
 - 근거 Fact가 최소 1개 이상 있음
 - 근거 텍스트에 평가 대상 Work 또는 performer Artist 맥락이 있음
-- target label별 최소 의미 신호가 있음
-  - `Fandom`: 팬덤/팬클럽/fan/fandom 등
-  - `SocialTheme`: 메시지/가사/다양성/정체성/위로/공동체 등
-  - `Cause`: 기부/자선/공익/캠페인/사회운동/시위 등
-  - `PublicUse`: United Nations/유엔/문화외교/공공/교육/기념 등
-
-주의: 과거 오탐을 피하기 위해 `un` 같은 짧은 약어 단독 매칭은 쓰지 않는다.
+- ~~target label별 최소 의미 신호가 있음~~ *(⚠️ **폐기** — 아래 라벨별 토큰 리스트는 현행
+  validator에 없다. 하드코딩 사전 금지 원칙(`music-graph-autonomy-principle`)에 따라 제거됐고,
+  팬덤 등은 하베스터의 검색기반 guess_label 인식으로 대체. 현행 validator는 토큰이 아니라
+  **불변식만** 본다: 허용 엣지 · 스키마상 합법 (src→dst) · 근거 Fact+source_excerpt · 작품 앵커.)*
+  - ~~`Fandom`: 팬덤/팬클럽/fan/fandom 등~~
+  - ~~`SocialTheme`: 메시지/가사/다양성/정체성/위로/공동체 등~~
+  - ~~`Cause`: 기부/자선/공익/캠페인/사회운동/시위 등~~
+  - ~~`PublicUse`: United Nations/유엔/문화외교/공공/교육/기념 등~~
 
 ## 10. Commit 방식
 
@@ -173,7 +184,7 @@ Agent는 이 상태만 보고 `GraphProposal` JSON을 낸다. 직접 Cypher는 �
 
 ## 11. 운영 플래그
 
-`config/music_graphflow.json`:
+`config/music_graphflow.json` *(현행 값 — 라벨 기준이 엣지 기준으로, 예산도 상향됨)*:
 
 ```json
 "agentic_graph": {
@@ -181,14 +192,15 @@ Agent는 이 상태만 보고 `GraphProposal` JSON을 낸다. 직접 Cypher는 �
   "mode": "proposal_first",
   "min_conf": 0.72,
   "scope_hops": 4,
-  "max_entities": 24,
-  "facts_per_entity": 5,
-  "max_proposals": 12,
-  "auto_commit_labels": ["Fandom", "SocialTheme", "Cause", "PublicUse"]
+  "max_entities": 40,
+  "facts_per_entity": 8,
+  "max_proposals": 28,
+  "auto_commit_edges": ["CHARTED_ON", "WON", "CERTIFIED", "HAS_FANDOM"]
 }
 ```
 
-코드 기본값은 `enabled=false`다. 프로젝트 설정 파일에서만 켰다.
+코드 기본값은 `enabled=false`다. 프로젝트 설정 파일에서만 켰다. (구 `auto_commit_labels`는
+`auto_commit_edges`로 교체 — 헤더 참조.)
 
 ## 12. 기대 효과
 

@@ -5,6 +5,23 @@
 > 전제: 기존 에이전트 스택(`real_estate/report/` 전체)은 이 브랜치에서 **삭제됨**(커밋 b7a9e54).
 > 데이터 축(location/asset/database/external/repository + infra/)만 공유.
 > 삭제 전 v2/v3 작업분은 `yachom/wip/v3-pre-graphflow-snapshot`에 보존 — 복원 출처.
+>
+> ---
+> **📍 읽기 전 방향표지(2026-07-01).** 이 문서는 그래프 네이티브 아키텍처의 **기반 설계이자
+> 결정 로그(D1~D22, 다른 설계 문서들이 참조)** 다. 단 **부동산(`real_estate`) 기준으로 집필**됐고
+> (주소·상권, tenant/esg/commercial 3축), **음악(`music_copyright`)은 이후 이 아키텍처를
+> 미러링**하며 갈라졌다([`asset_layering.md`](asset_layering.md)). 아래 **핵심 원칙(§3: 그래프=단일
+> 작업메모리·walk 엔진+정책·경로기반 질의·claim grounding·유효성)은 양 자산 공통·현행**이나,
+> **자산 특화 부분과 일부 세부는 이후 진화**했다. 현행 방향은 다음 문서로 갱신됐다:
+> - **평가 축·프레임**: 음악은 3축이 아니라 **영향력·대중성·지속성·사회적가치(+혁신·ESG/리스크)** 다중 축 —
+>   [`esg_assessment.md`](esg_assessment.md)(ESG S주축·G필수)·[`social_value.md`](social_value.md)(social-primary).
+> - **탐색(§5 walk)**: 고정 `max_hops`+손튜닝 `profiles` → **적응 깊이 + PPR recall**로 재정초 —
+>   [`agentic_traversal.md`](agentic_traversal.md).
+> - **엔티티 해소(D9)**: SAME_AS_CANDIDATE 2단 → **2계층(결정적 링킹 + proposer/validator)** as-built —
+>   [`entity_resolution_layers.md`](entity_resolution_layers.md).
+> - **EXPAND(§8)**: 고정 1패스 → **STORM/Co-STORM 담론 루프** — [`agentic_curation.md`](agentic_curation.md).
+>
+> 즉 이 문서는 *아키텍처 척추와 D-로그*로 읽고, *현행 자산별 실체*는 위 문서들로 본다.
 
 ---
 
