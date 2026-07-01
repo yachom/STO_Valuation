@@ -16,7 +16,9 @@
 
 from __future__ import annotations
 
+import hashlib
 import logging
+import re
 
 from pydantic import BaseModel, Field
 
@@ -132,3 +134,138 @@ def extract_social_signals(*, title: str, artist: str, context_text: str,
     """편의 함수 — SocialValueExtractor.extract 단발 호출."""
     return SocialValueExtractor().extract(
         title=title, artist=artist, context_text=context_text, max_each=max_each)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 웹수집 사회 Fact → typed 노드 승격 (docs/design/social_value.md §1 좁은 버전)
+#
+# 시드-타임 추출(Genius About·위키)은 SocialTheme/Cause/PublicUse를 만들지만, expand가 웹에서
+# 모은 사회 Fact는 raw Fact로만 남아 ADDRESSES/SUPPORTED/USED_IN(사회 profile 고가중) 경로를
+# 못 탄다(entity_resolution_gap의 사회판 — 발견은 하나 구축을 못 함). 이 함수는 work-anchored
+# 사회축 Fact를 *같은 조인 extractor 기준*으로 분류해 typed 노드로 승격한다. 시드 노드와 동일
+# 키 스킴이라 멱등 병합되고, firewall(감정·상업 배제)은 extractor가 담당한다. 라이브 Neo4j에
+# 직접 쓴다(consolidate/agentic_graph와 동형, seeder의 ScopeGraph 아님).
+_WS_RE = re.compile(r"\s+")
+
+
+def _nk(s: str | None) -> str:
+    """seeder._norm과 동일 — 공백 제거 + 소문자(키 스킴 일치 → 시드 노드와 멱등)."""
+    return _WS_RE.sub("", (s or "").strip().lower())
+
+
+def _sk(s: str, n: int = 16) -> str:
+    """seeder._short와 동일 — sha256 앞 n자."""
+    return hashlib.sha256(s.encode("utf-8")).hexdigest()[:n]
+
+
+def _match_source_fact(batch: list[dict], excerpt: str) -> dict | None:
+    """extractor가 낸 verbatim excerpt를 담은 원본 Fact를 batch에서 찾는다(근거 연결용)."""
+    ex = _nk(excerpt)
+    if len(ex) < _MIN_EXCERPT:
+        return None
+    for b in batch:
+        if ex in _nk(b.get("text")):
+            return b
+    return None
+
+
+def promote_social_facts(driver, work_id: str, *, max_facts: int = 80,
+                         batch_chars: int = 2800) -> dict:
+    """웹수집 사회 Fact(social_value 축·work-anchored)를 typed 노드로 승격. 멱등·best-effort.
+
+    work-anchored만 처리한다(Fact-MENTIONS->Work). Artist-only 근거는 아티스트의 사회활동을
+    곡의 사회가치로 과대귀속할 위험이 있어 제외한다(work-intrinsic vs artist-amplified 분리).
+    반환: {facts_seen, themes, causes, public_uses}.
+    """
+    from music_copyright.graphflow.graph.cards import build_card
+    from music_copyright.graphflow.graph.schema import EDGE_TYPES as E
+    from music_copyright.graphflow.graph.schema import KEY_PROP
+    from music_copyright.graphflow.graph.schema import NODE_LABELS as L
+
+    # out 필드 → (라벨, 키 infix, 이름 프로퍼티, Work→node 엣지) — seeder._add_* 스킴과 일치.
+    promote_map = [
+        ("themes", L.SOCIAL_THEME, "theme", "theme", E.ADDRESSES),
+        ("causes", L.CAUSE, "cause", "name", E.SUPPORTED),
+        ("public_uses", L.PUBLIC_USE, "use", "context", E.USED_IN),
+    ]
+    stats = {"facts_seen": 0, "themes": 0, "causes": 0, "public_uses": 0}
+    wk, fk = KEY_PROP[L.WORK], KEY_PROP[L.FACT]
+    try:
+        with driver.session() as s:
+            ctx = s.run(
+                f"MATCH (w:{L.WORK} {{{wk}: $wid}}) "
+                f"OPTIONAL MATCH (w)-[:{E.BY_ARTIST}]->(a:{L.ARTIST}) "
+                "RETURN w.title AS title, coalesce(a.name, a.artist_name) AS artist LIMIT 1",
+                wid=work_id).single()
+            if ctx is None:
+                return stats
+            title, artist = ctx["title"] or "", ctx["artist"] or ""
+            rows = s.run(
+                f"MATCH (f:{L.FACT})-[:{E.EXTRACTED_BY}]->(:{L.QUERY} {{axis: 'social_value'}}) "
+                f"MATCH (f)-[:{E.MENTIONS}]->(:{L.WORK} {{{wk}: $wid}}) "
+                "WHERE f.social_scanned IS NULL "
+                f"  AND NOT (f)-[:{E.MENTIONS}]->(:{L.SOCIAL_THEME}) "
+                f"  AND NOT (f)-[:{E.MENTIONS}]->(:{L.CAUSE}) "
+                f"  AND NOT (f)-[:{E.MENTIONS}]->(:{L.PUBLIC_USE}) "
+                f"RETURN f.{fk} AS fid, f.text AS text, coalesce(f.source,'web') AS source, "
+                "  coalesce(f.source_tier, 0.6) AS tier ORDER BY tier DESC LIMIT $max",
+                wid=work_id, max=max_facts).data()
+        facts = [r for r in rows if (r.get("text") or "").strip()]
+        stats["facts_seen"] = len(facts)
+        if not facts:
+            return stats
+
+        touched: set[str] = set()
+        i = 0
+        while i < len(facts):
+            batch: list[dict] = []
+            size = 0
+            while i < len(facts) and (not batch or size + len(facts[i]["text"]) <= batch_chars):
+                batch.append(facts[i])
+                size += len(facts[i]["text"])
+                i += 1
+            # 배치 텍스트를 context로 — excerpt는 이 안에 verbatim이라 extractor grounding 통과.
+            context = "\n".join(f"- {b['text'].strip()}" for b in batch)
+            out = extract_social_signals(title=title, artist=artist, context_text=context)
+            with driver.session() as s:
+                for field, label, infix, name_prop, edge in promote_map:
+                    for it in getattr(out, field):
+                        src = _match_source_fact(batch, it.source_excerpt)
+                        if src is None or not it.label.strip():
+                            continue
+                        key = _sk(f"{work_id}:{infix}:{_nk(it.label)}")
+                        props = {name_prop: it.label, "description": it.description,
+                                 "source_excerpt": (it.source_excerpt or "")[:500] or None,
+                                 "source": src["source"], "evidence_tier": "T2",
+                                 "promoted_from": "web_social_fact"}
+                        clean = {k: v for k, v in props.items() if v not in (None, "")}
+                        card = build_card(label, {**clean, KEY_PROP[label]: key})
+                        s.run(f"MERGE (n:{label} {{{KEY_PROP[label]}: $key}}) "
+                              "SET n += $props, n.card_text = $card",
+                              key=key, props=clean, card=card)
+                        s.run(f"MATCH (w:{L.WORK} {{{wk}: $wid}}) "
+                              f"MATCH (n:{label} {{{KEY_PROP[label]}: $key}}) "
+                              f"MERGE (w)-[:{edge}]->(n)", wid=work_id, key=key)
+                        s.run(f"MATCH (f:{L.FACT} {{{fk}: $fid}}) "
+                              f"MATCH (n:{label} {{{KEY_PROP[label]}: $key}}) "
+                              f"MERGE (f)-[:{E.MENTIONS}]->(n)", fid=src["fid"], key=key)
+                        touched.add(label)
+                        stats[field] += 1
+                # 처리 완료 표식 — 승격 여부와 무관하게 1회만 스캔(완전 멱등·재처리·확률성 방지).
+                s.run(f"MATCH (f:{L.FACT}) WHERE f.{fk} IN $fids SET f.social_scanned = true",
+                      fids=[b["fid"] for b in batch])
+
+        for label in touched:
+            try:
+                from music_copyright.graphflow.graph.vector_index import (
+                    ensure_vector_index, update_embeddings_for_label)
+                ensure_vector_index(driver)
+                update_embeddings_for_label(driver, label)
+            except Exception as exc:  # noqa: BLE001 — 임베딩 실패가 승격을 막지 않음
+                logger.debug("social promote embed skip(%s): %s", label, exc)
+    except Exception as exc:  # noqa: BLE001 — best-effort: 승격 실패가 보고서를 막지 않음
+        logger.warning("promote_social_facts(%s) 실패(계속): %s", work_id, exc)
+    logger.info("promote_social_facts(%s): seen=%d themes=%d causes=%d public_uses=%d",
+                work_id, stats["facts_seen"], stats["themes"], stats["causes"],
+                stats["public_uses"])
+    return stats
