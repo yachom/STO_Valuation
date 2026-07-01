@@ -113,7 +113,8 @@ def agentic_graph_node(state: MusicFlowState) -> dict:
     from music_copyright.graphflow.agentic_graph import run_agentic_graph
     from music_copyright.graphflow.config import get_config
 
-    c = get_config().get("agentic_graph", {})
+    cfg = get_config()
+    c = cfg.get("agentic_graph", {})
     try:
         summary = run_agentic_graph(_driver(), state["work_id"], config=c)
     except Exception as exc:  # noqa: BLE001
@@ -121,6 +122,17 @@ def agentic_graph_node(state: MusicFlowState) -> dict:
                    "reason": "stage_error", "error": type(exc).__name__}
         emit("agentic_graph", **summary)
         logger.warning("agentic graph stage failed; report continues: %s", exc)
+    # 웹 사회 Fact 승격 + 유튜브 커버 인식 — 순차 generate_report와 동일 스테이지를 담론(workflow)
+    # 경로에도 배선한다(둘 다 config gate·best-effort). 없으면 이 두 산출이 담론 경로에서 누락된다.
+    try:
+        if cfg.get("social_promotion", {}).get("enabled", True):
+            from music_copyright.graphflow.social import promote_social_facts
+            promote_social_facts(_driver(), state["work_id"])
+        if cfg.get("video_covers", {}).get("enabled", True):
+            from music_copyright.graphflow.covers import collect_video_covers
+            collect_video_covers(_driver(), state["work_id"])
+    except Exception as exc:  # noqa: BLE001 — 보강 스테이지 실패가 보고서를 막지 않음
+        logger.warning("social/cover 스테이지 실패(계속): %s", exc)
     return {"agentic_graph_summary": summary}
 
 
