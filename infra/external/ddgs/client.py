@@ -120,6 +120,48 @@ class DdgsClient(BaseExternalClient):
             logger.info("ddgs.%s '%s' → %d results", method, query[:40], len(out))
             return out
 
+    def videos(self, query: str, *, max_results: int = 8, region: str | None = None,
+               timelimit: str | None = None) -> list[dict]:
+        """비디오 검색 (Bing 비디오 = YouTube 대량 인덱싱). 커버곡 인식용.
+
+        반환 dict: title·url·description·published(업로드일)·uploader·view_count·duration.
+        `published`는 C2 세대전이 longevity(연도 span) 계산에 쓰인다. 게이트웨이·audit 경유.
+        timelimit(d/w/m/y) 지정 시 최근 N기간만. 미지정 시 날짜 spread 확보(span 계산에 유리).
+        """
+        self._gateway.wait(self.API_NAME)
+        kwargs: dict = {"region": region or self.region, "safesearch": self.safesearch,
+                        "max_results": max_results,
+                        "backend": self._backends_for("videos")}
+        if timelimit:
+            kwargs["timelimit"] = timelimit
+        with self._audited("videos", request_summary=query):
+            try:
+                rows = self._ddgs().videos(query, **kwargs)
+            except RatelimitException as exc:
+                raise DdgsRateLimited(f"ddgs 레이트리밋: {exc}", cause=exc) from exc
+            except TimeoutException as exc:
+                raise DdgsTimeout(f"ddgs 타임아웃: {exc}", cause=exc) from exc
+            except DDGSException as exc:
+                if "no results" in str(exc).lower():
+                    return []
+                raise DdgsError(f"ddgs videos 실패: {exc}", cause=exc) from exc
+            except Exception as exc:
+                raise DdgsError(f"ddgs videos 오류: {exc}", cause=exc) from exc
+            out: list[dict] = []
+            for r in rows or []:
+                url = r.get("content") or r.get("url") or ""
+                if not url:
+                    continue
+                stats = r.get("statistics") or {}
+                out.append({
+                    "title": r.get("title") or "", "url": url,
+                    "description": r.get("description") or "",
+                    "published": r.get("published"), "uploader": r.get("uploader"),
+                    "view_count": stats.get("viewCount"), "duration": r.get("duration"),
+                })
+            logger.info("ddgs.videos '%s' → %d results", query[:40], len(out))
+            return out
+
     def extract(self, url: str, *, fmt: str = "text_markdown") -> str:
         """URL 본문 추출 (HTML→마크다운/텍스트). 검색 스니펫의 전문 보강.
 

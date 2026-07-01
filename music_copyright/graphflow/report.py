@@ -648,6 +648,12 @@ def generate_report(
         if sp.get("enabled", True):
             from music_copyright.graphflow.social import promote_social_facts
             pipeline_summary["social_promotion"] = promote_social_facts(driver, work_id)
+        # 유튜브 커버 인식(ddgs videos) → COVERED_BY(+연도). MB/Genius가 놓치는 롱테일 커버로
+        # C2 세대전이 longevity 보강(korean_music_sources.md ddgs videos 항).
+        vc = cfg.get("video_covers", {})
+        if vc.get("enabled", True):
+            from music_copyright.graphflow.covers import collect_video_covers
+            pipeline_summary["video_covers"] = collect_video_covers(driver, work_id)
     except Exception as exc:  # noqa: BLE001 — 승격 실패가 보고서 산출을 막지 않게
         logger.warning("Entity consolidate/agentic graph 실패(보고서는 계속 진행): %s", exc)
     card = work_card_text(driver, work_id)
